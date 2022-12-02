@@ -1,4 +1,6 @@
-# Coming Soon...
+![Unity Version](https://img.shields.io/badge/Unity%20Version-2021.3.11f1_LTS-red?style=for-the-badge) ![Unity Version](https://img.shields.io/badge/O.S.-XUBUNTU_20.04.1_LTS-purple?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/almartson/Unity_TurnBasedStrategyGame_CodeMonkeyGameDevCourse?style=for-the-badge)
+
+# Coming Up Soon...
 
 
 ---

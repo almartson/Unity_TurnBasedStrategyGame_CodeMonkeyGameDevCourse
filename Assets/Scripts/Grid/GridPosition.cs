@@ -6,6 +6,7 @@ public struct GridPosition
     public int z;
 
 
+    
     #region Constructor
 
     public GridPosition(int x, int z)
