@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -16,6 +17,9 @@ public class GridObject
     [Tooltip("Position this Object belongs to...")]
     private GridPosition _gridPosition;
 
+    [Tooltip("Unit/Game Characters, this Object contains...")]
+    private List<Unit> _unitList;
+
     
     #endregion Attributes
 
@@ -26,6 +30,7 @@ public class GridObject
     {
         _gridSystem = gridSystem;
         _gridPosition = gridPosition;
+        _unitList = new List<Unit>();
     }
 
     #endregion Constructors
@@ -40,8 +45,50 @@ public class GridObject
     /// <returns></returns>
     public override string ToString()
     {
-        return _gridPosition.ToString();
+        string unitString = "";
+
+        int unitListLength = _unitList.Count;
+        
+        // Fill the String with the Data
+        //
+        for (int i = 0; i < unitListLength; i++)
+        {
+            unitString += _unitList[i] + "\n";
+        }
+        
+        return _gridPosition.ToString() + "\n" + unitString;
     }
+
+
+    /// <summary>
+    /// Add a new Unit to the List.
+    /// </summary>
+    /// <param name="unit">This new unit must be correct, validated from the outside
+    /// ...and passed to this Method as Input.</param>
+    public void AddUnit(Unit unit)
+    {
+        _unitList.Add(unit);
+    }
+
+    /// <summary>
+    /// Removes one Unit from the List.
+    /// </summary>
+    /// <param name="unit"></param>
+    public void RemoveUnit(Unit unit)
+    {
+        _unitList.Remove(unit);
+    }
+    
+    /// <summary>
+    /// Get the List (of Units).
+    /// </summary>
+    /// <returns></returns>
+    public List<Unit> GetUnitList()
+    {
+        return _unitList;
+    }
+    
+    
     
     #endregion Methods
 }

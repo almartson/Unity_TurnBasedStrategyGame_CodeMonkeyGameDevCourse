@@ -8,6 +8,13 @@ public class Unit : MonoBehaviour
     [SerializeField]
     private Vector3 _targetPosition;
 
+    
+    /// <summary>
+    /// Keeping track of the CURRENT GridPosition of this Unit.
+    /// </summary>
+    private GridPosition _gridPosition; 
+    
+    
     [Tooltip("The Tolerance number to accept that the value is ZERO")]
     [SerializeField]
     private float _stoppingDistance = 0.1f;
@@ -52,11 +59,12 @@ public class Unit : MonoBehaviour
 
     #endregion Attributes
     
+    
     #region Unity Methods
 
     private void Awake()
     {
-        // Misc Optimization: Calculating the (accepted) Square Min Distance.
+        // Done: Misc Optimization: Calculating the (accepted) Square Min Distance.
         //
         _sqrStoppingDistance = _stoppingDistance * _stoppingDistance;
         
@@ -65,11 +73,22 @@ public class Unit : MonoBehaviour
         _targetPosition = this.transform.position;
     }
 
+    
     // Start is called before the first frame update
-    // void Start()
-    // {
-    //     
-    // }
+    private void Start()
+    {
+        // Setting the Unit on the LevelGrid (Script) Object, on THIS GridPosition...
+        //
+        // We need LevelGrid to be a Singleton, for accessing a Script outside of
+        //...THIS Prefab.
+        // SOLUTION: The same with 'UnitActionSystem'
+        //
+        _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        //
+        LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
+        
+        
+    }
 
     // Update is called once per frame
     void Update()
@@ -77,10 +96,31 @@ public class Unit : MonoBehaviour
         
         UpdateUnitMove();
         
+        
+        // Setting the Unit on the LevelGrid (Script) Object, on THIS GridPosition...
+        //
+        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        //
+        // Compare the Old Position with the new...
+        //
+        if (newGridPosition != _gridPosition)
+        {
+            
+            // This Unit changed its (Grid) Position
+            //
+            LevelGrid.Instance.UnitMovedGridPosition(this, _gridPosition, newGridPosition);
+            
+            // Update also the CURRENT GridPosition ref here
+            //
+            _gridPosition = newGridPosition;
+
+        }
+        
     }
 
     
     #endregion Unity Methods
+    
     
     #region My Custom Methods
     

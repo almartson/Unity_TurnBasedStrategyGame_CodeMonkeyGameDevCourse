@@ -1,5 +1,7 @@
 
-public struct GridPosition
+using System;
+
+public struct GridPosition : IEquatable<GridPosition>
 {
     
     public int x;
@@ -53,7 +55,49 @@ public struct GridPosition
         this.z = z;
     }
 
+    
+    /// <summary>
+    /// Override Definition of the == Operator for this Struct. 
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static bool operator ==(GridPosition a, GridPosition b)
+    {
+        return a.x == b.x && a.z == b.z;
+    }
 
+    /// <summary>
+    /// Override Definition of the != Operator for this Struct. 
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static bool operator !=(GridPosition a, GridPosition b)
+    {
+        return !(a == b);
+    }
+
+    
+    #region Equality (Automatically) Generated Metods
+
+    public bool Equals(GridPosition other)
+    {
+        return this == other;
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is GridPosition other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(x, z);
+    }
+
+    #endregion Equality (Automatically) Generated Metods
+    
     #endregion Methods
     
 }

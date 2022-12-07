@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -15,15 +14,22 @@ public class GridDebugObject : MonoBehaviour
 
     #region Unity Methods
 
-    private void Start()
-    {
-        _textMeshPro.text = gridObject.ToString();
-    }
-
-    // private void Update()
+    // private void Start()
     // {
     //     _textMeshPro.text = gridObject.ToString();
     // }
+
+    
+    /// <summary>
+    /// TODO: Fix: This Codemonkey's implementation is NOT Performant.
+    /// </summary>
+    private void Update()
+    {
+        
+        // TODO: Fix: This Codemonkey's implementation is NOT Performant.
+        //
+        _textMeshPro.text = gridObject.ToString();
+    }
 
     #endregion Unity Methods
     
