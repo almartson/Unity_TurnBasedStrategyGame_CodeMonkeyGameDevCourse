@@ -1,4 +1,3 @@
-using System;
 using Cinemachine;
 using UnityEngine;
 
@@ -15,7 +14,7 @@ public class CameraController : MonoBehaviour
     #region Attributes
 
     #region Customizing the Cameras' Target Follow Offset (the "Y" value)
-    
+
     /// <summary>
     /// Constant to limit the Camera Movements. Minimum Y
     /// </summary>
@@ -40,13 +39,26 @@ public class CameraController : MonoBehaviour
     [Tooltip("Virtual Camera Component-Behaviour, associated to this CameraController's Transform...Position")]
     private CinemachineTransposer _cinemachineTransposer;
     
+    [Tooltip("Zoom Amount that is represented by one unit of Mouse Scroll Wheel Movement, Positive +1 (ZOOM-IN), or Negative -1 (for ZOOM-OUT)")]
+    private const float _ZOOM_AMOUNT = 1f;
+    
+    [Space(10)] // 10 pixels of spacing here.
+    [Header("Zoom")]
+    //
+    [Tooltip("Zoom Speed, that will be used for Mouse Scroll Wheel's Movements")]
+    [SerializeField]
+    [Range(0.0f, 33.0f)]
+    private float _zoomSpeed = 5f;
+    
     #endregion  Customizing the Cameras' Target Follow Offset (the "Y" value)
 
     
     // Translation Movement
     
     // Input
-    
+    [Space(10)] // 10 pixels of spacing here.
+    [Header("Movement")]
+    //
     [Tooltip("Current Movement Direction Vector3, gotten from the user's Input")]
     [SerializeField]
     private Vector3 _inputMoveDirection = new Vector3(0, 0, 0);
@@ -58,17 +70,22 @@ public class CameraController : MonoBehaviour
     private Vector3 _moveVector = new Vector3(0, 0, 0);
     
     [Tooltip("Current Movement Speed")]
-    [SerializeField] 
+    [SerializeField]
+    [Range(-50.0f, 50.0f)]
     private float _moveSpeed = 10.0f;
 
     // Rotation Movement
+    
+    [Space(10)] // 10 pixels of spacing here.
+    [Header("Rotation")]
     
     [Tooltip("Current Rotation (movement) Vector3")]
     [SerializeField]
     private Vector3 _rotationVector = new Vector3(0, 0, 0);
 
     [Tooltip("Current Rotation Speed")]
-    [SerializeField] 
+    [SerializeField]
+    [Range(-500.0f, 500.0f)]
     private float _rotationSpeed = 100.0f;
     
     // Optimizations
@@ -77,9 +94,7 @@ public class CameraController : MonoBehaviour
     /// Transform cache
     /// </summary>
     private Transform _cachedTransform;
-
-
-
+    
     #endregion Attributes
 
 
@@ -207,19 +222,17 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private void HandleZoom()
     {
-        float zoomAmount = 1f;
-
         // We update Cinemachine's "y" value of the Pan of Camera:
         // It could be a ZOOM-IN or a ZOOM-OUT, dependong on the
         //...direction of the movement of the mouse's scrollwheel:
         if (Input.mouseScrollDelta.y > 0)
         {
-            _targetFollowOffset.y -= zoomAmount;
+            _targetFollowOffset.y -= _ZOOM_AMOUNT;
         }
 
         if (Input.mouseScrollDelta.y < 0)
         {
-            _targetFollowOffset.y += zoomAmount;
+            _targetFollowOffset.y += _ZOOM_AMOUNT;
         }
 
         // We limit the Camera Movement to the Constraints:
@@ -228,10 +241,8 @@ public class CameraController : MonoBehaviour
         //
         // Updating the Camera's "Y" (m_FollowOffset)  Value:
         //
-        float zoomSpeed = 5f;
-        //
         _cinemachineTransposer.m_FollowOffset = Vector3.Lerp(_cinemachineTransposer.m_FollowOffset, _targetFollowOffset,
-            Time.deltaTime * zoomSpeed);
+            Time.deltaTime * _zoomSpeed);
     }
 
 
