@@ -196,7 +196,7 @@ public class MoveAction : MonoBehaviour
     /// This method cycles through the squares/Grids...(using FOR )... to get a list of the valid ones.
     /// </summary>
     /// <returns>Valid (GridPosition(s)) places where the Unit/Character can Move to, in this Turn.</returns>
-    public List<GridPosition> ressing()
+    public List<GridPosition> GetValidActionGridPositionList()
     {
         List<GridPosition> validGridPositionList = new List<GridPosition>();
         
