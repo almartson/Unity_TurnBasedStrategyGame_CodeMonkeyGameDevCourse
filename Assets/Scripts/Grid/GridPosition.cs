@@ -97,7 +97,33 @@ public struct GridPosition : IEquatable<GridPosition>
     }
 
     #endregion Equality (Automatically) Generated Metods
+
+    #region + and - Operators
+
+    /// <summary>
+    /// Override Definition of the + Operator for this Struct. 
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static GridPosition operator +(GridPosition a, GridPosition b)
+    {
+        return new GridPosition(a.x + b.x, a.z + b.z);
+    }
     
+    /// <summary>
+    /// Override Definition of the - Operator for this Struct. 
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static GridPosition operator -(GridPosition a, GridPosition b)
+    {
+        return new GridPosition(a.x - b.x, a.z - b.z);
+    }
+    
+    #endregion + and - Operators
+
     #endregion Methods
     
 }

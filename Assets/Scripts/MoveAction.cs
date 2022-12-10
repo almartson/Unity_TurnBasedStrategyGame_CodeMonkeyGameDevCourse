@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -5,6 +6,10 @@ public class MoveAction : MonoBehaviour
 {
     #region Attributes
 
+    [Tooltip("Reference to the Unit / Character to apply the MoveAction to...")]
+    private Unit _unit;
+    
+    
     [Tooltip("Destination (x, y, z) Position of the Movement Action")]
     [SerializeField]
     private Vector3 _targetPosition;
@@ -46,6 +51,18 @@ public class MoveAction : MonoBehaviour
 
     #endregion Utils
     
+    
+    #region Validations: Movement
+    
+    /// <summary>
+    /// Max number of Grid Cells the character can move in one Turn.
+    /// </summary>
+    [SerializeField]
+    private int _maxMoveDistance = 4;
+    
+    
+    #endregion Validations: Movement
+    
     #endregion Attributes
 
 
@@ -56,9 +73,17 @@ public class MoveAction : MonoBehaviour
     /// </summary>
     private void Awake()
     {
+        #region Utils
+        
         // Done: Misc Optimization: Calculating the (accepted) Square Min Distance.
         //
         _sqrStoppingDistance = _stoppingDistance * _stoppingDistance;
+        
+        #endregion Utils
+
+        // Get the Unit / Character this Script is attached to in the Unity Editor.
+        //
+        _unit = GetComponent<Unit>();
         
         // Initialize Target Position to this Script's base GameObject.
         //
@@ -163,6 +188,50 @@ public class MoveAction : MonoBehaviour
     
     #endregion  Rotation: LERP vs. SLERP
 
+    
+    #region Movement Validations
+
+    /// <summary>
+    /// Get a List of the Valid places where the Unit/Character can Move to (i.e.: GridPosition(s)).
+    /// This method cycles through the squares/Grids...(using FOR )... to get a list of the valid ones.
+    /// </summary>
+    /// <returns>Valid (GridPosition(s)) places where the Unit/Character can Move to, in this Turn.</returns>
+    public List<GridPosition> ressing()
+    {
+        List<GridPosition> validGridPositionList = new List<GridPosition>();
+        
+        // Get the Unit's GridPosition
+        //
+        GridPosition unitGridPosition = _unit.GetGridPosition();
+        
+        // Cycle through the Rows and Columns (Cells in general) to find the Valid ones for Moving() in.. in this Turn
+        //
+        for (int x = -_maxMoveDistance; x <= _maxMoveDistance; x++)
+        {
+            for (int z = -_maxMoveDistance; z <= _maxMoveDistance; z++)
+            {
+                // Create a GridPosition to Validate it:
+                //
+                GridPosition offsetGridPosition = new GridPosition(x, z);
+
+                // All Actions are attached to an Unit, so we can get a reference to an Unit from this class/object and then from Unit to -> its Position / Grid.
+                // Test a given GridPosition, moving it a little bit using the 'offsetGridPosition' (summing it, +), so we can Validate it:
+                //
+                GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
+                
+                // For Testing, Delete or Comment later:
+                //
+                Debug.Log(testGridPosition);
+
+            } // End for 2
+        }//End for 1
+    
+        return validGridPositionList;
+    }
+
+
+    #endregion Movement Validations
+    
     #endregion My Custom Methods
 
 }

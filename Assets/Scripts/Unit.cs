@@ -92,6 +92,17 @@ public class Unit : MonoBehaviour
     {
         return _moveAction;
     }
+    
+    /// <summary>
+    /// Getter for <code>GridPosition</code>
+    /// </summary>
+    /// <returns></returns>
+    public GridPosition GetGridPosition()
+    {
+        return _gridPosition;
+    }
+    
+    
 
     #endregion My Custom Methods
     

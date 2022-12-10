@@ -2,43 +2,34 @@ using UnityEngine;
 
 public class Testing : MonoBehaviour
 {
+    #region Attributes
 
-    // [Tooltip("Visuals of Grid System, for Visual Debugging in the Unity Editor")]
-    // [SerializeField]
-    // private Transform gridDebugObjectPrefab;
-    //
-    // private GridSystem _gridSystem;
-    //
-    // private GridPosition _gridPosition;
+    [SerializeField] private Unit _unit;
     
     
-    /// <summary>
-    /// Start is called before the first frame update
-    /// TODO: Note ORIGINALLY CodeMonkey used an Start() 
-    /// </summary>
-    void Awake()
-    {
-        // _gridSystem = new GridSystem(10, 10, 2f);
-        // _gridPosition = new GridPosition(5, 7);
-        // //
-        // // Create the GameObject that will hold a Visual Representation of the Grid System. Calling the Constructor:
-        // //
-        // _gridSystem.CreateDebugObjects(gridDebugObjectPrefab);
-        
-        // Debug.Log(_gridPosition);
-    }
+    
+    
+    #endregion Attributes
+    
+
+    // /// <summary>
+    // /// Start is called before the first frame update
+    // /// </summary>
+    // void Awake()
+    // {
+    //
+    // }
 
 
     private void Update()
     {
-        // Not Optimized call:
+        // If the user presses "T" then Validate all Possible Moves to the ADJACENT SQUARES / GRID CELLS.
         //
-        /////Debug.Log(_gridSystem.GetGridPosition(MouseWorld.GetPosition()));
-        //
-        // Optimized call:
-        //
-        // _gridSystem.GetGridPosition(ref _gridPosition, MouseWorld.GetPosition());
-        // //
-        // Debug.Log( _gridPosition );
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            _unit.GetMoveAction().GetValidActionGridPositionList();
+
+        }//End if
+        
     }
 }
