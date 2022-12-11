@@ -219,6 +219,15 @@ public class MoveAction : MonoBehaviour
                 //
                 GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
                 
+                // Validation:
+                // 1- "GridPosition" Must be inside the Grid System, not off-limits:
+                //
+                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                {
+                    // Not Valid: continue / SKIP: to the NEXT ITERATION.
+                    continue;
+                }
+                
                 // For Testing, Delete or Comment later:
                 //
                 Debug.Log(testGridPosition);

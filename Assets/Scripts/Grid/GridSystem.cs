@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 
 public class GridSystem
@@ -155,6 +154,25 @@ public class GridSystem
     {
         return _gridObjectArray[gridPosition.x, gridPosition.z];
     }
+    
+    
+    #region Validation of Movement towards any GridPositions
+    
+    /// <summary>
+    /// Validates a GridPosition. Criteria: it should not be outside (off-limits) of the GridSystem itself. We do not allow negative numbers for any coordinate, for example:<code>(x, y, z) = (-1, 0, -1)</code>
+    /// </summary>
+    /// <returns>TRUE or FALSE, depending on whether the GridPosition is VALID or not (could be off-limits... outside the Grid System).</returns>
+    public bool IsValidGridPosition(GridPosition gridPosition)
+    {
+        return (
+            gridPosition.x >= 0 && gridPosition.z >= 0 &&
+            gridPosition.x < _width && gridPosition.z < _height
+        );
+    }
+    
+    
+    #endregion #region Validation of Movement towards any GridPositions
+    
     
     #endregion Methods
 }

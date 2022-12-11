@@ -113,23 +113,8 @@ public class LevelGrid : MonoBehaviour
     }
 
     /// <summary>
-    /// Get Grid Position.
-    /// </summary>
-    /// <param name="worldPosition"></param>
-    /// <returns></returns>
-    public GridPosition GetGridPosition(Vector3 worldPosition) => _gridSystem.GetGridPosition(worldPosition);
-    //
-    // CodeMonkey TIPS:   This is the same as:
-    //
-    // public GridPosition GetGridPosition(Vector3 worldPosition)
-    // {
-    //     return _gridSystem.GetGridPosition(worldPosition);
-    // }
-
-    
-    /// <summary>
-    /// Updates the Unit's GridPosition Data, when it we have detected that
-    /// ...it has previously changed position (i.e.: the Character has moved!)
+    /// Updates the Unit's GridPosition Data, when we have detected that
+    /// ..it has previously changed position (i.e.: the Character has moved!)
     /// </summary>
     public void UnitMovedGridPosition(Unit unit, GridPosition fromGridPosition, GridPosition toGridPosition)
     {
@@ -142,7 +127,28 @@ public class LevelGrid : MonoBehaviour
         AddUnitAtGridPosition(toGridPosition, unit);
     }
 
-
+    /// <summary>
+    /// Gets a Grid Position.
+    /// </summary>
+    /// <param name="worldPosition"></param>
+    /// <returns></returns>
+    public GridPosition GetGridPosition(Vector3 worldPosition) => _gridSystem.GetGridPosition(worldPosition);
+    //
+    // CodeMonkey TIPS:   This is the same as:
+    //
+    // public GridPosition GetGridPosition(Vector3 worldPosition)
+    // {
+    //     return _gridSystem.GetGridPosition(worldPosition);
+    // }
+    
+    
+    /// <summary>
+    /// Gets a VALID Grid Position. Validity Criteria: it must be inside the Board, only positive numbers for the Coordinates are allowed.
+    /// </summary>
+    /// <param name="gridPosition">A test GridPosition struct, to check the validity of that (x, y=0, z) position.</param>
+    /// <returns>True or False</returns>
+    public bool IsValidGridPosition(GridPosition gridPosition) => _gridSystem.IsValidGridPosition(gridPosition);
+    
     #endregion My Custom Methods
 
 }
