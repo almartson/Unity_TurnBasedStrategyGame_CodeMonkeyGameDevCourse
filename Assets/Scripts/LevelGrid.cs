@@ -149,6 +149,24 @@ public class LevelGrid : MonoBehaviour
     /// <returns>True or False</returns>
     public bool IsValidGridPosition(GridPosition gridPosition) => _gridSystem.IsValidGridPosition(gridPosition);
     
+    
+    /// <summary>
+    /// Gets a VALID Grid Position.
+    /// Validity Criteria: it must NOT have any Unit or Obstacle... or any Object in it. It must be completely empty to be Valid.
+    /// </summary>
+    /// <param name="gridPosition">A test GridPosition struct, to check the validity of that (x, y=0, z) position.</param>
+    /// <returns>True or False</returns>
+    public bool HasAnyUnitOnGridPosition(GridPosition gridPosition)
+    { 
+        // Get a GridObject:
+        //
+        GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+        //
+        // Check whether it is occupied..:
+        //
+        return gridObject.HasAnyUnit();
+    }
+    
     #endregion My Custom Methods
 
 }

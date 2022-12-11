@@ -234,6 +234,17 @@ public class MoveAction : MonoBehaviour
                 if (unitGridPosition == testGridPosition)
                 {
                     // Not Valid: Same Grid Position where the Player / Unit is already at.
+                    // Skip to next iteration:
+                    //
+                    continue;
+                }
+                //
+                // 3- "GridPosition" Must NOT be previously occupied.
+                //
+                if (LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
+                {
+                    // Not Valid:
+                    // Grid Position is already occupied with another Unit. Skip to next iteration:
                     //
                     continue;
                 }

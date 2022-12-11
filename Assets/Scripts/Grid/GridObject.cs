@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Entity that references a Cell / Grid in the 'Grid System'.
+/// Entity that references "Logically" (in terms of Business Logic)
+///...a Cell / Grid in the 'Grid System'.
 /// It contains GameObjects, and Items in a Cell, and also
 ///...a Mathematical Position (x, z) in the Struct called: GridPosition
 /// </summary>
@@ -89,6 +90,18 @@ public class GridObject
     }
     
     
+    #region Validations for Move Actions on each GridObject
+
+    /// <summary>
+    /// Validation: Is this GridObject occupied by any Unit / Character?  
+    /// </summary>
+    /// <returns></returns>
+    public bool HasAnyUnit()
+    {
+        return _unitList.Count > 0;
+    }
+    
+    #endregion Validations for Move Actions on each GridObject
     
     #endregion Methods
 }
