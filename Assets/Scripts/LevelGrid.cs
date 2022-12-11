@@ -140,6 +140,13 @@ public class LevelGrid : MonoBehaviour
     // {
     //     return _gridSystem.GetGridPosition(worldPosition);
     // }
+
+    /// <summary>
+    /// Gets a (Game) World Position.
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns></returns>
+    public Vector3 GetWorldPosition(GridPosition gridPosition) => _gridSystem.GetWorldPosition(gridPosition);
     
     
     /// <summary>

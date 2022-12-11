@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -113,7 +114,23 @@ public class MoveAction : MonoBehaviour
 
     #region My Custom Methods
 
-
+    /// <summary>
+    /// Moves the Unit / Character to the specified (x, y, z) Position (Grid).
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    public void Move(GridPosition gridPosition)
+    {
+        // Get the WorldPosition, based on a "GridPosition" as Input.
+        //
+        this._targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+    }
+    
+    
+    /// <summary>
+    /// Moves the Unit / Character to the specified (x, y, z) Position (Grid).
+    /// </summary>
+    /// <param name="newTargetPosition"></param>
+    [Obsolete("This method is deprecated. Use: 'public void Move(GridPosition gridPosition)' instead", true)]
     public void Move(Vector3 newTargetPosition)
     {
         _targetPosition = newTargetPosition;
@@ -192,6 +209,22 @@ public class MoveAction : MonoBehaviour
     #region Movement Validations
 
     /// <summary>
+    /// Tells you whether the user/Player's selection (Grid Position) is Valid to Move to. It uses several criteria, such as: the Position must be unoccupied, must be inside the Grid System, etc. 
+    /// </summary>
+    /// <returns>True or False to: is the selected "GridPosition" Valid??</returns>
+    public bool IsValidActionGridPosition(GridPosition gridPosition)
+    {
+        // Get a List of ALL Valid (Grid) Positions:
+        //
+        List<GridPosition> validGridPositionList = GetValidActionGridPositionList();
+        //
+        // Return: Does this VALID LIST contain also the requested GridPosition (this Method's INPUT)? gridPosition 
+        //
+        return validGridPositionList.Contains(gridPosition);
+    }
+    
+    
+    /// <summary>
     /// Get a List of the Valid places where the Unit/Character can Move to (i.e.: GridPosition(s)).
     /// This method cycles through the squares/Grids...(using FOR )... to get a list of the valid ones.
     /// </summary>
@@ -249,10 +282,9 @@ public class MoveAction : MonoBehaviour
                     continue;
                 }
                 
-                
-                // For Testing, Delete or Comment later:
+                // Finally, Conclusion: Add the Tested & Valid GridPosition to the Local VALID List
                 //
-                Debug.Log(testGridPosition);
+                validGridPositionList.Add(testGridPosition);
 
             } // End for 2
         }//End for 1

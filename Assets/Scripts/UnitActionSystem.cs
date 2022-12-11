@@ -82,7 +82,6 @@ public class UnitActionSystem : MonoBehaviour
         //
         if (Input.GetMouseButtonDown(0))
         {
-        
             // Try to select an Unit (a Character / Soldier, etc):
             //
             if (TryHandleUnitSelection()) return;
@@ -92,14 +91,31 @@ public class UnitActionSystem : MonoBehaviour
             //
             if (MouseWorld.TryGetPosition(out Vector3 mousePosition))
             {
-                // Save the Mouse Position
+                
+                // Get the CENTER of the selected "GridPosition", instead of a corner or any random position inside of it
+                // ...because sometimes the Player/user clicks in random places of a Cell/Square/Grid,
+                // ...not necessarily in the CENTER of it:
                 //
-                _selectedUnit.MousePosition = mousePosition;
+                GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(mousePosition);
+                
+                // Save the original Mouse Position (just in case... as a backup)
+                //
+                _selectedUnit.MousePosition.Set(mouseGridPosition.x, 0, mouseGridPosition.z);
             
-                // Move() where the Mouser Pointer CLICK has been Pressed!
+                
+                // Validate:
+                // Whether the selected GridPosition (x, 0, z) is empty & 100% correct for the MoveAction:
                 //
-                _selectedUnit.GetMoveAction().Move( _selectedUnit.MousePosition );
-            }
+                if (_selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
+                {
+                    
+                    // Move() where the Mouse Pointer CLICK has been Pressed!
+                    //
+                    _selectedUnit.GetMoveAction().Move( mouseGridPosition );
+                    
+                }//End if
+
+            }//End if (MouseWorld.TryGetPosition
 
         }//End if (Input.GetMouseButtonDown(0))
         
