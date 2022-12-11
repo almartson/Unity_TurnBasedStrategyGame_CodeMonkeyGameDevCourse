@@ -220,6 +220,7 @@ public class MoveAction : MonoBehaviour
                 GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
                 
                 // Validation:
+                //
                 // 1- "GridPosition" Must be inside the Grid System, not off-limits:
                 //
                 if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
@@ -227,6 +228,16 @@ public class MoveAction : MonoBehaviour
                     // Not Valid: continue / SKIP: to the NEXT ITERATION.
                     continue;
                 }
+                //
+                // 2- "GridPosition" Must be different from the current one.
+                //
+                if (unitGridPosition == testGridPosition)
+                {
+                    // Not Valid: Same Grid Position where the Player / Unit is already at.
+                    //
+                    continue;
+                }
+                
                 
                 // For Testing, Delete or Comment later:
                 //
