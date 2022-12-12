@@ -71,9 +71,8 @@ public class UnitActionSystem : MonoBehaviour
         // If everything went well, create / assign THIS Instance:
         //
         Instance = this;
-
-
-    }
+        
+    }//End Awake
     
     private void Update()
     {

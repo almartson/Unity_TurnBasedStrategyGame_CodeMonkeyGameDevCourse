@@ -111,6 +111,10 @@ public class GridSystem
     /// <param name="debugPrefab"></param>
     public void CreateDebugObjects(Transform debugPrefab)
     {
+        // Create a parent GameObject for organizing the multiple GameObjects that will be instantiated later...
+        //
+        GameObject parentCell = new GameObject("GridCells_ForDebugging_(x,y,z)Positions&UnitName");
+        
         
         for (int x = 0; x < _width; x++)
         {
@@ -122,9 +126,9 @@ public class GridSystem
                 GridPosition gridPosition = new GridPosition(x, z);
                 
                 // Visual Cue:  Instantiate the Visual Prefab:  the GameObject that has
-                //...(i.e.:...is associated with...) the Transform: 'debugPrefab'  
+                //...(i.e.:...is associated with...) the Transform: 'debugPrefab'
                 //
-                Transform myGridCellTransformForDebug = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity);
+                Transform myGridCellTransformForDebug = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity, parentCell.transform);
                 //
                 // Get a Cell Object, for Debug
                 //..(GridDebugObject contains a particular 'GridObject'):

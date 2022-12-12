@@ -7,8 +7,6 @@ public class Testing : MonoBehaviour
     [SerializeField] private Unit _unit;
     
     
-    
-    
     #endregion Attributes
     
 
@@ -16,9 +14,7 @@ public class Testing : MonoBehaviour
     // /// Start is called before the first frame update
     // /// </summary>
     // void Awake()
-    // {
-    //
-    // }
+    // {  }
 
 
     private void Update()
@@ -27,9 +23,18 @@ public class Testing : MonoBehaviour
         //
         if (Input.GetKeyDown(KeyCode.T))
         {
-            _unit.GetMoveAction().GetValidActionGridPositionList();
+
+            // Hide all Grid Positions Prefab's Visual cues..:
+            //
+            GridSystemVisual.Instance.HideAllGridPositions();
+            
+            // Show only the VALID Cells of the Grid, to move in:
+            //
+            GridSystemVisual.Instance.ShowGridPositionList(_unit.GetMoveAction().GetValidActionGridPositionList());
 
         }//End if
         
-    }
+    }//End Update
+    
+    
 }
