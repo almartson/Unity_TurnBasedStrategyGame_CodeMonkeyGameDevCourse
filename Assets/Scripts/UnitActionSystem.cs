@@ -117,6 +117,18 @@ public class UnitActionSystem : MonoBehaviour
             }//End if (MouseWorld.TryGetPosition
 
         }//End if (Input.GetMouseButtonDown(0))
+
+        // Spin Action
+        // Temporary Debug TEST   (by the Code Monkey & Alec AlMartson)
+        //
+        if (Input.GetMouseButtonDown(1))
+        {
+            // Enable: Spin
+            //
+            _selectedUnit.GetSpinAction().Spin();
+            
+        }//End if (Input.GetMouseButtonDown(1))
+        
         
     }//End Update
 

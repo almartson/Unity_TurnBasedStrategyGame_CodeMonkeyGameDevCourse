@@ -16,6 +16,11 @@ public class Unit : MonoBehaviour
     /// </summary>
     private MoveAction _moveAction;
     
+    /// <summary>
+    /// Reference to the SpinAction script to make the Units / Characters able to execute the Action: 'Spin' (Rotate). 
+    /// </summary>
+    private SpinAction _spinAction;
+
     
     /// <summary>
     /// Mouse Position
@@ -37,6 +42,8 @@ public class Unit : MonoBehaviour
     private void Awake()
     {
         _moveAction = GetComponent<MoveAction>();
+        _spinAction = GetComponent<SpinAction>();
+
     }
 
     
@@ -83,7 +90,9 @@ public class Unit : MonoBehaviour
     
     
     #region My Custom Methods
-
+    
+    #region Actions
+    
     /// <summary>
     /// Getter for <code>MoveAction</code>
     /// </summary>
@@ -92,6 +101,19 @@ public class Unit : MonoBehaviour
     {
         return _moveAction;
     }
+    
+    
+    /// <summary>
+    /// Getter for <code>MoveAction</code>
+    /// </summary>
+    /// <returns></returns>
+    public SpinAction GetSpinAction()
+    {
+        return _spinAction;
+    }
+    
+    #endregion Actions
+    
     
     /// <summary>
     /// Getter for <code>GridPosition</code>

@@ -11,6 +11,11 @@ public class MoveAction : MonoBehaviour
     private Unit _unit;
     
     
+    [Tooltip("Sets this 'Action' as: Enabled  or  Disabled.")]
+    [SerializeField]
+    private bool _isActive = false;
+    
+    
     [Tooltip("Destination (x, y, z) Position of the Movement Action")]
     [SerializeField]
     private Vector3 _targetPosition;
@@ -89,6 +94,19 @@ public class MoveAction : MonoBehaviour
         // Initialize Target Position to this Script's base GameObject.
         //
         _targetPosition = this.transform.position;
+        
+        
+        #region Stop all Movement Action & Animation
+        
+        // Update the Animator's Parameter:  STOP  (Walking).
+        //
+        _unitAnimator.SetBool(_IS_WALKING_ANIMATOR_PARAMETER, false);
+            
+        // Set this "Action" as DISABLED
+        //
+        _isActive = false;
+        
+        #endregion Stop all Movement Action & Animation
     }
 
 
@@ -103,6 +121,16 @@ public class MoveAction : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        // Check whether this "Action" is Active or Inactive:
+        //
+        if (!_isActive)
+        {
+            // Its DISABLED so...
+            // End it here  (for THIS FRAME)
+            //
+            return;
+        }
+        
         // Update the Unit Movement (Walking...)
         //
         UpdateUnitMove();
@@ -122,7 +150,11 @@ public class MoveAction : MonoBehaviour
     {
         // Get the WorldPosition, based on a "GridPosition" as Input.
         //
-        this._targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        _targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        
+        // Set this "Action" as DISABLED
+        //
+        _isActive = false;
     }
     
     
@@ -134,31 +166,31 @@ public class MoveAction : MonoBehaviour
     public void Move(Vector3 newTargetPosition)
     {
         _targetPosition = newTargetPosition;
+        
+        // Set this "Action" as ENABLED
+        //
+        _isActive = true;
     }
     
     /// <summary>
     /// Makes the Unit / Character to Move.
     /// </summary>
-    void UpdateUnitMove()
+    private void UpdateUnitMove()
     {
+        // Calculate the Vector3 of the DIRECTION of Movement:
+        //
+        Vector3 moveDirection = (_targetPosition - transform.position).normalized;
         
         // Calculate the Distance... to see how close or far
         // ...is the Mouse Pointer -> from -> The Unit we want to Move().
         //
         if (Vector3.SqrMagnitude(transform.position - _targetPosition) > _sqrStoppingDistance)
         {
-            Vector3 moveDirection = (_targetPosition - transform.position).normalized;
-
             // Move
             // 1- Translation:
             //
             transform.position += moveDirection * (_moveSpeed * Time.deltaTime);
-            //
-            // 2- Rotation
-            //
-            RotateUnitUsingVector3SlerpApproach(moveDirection);
-            
-            
+
             // 3- Update the Animator's Parameter: Start/Keep on Walking.
             //
             _unitAnimator.SetBool(_IS_WALKING_ANIMATOR_PARAMETER, true);
@@ -169,8 +201,17 @@ public class MoveAction : MonoBehaviour
             //
             _unitAnimator.SetBool(_IS_WALKING_ANIMATOR_PARAMETER, false);
             
+            // Set this "Action" as DISABLED
+            //
+            _isActive = false;
+            
         }//End else of if (Vector3.SqrMagnitude...
-    }
+        //
+        // 2- Rotation
+        //
+        RotateUnitUsingVector3SlerpApproach(moveDirection);
+
+    }//End UpdateUnitMove()
 
     
     #region Rotation: LERP vs. SLERP 
