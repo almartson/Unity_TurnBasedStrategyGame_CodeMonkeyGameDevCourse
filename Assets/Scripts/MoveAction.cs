@@ -98,13 +98,9 @@ public class MoveAction : MonoBehaviour
         
         #region Stop all Movement Action & Animation
         
-        // Update the Animator's Parameter:  STOP  (Walking).
+        // Stop Move() MoveAction + STOP ANIMATION:
         //
-        _unitAnimator.SetBool(_IS_WALKING_ANIMATOR_PARAMETER, false);
-            
-        // Set this "Action" as DISABLED
-        //
-        _isActive = false;
+        StopMoveAction();
         
         #endregion Stop all Movement Action & Animation
     }
@@ -142,6 +138,25 @@ public class MoveAction : MonoBehaviour
 
     #region My Custom Methods
 
+    #region Stop all Movement Action & Animation
+    
+    /// <summary>
+    /// Stops Move() and Movement Animations.
+    /// </summary>
+    public void StopMoveAction()
+    {
+        // Update the Animator's Parameter:  STOP  (Walking).
+        //
+        _unitAnimator.SetBool(_IS_WALKING_ANIMATOR_PARAMETER, false);
+            
+        // Set this "Action" as DISABLED
+        //
+        _isActive = false;
+    }
+    
+    #endregion Stop all Movement Action & Animation
+    
+    
     /// <summary>
     /// Moves the Unit / Character to the specified (x, y, z) Position (Grid).
     /// </summary>
@@ -154,7 +169,7 @@ public class MoveAction : MonoBehaviour
         
         // Set this "Action" as DISABLED
         //
-        _isActive = false;
+        _isActive = true;
     }
     
     
@@ -197,14 +212,10 @@ public class MoveAction : MonoBehaviour
         }
         else
         {
-            // Update the Animator's Parameter:  STOP  (Walking).
+            // Stop Move() MoveAction + STOP ANIMATION:
             //
-            _unitAnimator.SetBool(_IS_WALKING_ANIMATOR_PARAMETER, false);
-            
-            // Set this "Action" as DISABLED
-            //
-            _isActive = false;
-            
+            StopMoveAction();
+
         }//End else of if (Vector3.SqrMagnitude...
         //
         // 2- Rotation
