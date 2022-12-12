@@ -20,9 +20,16 @@ public class LevelGrid : MonoBehaviour
     [SerializeField]
     private Transform _gridDebugObjectPrefab;
     
+    
+    /// <summary>
+    /// The Grid Cells.
+    ///
+    /// From a Logical point of view.
+    /// 
+    /// Contains: GridObjects (the Logical Squares/Cells) + GridPositions (the Mathematical Positions & Data: (x, y, z))
+    /// </summary>
     private GridSystem _gridSystem;
     
-
     
     #endregion Attributes
 
@@ -147,6 +154,18 @@ public class LevelGrid : MonoBehaviour
     /// <param name="gridPosition"></param>
     /// <returns></returns>
     public Vector3 GetWorldPosition(GridPosition gridPosition) => _gridSystem.GetWorldPosition(gridPosition);
+
+    /// <summary>
+    /// Getter for the GridSystem's exposed Getter for: _width
+    /// </summary>
+    /// <returns></returns>
+    public int GetWidth() => _gridSystem.GetWidth();
+
+    /// <summary>
+    /// Getter for the GridSystem's exposed Getter for: _height
+    /// </summary>
+    /// <returns></returns>
+    public int GetHeight() => _gridSystem.GetHeight();
     
     
     /// <summary>
@@ -173,6 +192,7 @@ public class LevelGrid : MonoBehaviour
         //
         return gridObject.HasAnyUnit();
     }
+
     
     #endregion My Custom Methods
 

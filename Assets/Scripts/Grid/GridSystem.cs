@@ -154,6 +154,24 @@ public class GridSystem
     {
         return _gridObjectArray[gridPosition.x, gridPosition.z];
     }
+
+    /// <summary>
+    /// Gets the Board's (i.e.: Grid Objects of the GridSystem): Width.
+    /// </summary>
+    /// <returns></returns>
+    public int GetWidth()
+    {
+        return _width;
+    }
+    
+    /// <summary>
+    /// Gets the Board's (i.e.: Grid Objects of the GridSystem): Height.
+    /// </summary>
+    /// <returns></returns>
+    public int GetHeight()
+    {
+        return _height;
+    }
     
     
     #region Validation of Movement towards any GridPositions
