@@ -11,10 +11,10 @@ public class SpinAction : MonoBehaviour
     private bool _isActive = false;
 
     
-    [Tooltip("(Rotation Speed):Degrees per second")]
+    [Tooltip("(Rotation Speed):Degrees per second.\n\na POSITIVE NUMBER (means = Rotate clockwise) or a NEGATIVE NUMBER (which means = Rotate counter-clockwise).")]
     [SerializeField]
     [Range(-360f, 360f)]
-    private float _spinVelocityInDegreesPerSecond = 360.0f;
+    private float _spinVelocityAndDirectionInDegreesPerSecond = 360.0f;
 
     /// <summary>
     /// Number of Degrees to Rotate
@@ -64,7 +64,7 @@ public class SpinAction : MonoBehaviour
         
         // Set the Rotation Velocity:
         //
-        float spinAddAmount = _spinVelocityInDegreesPerSecond * Time.deltaTime;
+        float spinAddAmount = _spinVelocityAndDirectionInDegreesPerSecond * Time.deltaTime;
         //
         // Set the Rotation Vector3 Coordinates:
         //
