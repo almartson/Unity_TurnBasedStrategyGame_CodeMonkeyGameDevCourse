@@ -1670,6 +1670,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -9015054238785770785, guid: e33704893089a7f5dbe6efcbce3306d4,
+        type: 3}
+      propertyPath: _spinDegrees
+      value: 360
+      objectReference: {fileID: 0}
     - target: {fileID: 1537459889029726718, guid: e33704893089a7f5dbe6efcbce3306d4,
         type: 3}
       propertyPath: _maxMoveDistance

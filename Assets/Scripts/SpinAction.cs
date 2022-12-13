@@ -8,19 +8,30 @@ public class SpinAction : MonoBehaviour
 
     [Tooltip("Set to TRUE if you want to start the Spinning Action.")]
     [SerializeField]
-    private bool _startSpinning = false;
+    private bool _isActive = false;
 
     
-    [Tooltip("Number of Degrees to Rotate each time this Action is Activated")]
+    [Tooltip("(Rotation Speed):Degrees per second")]
     [SerializeField]
     [Range(-360f, 360f)]
-    private float _spinDegrees = 360.0f;
+    private float _spinVelocityDegreesPerSecond = 360.0f;
 
+    /// <summary>
+    /// Number of Degrees to Rotate
+    /// </summary>
+    private float _totalSpinAmount = 0f;
+    
     /// <summary>
     /// For performance reasons: cached Vector3 for Added Rotation Amount.
     /// </summary>
     private Vector3 _cachedRotationVector = new Vector3(0, 0, 0);
+
     
+    [Tooltip("(Rotation Goal): Number of Degrees to Rotate")]
+    [SerializeField]
+    [Range(-360f, 360f)]
+    private float _rotationGoal = 360.0f;
+
     #endregion Attributes
 
 
@@ -43,20 +54,37 @@ public class SpinAction : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (_startSpinning)
+        
+        // If its DISABLED  =>  Skip.
+        //
+        if (!_isActive)
         {
-            // Set the Rotation Velocity:
-            //
-            float spinAddAmount = _spinDegrees * Time.deltaTime;
-            //
-            // Set the Rotation Vector3 Coordinates:
-            //
-            _cachedRotationVector.y = spinAddAmount;
-            //
-            // Set the Rotation as euler angles, in the GameObject's Transform:
-            //
-            transform.eulerAngles += _cachedRotationVector;
+            return;
         }
+        
+        // Set the Rotation Velocity:
+        //
+        float spinAddAmount = _spinVelocityDegreesPerSecond * Time.deltaTime;
+        //
+        // Set the Rotation Vector3 Coordinates:
+        //
+        _cachedRotationVector.y = spinAddAmount;
+        //
+        // Set the Rotation as euler angles, in the GameObject's Transform:
+        //
+        transform.eulerAngles += _cachedRotationVector;
+        
+        // Total Degrees to Rotate:  increment each frame until we reach a certain Degree Gaol:
+        //
+        _totalSpinAmount += spinAddAmount;
+        //
+        // If we reach the Rotation (Degrees..)  GOAL:  STOP:
+        //
+        if (_totalSpinAmount >= _rotationGoal)
+        {
+            _isActive = false;
+        }
+
     }
 
     #endregion Unity Methods
@@ -69,11 +97,11 @@ public class SpinAction : MonoBehaviour
     /// </summary>
     public void Spin()
     {
-        _startSpinning = true;
+        _isActive = true;
         
-        // Debug
+        // Reset the Accumulated Rotation
         //
-        Debug.Log("Spin");
+        _totalSpinAmount = 0.0f;
     }
 
 
