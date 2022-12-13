@@ -14,7 +14,7 @@ public class SpinAction : MonoBehaviour
     [Tooltip("(Rotation Speed):Degrees per second")]
     [SerializeField]
     [Range(-360f, 360f)]
-    private float _spinVelocityDegreesPerSecond = 360.0f;
+    private float _spinVelocityInDegreesPerSecond = 360.0f;
 
     /// <summary>
     /// Number of Degrees to Rotate
@@ -29,7 +29,7 @@ public class SpinAction : MonoBehaviour
     
     [Tooltip("(Rotation Goal): Number of Degrees to Rotate")]
     [SerializeField]
-    [Range(-360f, 360f)]
+    [Range(0f, 360f)]
     private float _rotationGoal = 360.0f;
 
     #endregion Attributes
@@ -64,7 +64,7 @@ public class SpinAction : MonoBehaviour
         
         // Set the Rotation Velocity:
         //
-        float spinAddAmount = _spinVelocityDegreesPerSecond * Time.deltaTime;
+        float spinAddAmount = _spinVelocityInDegreesPerSecond * Time.deltaTime;
         //
         // Set the Rotation Vector3 Coordinates:
         //
@@ -76,11 +76,11 @@ public class SpinAction : MonoBehaviour
         
         // Total Degrees to Rotate:  increment each frame until we reach a certain Degree Gaol:
         //
-        _totalSpinAmount += spinAddAmount;
+        _totalSpinAmount += Mathf.Abs(spinAddAmount);
         //
         // If we reach the Rotation (Degrees..)  GOAL:  STOP:
         //
-        if (_totalSpinAmount >= _rotationGoal)
+        if (Mathf.Abs(_totalSpinAmount) >= Mathf.Abs(_rotationGoal))
         {
             _isActive = false;
         }
