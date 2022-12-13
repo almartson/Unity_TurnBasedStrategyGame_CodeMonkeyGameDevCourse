@@ -3,19 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class MoveAction : MonoBehaviour
+public class MoveAction : BaseAction
 {
     #region Attributes
 
-    [Tooltip("Reference to the Unit / Character to apply the MoveAction to...")]
-    private Unit _unit;
-    
-    
-    [Tooltip("Sets this 'Action' as: Enabled  or  Disabled.")]
-    [SerializeField]
-    private bool _isActive = false;
-    
-    
     [Tooltip("Destination (x, y, z) Position of the Movement Action")]
     [SerializeField]
     private Vector3 _targetPosition;
@@ -49,7 +40,7 @@ public class MoveAction : MonoBehaviour
     
     #region Utils
     
-    [Tooltip("The Tolerance number to accept that the value is ZERO")]
+    [Tooltip("The Tolerance number to accept that a value is = ZERO")]
     [SerializeField]
     private float _stoppingDistance = 0.1f;
     
@@ -77,8 +68,13 @@ public class MoveAction : MonoBehaviour
     /// <summary>
     /// Awake is called before the Start calls round
     /// </summary>
-    private void Awake()
+    protected override void Awake()
     {
+        // Execute the "Awake" of the (Abstract and Implemented here)
+        // ..Parent of this class:
+        //
+        base.Awake();
+        
         #region Utils
         
         // Done: Misc Optimization: Calculating the (accepted) Square Min Distance.
@@ -86,10 +82,7 @@ public class MoveAction : MonoBehaviour
         _sqrStoppingDistance = _stoppingDistance * _stoppingDistance;
         
         #endregion Utils
-
-        // Get the Unit / Character this Script is attached to in the Unity Editor.
-        //
-        _unit = GetComponent<Unit>();
+        
         
         // Initialize Target Position to this Script's base GameObject.
         //

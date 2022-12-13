@@ -1,17 +1,12 @@
 using UnityEngine;
 
 
-public class SpinAction : MonoBehaviour
+public class SpinAction : BaseAction
 {
 
     #region Attributes
 
-    [Tooltip("Set to TRUE if you want to start the Spinning Action.")]
-    [SerializeField]
-    private bool _isActive = false;
-
-    
-    [Tooltip("(Rotation Speed):Degrees per second.\n\na POSITIVE NUMBER (means = Rotate clockwise) or a NEGATIVE NUMBER (which means = Rotate counter-clockwise).")]
+    [Tooltip("(Rotation Speed): Degrees per second.\n\nA POSITIVE NUMBER (means = Rotate clockwise) or a NEGATIVE NUMBER (which means = Rotate counter-clockwise).")]
     [SerializeField]
     [Range(-360f, 360f)]
     private float _spinVelocityAndDirectionInDegreesPerSecond = 360.0f;
