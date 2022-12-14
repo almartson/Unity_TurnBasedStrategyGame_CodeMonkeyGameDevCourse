@@ -10,14 +10,37 @@ public class UnitActionSystem : MonoBehaviour
 
     #region Attributes
     
+    #region Singleton Pattern's
+    
     [Tooltip("Singleton Pattern's Main Key: Instance of this very Class")] 
     public static UnitActionSystem Instance { get; private set; }
+
+    #endregion Singleton Pattern's
+    
+    
+    #region Observer Pattern's
     
     /// <summary>
-    /// Event, to be Fired/Published when the User clicks on any Character of his/her Team (called 'Unit'). Using the Observer Pattern.
+    /// Observer Pattern's: Event, to be Fired/Published when the User clicks on any Character of his/her Team (called 'Unit'). Using the Observer Pattern.
     /// </summary>
-    [Tooltip("Event, to be Fired/Published when the User clicks on any Character of his/her Team (called 'Unit'). Using the Observer Pattern.")]
+    [Tooltip("Observer Pattern's: Event, to be Fired/Published when the User clicks on any Character of his/her Team (called 'Unit'). Using the Observer Pattern.")]
     public event EventHandler OnSelectedUnitChanged;
+    
+    #endregion Observer Pattern's
+    
+    
+    #region Mutex LOCK: Managing (allowing only...) just ONE Action at a Time
+    
+    /// <summary>
+    /// Boolean to allow only just ONE Action (i.e.: MoveAction, SpinAction, etc),  at a Time.
+    /// </summary>
+    [Tooltip("Boolean to allow only just ONE Action (i.e.: MoveAction, SpinAction, etc),  at a Time.")]
+    [SerializeField]
+    private bool _isBusy;
+
+    
+    #endregion Mutex LOCK: Managing (allowing only...) just ONE Action at a Time Time
+    
     
     [Tooltip("Selected Character of the User's Team (called 'Unit').")]
     [SerializeField]
@@ -39,7 +62,6 @@ public class UnitActionSystem : MonoBehaviour
     /// </summary>
     public int UnitLayerMask => _unitLayerMask;
 
-    
     #endregion Attributes
     
     
@@ -52,6 +74,9 @@ public class UnitActionSystem : MonoBehaviour
         // RayCast info (for the Collisions):
         //
         _raycastHitInfo = new RaycastHit[3];
+        
+        
+        #region Singleton Pattern's
         
         // Singleton Pattern, protocol:
         //
@@ -72,10 +97,19 @@ public class UnitActionSystem : MonoBehaviour
         //
         Instance = this;
         
+        #endregion Singleton Pattern's
+        
     }//End Awake
     
     private void Update()
     {
+        
+        // Managing (allowing only...) just ONE Action at a Time:
+        //
+        if (_isBusy)
+        {
+            return;
+        }
         
         // Get the Mouse Pointer Click & (x, y, z) Screen Position.
         //
@@ -107,6 +141,9 @@ public class UnitActionSystem : MonoBehaviour
                 //
                 if (_selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
                 {
+                    // Set this Class (SERVICE) Methods as: BUSY .. until it ends:
+                    //
+                    SetBusy();
                     
                     // Move() where the Mouse Pointer CLICK has been Pressed!
                     //
@@ -123,12 +160,15 @@ public class UnitActionSystem : MonoBehaviour
         //
         if (Input.GetMouseButtonDown(1))
         {
+            // Set this Class (SERVICE) Methods as: BUSY .. until it ends:
+            //
+            SetBusy();
+            
             // Enable: Spin
             //
-            _selectedUnit.GetSpinAction().Spin();
+            _selectedUnit.GetSpinAction().Spin(ClearBusy);
             
         }//End if (Input.GetMouseButtonDown(1))
-        
         
     }//End Update
 
@@ -225,6 +265,27 @@ public class UnitActionSystem : MonoBehaviour
     
     
     #endregion Observer Pattern Methods
+    
+    
+    #region Managing (allowing only...) just ONE Action at a Time
+
+    /// <summary>
+    /// Sets this whole System Architecture (UnitActionSystem) as BUSY NOW.
+    /// </summary>
+    private void SetBusy()
+    {
+        _isBusy = true;
+    }
+
+    /// <summary>
+    /// Sets this whole System Architecture (UnitActionSystem) as FREE (i.e.: not busy) NOW.
+    /// </summary>
+    private void ClearBusy()
+    {
+        _isBusy = false;
+    }
+    
+    #endregion Managing (allowing only...) just ONE Action at a Time
     
     #endregion My Custom Methods
 
