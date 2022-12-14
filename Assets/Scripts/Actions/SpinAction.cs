@@ -1,11 +1,27 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class SpinAction : BaseAction
 {
-
     #region Attributes
+    
+    #region Delegates: Purpose: Managing (allowing only...) just ONE Action at a Time
+    
+    /// <summary>
+    /// Delegate: Spin Complete ACTION: Purpose: Telling everyone when the Spin (Action) Routine ends.
+    /// </summary>
+    public delegate void SpinCompleteDelegate();
 
+    /// <summary>
+    /// Variable to tell when the: [ Spin ] (Action) Routine ends. 
+    /// </summary>
+    private SpinCompleteDelegate _onSpinComplete;
+
+
+    #endregion Delegates: Purpose: Managing (allowing only...) just ONE Action at a Time
+    
+    
     [Tooltip("(Rotation Speed): Degrees per second.\n\nA POSITIVE NUMBER (means = Rotate clockwise) or a NEGATIVE NUMBER (which means = Rotate counter-clockwise).")]
     [SerializeField]
     [Range(-360f, 360f)]
@@ -49,7 +65,7 @@ public class SpinAction : BaseAction
     /// </summary>
     private void Update()
     {
-        
+        // (MUTEX CHECK)
         // If its DISABLED  =>  Skip.
         //
         if (!_isActive)
@@ -77,7 +93,13 @@ public class SpinAction : BaseAction
         //
         if (Mathf.Abs(_totalSpinAmount) >= Mathf.Abs(_rotationGoal))
         {
+            // Release the (mutex) flag
+            //
             _isActive = false;
+            
+            // We CALL our DELEGATE:  tells everyone that the Spin routine ENDED:
+            //
+            _onSpinComplete();
         }
 
     }
@@ -90,8 +112,14 @@ public class SpinAction : BaseAction
     /// <summary>
     /// Makes the GameObject Spin / Rotate.
     /// </summary>
-    public void Spin()
+    public void Spin(SpinCompleteDelegate onSpinComplete)
     {
+        // Sets the DELEGATE variable to tell the World that this ROUTINE JUST ENDED:
+        //
+        _onSpinComplete = onSpinComplete;
+        
+        // Sets a mutext flag:
+        //
         _isActive = true;
         
         // Reset the Accumulated Rotation
