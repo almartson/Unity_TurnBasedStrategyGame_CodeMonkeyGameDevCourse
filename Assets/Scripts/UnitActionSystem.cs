@@ -147,7 +147,7 @@ public class UnitActionSystem : MonoBehaviour
                     
                     // Move() where the Mouse Pointer CLICK has been Pressed!
                     //
-                    _selectedUnit.GetMoveAction().Move( mouseGridPosition );
+                    _selectedUnit.GetMoveAction().Move( mouseGridPosition, ClearBusy );
                     
                 }//End if
 
@@ -270,7 +270,7 @@ public class UnitActionSystem : MonoBehaviour
     #region Managing (allowing only...) just ONE Action at a Time
 
     /// <summary>
-    /// Sets this whole System Architecture (UnitActionSystem) as BUSY NOW.
+    /// Sets this whole System Architecture (UnitActionSystem) as BUSY NOW:   releasing a Mutex LOCK.
     /// </summary>
     private void SetBusy()
     {
@@ -278,7 +278,7 @@ public class UnitActionSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets this whole System Architecture (UnitActionSystem) as FREE (i.e.: not busy) NOW.
+    /// Sets this whole System Architecture (UnitActionSystem) as FREE (i.e.: not busy) NOW:  setting a Mutex LOCK.
     /// </summary>
     private void ClearBusy()
     {

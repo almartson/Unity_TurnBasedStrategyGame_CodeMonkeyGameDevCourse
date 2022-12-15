@@ -4,7 +4,6 @@ using UnityEngine;
 
 public abstract class BaseAction : MonoBehaviour
 {
-
     #region Attributes
 
     [Tooltip("Sets this 'Action' as: Enabled  or  Disabled.")]
@@ -14,7 +13,19 @@ public abstract class BaseAction : MonoBehaviour
     [Tooltip("Reference to the Unit / Character to apply the 'Action' to...")]
     protected Unit _unit;
 
+    
+    #region Delegates: Purpose: Managing (allowing only...) just ONE Action at a Time
+   
+    // Delegate: For 'ACTION Completed': Purpose: Telling everyone when the Spin (Action) Routine ends.
 
+    /// <summary>
+    /// Delegate: to tell when the: [ Spin ] (Action) Routine ends.
+    /// Note:  The Type: ACTION   is a System-defined type, of Standard DELEGATE.
+    /// </summary>
+    protected Action onActionComplete;
+
+    #endregion Delegates: Purpose: Managing (allowing only...) just ONE Action at a Time
+    
     #endregion Attributes
 
 
@@ -28,7 +39,6 @@ public abstract class BaseAction : MonoBehaviour
         // Get the Unit / Character this Script is attached to in the Unity Editor.
         //
         _unit = GetComponent<Unit>();
-        
         
     }//End Awake()
 

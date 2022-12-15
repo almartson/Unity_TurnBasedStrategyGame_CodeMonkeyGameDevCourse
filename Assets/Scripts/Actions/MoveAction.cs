@@ -111,6 +111,7 @@ public class MoveAction : BaseAction
     private void Update()
     {
         // Check whether this "Action" is Active or Inactive:
+        // Mutex flag check:...
         //
         if (!_isActive)
         {
@@ -136,15 +137,20 @@ public class MoveAction : BaseAction
     /// <summary>
     /// Stops Move() and Movement Animations.
     /// </summary>
-    public void StopMoveAction()
+    private void StopMoveAction()
     {
         // Update the Animator's Parameter:  STOP  (Walking).
         //
         _unitAnimator.SetBool(_IS_WALKING_ANIMATOR_PARAMETER, false);
             
         // Set this "Action" as DISABLED
+        // Release the (mutex) Lock - flag:
         //
         _isActive = false;
+        
+        // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'Move() Action' routine ENDED:
+        //
+        this.onActionComplete();
     }
     
     #endregion Stop all Movement Action & Animation
@@ -154,13 +160,19 @@ public class MoveAction : BaseAction
     /// Moves the Unit / Character to the specified (x, y, z) Position (Grid).
     /// </summary>
     /// <param name="gridPosition"></param>
-    public void Move(GridPosition gridPosition)
+    /// <param name="onMoveActionComplete"></param>
+    public void Move(GridPosition gridPosition, Action onMoveActionComplete)
     {
+        // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'Move() Action' routine ENDED:
+        //
+        this.onActionComplete = onMoveActionComplete;
+        
         // Get the WorldPosition, based on a "GridPosition" as Input.
         //
         _targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
-        
-        // Set this "Action" as DISABLED
+
+        // Set this "Action" as ENABLED
+        // Set the (mutex) flag:
         //
         _isActive = true;
     }
@@ -170,12 +182,18 @@ public class MoveAction : BaseAction
     /// Moves the Unit / Character to the specified (x, y, z) Position (Grid).
     /// </summary>
     /// <param name="newTargetPosition"></param>
+    /// <param name="onMoveActionComplete"></param>
     [Obsolete("This method is deprecated. Use: 'public void Move(GridPosition gridPosition)' instead", true)]
-    public void Move(Vector3 newTargetPosition)
+    public void Move(Vector3 newTargetPosition, Action onMoveActionComplete)
     {
+        // We CALL our DELEGATE:  tells everyone that the 'Move() Action' routine ENDED:
+        //
+        this.onActionComplete = onMoveActionComplete;
+        
         _targetPosition = newTargetPosition;
         
         // Set this "Action" as ENABLED
+        // Set the (mutex) flag:
         //
         _isActive = true;
     }

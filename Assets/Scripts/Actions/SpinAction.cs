@@ -1,27 +1,11 @@
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 
 
 public class SpinAction : BaseAction
 {
     #region Attributes
-    
-    #region Delegates: Purpose: Managing (allowing only...) just ONE Action at a Time
-    
-    /// <summary>
-    /// Delegate: Spin Complete ACTION: Purpose: Telling everyone when the Spin (Action) Routine ends.
-    /// </summary>
-    public delegate void SpinCompleteDelegate();
 
-    /// <summary>
-    /// Variable to tell when the: [ Spin ] (Action) Routine ends. 
-    /// </summary>
-    private SpinCompleteDelegate _onSpinComplete;
-
-
-    #endregion Delegates: Purpose: Managing (allowing only...) just ONE Action at a Time
-    
-    
     [Tooltip("(Rotation Speed): Degrees per second.\n\nA POSITIVE NUMBER (means = Rotate clockwise) or a NEGATIVE NUMBER (which means = Rotate counter-clockwise).")]
     [SerializeField]
     [Range(-360f, 360f)]
@@ -99,7 +83,7 @@ public class SpinAction : BaseAction
             
             // We CALL our DELEGATE:  tells everyone that the Spin routine ENDED:
             //
-            _onSpinComplete();
+            onActionComplete();
         }
 
     }
@@ -112,11 +96,11 @@ public class SpinAction : BaseAction
     /// <summary>
     /// Makes the GameObject Spin / Rotate.
     /// </summary>
-    public void Spin(SpinCompleteDelegate onSpinComplete)
+    public void Spin(Action onSpinComplete)
     {
         // Sets the DELEGATE variable to tell the World that this ROUTINE JUST ENDED:
         //
-        _onSpinComplete = onSpinComplete;
+        this.onActionComplete = onSpinComplete;
         
         // Sets a mutext flag:
         //
