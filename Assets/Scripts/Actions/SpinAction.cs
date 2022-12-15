@@ -84,6 +84,14 @@ public class SpinAction : BaseAction
             // We CALL our DELEGATE:  tells everyone that the Spin routine ENDED:
             //
             onActionComplete();
+            //
+            // Example: other ways of calling or executing the Delegate:
+            // onActionComplete?.Invoke();
+            //
+            // if (onActionComplete != null)
+            // {
+            //     onActionComplete();
+            // }
         }
 
     }
@@ -98,7 +106,11 @@ public class SpinAction : BaseAction
     /// </summary>
     public void Spin(Action onSpinComplete)
     {
-        // Sets the DELEGATE variable to tell the World that this ROUTINE JUST ENDED:
+        // 1- Here we assign the Function/Procedure (i.e.: Method) to the 'DELEGATE variable'
+        // 2- In another line (latter, in another Script.cs),
+        // we'll do a calling / invoke, something like:   'onActionComplete()'
+        // ..., to call the latest Method that was added in this Method Spin().
+        // Purpose of this callback (Delegate):  to tell the World that this ROUTINE JUST ENDED:
         //
         this.onActionComplete = onSpinComplete;
         
