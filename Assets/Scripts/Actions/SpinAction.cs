@@ -102,7 +102,7 @@ public class SpinAction : BaseAction
         //
         this.onActionComplete = onSpinComplete;
         
-        // Sets a mutext flag:
+        // Sets a mutex flag:
         //
         _isActive = true;
         

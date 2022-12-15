@@ -88,14 +88,6 @@ public class MoveAction : BaseAction
         //
         _targetPosition = this.transform.position;
         
-        
-        #region Stop all Movement Action & Animation
-        
-        // Stop Move() MoveAction + STOP ANIMATION:
-        //
-        StopMoveAction();
-        
-        #endregion Stop all Movement Action & Animation
     }
 
 
