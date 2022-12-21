@@ -10,6 +10,15 @@ public class Unit : MonoBehaviour
     /// Keeping track of the CURRENT GridPosition of this Unit.
     /// </summary>
     private GridPosition _gridPosition;
+
+    
+    #region Action's List
+    
+    /// <summary>
+    /// LIST of ALL ACTIONS that can be performed (by this type of Unit / Character of the game). 
+    /// </summary>
+    private BaseAction[] _baseActionArray;
+    
     
     /// <summary>
     /// Reference to the MoveAction script to make the Units / Characters able to execute the Action: 'Move' (Walk, etc...). 
@@ -21,6 +30,8 @@ public class Unit : MonoBehaviour
     /// </summary>
     private SpinAction _spinAction;
 
+    #endregion Action's List
+    
     
     /// <summary>
     /// Mouse Position
@@ -32,18 +43,23 @@ public class Unit : MonoBehaviour
     /// </summary>
     public Vector3 MousePosition { get => _mousePosition; set => _mousePosition = value; }
     
-
     #endregion Attributes
     
     
     #region Unity Methods
-
     
     private void Awake()
     {
+        // Get the Actions & the List of ALL Actions:        
+        //
         _moveAction = GetComponent<MoveAction>();
         _spinAction = GetComponent<SpinAction>();
-
+        //
+        // Get the List of Actions:
+        // NOTE: GetComponentSSSS<TYPE>: gets ALL Components of TYPE=<BaseAction>
+        // ..(or that are children / Extend from <BaseAction>)... in this GameObject.
+        //
+        _baseActionArray = GetComponents<BaseAction>();
     }
 
     
@@ -92,6 +108,15 @@ public class Unit : MonoBehaviour
     #region My Custom Methods
     
     #region Actions
+   
+    /// <summary>
+    /// Getter for <code>BaseAction[]</code>
+    /// </summary>
+    /// <returns></returns>
+    public BaseAction[] GetBaseActionArray()
+    {
+        return _baseActionArray;
+    }
     
     /// <summary>
     /// Getter for <code>MoveAction</code>
@@ -102,9 +127,8 @@ public class Unit : MonoBehaviour
         return _moveAction;
     }
     
-    
     /// <summary>
-    /// Getter for <code>MoveAction</code>
+    /// Getter for <code>SpinAction</code>
     /// </summary>
     /// <returns></returns>
     public SpinAction GetSpinAction()
