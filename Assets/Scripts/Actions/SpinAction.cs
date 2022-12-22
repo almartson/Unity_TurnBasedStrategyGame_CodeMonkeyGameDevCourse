@@ -123,6 +123,34 @@ public class SpinAction : BaseAction
         _totalSpinAmount = 0.0f;
     }
 
+    
+        
+    #region UI related utils
+
+    // /// <summary>
+    // /// (Base Concrete implementation of:) Gets this ACTION'S Name.
+    // /// </summary>
+    // /// <returns></returns>
+    // public string GetActionNameByStrippingClassName()
+    // {
+    //     // AlMartsons' version:  Get the Class Name, but maybe it needs to be stripped from the rest of the word (e.g.: SpinAction... to just: Spin - remove 'Spin' -, etc.).
+    //     //
+    //     return GetType().Name;
+    // }
+    
+    /// <summary>
+    /// (Concrete implementation of:) Gets this ACTION'S Name.
+    /// </summary>
+    /// <returns></returns>
+    public override string GetActionName()
+    {
+        // CodeMonkey' version:  Write a custom class Name (string) here:
+        //
+        return "Spin";
+    }
+    
+    #endregion UI related utils
+
 
     #endregion My Custom Methods
 
