@@ -95,12 +95,21 @@ public class UnitActionSystemUI : MonoBehaviour
         //
         for (int i = 0; i < baseActionArrayLenght; i++)
         {
-            // Instantiate in the UI GameObject (Layout Group) Container ('_actionButtonContainerTransform') a '_actionButtonUIPrefab' per each item (BaseAction Child/Extend) in the Array[] (BaseAction[]):  selectedUnit.GetBaseActionArray():
+            // Instantiate in the UI GameObject (Layout Group) Container ('_actionButtonContainerTransform') a '_actionButtonUIPrefab' per each item (SetBaseAction Child/Extend) in the Array[] (SetBaseAction[]):  selectedUnit.GetBaseActionArray():
             //
-            Instantiate(_actionButtonUIPrefab, _actionButtonContainerTransform);
+            Transform actionButtonUITransform = Instantiate(_actionButtonUIPrefab, _actionButtonContainerTransform);
             //
             // selectedUnit.GetBaseActionArray()[i]
-        
+            
+            // 3- We are setting the Name of the Button: it will be tne Name of the ACTION (i.e.: the Name of the ACTION Class it refers to):
+            // 3.1- Getting a reference to the 'ActionButtonUI.cs' script (component in GameObject):
+            //
+            ActionButtonUI actionButtonUI = actionButtonUITransform.GetComponent<ActionButtonUI>();
+            //
+            // 3.2- Setting the Base Action Attribute of this class  (using 'selectedUnit.GetBaseActionArray()[i]', as it represents every Type of ACTION this UNIT has:
+            //
+            actionButtonUI.SetBaseAction( selectedUnit.GetBaseActionArray()[i] );
+
         }//End for
 
     }//End CreateUnitActionUIButtons()

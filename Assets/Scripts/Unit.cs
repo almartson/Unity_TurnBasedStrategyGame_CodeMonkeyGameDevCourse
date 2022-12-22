@@ -56,8 +56,8 @@ public class Unit : MonoBehaviour
         _spinAction = GetComponent<SpinAction>();
         //
         // Get the List of Actions:
-        // NOTE: GetComponentSSSS<TYPE>: gets ALL Components of TYPE=<BaseAction>
-        // ..(or that are children / Extend from <BaseAction>)... in this GameObject.
+        // NOTE: GetComponentSSSS<TYPE>: gets ALL Components of TYPE=<SetBaseAction>
+        // ..(or that are children / Extend from <SetBaseAction>)... in this GameObject.
         //
         _baseActionArray = GetComponents<BaseAction>();
     }
@@ -110,7 +110,7 @@ public class Unit : MonoBehaviour
     #region Actions
    
     /// <summary>
-    /// Getter for <code>BaseAction[]</code>
+    /// Getter for <code>SetBaseAction[]</code>
     /// </summary>
     /// <returns></returns>
     public BaseAction[] GetBaseActionArray()
