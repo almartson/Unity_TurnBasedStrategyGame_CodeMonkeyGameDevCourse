@@ -45,20 +45,55 @@ public class ActionButtonUI : MonoBehaviour
     #region My Custom Methods
 
     /// <summary>
-    /// Sets the Base Action in the UI Button element..
+    /// Sets the Base Action in the UI Button element:
+    /// 1- It gets the name of the Action, from the Class Name & stripping the rest of the unnecessary characters.
+    /// 2- It makes the GUI Button interactable: add the onClick functionality, to make it work, accordingly to the ACTION.
     /// </summary>
     /// <param name="baseAction"></param>
     public void SetBaseAction(BaseAction baseAction)
     {
-        // // CodeMonkey: Get the ACTION NAME, & write it on the TextMesProUGUI element:
+        #region Get Action Name
+        
+        // // CodeMonkey: Get the ACTION NAME, & write it on the TextMeshProUGUI element:
         // //
         // _textMeshProUGUI.text = baseAction.GetActionName().ToUpper();
         
-        // AlMartson: Get the ACTION NAME (from the Class Type.Name), & write it on the TextMesProUGUI element:
+        // AlMartson: Get the ACTION NAME (from the Class Type.Name), & write it on the TextMeshProUGUI element:
         //
         _textMeshProUGUI.text = baseAction.GetActionNameByStrippingClassName().ToUpper();
+        
+        #endregion Get Action Name
+        
+        #region Make the GUI Button Interactable to perform its ACTION
+        
+        // 2- To make the GUI Button interactable: add the onClick functionality, to make it work, accordingly to the ACTION. 
+        //
+        _button.onClick.AddListener(() => 
+        {
+            /* Note: This is a call to a delegate of type 'UnityAction'. Delegates
+             * are  * also 'Anonymous Functions'. This example here is called:
+             * Anonymous Function   OR   Lambda Notation: () => {...}
+            */
+            
+            UnitActionSystem.Instance.SetSelectedAction(baseAction);
+        });
+        //
+        //
+        // Example B:  Calling explicitly a NON-ANONIMOUS FUNCTION, but a Delegate Function with a proper name:
+        //
+        // _button.onClick.AddListener(MoveActionBtn_Click);
+        
+        #endregion Make the GUI Button Interactable to perform its ACTION
+        
     }
 
+
+    // /// <summary>
+    // /// THIS IS AN EXAMPLE: This is a Function created to be used as a Delegate Function, for the EXAMPLE.
+    // /// </summary>
+    // private void MoveActionBtn_Click()
+    // {
+    // }
 
 
     #endregion My Custom Methods

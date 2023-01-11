@@ -47,6 +47,10 @@ public class UnitActionSystem : MonoBehaviour
     private Unit _selectedUnit;
     
     
+    [Tooltip("Selected Action (by Clicking on the GUI) for the Character of the User's Team (called 'Unit').")]
+    private BaseAction _selectedAction;
+    
+    
     /// <summary>
     /// Raycast Hit (past) Summary / info.
     /// </summary>
@@ -100,10 +104,17 @@ public class UnitActionSystem : MonoBehaviour
         #endregion Singleton Pattern's
         
     }//End Awake
-    
+
+
+    private void Start()
+    {
+        SetSelectedUnit( _selectedUnit );
+        
+    }//End Start()
+
+
     private void Update()
     {
-        
         // Managing (allowing only...) just ONE Action at a Time:
         //
         if (_isBusy)
@@ -117,61 +128,17 @@ public class UnitActionSystem : MonoBehaviour
         {
             // Try to select an Unit (a Character / Soldier, etc):
             //
-            if (TryHandleUnitSelection()) return;
-
-            
-            // Try to Move the selected Unit... (by Raycasting on the Ground Plane (Mask Layer...))
-            //
-            if (MouseWorld.TryGetPosition(out Vector3 mousePosition))
+            if (TryHandleUnitSelection())
             {
-                
-                // Get the CENTER of the selected "GridPosition", instead of a corner or any random position inside of it
-                // ...because sometimes the Player/user clicks in random places of a Cell/Square/Grid,
-                // ...not necessarily in the CENTER of it:
-                //
-                GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(mousePosition);
-                
-                // Save the original Mouse Position (just in case... as a backup)
-                //
-                _selectedUnit.MousePosition.Set(mouseGridPosition.x, 0, mouseGridPosition.z);
+                return;
+            }
             
-                
-                // Validate:
-                // Whether the selected GridPosition (x, 0, z) is empty & 100% correct for the MoveAction:
-                //
-                if (_selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
-                {
-                    // Set this Class (SERVICE) Methods as: BUSY .. until it ends:
-                    //
-                    SetBusy();
-                    
-                    // Move() where the Mouse Pointer CLICK has been Pressed!
-                    //
-                    _selectedUnit.GetMoveAction().Move( mouseGridPosition, ClearBusy );
-                    
-                }//End if
-
-            }//End if (MouseWorld.TryGetPosition
+            
+            // Try to: Receive (process...) the 'Action'  (from a mouse click on the GUI)
+            //
+            HandleSelectedAction();
 
         }//End if (Input.GetMouseButtonDown(0))
-
-        // Spin Action
-        // Temporary Debug TEST   (by the Code Monkey & Alec AlMartson)
-        //
-        if (Input.GetMouseButtonDown(1))
-        {
-            // Set this Class (SERVICE) Methods as: BUSY (so no other ACTION would execute at the same time)..
-            // ..until THIS PARTICULAR ACTION (i.e.: Spin() ): ends:
-            //
-            SetBusy();
-            
-            // Enable: Spin
-            // Invoke / Call the FUnction Delegate: to execute:   ClearBusy()
-            // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: )
-            //
-            _selectedUnit.GetSpinAction().Spin(ClearBusy);
-            
-        }//End if (Input.GetMouseButtonDown(1))
         
     }//End Update
 
@@ -179,7 +146,81 @@ public class UnitActionSystem : MonoBehaviour
     
     #region My Custom Methods
 
+    /// <summary>
+    /// Selects & Sets an ACTION selected by clicking on the (related Action's...) GUI Button.
+    /// </summary>
+    private void HandleSelectedAction()
+    {
+        // THERE ARE 2 (Architecture) OPTIONS to make an ACTION Selection:
+        //
+        // 1- Option 1: Each ACTION is a separate FUNCTION + switch - case (C# 7) calling the Particular one we want.
+        // 2- Option 2: Only ONE General Function Handles everything, using Abstract & Virtual Classes and Function to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...). This one should take a big number of Input Parameters, that cover ALL scenarios for all the Actions of the Game (although we could create a class for the Input... and make particular children for each Action, so we could cast the particular Type in line one of this Method... but we are not going to cover that in this Game because it would be for bigger AAA Games...)
+        // So...
+        //
+        #region 1- Option 1: Each ACTION is a separate FUNCTION + switch - case (C# 7) calling the Particular one we want.
+        
+        // 1- Option 1: Each ACTION is a separate FUNCTION + switch - case (C# 7) calling the Particular one we want.
+        //...since C# 7.0:  we can use switch - case with Types as Scripts and declare them inline in the 'case : '
+        //
+        // Try to Move the selected Unit... (by Raycasting on the Ground Plane (Mask Layer...))
+        //
+        if (MouseWorld.TryGetPosition(out Vector3 mousePosition))
+        {
+            // Get the CENTER of the selected "GridPosition", instead of a corner or any random position inside of it
+            // ...because sometimes the Player/user clicks in random places of a Cell/Square/Grid,
+            // ...not necessarily in the CENTER of it:
+            //
+            GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(mousePosition);
+            
+            // Save the original Mouse Position (just in case... as a backup)
+            //
+            _selectedUnit.MousePosition.Set(mouseGridPosition.x, 0, mouseGridPosition.z);
 
+            // Switch - case for > C# 7 : Using inline declarations of Script or Class Types, to compare in the cases...
+            //
+            switch (_selectedAction)
+            {
+                case MoveAction moveAction:
+                    
+                    // Validate:
+                    // Whether the selected GridPosition (x, 0, z) is empty & 100% correct for the MoveAction:
+                    //
+                    if (moveAction.IsValidActionGridPosition(mouseGridPosition))
+                    {
+                        // Set this Class (SERVICE) Methods as: BUSY .. until it ends:
+                        //
+                        SetBusy();
+                    
+                        // Move() where the Mouse Pointer CLICK has been Pressed!
+                        //
+                        moveAction.Move( mouseGridPosition, ClearBusy );
+                    
+                    }//End if
+                    break;
+                
+                case SpinAction spinAction:
+                    
+                    // Set this Class (SERVICE) Methods as: BUSY (so no other ACTION would execute at the same time)..
+                    // ..until THIS PARTICULAR ACTION (i.e.: Spin() ): ends:
+                    //
+                    SetBusy();
+        
+                    // Enable: Spin
+                    // Invoke / Call the FUnction Delegate: to execute:   ClearBusy()
+                    // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: )
+                    //
+                    spinAction.Spin(ClearBusy);
+                    break;
+            
+            }//End switch - case
+            
+        }//End if (MouseWorld.TryGetPosition
+        
+        #endregion 1- Option 1: Each ACTION is a separate FUNCTION + switch - case (C# 7) calling the Particular one we want.
+
+    }
+    
+    
     /// <summary>
     /// Allows you to select an UNIT (Character), for giving him/her orders later.
     /// How? By shooting a Raycast from the camera across the Mouse Pointer to the Game World, and returning the hit data.
@@ -237,10 +278,20 @@ public class UnitActionSystem : MonoBehaviour
     
     #region Observer Pattern Methods
 
+    /// <summary>
+    /// Sets the Unit (Character) that was selected via GUI (by a mouse Click)
+    /// ...and also sets the Default Action to be:  MOVE ACTION.
+    /// </summary>
+    /// <param name="unit"></param>
     private void SetSelectedUnit(Unit unit)
     {
-        
+        // Select the given Unit
+        //
         _selectedUnit = unit;
+        
+        // Select a Default Action for the Character / Unit:  MOVE ACTION
+        //
+        SetSelectedAction( unit.GetMoveAction() );
         
         // Fire the EVENT (Observer Pattern) from the PUBLISHER (i.e.: represented by this Class).
         // 1- Do a NULL check on the EventHandler:
@@ -260,6 +311,16 @@ public class UnitActionSystem : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// Sets the Unit's (i.e.: Player's Character...) selected Action to the action given as Input  (baseAction).
+    /// </summary>
+    /// <param name="baseAction"></param>
+    public void SetSelectedAction(BaseAction baseAction)
+    {
+        _selectedAction = baseAction;
+    }
+    
 
     public Unit GetSelectedUnit()
     {
