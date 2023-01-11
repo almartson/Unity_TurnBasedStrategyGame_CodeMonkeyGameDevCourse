@@ -21,12 +21,12 @@ public class Unit : MonoBehaviour
     
     
     /// <summary>
-    /// Reference to the MoveAction script to make the Units / Characters able to execute the Action: 'Move' (Walk, etc...). 
+    /// Reference to the MoveAction script to make the Units / Characters able to execute the Action: 'TakeAction' (Walk, etc...). 
     /// </summary>
     private MoveAction _moveAction;
     
     /// <summary>
-    /// Reference to the SpinAction script to make the Units / Characters able to execute the Action: 'Spin' (Rotate). 
+    /// Reference to the SpinAction script to make the Units / Characters able to execute the Action: 'TakeAction' (Rotate). 
     /// </summary>
     private SpinAction _spinAction;
 

@@ -127,7 +127,7 @@ public class MoveAction : BaseAction
     #region Stop all Movement Action & Animation
     
     /// <summary>
-    /// Stops Move() and Movement Animations.
+    /// Stops TakeAction() and Movement Animations.
     /// </summary>
     private void StopMoveAction()
     {
@@ -140,7 +140,7 @@ public class MoveAction : BaseAction
         //
         _isActive = false;
         
-        // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'Move() Action' routine ENDED:
+        // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED:
         //
         this.onActionComplete();
     }
@@ -153,9 +153,9 @@ public class MoveAction : BaseAction
     /// </summary>
     /// <param name="gridPosition"></param>
     /// <param name="onMoveActionComplete"></param>
-    public void Move(GridPosition gridPosition, Action onMoveActionComplete)
+    public override void TakeAction(GridPosition gridPosition, Action onMoveActionComplete)
     {
-        // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'Move() Action' routine ENDED:
+        // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED (...at least the ACTIVATION-part of it ended):
         //
         this.onActionComplete = onMoveActionComplete;
         
@@ -175,10 +175,10 @@ public class MoveAction : BaseAction
     /// </summary>
     /// <param name="newTargetPosition"></param>
     /// <param name="onMoveActionComplete"></param>
-    [Obsolete("This method is deprecated. Use: 'public void Move(GridPosition gridPosition)' instead", true)]
+    [Obsolete("This method is deprecated. Use: 'public void TakeAction(GridPosition gridPosition)' instead", true)]
     public void Move(Vector3 newTargetPosition, Action onMoveActionComplete)
     {
-        // We CALL our DELEGATE:  tells everyone that the 'Move() Action' routine ENDED:
+        // We CALL our DELEGATE:  tells everyone that the 'TakeAction() Action' routine ENDED:
         //
         this.onActionComplete = onMoveActionComplete;
         
@@ -191,7 +191,7 @@ public class MoveAction : BaseAction
     }
     
     /// <summary>
-    /// Makes the Unit / Character to Move.
+    /// Makes the Unit / Character to TakeAction.
     /// </summary>
     private void UpdateUnitMove()
     {
@@ -200,11 +200,11 @@ public class MoveAction : BaseAction
         Vector3 moveDirection = (_targetPosition - transform.position).normalized;
         
         // Calculate the Distance... to see how close or far
-        // ...is the Mouse Pointer -> from -> The Unit we want to Move().
+        // ...is the Mouse Pointer -> from -> The Unit we want to TakeAction().
         //
         if (Vector3.SqrMagnitude(transform.position - _targetPosition) > _sqrStoppingDistance)
         {
-            // Move
+            // TakeAction
             // 1- Translation:
             //
             transform.position += moveDirection * (_moveSpeed * Time.deltaTime);
@@ -215,7 +215,7 @@ public class MoveAction : BaseAction
         }
         else
         {
-            // Stop Move() MoveAction + STOP ANIMATION:
+            // Stop TakeAction() MoveAction + STOP ANIMATION:
             //
             StopMoveAction();
 
@@ -263,28 +263,20 @@ public class MoveAction : BaseAction
     
     #region Movement Validations
 
-    /// <summary>
-    /// Tells you whether the user/Player's selection (Grid Position) is Valid to Move to. It uses several criteria, such as: the Position must be unoccupied, must be inside the Grid System, etc. 
-    /// </summary>
-    /// <returns>True or False to: is the selected "GridPosition" Valid??</returns>
-    public bool IsValidActionGridPosition(GridPosition gridPosition)
-    {
-        // Get a List of ALL Valid (Grid) Positions:
-        //
-        List<GridPosition> validGridPositionList = GetValidActionGridPositionList();
-        //
-        // Return: Does this VALID LIST contain also the requested GridPosition (this Method's INPUT)? gridPosition 
-        //
-        return validGridPositionList.Contains(gridPosition);
-    }
-    
+    // NOTE: Its real implementation: is on the Base Class: 'BaseAction'
+    // /// <summary>
+    // /// Tells you whether the user/Player's selection (Grid Position) is Valid to TakeAction to. It uses several criteria, such as: the Position must be unoccupied, must be inside the Grid System, etc. 
+    // /// </summary>
+    // /// <returns>True or False to: is the selected "GridPosition" Valid??</returns>
+    // public bool IsValidActionGridPosition(GridPosition gridPosition)
+
     
     /// <summary>
-    /// Get a List of the Valid places where the Unit/Character can Move to (i.e.: GridPosition(s)).
+    /// Get a List of the Valid places where the Unit/Character can TakeAction to (i.e.: GridPosition(s)).
     /// This method cycles through the squares/Grids...(using FOR )... to get a list of the valid ones.
     /// </summary>
-    /// <returns>Valid (GridPosition(s)) places where the Unit/Character can Move to, in this Turn.</returns>
-    public List<GridPosition> GetValidActionGridPositionList()
+    /// <returns>Valid (GridPosition(s)) places where the Unit/Character can TakeAction to, in this Turn.</returns>
+    public override List<GridPosition> GetValidActionGridPositionList()
     {
         List<GridPosition> validGridPositionList = new List<GridPosition>();
         
@@ -359,7 +351,7 @@ public class MoveAction : BaseAction
     // /// <returns></returns>
     // public string GetActionNameByStrippingClassName()
     // {
-    //     // AlMartsons' version:  Get the Class Name, but maybe it needs to be stripped from the rest of the word (e.g.: SpinAction... to just: Spin - remove 'Spin' -, etc.).
+    //     // AlMartsons' version:  Get the Class Name, but maybe it needs to be stripped from the rest of the word (e.g.: SpinAction... to just: TakeAction - remove 'TakeAction' -, etc.).
     //     //
     //     return GetType().Name;
     // }
@@ -372,7 +364,7 @@ public class MoveAction : BaseAction
     {
         // CodeMonkey' version:  Write a custom class Name (string) here:
         //
-        return "Move";
+        return "TakeAction";
     }
     
     #endregion UI related utils

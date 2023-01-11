@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// Singleton for handling the Visual Prefabs-Representations of the available Cells of the Grid that the Player can Move in to, in this Turn.
+/// Singleton for handling the Visual Prefabs-Representations of the available Cells of the Grid that the Player can TakeAction in to, in this Turn.
 /// </summary>
 public class GridSystemVisual : MonoBehaviour
 {

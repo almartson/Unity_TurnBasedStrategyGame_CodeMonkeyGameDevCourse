@@ -149,20 +149,83 @@ public class UnitActionSystem : MonoBehaviour
     /// <summary>
     /// Selects & Sets an ACTION selected by clicking on the (related Action's...) GUI Button.
     /// </summary>
-    private void HandleSelectedAction()
+    /// <returns>True or False for the Success of the previous >Validations, before performing the 'TakeAction()' routine, called inside of this Method.</returns>
+    private bool HandleSelectedAction()
     {
         // THERE ARE 2 (Architecture) OPTIONS to make an ACTION Selection:
         //
         // 1- Option 1: Each ACTION is a separate FUNCTION + switch - case (C# 7) calling the Particular one we want.
-        // 2- Option 2: Only ONE General Function Handles everything, using Abstract & Virtual Classes and Function to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...). This one should take a big number of Input Parameters, that cover ALL scenarios for all the Actions of the Game (although we could create a class for the Input... and make particular children for each Action, so we could cast the particular Type in line one of this Method... but we are not going to cover that in this Game because it would be for bigger AAA Games...)
+        //
+        // 2- Option 2: Only ONE General Function Handles everything, using Abstract & Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...). This one should take a big number of Input Parameters, that cover ALL scenarios for all the Actions of the Game (although we could create a class for the Input... and make particular children for each Action, so we could cast the particular Type in line one of this Method... but we are not going to cover that in this Game because it would be for bigger AAA Games...)
         // So...
         //
         #region 1- Option 1: Each ACTION is a separate FUNCTION + switch - case (C# 7) calling the Particular one we want.
         
-        // 1- Option 1: Each ACTION is a separate FUNCTION + switch - case (C# 7) calling the Particular one we want.
-        //...since C# 7.0:  we can use switch - case with Types as Scripts and declare them inline in the 'case : '
+        // // 1- Option 1: Each ACTION is a separate FUNCTION + switch - case (C# 7) calling the Particular one we want.
+        // //...since C# 7.0:  we can use switch - case with Types as Scripts and declare them inline in the 'case : '
+        // //
+        // // Try to TakeAction the selected Unit... (by Raycasting on the Ground Plane (Mask Layer...))
+        // //
+        // if (MouseWorld.TryGetPosition(out Vector3 mousePosition))
+        // {
+        //     // Get the CENTER of the selected "GridPosition", instead of a corner or any random position inside of it
+        //     // ...because sometimes the Player/user clicks in random places of a Cell/Square/Grid,
+        //     // ...not necessarily in the CENTER of it:
+        //     //
+        //     GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(mousePosition);
+        //     
+        //     // Save the original Mouse Position (just in case... as a backup)
+        //     //
+        //     _selectedUnit.MousePosition.Set(mouseGridPosition.x, 0, mouseGridPosition.z);
         //
-        // Try to Move the selected Unit... (by Raycasting on the Ground Plane (Mask Layer...))
+        //     // Switch - case for > C# 7 : Using inline declarations of Script or Class Types, to compare in the cases...
+        //     //
+        //     switch (_selectedAction)
+        //     {
+        //         case MoveAction moveAction:
+        //             
+        //             // Validate:
+        //             // Whether the selected GridPosition (x, 0, z) is empty & 100% correct for the MoveAction:
+        //             //
+        //             if (moveAction.IsValidActionGridPosition(mouseGridPosition))
+        //             {
+        //                 // Set this Class (SERVICE) Methods as: BUSY .. until it ends:
+        //                 //
+        //                 SetBusy();
+        //             
+        //                 // TakeAction() where the Mouse Pointer CLICK has been Pressed!
+        //                 //
+        //                 moveAction.TakeAction( mouseGridPosition, ClearBusy );
+        //             
+        //             }//End if
+        //             break;
+        //         
+        //         case SpinAction spinAction:
+        //             
+        //             // Set this Class (SERVICE) Methods as: BUSY (so no other ACTION would execute at the same time)..
+        //             // ..until THIS PARTICULAR ACTION (i.e.: TakeAction() ): ends:
+        //             //
+        //             SetBusy();
+        //
+        //             // Enable: TakeAction
+        //             // Invoke / Call the FUnction Delegate: to execute:   ClearBusy()
+        //             // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: )
+        //             //
+        //             spinAction.TakeAction(ClearBusy);
+        //             break;
+        //     
+        //     }//End switch - case
+        //     
+        // }//End if (MouseWorld.TryGetPosition
+        
+        #endregion 1- Option 1: Each ACTION is a separate FUNCTION + switch - case (C# 7) calling the Particular one we want.
+
+        
+        #region 2- Option 2: Only ONE General Function Handles everything, using Abstract & Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...).
+        
+        // 2- Option 2: Only ONE General Function Handles everything, using Abstract & Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...). This one should take a big number of Input Parameters, that cover ALL scenarios for all the Actions of the Game (although we could create a class for the Input... and make particular children for each Action, so we could cast the particular Type in line one of this Method... but we are not going to cover that in this Game because it would be for bigger AAA Games...)
+        //
+        // Try to TakeAction the selected Unit... (by Raycasting on the Ground Plane (Mask Layer...))
         //
         if (MouseWorld.TryGetPosition(out Vector3 mousePosition))
         {
@@ -176,48 +239,45 @@ public class UnitActionSystem : MonoBehaviour
             //
             _selectedUnit.MousePosition.Set(mouseGridPosition.x, 0, mouseGridPosition.z);
 
-            // Switch - case for > C# 7 : Using inline declarations of Script or Class Types, to compare in the cases...
+            // Take the Action.
+            // 'TakeAction' method has a particular Implementation in each of the derived Classes (e.g.: MoveAction, SpinAction, etc.).
             //
-            switch (_selectedAction)
+            //  .1- Validation of the Action:
+            //
+            if (_selectedAction.IsValidActionGridPosition(mouseGridPosition))
             {
-                case MoveAction moveAction:
-                    
-                    // Validate:
-                    // Whether the selected GridPosition (x, 0, z) is empty & 100% correct for the MoveAction:
-                    //
-                    if (moveAction.IsValidActionGridPosition(mouseGridPosition))
-                    {
-                        // Set this Class (SERVICE) Methods as: BUSY .. until it ends:
-                        //
-                        SetBusy();
-                    
-                        // Move() where the Mouse Pointer CLICK has been Pressed!
-                        //
-                        moveAction.Move( mouseGridPosition, ClearBusy );
-                    
-                    }//End if
-                    break;
-                
-                case SpinAction spinAction:
-                    
-                    // Set this Class (SERVICE) Methods as: BUSY (so no other ACTION would execute at the same time)..
-                    // ..until THIS PARTICULAR ACTION (i.e.: Spin() ): ends:
-                    //
-                    SetBusy();
-        
-                    // Enable: Spin
-                    // Invoke / Call the FUnction Delegate: to execute:   ClearBusy()
-                    // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: )
-                    //
-                    spinAction.Spin(ClearBusy);
-                    break;
-            
-            }//End switch - case
-            
-        }//End if (MouseWorld.TryGetPosition
-        
-        #endregion 1- Option 1: Each ACTION is a separate FUNCTION + switch - case (C# 7) calling the Particular one we want.
+                // .2- 'Take the Action'
+                //
+                // Set this Class (SERVICE) Methods as: BUSY .. until it ends:  Set MUTEX ON
+                //
+                SetBusy();
+                //
+                // TakeAction() , asked by the Player, on the Game
+                // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: ) -> Sets Mutex OFF (when TakeAction() Ends...)
+                //
+                _selectedAction.TakeAction(mouseGridPosition, ClearBusy);
 
+                // Return the Success/Failure State of the 'Take Action' process:
+                //
+                return true;
+
+            }//End if (_selectedAction.IsValidActionGridPosition
+            else
+            {
+                // Return the Success/Failure State of the 'Take Action' process:  false (failure)
+                //
+                return false;
+            }
+
+        }//End if (MouseWorld.TryGetPosition
+    
+        // Return the Success/Failure State of the 'Take Action' process:  false (failure)
+        //
+        return false;
+        
+        
+        #endregion 2- Option 2: Only ONE General Function Handles everything, using Abstract & Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...).
+        
     }
     
     

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -81,7 +82,7 @@ public class SpinAction : BaseAction
             //
             _isActive = false;
             
-            // We CALL our DELEGATE:  tells everyone that the Spin routine ENDED:
+            // We CALL our DELEGATE:  tells everyone that the TakeAction routine ENDED:
             //
             onActionComplete();
             //
@@ -102,15 +103,15 @@ public class SpinAction : BaseAction
     #region My Custom Methods
     
     /// <summary>
-    /// Makes the GameObject Spin / Rotate.
+    /// Makes the GameObject TakeAction / Rotate.
     /// </summary>
-    public void Spin(Action onSpinComplete)
+    public override void TakeAction(GridPosition gridPosition, Action onSpinComplete)
     {
         // 1- Here we assign the Function/Procedure (i.e.: Method) to the 'DELEGATE variable'
         // 2- In another line (latter, in another Script.cs),
         // we'll do a calling / invoke, something like:   'onActionComplete()'
-        // ..., to call the latest Method that was added in this Method Spin().
-        // Purpose of this callback (Delegate):  to tell the World that this ROUTINE JUST ENDED:
+        // ..., to call the latest Method that was added in this Method TakeAction().
+        // Purpose of this callback (Delegate):  to tell the World that this ROUTINE JUST ENDED (..the STARTING PHASE...):
         //
         this.onActionComplete = onSpinComplete;
         
@@ -124,6 +125,29 @@ public class SpinAction : BaseAction
     }
 
     
+    #region Action Validations
+
+    /// <summary>
+    /// Get a List of the Valid places where the Unit/Character can 'TakeAction(...)' to (i.e.: GridPosition(s)).
+    /// This method cycles through the squares/Grids...(using FOR )... to get a list of the valid ones.
+    /// </summary>
+    /// <returns>Valid (GridPosition(s)) places where the Unit/Character can TakeAction to, in this Turn.</returns>
+    public override List<GridPosition> GetValidActionGridPositionList()
+    {
+        // Validate that it can perform the Action in the same GridPosition it is standing NOW:
+        // Get the Unit's GridPosition
+        //
+        GridPosition unitGridPosition = _unit.GetGridPosition();
+        
+        return new List<GridPosition>
+        {
+            unitGridPosition
+        };
+    }
+
+
+    #endregion Action Validations
+    
         
     #region UI related utils
 
@@ -133,7 +157,7 @@ public class SpinAction : BaseAction
     // /// <returns></returns>
     // public string GetActionNameByStrippingClassName()
     // {
-    //     // AlMartsons' version:  Get the Class Name, but maybe it needs to be stripped from the rest of the word (e.g.: SpinAction... to just: Spin - remove 'Spin' -, etc.).
+    //     // AlMartsons' version:  Get the Class Name, but maybe it needs to be stripped from the rest of the word (e.g.: SpinAction... to just: TakeAction - remove 'TakeAction' -, etc.).
     //     //
     //     return GetType().Name;
     // }
@@ -146,7 +170,7 @@ public class SpinAction : BaseAction
     {
         // CodeMonkey' version:  Write a custom class Name (string) here:
         //
-        return "Spin";
+        return "TakeAction";
     }
     
     #endregion UI related utils

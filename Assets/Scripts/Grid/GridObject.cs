@@ -90,7 +90,7 @@ public class GridObject
     }
     
     
-    #region Validations for Move Actions on each GridObject
+    #region Validations for TakeAction Actions on each GridObject
 
     /// <summary>
     /// Validation: Is this GridObject occupied by any Unit / Character?  
@@ -101,7 +101,7 @@ public class GridObject
         return _unitList.Count > 0;
     }
     
-    #endregion Validations for Move Actions on each GridObject
+    #endregion Validations for TakeAction Actions on each GridObject
     
     #endregion Methods
 }
