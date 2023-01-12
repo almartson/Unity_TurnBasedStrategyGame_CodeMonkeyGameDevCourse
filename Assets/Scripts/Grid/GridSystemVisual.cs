@@ -163,7 +163,7 @@ public class GridSystemVisual : MonoBehaviour
 
     
     /// <summary>
-    /// Updates (Re-renders) the Grid System Visual cues about: available Cells to move in to, in this turn.
+    /// Updates (Re-renders) the Grid System Visual cues about: available Cells to 'Take Action' to (...or to move in to), in this turn.
     /// </summary>
     private void UpdateGridVisual()
     {
@@ -173,13 +173,13 @@ public class GridSystemVisual : MonoBehaviour
         //
         HideAllGridPositions();
 
-        // 2- Get the Player's Character (...i.e.: the SELECTED Unit):
+        // 2- Get the Player's currently: SELECTED ACTION
         //
-        Unit selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
-        
-        // 3, Final- Show only the VALID Cells of the Grid, to move in  (based on the Player's SELECTED Unit):
+        BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedAction();
+
+        // 3- Final- Show only the VALID Cells of the Grid, to 'Take Action' to (...or to move in to),  (based on the Player's SELECTED Unit):
         //
-        ShowGridPositionList(selectedUnit.GetMoveAction().GetValidActionGridPositionList());
+        ShowGridPositionList( selectedAction.GetValidActionGridPositionList() );
 
     }//End UpdateGridVisual()
 

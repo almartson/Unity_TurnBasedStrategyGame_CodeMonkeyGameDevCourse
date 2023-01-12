@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Uses the Observer Pattern + Singleton Pattern (for easily assigning it to the GameObject of its related Prefab...)
@@ -119,6 +120,24 @@ public class UnitActionSystem : MonoBehaviour
         //
         if (_isBusy)
         {
+            return;
+        }
+        
+        // Fix to: Keep the GUI ACTION Buttons on the Top
+        // (of the Grid, Game & Units:)
+        //
+        // This is to keep the the GUI always in front of everything,
+        //...so if you Click on an Empty Space and at the same time on a
+        //...GUI (ACTION: MOVE ACTION, SPIN ACTION, GRENADE, ETC...) Button:
+        //  The Game will receive ONLY the GUI order, and it will block the
+        //  Mouse Pointer Click to go to the Grid that's behind the GUI Button. 
+        //
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            // Then (if it's TRUE): the Mouse is over: a GUI Element
+            // Stop all the rest of actions, in this Frame:
+            // ...we don't want to 'TryHandleUnitSelection'  or  'HandleSelectedAction'  if  the Player clicked on a GUI (ACTION) Button:
+            //
             return;
         }
         
@@ -314,9 +333,21 @@ public class UnitActionSystem : MonoBehaviour
                 if (_raycastHitInfo[0].transform.TryGetComponent<Unit>(out Unit unit))
                 {
                     
+                    // Check if the Unit is already (previously) selected. If thatś the case, don't do it again:
+                    //
+                    if (unit == _selectedUnit)
+                    {
+                        // The Unit was already selected, just exit, return false:
+                        //
+                        return false;
+                    }
+                    
+                    // If a new Unit is being selected, return it + our TRUE flag:
+                    //
                     SetSelectedUnit(unit);
                     return true;
-                }
+                    
+                }//End if (_raycastHitInfo[0]....
                 
             }//End if ((Physics.RaycastNonAlloc...
             
@@ -371,22 +402,30 @@ public class UnitActionSystem : MonoBehaviour
 
     }
 
-
+    public Unit GetSelectedUnit()
+    {
+        return _selectedUnit;
+    }
+    
+    
     /// <summary>
-    /// Sets the Unit's (i.e.: Player's Character...) selected Action to the action given as Input  (baseAction).
+    /// Sets the Unit's (i.e.: Player's Character...) selected Action (given as Input)  (baseAction).
     /// </summary>
     /// <param name="baseAction"></param>
     public void SetSelectedAction(BaseAction baseAction)
     {
         _selectedAction = baseAction;
     }
-    
 
-    public Unit GetSelectedUnit()
+    /// <summary>
+    /// Gets the Unit's (i.e.: Player's Character...) current: SELECTED ACTION (given in previous Frames as Input)  (BaseAction).
+    /// </summary>
+    /// <returns><code>BaseAction</code>The Unit's (i.e.: Player's Character...) current: SELECTED ACTION.</returns>
+    public BaseAction GetSelectedAction()
     {
-        return _selectedUnit;
+        return _selectedAction;
     }
-    
+
     
     #endregion Observer Pattern Methods
     

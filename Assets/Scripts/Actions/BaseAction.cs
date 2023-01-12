@@ -124,7 +124,7 @@ public abstract class BaseAction : MonoBehaviour
 
 
     /// <summary>
-    /// Get a List of the Valid places where the Unit/Character can TakeAction to (i.e.: GridPosition(s)).
+    /// Gets a List of the Valid places where the Unit/Character can TakeAction to (i.e.: GridPosition(s)).
     /// This method cycles through the squares/Grids...(using FOR )... to get a list of the valid ones.
     /// </summary>
     /// <returns>Valid (GridPosition(s)) places where the Unit/Character can TakeAction to, in this Turn.</returns>
