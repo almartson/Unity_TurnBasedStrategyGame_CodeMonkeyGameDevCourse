@@ -157,7 +157,7 @@ public class SpinAction : BaseAction
     // /// <returns></returns>
     // public string GetActionNameByStrippingClassName()
     // {
-    //     // AlMartsons' version:  Get the Class Name, but maybe it needs to be stripped from the rest of the word (e.g.: SpinAction... to just: TakeAction - remove 'TakeAction' -, etc.).
+    //     // AlMartsons' version:  Get the Class Name, but maybe it needs to be stripped from the rest of the word (e.g.: SpinAction... to just: Spin - remove 'Action' -, etc.).
     //     //
     //     return GetType().Name;
     // }
@@ -170,7 +170,7 @@ public class SpinAction : BaseAction
     {
         // CodeMonkey' version:  Write a custom class Name (string) here:
         //
-        return "TakeAction";
+        return "Spin";
     }
     
     #endregion UI related utils

@@ -151,10 +151,9 @@ public class MoveAction : BaseAction
     /// <summary>
     /// Moves the Unit / Character to the specified (x, y, z) Position (Grid).
     /// </summary>
-    /// <param name="gridPosition"></param>
-    /// <param name="onMoveActionComplete"></param>
     public override void TakeAction(GridPosition gridPosition, Action onMoveActionComplete)
     {
+
         // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED (...at least the ACTIVATION-part of it ended):
         //
         this.onActionComplete = onMoveActionComplete;
@@ -364,7 +363,7 @@ public class MoveAction : BaseAction
     {
         // CodeMonkey' version:  Write a custom class Name (string) here:
         //
-        return "TakeAction";
+        return "Move";
     }
     
     #endregion UI related utils

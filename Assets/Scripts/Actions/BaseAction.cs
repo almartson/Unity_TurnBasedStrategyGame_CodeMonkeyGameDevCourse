@@ -137,3 +137,25 @@ public abstract class BaseAction : MonoBehaviour
     #endregion My Custom Methods
 
 }
+
+/// <summary>
+/// Base Class for the Input Parameters, of every Function call to: ''TakeAction()'
+/// </summary>
+public class BaseParameters
+{
+
+    #region Attributes
+    
+    
+    private float _floor = 0.0f;
+    
+    #endregion Attributes
+    
+    
+    #region Methods
+
+    
+
+    #endregion Methods
+
+}
