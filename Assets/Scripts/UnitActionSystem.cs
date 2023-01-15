@@ -242,7 +242,7 @@ public class UnitActionSystem : MonoBehaviour
         
         #region 2- Option 2: Only ONE General Function Handles everything, using Abstract & Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...).
         
-        // 2- Option 2: Only ONE General Function Handles everything, using Abstract & Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...). This one should take a big number of Input Parameters, that cover ALL scenarios for all the Actions of the Game (although we could create a class for the Input... and make particular children for each Action, so we could cast the particular Type in line one of this Method... but we are not going to cover that in this Game because it would be for bigger AAA Games...)
+        // 2- Option 2: Only ONE General Function Handles everything, using Abstract & Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derived from BaseAction Class...). This one should take a big number of Input Parameters, that cover ALL scenarios for all the Actions of the Game (although we could create a class for the Input... and make particular children for each Action, so we could cast the particular Type in line one of this Method... but we are not going to cover that in this Game because it would be for bigger AAA Games...)
         //
         // Try to TakeAction the selected Unit... (by Raycasting on the Ground Plane (Mask Layer...))
         //
@@ -253,12 +253,9 @@ public class UnitActionSystem : MonoBehaviour
             // ...not necessarily in the CENTER of it:
             //
             GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(mousePosition);
-            
-            // Save the original Mouse Position (just in case... as a backup)
-            //
-            _selectedUnit.MousePosition.Set(mouseGridPosition.x, 0, mouseGridPosition.z);
 
             // Take the Action.
+            
             // 'TakeAction' method has a particular Implementation in each of the derived Classes (e.g.: MoveAction, SpinAction, etc.).
             //
             //  .1- Validation of the Action:
@@ -267,14 +264,25 @@ public class UnitActionSystem : MonoBehaviour
             {
                 // .2- 'Take the Action'
                 //
-                // Set this Class (SERVICE) Methods as: BUSY .. until it ends:  Set MUTEX ON
+                // .2.1- Save the Valid GridPosition:
+                //
+                // .2.1.1- Save the original Mouse Position (just in case... as a backup)
+                //
+                _selectedUnit.MousePosition.Set(mouseGridPosition.x, 0, mouseGridPosition.z);
+                //
+                // .2.1.1- In _selectedUnit, for later use in 'TakeAction()':
+                //
+                _selectedUnit.SetFinalGridPositionOfNextPlayersAction(mouseGridPosition);
+                
+                
+                // .3- Set this Class (SERVICE) Methods as: BUSY .. until it ends:  Set MUTEX ON
                 //
                 SetBusy();
                 //
-                // TakeAction() , asked by the Player, on the Game
+                // .4- TakeAction() , asked by the Player, on the Game
                 // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: ) -> Sets Mutex OFF (when TakeAction() Ends...)
                 //
-                _selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+                _selectedAction.TakeAction(ClearBusy);
 
                 // Return the Success/Failure State of the 'Take Action' process:
                 //

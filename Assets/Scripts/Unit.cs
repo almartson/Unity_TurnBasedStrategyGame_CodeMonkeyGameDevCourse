@@ -12,6 +12,13 @@ public class Unit : MonoBehaviour
     private GridPosition _gridPosition;
 
     
+    /// <summary>
+    /// Keeping track of the TARGET (...NEXT...) GridPosition of the Player's MOVE / ACTION.
+    /// This Position comes from a Conversion of the MousePointer Coordinates into: a valid GridPosition.
+    /// This is already Validated.
+    /// </summary>
+    private GridPosition _finalGridPositionOfNextAction;
+    
     #region Action's List
     
     /// <summary>
@@ -73,6 +80,10 @@ public class Unit : MonoBehaviour
         // SOLUTION: The same with 'UnitActionSystem'
         //
         _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        //
+        // Initialization (final position = current position), not very logical (but it doesn't matter...):
+        //
+        _finalGridPositionOfNextAction = _gridPosition;
         //
         LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
     }
@@ -148,7 +159,23 @@ public class Unit : MonoBehaviour
         return _gridPosition;
     }
     
+    /// <summary>
+    /// Getter for <code>GridPosition</code> of the Player's Next Action (e.g.: Move Action, Spin Action, etc).
+    /// </summary>
+    /// <returns></returns>
+    public GridPosition GetFinalGridPositionOfNextPlayersAction()
+    {
+        return _finalGridPositionOfNextAction;
+    }
     
+    /// <summary>
+    /// Setter for <code>GridPosition</code> of the Player's Next Action (e.g.: Move Action, Spin Action, etc).
+    /// </summary>
+    /// <returns></returns>
+    public void SetFinalGridPositionOfNextPlayersAction(GridPosition gridPosition)
+    {
+        _finalGridPositionOfNextAction = gridPosition;
+    }
 
     #endregion My Custom Methods
     

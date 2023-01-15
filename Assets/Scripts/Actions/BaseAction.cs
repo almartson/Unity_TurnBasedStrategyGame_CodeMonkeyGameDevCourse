@@ -97,13 +97,19 @@ public abstract class BaseAction : MonoBehaviour
 
     /// <summary>
     /// Generic Method for getting the ACTION from the GUI (the Payer's).
-    /// This must be reimplemented / overriden in each Concrete (derivated, child) 'SomethingAction' Class.
+    /// This must be reimplemented / overriden in each Concrete (derived, child) as: 'SomethingAction' Class.
     /// </summary>
-    /// <param name="gridPosition"></param>
-    /// <param name="onActionComplete"></param>
     /// <returns></returns>
-    public abstract void TakeAction(GridPosition gridPosition, Action onActionComplete);
+    public abstract void TakeAction(Action onActionComplete);  //   (GridPosition gridPosition, Action onActionComplete);
 
+    
+    /// <summary>
+    /// Generic Method for generating the necessary Input Parameters that are used in the calling of
+    /// ..the Function Call to the generic: 'TakeAction'
+    /// This must be reimplemented / overriden in each Concrete (derived, child).
+    /// </summary>
+    public abstract void GenerateInputParameters();
+    
 
     #region Actions' Validations
 
@@ -139,15 +145,15 @@ public abstract class BaseAction : MonoBehaviour
 }
 
 /// <summary>
-/// Base Class for the Input Parameters, of every Function call to: ''TakeAction()'
+/// Base Class for the Input Parameters, of every Function call to: 'TakeAction()'
 /// </summary>
-public class BaseParameters
+public abstract class BaseParameters
 {
 
     #region Attributes
     
     
-    private float _floor = 0.0f;
+    protected float floor = 0.0f;
     
     #endregion Attributes
     

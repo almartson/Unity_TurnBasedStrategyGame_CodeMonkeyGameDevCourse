@@ -22,6 +22,17 @@ public class MoveAction : BaseAction
     [SerializeField] private float _rotateSpeed = 10.0f;
 
     
+    #region BaseParameters (INPUT) for calling the GENERIC MOVE ACTION function:  TakeAction
+
+    /// <summary>
+    /// BaseParameters (INPUT) for calling the GENERIC MOVE ACTION function:  TakeAction
+    /// </summary>
+    private MoveActionBaseParameters _moveActionBaseParameters = new MoveActionBaseParameters();
+    
+
+    #endregion BaseParameters (INPUT) for calling the GENERIC MOVE ACTION function:  TakeAction
+    
+    
     #region Animator & Animations
 
     [Tooltip("3D Character's Animator")]
@@ -151,16 +162,20 @@ public class MoveAction : BaseAction
     /// <summary>
     /// Moves the Unit / Character to the specified (x, y, z) Position (Grid).
     /// </summary>
-    public override void TakeAction(GridPosition gridPosition, Action onMoveActionComplete)
+    public override void TakeAction(Action onMoveActionComplete)   //   (GridPosition gridPosition, Action onMoveActionComplete)
     {
-
+        
+        // 1- Get the Input Base Parameters (for this function call):
+        //
+        GenerateInputParameters();
+        
         // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED (...at least the ACTIVATION-part of it ended):
         //
         this.onActionComplete = onMoveActionComplete;
         
         // Get the WorldPosition, based on a "GridPosition" as Input.
         //
-        _targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        _targetPosition = LevelGrid.Instance.GetWorldPosition(this._moveActionBaseParameters.TargetGridPositionOfSelectedMovement);
 
         // Set this "Action" as ENABLED
         // Set the (mutex) flag:
@@ -169,6 +184,23 @@ public class MoveAction : BaseAction
     }
     
     
+    /// <summary>
+    /// Generic Method for generating the necessary Input Parameters that are used in the calling of
+    /// ..the Function Call to the generic: 'TakeAction'
+    /// This must be reimplemented / overriden in each Concrete (derived, child).
+    /// We need inside this class: <code>GridPosition</code>
+    /// </summary>
+    public override void GenerateInputParameters()
+    {
+        // Generate:
+        //
+        // 1- TARGET GridPosition (i.e.: the Destination of the Movement...)
+        //
+        this._moveActionBaseParameters.TargetGridPositionOfSelectedMovement = UnitActionSystem.Instance.GetSelectedUnit().GetFinalGridPositionOfNextPlayersAction();
+        
+    }//End GenerateInputParameters
+
+
     /// <summary>
     /// Moves the Unit / Character to the specified (x, y, z) Position (Grid).
     /// </summary>
@@ -369,5 +401,38 @@ public class MoveAction : BaseAction
     #endregion UI related utils
     
     #endregion My Custom Methods
+
+}
+
+
+/// <summary>
+/// Concrete-particular Class (derived as a child of "BaseParameters") for the Input Parameters,
+/// ..of every Function call to: 'TakeAction()'
+/// </summary>
+public class MoveActionBaseParameters : BaseParameters
+{
+
+    #region Attributes
+
+    /// <summary>
+    /// Destination-Target Position for this Movement, of the Player's Unit, in the Cells-Grid.
+    /// </summary>
+    private GridPosition _targetGridPositionOfSelectedMovement;
+    //
+    /// <summary>
+    /// Property Accessor to Private Field "_targetGridPositionOfSelectedMovement".
+    /// </summary>
+    /// <value></value>
+    public GridPosition TargetGridPositionOfSelectedMovement { get => _targetGridPositionOfSelectedMovement; set => _targetGridPositionOfSelectedMovement = value; }
+
+
+    #endregion Attributes
+
+
+    #region Methods
+
+
+
+    #endregion Methods
 
 }

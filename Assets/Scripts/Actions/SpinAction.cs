@@ -28,6 +28,17 @@ public class SpinAction : BaseAction
     [Range(0f, 360f)]
     private float _rotationGoal = 360.0f;
 
+    
+    #region BaseParameters (INPUT) for calling the GENERIC MOVE ACTION function:  TakeAction
+
+    /// <summary>
+    /// BaseParameters (INPUT) for calling the GENERIC SPIN ACTION function:  TakeAction
+    /// </summary>
+    private SpinActionBaseParameters _spinActionBaseParameters = new SpinActionBaseParameters();
+    
+
+    #endregion BaseParameters (INPUT) for calling the GENERIC MOVE ACTION function:  TakeAction
+    
     #endregion Attributes
 
 
@@ -103,10 +114,18 @@ public class SpinAction : BaseAction
     #region My Custom Methods
     
     /// <summary>
-    /// Makes the GameObject TakeAction / Rotate.
+    /// Makes the Payers Character (Unit): Spin /Rotate.
     /// </summary>
-    public override void TakeAction(GridPosition gridPosition, Action onSpinComplete)
+    public override void TakeAction(Action onSpinComplete)   //  (GridPosition gridPosition, Action onSpinComplete)
     {
+        
+        // This is greyed out because currently there are no INPUT PARAMETERS FOR THIS ACTION: SPIN.
+        //
+        // // 0- Get the Input Base Parameters (for this function call):
+        // //
+        // GenerateInputParameters();
+        
+        
         // 1- Here we assign the Function/Procedure (i.e.: Method) to the 'DELEGATE variable'
         // 2- In another line (latter, in another Script.cs),
         // we'll do a calling / invoke, something like:   'onActionComplete()'
@@ -124,7 +143,27 @@ public class SpinAction : BaseAction
         _totalSpinAmount = 0.0f;
     }
 
-    
+    /// <summary>
+    /// Generic Method for generating the necessary Input Parameters that are used in the calling of
+    /// ..the Function Call to the generic: 'TakeAction'
+    /// This must be reimplemented / overriden in each Concrete (derived, child).
+    /// We need inside this class: <code>GridPosition</code>
+    /// </summary>
+    public override void GenerateInputParameters()
+    {
+        // // 2- Get the Player's currently: SELECTED ACTION
+        // //
+        // // UnitActionSystem.Instance.GetSelectedAction();
+        //
+        // // Generate:
+        // //
+        // 1- TARGET GridPosition (i.e.: the Destination of the Movement...)
+        //
+        // this._spinActionBaseParameters.TargetGridPositionOfSelectedMovement = UnitActionSystem.Instance.GetSelectedUnit().GetGridPosition();
+        
+    }//End GenerateInputParameters
+
+
     #region Action Validations
 
     /// <summary>
@@ -177,5 +216,27 @@ public class SpinAction : BaseAction
 
 
     #endregion My Custom Methods
+
+}
+
+
+/// <summary>
+/// Concrete-particular Class (derived as a child of "BaseParameters") for the Input Parameters,
+/// ..of every Function call to: 'TakeAction()'
+/// </summary>
+public class SpinActionBaseParameters : BaseParameters
+{
+
+    #region Attributes
+
+    
+    #endregion Attributes
+    
+    
+    #region Methods
+
+    
+
+    #endregion Methods
 
 }
