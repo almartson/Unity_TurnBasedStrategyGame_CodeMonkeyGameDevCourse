@@ -162,7 +162,7 @@ public class MoveAction : BaseAction
     /// <summary>
     /// Moves the Unit / Character to the specified (x, y, z) Position (Grid).
     /// </summary>
-    public override void TakeAction(Action onMoveActionComplete)   //   (GridPosition gridPosition, Action onMoveActionComplete)
+    public override void TakeAction(Action onMoveActionComplete)   //   (GridPosition gridPosition /* Used in MoveAction */, Action onMoveActionComplete)
     {
         
         // 1- Get the Input Base Parameters (for this function call):

@@ -116,7 +116,7 @@ public class SpinAction : BaseAction
     /// <summary>
     /// Makes the Payers Character (Unit): Spin /Rotate.
     /// </summary>
-    public override void TakeAction(Action onSpinComplete)   //  (GridPosition gridPosition, Action onSpinComplete)
+    public override void TakeAction(Action onSpinComplete)   //  (GridPosition gridPosition /* Not necessary for Spin Action */, Action onSpinComplete)
     {
         
         // This is greyed out because currently there are no INPUT PARAMETERS FOR THIS ACTION: SPIN.
