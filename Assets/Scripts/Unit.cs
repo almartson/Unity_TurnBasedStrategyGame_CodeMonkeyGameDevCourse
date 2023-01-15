@@ -41,12 +41,15 @@ public class Unit : MonoBehaviour
     
     
     /// <summary>
-    /// Mouse Position
+    /// Last Valid Action's: Mouse Position
+    /// (it is validated inside the Grid, see trace for:  MousePosition)
     /// </summary>
     private Vector3 _mousePosition = Vector3.zero;
     /// <summary>
     /// Property Accessor to Private Field:
-    /// Public Getter & Setter for _mousePosition
+    /// Public Getter and Setter for _mousePosition
+    /// Last Valid Action's: Mouse Position
+    /// (it is validated inside the Grid, see trace for:  MousePosition)
     /// </summary>
     public Vector3 MousePosition { get => _mousePosition; set => _mousePosition = value; }
     

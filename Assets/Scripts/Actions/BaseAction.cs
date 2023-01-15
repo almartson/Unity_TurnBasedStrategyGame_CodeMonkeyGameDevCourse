@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Abstract class (i.e.: it will not be used as an Object itself, only as a Parent / Interface / Contract
 ///..to other Classes)... representing the base each ACTION CLASS must have
-///..(Attributes) & implement (Methods).
+///..(Attributes) and implement (Methods).
 /// Each concrete 'Action Class' that will derive from this one, will override most of this class' Methods.
 /// </summary>
 public abstract class BaseAction : MonoBehaviour
@@ -153,7 +153,7 @@ public abstract class BaseParameters
     #region Attributes
     
     
-    protected float floor = 0.0f;
+    protected float exampleOfSyntaxProtectedIsLikeAPublic = 0.0f;
     
     #endregion Attributes
     

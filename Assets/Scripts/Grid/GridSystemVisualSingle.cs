@@ -8,7 +8,7 @@ public class GridSystemVisualSingle : MonoBehaviour
 
     #region Attributes
 
-    [Tooltip("Mesh Renderer of this Visual 3D Quad, for enabling & Disabling its Visibility via Code")]
+    [Tooltip("Mesh Renderer of this Visual 3D Quad, for Enabling and Disabling its Visibility via Code")]
     [SerializeField]
     private MeshRenderer _meshRenderer;
 

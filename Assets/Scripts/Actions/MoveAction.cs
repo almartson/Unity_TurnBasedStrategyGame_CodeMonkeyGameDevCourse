@@ -420,7 +420,8 @@ public class MoveActionBaseParameters : BaseParameters
     private GridPosition _targetGridPositionOfSelectedMovement;
     //
     /// <summary>
-    /// Property Accessor to Private Field "_targetGridPositionOfSelectedMovement".
+    /// Property Accessor to Private Field "_targetGridPositionOfSelectedMovement": <br /><br />
+    /// Destination-Target Position for this Movement, of the Player's Unit, in the Cells-Grid. <br />
     /// </summary>
     /// <value></value>
     public GridPosition TargetGridPositionOfSelectedMovement { get => _targetGridPositionOfSelectedMovement; set => _targetGridPositionOfSelectedMovement = value; }

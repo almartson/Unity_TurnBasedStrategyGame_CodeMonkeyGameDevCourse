@@ -26,7 +26,7 @@ public class LevelGrid : MonoBehaviour
     ///
     /// From a Logical point of view.
     /// 
-    /// Contains: GridObjects (the Logical Squares/Cells) + GridPositions (the Mathematical Positions & Data: (x, y, z))
+    /// Contains: GridObjects (the Logical Squares/Cells) + GridPositions (the Mathematical Positions and Data: (x, y, z))
     /// </summary>
     private GridSystem _gridSystem;
     

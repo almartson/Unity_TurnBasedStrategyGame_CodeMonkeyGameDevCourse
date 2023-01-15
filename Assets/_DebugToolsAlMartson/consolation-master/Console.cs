@@ -357,7 +357,7 @@ namespace Consolation
     /// </summary>
     /// <remarks>
     /// It's a bit slow (as it uses locks), and only provides a small subset of the interface
-    /// Overall, the implementation is intended to be simple & robust
+    /// Overall, the implementation is intended to be simple and robust
     /// </remarks>
     public class ConcurrentQueue<T>
     {

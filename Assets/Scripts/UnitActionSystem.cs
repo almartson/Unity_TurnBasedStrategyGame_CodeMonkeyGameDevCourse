@@ -166,7 +166,7 @@ public class UnitActionSystem : MonoBehaviour
     #region My Custom Methods
 
     /// <summary>
-    /// Selects & Sets an ACTION selected by clicking on the (related Action's...) GUI Button.
+    /// Selects / Sets an ACTION selected by clicking on the (related Action's...) GUI Button.
     /// </summary>
     /// <returns>True or False for the Success of the previous >Validations, before performing the 'TakeAction()' routine, called inside of this Method.</returns>
     private bool HandleSelectedAction()
@@ -175,7 +175,7 @@ public class UnitActionSystem : MonoBehaviour
         //
         // 1- Option 1: Each ACTION is a separate FUNCTION + switch - case (C# 7) calling the Particular one we want.
         //
-        // 2- Option 2: Only ONE General Function Handles everything, using Abstract & Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...). This one should take a big number of Input Parameters, that cover ALL scenarios for all the Actions of the Game (although we could create a class for the Input... and make particular children for each Action, so we could cast the particular Type in line one of this Method... but we are not going to cover that in this Game because it would be for bigger AAA Games...)
+        // 2- Option 2: Only ONE General Function Handles everything, using Abstract and Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derived from BaseAction Class...). This one should take a big number of Input Parameters, that cover ALL scenarios for all the Actions of the Game (although we could create a class for the Input... and make particular children for each Action, so we could cast the particular Type in line one of this Method... but we are not going to cover that in this Game because it would be for bigger AAA Games...)
         // So...
         //
         #region 1- Option 1: Each ACTION is a separate FUNCTION + switch - case (C# 7) calling the Particular one we want.
@@ -240,9 +240,9 @@ public class UnitActionSystem : MonoBehaviour
         #endregion 1- Option 1: Each ACTION is a separate FUNCTION + switch - case (C# 7) calling the Particular one we want.
 
         
-        #region 2- Option 2: Only ONE General Function Handles everything, using Abstract & Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...).
+        #region 2- Option 2: Only ONE General Function Handles everything, using Abstract and Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...).
         
-        // 2- Option 2: Only ONE General Function Handles everything, using Abstract & Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derived from BaseAction Class...). This one should take a big number of Input Parameters, that cover ALL scenarios for all the Actions of the Game (although we could create a class for the Input... and make particular children for each Action, so we could cast the particular Type in line one of this Method... but we are not going to cover that in this Game because it would be for bigger AAA Games...)
+        // 2- Option 2: Only ONE General Function Handles everything, using Abstract and Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derived from BaseAction Class...). This one should take a big number of Input Parameters, that cover ALL scenarios for all the Actions of the Game (although we could create a class for the Input... and make particular children for each Action, so we could cast the particular Type in line one of this Method... but we are not going to cover that in this Game because it would be for bigger AAA Games...)
         //
         // Try to TakeAction the selected Unit... (by Raycasting on the Ground Plane (Mask Layer...))
         //
@@ -303,7 +303,7 @@ public class UnitActionSystem : MonoBehaviour
         return false;
         
         
-        #endregion 2- Option 2: Only ONE General Function Handles everything, using Abstract & Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...).
+        #endregion 2- Option 2: Only ONE General Function Handles everything, using Abstract and Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...).
         
     }
     

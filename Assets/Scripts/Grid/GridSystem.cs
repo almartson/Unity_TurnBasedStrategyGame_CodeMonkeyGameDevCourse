@@ -106,14 +106,14 @@ public class GridSystem
 
 
     /// <summary>
-    /// Visual representation for Debugging the Grid System & its Array.
+    /// Visual representation for Debugging the Grid System and its Array.
     /// </summary>
     /// <param name="debugPrefab"></param>
     public void CreateDebugObjects(Transform debugPrefab)
     {
         // Create a parent GameObject for organizing the multiple GameObjects that will be instantiated later...
         //
-        GameObject parentCell = new GameObject("GridCells_ForDebugging_(x,y,z)Positions&UnitName");
+        GameObject parentCell = new GameObject("GridCells_ForDebugging_(x,y,z)PositionsAndUnitName");
         
         
         for (int x = 0; x < _width; x++)

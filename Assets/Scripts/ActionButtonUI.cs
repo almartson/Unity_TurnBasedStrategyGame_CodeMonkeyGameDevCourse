@@ -46,7 +46,7 @@ public class ActionButtonUI : MonoBehaviour
 
     /// <summary>
     /// Sets the Base Action in the UI Button element:
-    /// 1- It gets the name of the Action, from the Class Name & stripping the rest of the unnecessary characters.
+    /// 1- It gets the name of the Action, from the Class Name and stripping the rest of the unnecessary characters.
     /// 2- It makes the GUI Button interactable: add the onClick functionality, to make it work, accordingly to the ACTION.
     /// </summary>
     /// <param name="baseAction"></param>
@@ -54,11 +54,11 @@ public class ActionButtonUI : MonoBehaviour
     {
         #region Get Action Name
         
-        // // CodeMonkey: Get the ACTION NAME, & write it on the TextMeshProUGUI element:
+        // // CodeMonkey: Get the ACTION NAME, and write it on the TextMeshProUGUI element:
         // //
         // _textMeshProUGUI.text = baseAction.GetActionName().ToUpper();
         
-        // AlMartson: Get the ACTION NAME (from the Class Type.Name), & write it on the TextMeshProUGUI element:
+        // AlMartson: Get the ACTION NAME (from the Class Type.Name), and write it on the TextMeshProUGUI element:
         //
         _textMeshProUGUI.text = baseAction.GetActionNameByStrippingClassName().ToUpper();
         
