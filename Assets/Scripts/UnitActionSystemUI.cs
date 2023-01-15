@@ -2,8 +2,8 @@
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
 using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UnitActionSystemUI : MonoBehaviour
 {
@@ -17,6 +17,15 @@ public class UnitActionSystemUI : MonoBehaviour
     [SerializeField]
     private Transform _actionButtonContainerTransform;
 
+    
+    #region GUI Buttons' List (created in runtime in the game)
+    
+    [Tooltip("GUI Buttons' List (created in runtime in the game)")]
+    private List<ActionButtonUI> _actionButtonUIList;
+    
+    #endregion GUI Buttons' List (created in runtime in the game)
+    
+    
     #endregion Attributes
 
 
@@ -25,6 +34,13 @@ public class UnitActionSystemUI : MonoBehaviour
     /// <summary>
     /// Awake is called before the Start calls round
     /// </summary>
+    private void Awake()
+    {
+        // 1- Create the UI Button List
+        //
+        _actionButtonUIList = new List<ActionButtonUI>();
+    }
+    
 
     /// <summary>
     /// Start is called before the first frame update
@@ -36,9 +52,18 @@ public class UnitActionSystemUI : MonoBehaviour
         //
         UnitActionSystem.Instance.OnSelectedUnitChanged += UnitActionSystem_OnSelectedUnitChanged;
         
+        // Subscribe to the Event:  When changing the currently selected: ACTION
+        //..(by Mouse Clicking on the UI Button for an ACTION:  MOVE, SPIN, GRENADE, etc...)
+        //
+        UnitActionSystem.Instance.OnSelectedActionChanged += UnitActionSystem_OnSelectedActionChanged;
+        
         //  Create the UI Buttons  (for the current selected UNIT):
         //
         CreateUnitActionUIButtons();
+        //
+        // Update the ACTION  UI Buttons VISUAL Green outline COLOR  (for the current selected UNIT):
+        //
+        UpdateSelectedVisual();
     }
 
 
@@ -83,6 +108,10 @@ public class UnitActionSystemUI : MonoBehaviour
         //     
         // }//End foreach
         
+        // 0.3- Clear the List<ActionButtonUI>()  of UI Buttons:
+        //
+        _actionButtonUIList.Clear();
+        
         
         // 1- Get the selected Unit / Character
         //
@@ -109,13 +138,19 @@ public class UnitActionSystemUI : MonoBehaviour
             // 3.2- Setting the Base Action Attribute of this class  (using 'selectedUnit.GetBaseActionArray()[i]', as it represents every Type of ACTION this UNIT has:
             //
             actionButtonUI.SetBaseAction( selectedUnit.GetBaseActionArray()[i] );
+            
+            // 4- We link a pointer to the UI Button GameObject, for reference:
+            //
+            _actionButtonUIList.Add(actionButtonUI);
 
         }//End for
 
     }//End CreateUnitActionUIButtons()
 
 
-    #region Listening to EVENTS: Selecting a Unit (with a mouse click)
+    #region Listening to EVENTS:
+    
+    #region Selecting a Unit (with a mouse click)
 
     /// <summary>
     /// Event to Trigger when an Unit / Character is selected.
@@ -128,11 +163,73 @@ public class UnitActionSystemUI : MonoBehaviour
         // Trigger:  'CreateUnitActionUIButtons()'
         //
         CreateUnitActionUIButtons();
+        
+        // Update the UI Button's VISUAL:   with an OUTLINE COLOR:
+        //
+        UpdateSelectedVisual();
     }
+
+    #endregion Selecting a Unit (with a mouse click)
+
     
+    #region Selecting an ACTION (with a mouse click)
 
-    #endregion Listening to EVENTS: Selecting a Unit (with a mouse click)
+    /// <summary>
+    /// Event to Trigger when an ACTION   is Mouse-Clicked
+    /// (i.e.: a click on:  an UI Action  Button)
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void UnitActionSystem_OnSelectedActionChanged(object sender, EventArgs e)
+    {
 
+        // Update the UI Button's VISUAL:   with an OUTLINE COLOR:
+        //
+        UpdateSelectedVisual();
+    }
+
+    #endregion Selecting an ACTION (with a mouse click)
+    
+    #endregion Listening to EVENTS:
+    
+    
+    #region Updating UI / GUI Action Buttons' VISUALS    
+    
+    /// <summary>
+    /// Enables / Disables a Green Outline color (that is an GUI Image on the Prefab)...
+    /// ..to Show to the user which ACTION is currently Enabled to be used.
+    /// </summary>
+    private void UpdateSelectedVisual()
+    {
+        
+        // We tell each UI Button to UPDATE ITSELF
+        // A- CodeMonkey's way (non-performant...)
+        //
+        // foreach (ActionButtonUI actionButtonUI in _actionButtonUIList)
+        // {
+        //     
+        //     // Update the GUI Visual for the newly Selected UI Action Button:  an OUTLINE GREEN COLOR:
+        //     //
+        //     actionButtonUI.UpdateSelectedVisual();
+        //     
+        // }//End foreach
+        //
+        // B- AlMartson's way:   Performant: TODO: check this Optimization here.
+        //
+        int listLength = _actionButtonUIList.Count;
+        //
+        for (int i = 0; i < listLength; i++)
+        {
+
+            // Update the GUI Visual for the newly Selected UI Action Button:  an OUTLINE GREEN COLOR:
+            //
+            _actionButtonUIList[ i ].UpdateSelectedVisual();
+
+        }//End foreach
+        
+    }//End UpdateSelectedVisual
+    
+    #endregion Updating UI / GUI Action Buttons' VISUALS
 
     #endregion My Custom Methods
 

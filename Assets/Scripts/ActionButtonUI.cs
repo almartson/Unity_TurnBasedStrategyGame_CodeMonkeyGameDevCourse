@@ -16,7 +16,22 @@ public class ActionButtonUI : MonoBehaviour
     [Tooltip("Reference to the Button (UI), for editing")]
     [SerializeField]
     private Button _button;
+    
+    [Tooltip("Reference to the SELECTED: Button (UI) GameObject, for Enabling / Disabling it... also for editing")]
+    [SerializeField]
+    private GameObject _selectedGameObject;
 
+    
+    #region Currently Active ACTIONS and their related: UI Buttons
+
+    /// <summary>
+    /// Currently Active ACTION   (for the Player / Unit)
+    /// </summary>
+    private BaseAction _baseAction;
+    
+    
+    #endregion Currently Active ACTIONS and their related: UI Buttons
+    
     #endregion Attributes
 
 
@@ -52,6 +67,11 @@ public class ActionButtonUI : MonoBehaviour
     /// <param name="baseAction"></param>
     public void SetBaseAction(BaseAction baseAction)
     {
+        // We get and Set / Save a Reference to the CURRENTLY SELECTED ON GUI: baseAction
+        //
+        _baseAction = baseAction;
+        
+        
         #region Get Action Name
         
         // // CodeMonkey: Get the ACTION NAME, and write it on the TextMeshProUGUI element:
@@ -85,16 +105,40 @@ public class ActionButtonUI : MonoBehaviour
         
         #endregion Make the GUI Button Interactable to perform its ACTION
         
-    }
-
-
+    }//End SetBaseAction(...)
+    
     // /// <summary>
-    // /// THIS IS AN EXAMPLE: This is a Function created to be used as a Delegate Function, for the EXAMPLE.
+    // /// THIS IS AN EXAMPLE: This is a Function created to be used as a Delegate Function, for the EXAMPLE above.
     // /// </summary>
     // private void MoveActionBtn_Click()
     // {
     // }
 
+
+    #region Functionalities UPDATE
+
+    /// <summary>
+    /// Updates the UI Button VISUALS.
+    /// </summary>
+    public void UpdateSelectedVisual()
+    {
+        
+        // 1- Compare the CURRENT (selected) ACTION to the former-last Selected: ACTION
+        // 1.1- CURRENT SELECTED (on GUI): Action
+        //
+        BaseAction selectedBaseAction = UnitActionSystem.Instance.GetSelectedAction();
+        //
+        // NOTE: Previously Validated and accepted and used BASE ACTION:  _baseAction
+        
+        // Enable / Disable this Visual:
+        // If (FORMER Action == NEW SELECTED) on GUI  THEN...=> Enable / UPDATE the Visuals: 
+        //
+        _selectedGameObject.SetActive( selectedBaseAction == _baseAction );
+        
+    }//End UpdateSelectedVisual()
+
+    #endregion Functionalities UPDATE
+    
 
     #endregion My Custom Methods
 

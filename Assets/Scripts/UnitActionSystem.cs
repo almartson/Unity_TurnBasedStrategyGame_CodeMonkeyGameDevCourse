@@ -27,6 +27,13 @@ public class UnitActionSystem : MonoBehaviour
     [Tooltip("Observer Pattern's: Event, to be Fired/Published when the User clicks on any Character of his/her Team (called 'Unit'). Using the Observer Pattern.")]
     public event EventHandler OnSelectedUnitChanged;
     
+    
+    /// <summary>
+    /// Observer Pattern's: Event, to be Fired/Published when the User clicks on any UI ACTION Button... so we are using Delegates to Listen to when a Click on an GUI ACTION (Button) happens. Using the Observer Pattern here too, as above with the Units.
+    /// </summary>
+    [Tooltip("Observer Pattern's: Event, to be Fired/Published when the User clicks on any UI ACTION Button... so we are using Delegates to Listen to when a Click on an GUI ACTION (Button) happens. Using the Observer Pattern here too, as above with the Units.")]
+    public event EventHandler OnSelectedActionChanged;
+    
     #endregion Observer Pattern's
     
     
@@ -379,7 +386,8 @@ public class UnitActionSystem : MonoBehaviour
 
     /// <summary>
     /// Sets the Unit (Character) that was selected via GUI (by a mouse Click)
-    /// ...and also sets the Default Action to be:  MOVE ACTION.
+    /// ...and also sets the Default Action to be:  MOVE ACTION. <br />
+    /// And also: Update the GUI Action Button Visuals: Color + Outline Color.
     /// </summary>
     /// <param name="unit"></param>
     private void SetSelectedUnit(Unit unit)
@@ -417,12 +425,19 @@ public class UnitActionSystem : MonoBehaviour
     
     
     /// <summary>
-    /// Sets the Unit's (i.e.: Player's Character...) selected Action (given as Input)  (baseAction).
+    /// Sets the Unit's (i.e.: Player's Character...) selected Action (given as Input)  (baseAction). <br />
+    /// And also: Update the GUI Action Button Visuals: Color + Outline Color.
     /// </summary>
     /// <param name="baseAction"></param>
     public void SetSelectedAction(BaseAction baseAction)
     {
+        // Set the Selected ACTION
+        //
         _selectedAction = baseAction;
+        
+        // Invoke the Delegate using this Listener, for Updating THIS GUI Button's Visual:
+        //
+        OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
     }
 
     /// <summary>
