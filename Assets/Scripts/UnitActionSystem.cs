@@ -34,6 +34,13 @@ public class UnitActionSystem : MonoBehaviour
     [Tooltip("Observer Pattern's: Event, to be Fired/Published when the User clicks on any UI ACTION Button... so we are using Delegates to Listen to when a Click on an GUI ACTION (Button) happens. Using the Observer Pattern here too, as above with the Units.")]
     public event EventHandler OnSelectedActionChanged;
     
+    
+    /// <summary>
+    /// Observer Pattern's: Event, to be Fired/Published when the System (UI + Logic) is BUSY working on an ACTION: An Animation is being displayed and the Logic being processed + the UI would Show an Image stating:  I AM BUSY...... so we are using Delegates to Listen to when a Click on an GUI ACTION (Button) happens, which Triggers a method called 'Busy'... we are ACTUALLY (IN REALITY...): listening to when 'Busy' is FIRED. Using the Observer Pattern here too, as above with the Units.
+    /// </summary>
+    [Tooltip("Observer Pattern's: Event, to be Fired/Published when the System (UI + Logic) is BUSY working on an ACTION: An Animation is being displayed and the Logic being processed + the UI would Show an Image stating:  I AM BUSY...... so we are using Delegates to Listen to when a Click on an GUI ACTION (Button) happens, which Triggers a method called 'Busy'... we are ACTUALLY (IN REALITY...): listening to when 'Busy' is FIRED. Using the Observer Pattern here too, as above with the Units.")]
+    public event EventHandler<bool> OnBusyWorkingOnAnActionChanged;
+    
     #endregion Observer Pattern's
     
     
@@ -461,6 +468,11 @@ public class UnitActionSystem : MonoBehaviour
     private void SetBusy()
     {
         _isBusy = true;
+        
+        // Delegate Method call:
+        //...to say: "Busy"  State CHANGED
+        //
+        OnBusyWorkingOnAnActionChanged?.Invoke(this, _isBusy);
     }
 
     /// <summary>
@@ -469,6 +481,11 @@ public class UnitActionSystem : MonoBehaviour
     private void ClearBusy()
     {
         _isBusy = false;
+        
+        // Delegate Method call:
+        //...to say: "Busy"  State CHANGED
+        //
+        OnBusyWorkingOnAnActionChanged?.Invoke(this, _isBusy);
     }
     
     #endregion Managing (allowing only...) just ONE Action at a Time
