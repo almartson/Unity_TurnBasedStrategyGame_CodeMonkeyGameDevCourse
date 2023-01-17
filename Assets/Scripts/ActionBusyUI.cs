@@ -1,7 +1,6 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
-
 using UnityEngine;
 
 
@@ -42,11 +41,17 @@ public class ActionBusyUI : MonoBehaviour
         
     }//End Start()
 
-
+    
+    
     /// <summary>
-    /// Update is called once per frame
+    /// 
     /// </summary>
-
+    private void OnDestroy()
+    {
+        // Un-Subscription to the Delegate, in the case the subscriber is destroyed, and the event owner lives on:
+        //
+        UnitActionSystem.Instance.OnBusyWorkingOnAnActionChanged -= UnitActionSystem_OnBusyWorkingOnAnActionChanged;
+    }
 
     #endregion Unity Methods
 
