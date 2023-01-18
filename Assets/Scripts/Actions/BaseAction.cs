@@ -136,6 +136,21 @@ public abstract class BaseAction : MonoBehaviour
     /// <returns>Valid (GridPosition(s)) places where the Unit/Character can TakeAction to, in this Turn.</returns>
     public abstract List<GridPosition> GetValidActionGridPositionList();
     
+    
+    #region POINTS  - for every Action
+
+    /// <summary>
+    /// Gets the ActionPoints (Cost) for this Current SELECTED ACTION.
+    /// </summary>
+    /// <returns></returns>
+    public virtual int GetActionPointsCost()
+    {
+        // Return DEFAULT value:  1
+        //
+        return 1;
+    }
+
+    #endregion POINTS  - for every Action
 
     #endregion Actions' Validations
 
@@ -143,6 +158,8 @@ public abstract class BaseAction : MonoBehaviour
     #endregion My Custom Methods
 
 }
+
+
 
 /// <summary>
 /// Base Class for the Input Parameters, of every Function call to: 'TakeAction()'

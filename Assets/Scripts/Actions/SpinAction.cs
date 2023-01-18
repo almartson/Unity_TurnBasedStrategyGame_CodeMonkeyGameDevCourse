@@ -184,6 +184,20 @@ public class SpinAction : BaseAction
         };
     }
 
+    
+    #region POINTS  - for every Action
+
+    /// <summary>
+    /// Gets the ActionPoints (Cost) for this Current SELECTED ACTION.
+    /// </summary>
+    /// <returns></returns>
+    public override int GetActionPointsCost()
+    {
+        return 2;
+    }
+    
+
+    #endregion POINTS  - for every Action
 
     #endregion Action Validations
     

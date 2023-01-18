@@ -3,6 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UnitActionSystemUI : MonoBehaviour
@@ -25,6 +26,13 @@ public class UnitActionSystemUI : MonoBehaviour
     
     #endregion GUI Buttons' List (created in runtime in the game)
     
+    
+    #region ActionPoints - GUI Visual representation
+
+    [Tooltip("ActionPoints on screen Text: GUI Visual representation")] [SerializeField]
+    private TextMeshProUGUI _actionPointsText;
+    
+    #endregion ActionPoints - GUI Visual representation
     
     #endregion Attributes
 
@@ -57,6 +65,11 @@ public class UnitActionSystemUI : MonoBehaviour
         //
         UnitActionSystem.Instance.OnSelectedActionChanged += UnitActionSystem_OnSelectedActionChanged;
         
+        // Subscribe to the Event:  When Activating / Taking the currently selected: ACTION
+        // ..Update the Visual representation of the UI Text:  ActionPoints
+        //
+        UnitActionSystem.Instance.OnActionStarted += UnitActionSystem_OnActionStarted;
+        
         //  Create the UI Buttons  (for the current selected UNIT):
         //
         CreateUnitActionUIButtons();
@@ -64,6 +77,10 @@ public class UnitActionSystemUI : MonoBehaviour
         // Update the ACTION  UI Buttons VISUAL Green outline COLOR  (for the current selected UNIT):
         //
         UpdateSelectedVisual();
+        
+        // Update remaining the ActionPoints Text
+        //
+        UpdateActionPoints();
     }
 
 
@@ -167,6 +184,10 @@ public class UnitActionSystemUI : MonoBehaviour
         // Update the UI Button's VISUAL:   with an OUTLINE COLOR:
         //
         UpdateSelectedVisual();
+        
+        // Update remaining the ActionPoints Text
+        //
+        UpdateActionPoints();
     }
 
     #endregion Selecting a Unit (with a mouse click)
@@ -189,6 +210,26 @@ public class UnitActionSystemUI : MonoBehaviour
     }
 
     #endregion Selecting an ACTION (with a mouse click)
+    
+    
+    
+    #region Triggering / Activating / Taking an ACTION (with a mouse click)
+
+    /// <summary>
+    /// Event to Trigger when Triggering / Activating / Taking an ACTION
+    /// (with a mouse click)
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void UnitActionSystem_OnActionStarted(object sender, EventArgs e)
+    {
+
+        // Update the UI ActionPoints' Text:
+        //
+        UpdateActionPoints();
+    }
+
+    #endregion Triggering / Activating / Taking an ACTION (with a mouse click)
     
     #endregion Listening to EVENTS:
     
@@ -228,6 +269,40 @@ public class UnitActionSystemUI : MonoBehaviour
         }//End foreach
         
     }//End UpdateSelectedVisual
+    
+    
+    #region ActionPoints - GUI Visual representation
+
+    /// <summary>
+    /// Updates the ActionPoints'  UI Text element.
+    /// </summary>
+    private void UpdateActionPoints()
+    {
+        // Get the Action Points for the currently selected: Unit
+        //
+        Unit selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
+        
+        // Set Text
+        // TODO: Fix Performance issue here: String CONCAT "+" generates Garbage...
+        // 1- It is possible to use the Vexe GitHubs solution: Strings using pointers & Dictionaries... or
+        // 2- Use Images and ""Action Points: " would also be an Image... so the INT Numbers would be Images (Prefabs) that would be selected on this Function here or another...or
+        // 3- Use a function here that transforms every INT number to String. We would need to use 2 separate Text Containers:
+        //    1- "_actionPointsTextLabel.text" and
+        //    2- "_actionPointsText.text"  --->  would be the ACTUAL INT NUMBER... TO BE changed, here, without the need for any "+" String Concatenation...
+        //
+        // CodeMonkey Original Implementation: _actionPointsText.text = "Action Points: " + selectedUnit.GetActionPoints();
+        //
+        _actionPointsText.text = "Action Points: " + selectedUnit.GetActionPoints();
+        //
+        // TODO: AlMartson's Optimization (need a review)
+        //
+        //_actionPointsText.text = selectedUnit.GetActionPoints().ToString();
+
+    }//End UpdateActionPoints(...
+    
+    
+    #endregion ActionPoints - GUI Visual representation
+    
     
     #endregion Updating UI / GUI Action Buttons' VISUALS
 

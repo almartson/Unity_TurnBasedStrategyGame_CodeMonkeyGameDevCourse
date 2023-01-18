@@ -19,6 +19,8 @@ public class Unit : MonoBehaviour
     /// </summary>
     private GridPosition _finalGridPositionOfNextAction;
     
+    #region ACTIONS
+    
     #region Action's List
     
     /// <summary>
@@ -38,6 +40,23 @@ public class Unit : MonoBehaviour
     private SpinAction _spinAction;
 
     #endregion Action's List
+
+
+    #region POINTS  - for every Action
+    
+    /// <summary>
+    /// Total amount of Points (spendable), to spend each time this Character/Unit performs an Action. <br />
+    /// Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. <br />
+    /// Default value : 2
+    /// </summary>
+    [Tooltip("Total amount of Points (spendable), to spend each time this Character/Unit performs an Action. /n Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. /n Default value : 2")]
+    [SerializeField]
+    private int _actionPoints = 2;
+    
+    
+    #endregion POINTS  - for every Action
+    
+    #endregion ACTIONS
     
     
     /// <summary>
@@ -52,6 +71,7 @@ public class Unit : MonoBehaviour
     /// (it is validated inside the Grid, see trace for:  MousePosition)
     /// </summary>
     public Vector3 MousePosition { get => _mousePosition; set => _mousePosition = value; }
+    
     
     #endregion Attributes
     
@@ -149,6 +169,91 @@ public class Unit : MonoBehaviour
     {
         return _spinAction;
     }
+
+    
+    #region POINTS  - for every Action
+
+
+    /// <summary>
+    /// Tries to: Execute the GENERAL process of SPENDING the <code>actionPoints</code> by <code>the amount INPUT PARAMETER</code> on this ACTION.
+    /// If this Unit does NOT have the necessary actionPoints to pay for this Action, nothing else is done, and a <code>false</code> bool is returned.
+    /// </summary>
+    /// <returns>Ending Success / Failure boolean state</returns>
+    public bool TrySpendActionPointsToTakeAction(BaseAction baseAction)
+    {
+        // Tries to spend the ActionPoint to pay for: the Action
+        //
+        if (CanSpendActionPointsToTakeAction(baseAction))
+        {
+            
+            // Spend the actionPoints
+            //
+            SpendActionPoints(baseAction.GetActionPointsCost());
+
+            return true;
+            
+        }//End CanSpendActionPointsToTakeAction
+        else
+        {
+            return false;
+
+        }//End else of if (CanSpendActionPointsToTakeAction
+        
+    }//End TrySpendActionPointsToTakeAction
+    
+    
+    /// <summary>
+    /// Checks if this Unit / Character is able to spend any Point on this CURRENTLY SELECTED Action.
+    /// </summary>
+    /// <param name="baseAction"></param>
+    /// <returns></returns>
+    private bool CanSpendActionPointsToTakeAction(BaseAction baseAction)
+    {
+        if (_actionPoints >= baseAction.GetActionPointsCost())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+            
+        }//End else
+        
+    }//End CanSpendActionPointsToTakeAction
+
+
+    /// <summary>
+    /// Executes the process of SPENDING the <code>actionPoints</code> by <code>the amount INPUT PARAMETER</code> on this ACTION.
+    /// </summary>
+    /// <param name="amount">Cost - this is going to be spent</param>
+    private void SpendActionPoints(int amount)
+    {
+        _actionPoints -= amount;
+
+        // Validation
+        // Must not be under zero - 0:
+        //
+        if (_actionPoints < 0)
+        {
+            _actionPoints = 0;
+        }
+        // As a Ternary Expression:
+        // _actionPoints = (_actionPoints < 0) ? 0 : _actionPoints;
+
+    }//End SpendActionPoints
+
+
+    /// <summary>
+    /// Getter for <code>_actionPoints</code>
+    /// </summary>
+    /// <returns></returns>
+    public int GetActionPoints()
+    {
+        return _actionPoints;
+    }
+    
+    
+    #endregion POINTS  - for every Action
     
     #endregion Actions
     

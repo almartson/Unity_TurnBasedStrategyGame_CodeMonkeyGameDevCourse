@@ -41,6 +41,18 @@ public class UnitActionSystem : MonoBehaviour
     [Tooltip("Observer Pattern's: Event, to be Fired/Published when the System (UI + Logic) is BUSY working on an ACTION: An Animation is being displayed and the Logic being processed + the UI would Show an Image stating:  I AM BUSY...... so we are using Delegates to Listen to when a Click on an GUI ACTION (Button) happens, which Triggers a method called 'Busy'... we are ACTUALLY (IN REALITY...): listening to when 'Busy' is FIRED. Using the Observer Pattern here too, as above with the Units.")]
     public event EventHandler<bool> OnBusyWorkingOnAnActionChanged;
     
+    
+    #region Action Points GUI: UI Representation, Visuals for ActionPoints
+    
+    /// <summary>
+    /// Observer Pattern's: Event, to be Fired/Published when the Player starts an Action (UI + Logic). At that moment we want the NEW (Updated) available ActionPoints UI Visual number to be displayed on the screen accordingly.
+    /// </summary>
+    [Tooltip("Observer Pattern's: Event, to be Fired/Published when the Player starts an Action (UI + Logic). At that moment we want the NEW (Updated) available ActionPoints UI Visual number to be displayed on the screen accordingly.")]
+    public event EventHandler OnActionStarted;
+    
+    
+    #endregion Action Points GUI: UI Representation, Visuals for ActionPoints
+    
     #endregion Observer Pattern's
     
     
@@ -276,32 +288,54 @@ public class UnitActionSystem : MonoBehaviour
             //
             if (_selectedAction.IsValidActionGridPosition(mouseGridPosition))
             {
-                // .2- 'Take the Action'
+
+                // Try to Spend this Unit's available "actionPoints": on this Action
                 //
-                // .2.1- Save the Valid GridPosition:
-                //
-                // .2.1.1- Save the original Mouse Position (just in case... as a backup)
-                //
-                _selectedUnit.MousePosition.Set(mouseGridPosition.x, 0, mouseGridPosition.z);
-                //
-                // .2.1.1- In _selectedUnit, for later use in 'TakeAction()':
-                //
-                _selectedUnit.SetFinalGridPositionOfNextPlayersAction(mouseGridPosition);
+                if (_selectedUnit.TrySpendActionPointsToTakeAction(_selectedAction))
+                {
+                    // .2.0- The actionPoints are Spent / used by now, already...
+                    
+                    // .2- 'Take the Action'
+                    //
+                    // .2.1- Save the Valid GridPosition:
+                    //
+                    // .2.1.1- Save the original Mouse Position (just in case... as a backup)
+                    //
+                    _selectedUnit.MousePosition.Set(mouseGridPosition.x, 0, mouseGridPosition.z);
+                    //
+                    // .2.1.1- In _selectedUnit, for later use in 'TakeAction()':
+                    //
+                    _selectedUnit.SetFinalGridPositionOfNextPlayersAction(mouseGridPosition);
                 
                 
-                // .3- Set this Class (SERVICE) Methods as: BUSY .. until it ends:  Set MUTEX ON
-                //
-                SetBusy();
-                //
-                // .4- TakeAction() , asked by the Player, on the Game
-                // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: ) -> Sets Mutex OFF (when TakeAction() Ends...)
-                //
-                _selectedAction.TakeAction(ClearBusy);
+                    // .3- Set this Class (SERVICE) Methods as: BUSY .. until it ends:  Set MUTEX ON
+                    //
+                    SetBusy();
+                    //
+                    // .4- TakeAction() , asked by the Player, on the Game
+                    // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: ) -> Sets Mutex OFF (when TakeAction() Ends...)
+                    //
+                    _selectedAction.TakeAction(ClearBusy);
+                    
+                    
+                    // Update the GUI for ActionPoints:
+                    //
+                    OnActionStarted?.Invoke(this, EventArgs.Empty);
 
-                // Return the Success/Failure State of the 'Take Action' process:
-                //
-                return true;
-
+                    // Return the Success/Failure State of the 'Take Action' process:
+                    //
+                    return true;
+                    
+                }//End if (_selectedUnit.CanSpendActionPointsToTakeAction...
+                else
+                {
+                    // Did not pass the Validation:     CanSpendActionPointsToTakeAction(...)
+                    // Return the Success/Failure State of the 'Take Action' process:  false (failure)
+                    //
+                    return false;
+                    
+                }//End else of if (_selectedUnit.CanSpendActionPointsToTakeAction...
+                
             }//End if (_selectedAction.IsValidActionGridPosition
             else
             {
