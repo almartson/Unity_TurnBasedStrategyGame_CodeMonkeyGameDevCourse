@@ -3,12 +3,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 /// <summary>
-/// Uses the Observer Pattern + Singleton Pattern (for easily assigning it to the GameObject of its related Prefab...)
+/// Uses the Observer Pattern PLUS a Singleton Pattern (for easily assigning it to the GameObject of its related Prefab...)
 /// It is the (Main and only...): Subject / Publisher of the Events. 
 /// </summary>
 public class UnitActionSystem : MonoBehaviour
 {
-
     #region Attributes
     
     #region Singleton Pattern's
@@ -97,8 +96,8 @@ public class UnitActionSystem : MonoBehaviour
     
     
     #region Unity Methods
-
-    // Start is called before the first frame update
+    
+    
     private void Awake()
     {
         
@@ -116,7 +115,7 @@ public class UnitActionSystem : MonoBehaviour
         if (Instance != null)
         {
             
-            Debug.LogError("There's more than one 'UnitActionSystem'!. GameObject: ---> " + transform + "  - " + Instance);
+            Debug.LogError("There's more than one '" + GetType().Name + "'!. GameObject: ---> " + transform + "  - " + Instance);
             //
             // Destroy, to be able to continue the Gameplay (i.e.: Recovery from the Error/Exception...)
             //
