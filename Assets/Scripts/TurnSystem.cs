@@ -16,7 +16,7 @@ public class TurnSystem : MonoBehaviour
 
     [Tooltip("Current Turn ID number")]
     [SerializeField]
-    private int _turnNumber;
+    private int _turnNumber = 1;
 
     
     #region Singleton Pattern's

@@ -70,6 +70,17 @@ public class UnitActionSystemUI : MonoBehaviour
         //
         UnitActionSystem.Instance.OnActionStarted += UnitActionSystem_OnActionStarted;
         
+        // Subscribe to the Event:  When Changing this Turn... to the:  NEXT TURN
+        // ..Update the Visual representation of the UI Text:  Turn Number & Action Points (for this Turn).
+        //
+        TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
+                
+        // Subscribe to the Event:  When using ANY _actionPoints for  an ACTION
+        // ..Update the (UI):   _actionPoints  UI TEXT.
+        //
+        Unit.OnAnyActionPointsChanged += Unit_OnAnyActionPointsChanged;
+        
+        
         //  Create the UI Buttons  (for the current selected UNIT):
         //
         CreateUnitActionUIButtons();
@@ -212,7 +223,6 @@ public class UnitActionSystemUI : MonoBehaviour
     #endregion Selecting an ACTION (with a mouse click)
     
     
-    
     #region Triggering / Activating / Taking an ACTION (with a mouse click)
 
     /// <summary>
@@ -231,7 +241,38 @@ public class UnitActionSystemUI : MonoBehaviour
 
     #endregion Triggering / Activating / Taking an ACTION (with a mouse click)
     
-    #endregion Listening to EVENTS:
+    
+    #region Changing this Turn to -> the -> NEXT TURN (TurnSystem related)
+
+    /// <summary>
+    /// Event to be Triggered when: CHANGING this TURN to the NEXT TURN.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
+    {
+        // Update the UI ActionPoints' Text:
+        //
+        UpdateActionPoints();
+    }
+
+    
+    /// <summary>
+    /// Event to be Triggered when: spending  <code>_actionPoints</code>  on an ACTION.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Unit_OnAnyActionPointsChanged(object sender, EventArgs e)
+    {
+        // Update the UI ActionPoints' Text:
+        //
+        UpdateActionPoints();
+    }
+    
+    #endregion Changing this Turn to -> the -> NEXT TURN (TurnSystem related)
+
+    
+    #endregion Listening to EVENTS
     
     
     #region Updating UI / GUI Action Buttons' VISUALS    

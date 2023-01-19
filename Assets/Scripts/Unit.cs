@@ -18,7 +18,8 @@ public class Unit : MonoBehaviour
     /// This is already Validated.
     /// </summary>
     private GridPosition _finalGridPositionOfNextAction;
-    
+
+
     #region ACTIONS
     
     #region Action's List
@@ -45,13 +46,35 @@ public class Unit : MonoBehaviour
     #region POINTS  - for every Action
     
     /// <summary>
+    /// MAXIMUM Total amount of Points PER TURN (spendable); to be spent, each time this Character/Unit performs an Action. <br /> <br />
+    /// Note: Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. <br />
+    /// Default value : 2
+    /// </summary>
+    private const int _ACTION_POINTS_PER_TURN_MAX = 2;
+    
+    
+    /// <summary>
     /// Total amount of Points (spendable), to spend each time this Character/Unit performs an Action. <br />
     /// Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. <br />
     /// Default value : 2
     /// </summary>
     [Tooltip("Total amount of Points (spendable), to spend each time this Character/Unit performs an Action. /n Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. /n Default value : 2")]
     [SerializeField]
-    private int _actionPoints = 2;
+    private int _actionPoints = _ACTION_POINTS_PER_TURN_MAX;
+    
+    
+    #region Turn System
+
+    /// <summary>
+    /// Listener / Delegate Event that will be STATIC (i.e.: depending only of the CLASS not any instanced Object of this Class)...
+    /// ...that will Update the Whole Turn System accordingly when ANY change
+    /// ...in Action Points occurs (NOTE: It does not indicate that a turn has changed).<br />
+    /// NOTE: This STATIC EVENT fixes the problems: There are 2 classes (this one - Unit - AND TurnSystem, that will fire an EVEN when the '_actionPoints for an Unit' Changes.... so if the ORDER OF EXECUTION is incorrect, there will be a Bug. This EVENT SHOULD BE THE FIRST ONE to be fired when we use _actionPoints, so making it a STATIC EVENT will make it be Triggered always first.
+    /// </summary>
+    public static event EventHandler OnAnyActionPointsChanged; 
+
+    
+    #endregion Turn System
     
     
     #endregion POINTS  - for every Action
@@ -109,7 +132,14 @@ public class Unit : MonoBehaviour
         _finalGridPositionOfNextAction = _gridPosition;
         //
         LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
-    }
+        
+        
+        // LISTENER: Listen to the   OnTurnChanged   EVENT:
+        //...(with our own Function, defined here on this Class):
+        //
+        TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
+
+    }//End Start()
     
 
     // Update is called once per frame
@@ -240,6 +270,11 @@ public class Unit : MonoBehaviour
         // As a Ternary Expression:
         // _actionPoints = (_actionPoints < 0) ? 0 : _actionPoints;
 
+        
+        // Fire the FIRST (STATIC) EVENT  related to _actionPoints CHANGING:
+        //
+        OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
+        
     }//End SpendActionPoints
 
 
@@ -286,5 +321,35 @@ public class Unit : MonoBehaviour
     }
 
     #endregion My Custom Methods
+    
+    
+    #region Turn System
+    
+    #region Turn System - Delegates Listeners of On Turn Changed
+
+    /// <summary>
+    /// Listener / Delegate that Listens to:  a CHANGE in the Current TURN
+    /// ...(to the NEXT TURN). <br />
+    /// And then: resets the variables for the:  NEXT Turn <br />
+    /// Such as:  _actionPoints
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
+    {
+        // Reset the variables for the:  NEXT Turn
+        // _actionPoints:
+        //
+        _actionPoints = _ACTION_POINTS_PER_TURN_MAX;
+               
+        // Fire the FIRST (STATIC) EVENT  related to ANY _actionPoints CHANGING:
+        //
+        OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
+
+    }//End TurnSystem_OnTurnChanged
+    
+    #endregion Turn System - Delegates Listeners of On Turn Changed
+        
+    #endregion Turn System
     
 }
