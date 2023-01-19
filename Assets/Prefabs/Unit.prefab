@@ -146,6 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea93d9e2811325545958887771f0378c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _actionPoints: 2
 --- !u!65 &1902843464558363180
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -171,6 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c543fab2394871a4198c0a283ae8527c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isActive: 0
   _targetPosition: {x: 0, y: 0, z: 0}
   _moveSpeed: 4
   _rotateSpeed: 10
@@ -189,7 +191,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ba48ec7cfd09060a552c6dd2fc99a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _myDefaultVar: 0
+  _isActive: 0
+  _spinVelocityAndDirectionInDegreesPerSecond: 360
+  _rotationGoal: 360
 --- !u!1001 &6297334025778817227
 PrefabInstance:
   m_ObjectHideFlags: 0
