@@ -148,8 +148,17 @@ public class UnitActionSystem : MonoBehaviour
             return;
         }
         
+        // if this is NOT the Player's Turn:  then it is the ENEMY'S Turn
+        //...so:  return   (the Player can't play as the CPU...)
+        //
+        if (!TurnSystem.Instance.IsPlayerTurn)
+        {
+            return;
+        }
+        
         // Fix to: Keep the GUI ACTION Buttons on the Top
         // (of the Grid, Game & Units:)
+        // NOTE:  This does NOT work on ANDROID, but there is a fix to make it work, based on .fingers... (see my Notes on this Commit and the 2 next Commits, Chapter 04)
         //
         // This is to keep the the GUI always in front of everything,
         //...so if you Click on an Empty Space and at the same time on a
@@ -388,14 +397,25 @@ public class UnitActionSystem : MonoBehaviour
                 if (_raycastHitInfo[0].transform.TryGetComponent<Unit>(out Unit unit))
                 {
                     
-                    // Check if the Unit is already (previously) selected. If thatś the case, don't do it again:
+                    // Check if the Unit is already (previously) selected. If that is the case, don't do it again:
                     //
                     if (unit == _selectedUnit)
                     {
                         // The Unit was already selected, just exit, return false:
                         //
                         return false;
-                    }
+                        
+                    }//End if (unit == _selectedUnit)
+
+                    // We don't want the Player to select an ENEMY
+                    // ...(that would be like breaking the Game's Rules):
+                    //
+                    if (unit.IsEnemy())
+                    {
+                        // Clicked on an Enemy
+                        return false;
+
+                    }//End if (unit.IsEnemy())
                     
                     // If a new Unit is being selected, return it + our TRUE flag:
                     //

@@ -18,7 +18,12 @@ public class TurnSystem : MonoBehaviour
     [SerializeField]
     private int _turnNumber = 1;
 
-    
+    /// <summary>
+    /// Determines whose is the current Turn? (Player's or Enemy's...)
+    /// </summary>
+    private bool _isPlayerTurn = true;
+
+
     #region Singleton Pattern's
     
     [Tooltip("Singleton Pattern's Main Key: Instance of this very Class")] 
@@ -99,6 +104,10 @@ public class TurnSystem : MonoBehaviour
         //
         _turnNumber++;
         
+        // We invert the Player's Turn variable
+        //
+        _isPlayerTurn = !_isPlayerTurn;
+        
         // When the Turn Changes:  Fire this Delegate 'OnTurnChanged'
         // EVENT:
         //
@@ -113,7 +122,16 @@ public class TurnSystem : MonoBehaviour
     {
         return _turnNumber;
     }
-
+    
+    /// <summary>
+    /// _isPlayerTurn Properties:  Getter and Setter.
+    /// </summary>
+    public bool IsPlayerTurn
+    {
+        get => _isPlayerTurn;
+        set => _isPlayerTurn = value;
+    }
+    
     #endregion My Custom Methods
 
 }

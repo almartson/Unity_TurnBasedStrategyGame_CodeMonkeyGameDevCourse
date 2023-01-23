@@ -5,6 +5,16 @@ public class Unit : MonoBehaviour
 {
 
     #region Attributes
+
+
+    #region  Enemy - Player - Friendnemy - etc
+
+    [Tooltip("Is this Character / Unit a Player on my Side or an Enemy?")]
+    [SerializeField]
+    private bool _isEnemy = false;
+
+    #endregion Enemy - Player - Friendnemy - etc
+    
     
     /// <summary>
     /// Keeping track of the CURRENT GridPosition of this Unit.
@@ -337,19 +347,40 @@ public class Unit : MonoBehaviour
     /// <param name="e"></param>
     private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
     {
-        // Reset the variables for the:  NEXT Turn
-        // _actionPoints:
+        // Only work when the Player's or Enemy's Turn ENDS:
         //
-        _actionPoints = _ACTION_POINTS_PER_TURN_MAX;
-               
-        // Fire the FIRST (STATIC) EVENT  related to ANY _actionPoints CHANGING:
-        //
-        OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
+        if ((_isEnemy && !TurnSystem.Instance.IsPlayerTurn) ||
+            (!_isEnemy && TurnSystem.Instance.IsPlayerTurn))
+        {
 
+            // Reset the variables for the:  NEXT Turn
+            // _actionPoints:
+            //
+            _actionPoints = _ACTION_POINTS_PER_TURN_MAX;
+               
+            // Fire the FIRST (STATIC) EVENT  related to ANY _actionPoints CHANGING:
+            //
+            OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
+
+        }//End if ((_isEnemy && !TurnSystem...
+        
     }//End TurnSystem_OnTurnChanged
     
     #endregion Turn System - Delegates Listeners of On Turn Changed
         
     #endregion Turn System
     
+    
+    #region  Enemy - Player - Friendnemy - etc
+
+    /// <summary>
+    /// Getter for <code>_isEnemy</code>
+    /// </summary>
+    /// <returns></returns>
+    public bool IsEnemy()
+    {
+        return _isEnemy;
+    }
+    
+    #endregion Enemy - Player - Friendnemy - etc
 }
