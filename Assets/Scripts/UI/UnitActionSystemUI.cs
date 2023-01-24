@@ -335,6 +335,10 @@ public class UnitActionSystemUI : MonoBehaviour
         //
         _actionPointsText.text = "Action Points: " + selectedUnit.GetActionPoints();
         //
+        // Option, does this generates a Garbage Allocation?
+        //
+        //_actionPointsText.text = $"Action Points: {selectedUnit.GetActionPoints().ToString()}";
+        //
         // TODO: AlMartson's Optimization (need a review)
         //
         //_actionPointsText.text = selectedUnit.GetActionPoints().ToString();

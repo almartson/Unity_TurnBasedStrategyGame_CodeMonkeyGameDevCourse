@@ -22,6 +22,9 @@ public class TurnSystemUI : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _turnNumberText;
     
+    [Tooltip("Enemy Turn UI 'Rect GameObject', containing Image and Text as children - UI Element (Reference to...)")]
+    [SerializeField]
+    private GameObject _enemyTurnVisualGameObject;
 
     #endregion Attributes
 
@@ -59,6 +62,14 @@ public class TurnSystemUI : MonoBehaviour
         // Update the Turn Number UI TEXT:
         //
         UpdateTurnText();
+        
+        // Update the Enemy's Turn UI Image (switch from: visible to invisible):
+        //
+        UpdateEnemyTurnVisual();
+
+        // Show the UI Button 'End Turn' Button: when it is the Player's Turn
+        //
+        UpdateEndButtonVisibility();
 
     }//End Start
 
@@ -72,9 +83,7 @@ public class TurnSystemUI : MonoBehaviour
 
 
     #region My Custom Methods
-
-
-
+    
     #region Observer Pattern Methods
 
     
@@ -90,13 +99,19 @@ public class TurnSystemUI : MonoBehaviour
         //
         UpdateTurnText();
         
+        // Update the Enemy's Turn UI Image (switch from: visible to invisible, and vice-versa):
+        //
+        UpdateEnemyTurnVisual();
+        
+        // Show the UI Button 'End Turn' Button: when it is the Player's Turn
+        //
+        UpdateEndButtonVisibility();
+        
     }//End TurnSystem_OnTurnChanged
     
-    
     #endregion Observer Pattern Methods
-    
-    
-    
+
+
     /// <summary>
     /// Updates the UI Text showing the TURN NUMBER. 
     /// </summary>
@@ -109,6 +124,32 @@ public class TurnSystemUI : MonoBehaviour
     }//End UpdateTurnText
 
 
+    /// <summary>
+    /// Updates the UI Rect GameObject ( <code>_enemyTurnVisualGameObject</code> )
+    /// ..making it visible only when it is the Enemy's Turn.
+    /// (..i.e.: when it is NOT the Player's Turn).
+    /// </summary>
+    private void UpdateEnemyTurnVisual()
+    {
+        // Make it visible only when it is the Enemy's Turn.
+        //
+        _enemyTurnVisualGameObject.SetActive(!TurnSystem.Instance.IsPlayerTurn);
+    }
+
+
+    /// <summary>
+    /// Updates the Visibility (Visible or invisible - GameObject Enabled or Disabled)
+    /// ..according to the Enemy's Turn: <br />
+    /// Enemy Turn:   Hide it,<br />
+    /// Player Turn:  Show it. <br />
+    /// </summary>
+    private void UpdateEndButtonVisibility()
+    {
+        // Show the UI Button 'End Turn' Button: when it is the Player's Turn
+        //
+        _endTurnBtn.gameObject.SetActive(TurnSystem.Instance.IsPlayerTurn);
+    }
+    
     #endregion My Custom Methods
 
 }
