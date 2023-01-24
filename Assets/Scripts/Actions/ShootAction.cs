@@ -1,9 +1,14 @@
+/* NOTE: Modified Unity C# Script Template by Alec AlMartson...
+...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
+*/
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class SpinAction : BaseAction
+/// <summary>
+/// This class handles the execution of the Shooting Action (Animations, timers, stages of the animation itself - even if it is a chain of animations tied up to each other and triggered together, - etc)
+/// </summary>
+public class ShootAction : BaseAction
 {
     #region Attributes
 
@@ -14,6 +19,7 @@ public class SpinAction : BaseAction
 
     /// <summary>
     /// Number of Degrees to Rotate
+    /// (this is used for the Character / Unit to rotate towards the Target, to Aim towards it... in the initial state of Animation)
     /// </summary>
     private float _totalSpinAmount = 0f;
     
@@ -34,7 +40,7 @@ public class SpinAction : BaseAction
     /// <summary>
     /// BaseParameters (INPUT) for calling this action as a GENERIC ACTION, with the function:  TakeAction
     /// </summary>
-    private SpinActionBaseParameters _spinActionBaseParameters = new SpinActionBaseParameters();
+    private ShootActionBaseParameters _shootActionBaseParameters = new ShootActionBaseParameters();
     
 
     #endregion BaseParameters (INPUT) for calling this action as a GENERIC ACTION, with the function:  TakeAction
@@ -95,7 +101,7 @@ public class SpinAction : BaseAction
             
             // We CALL our DELEGATE:  tells everyone that the TakeAction routine ENDED:
             //
-            onActionComplete();
+            onActionComplete?.Invoke();
             //
             // Example: other ways of calling or executing the Delegate:
             // onActionComplete?.Invoke();
@@ -114,16 +120,15 @@ public class SpinAction : BaseAction
     #region My Custom Methods
     
     /// <summary>
-    /// Makes the Payers Character (Unit): Spin /Rotate.
+    /// Makes the Payers Character (Unit): Shoot to the Target.
     /// </summary>
-    public override void TakeAction(Action onSpinComplete)   //  (GridPosition gridPosition /* Not necessary for Spin Action */, Action onSpinComplete)
+    public override void TakeAction(Action onShootComplete)
     {
+        // This is greyed out because currently there are no INPUT PARAMETERS FOR THIS ACTION: .
         
-        // This is greyed out because currently there are no INPUT PARAMETERS FOR THIS ACTION: SPIN.
+        // 0- Get the Input Base Parameters (for this function call):
         //
-        // // 0- Get the Input Base Parameters (for this function call):
-        // //
-        // GenerateInputParameters();
+        GenerateInputParameters();
         
         
         // 1- Here we assign the Function/Procedure (i.e.: Method) to the 'DELEGATE variable'
@@ -132,7 +137,7 @@ public class SpinAction : BaseAction
         // ..., to call the latest Method that was added in this Method TakeAction().
         // Purpose of this callback (Delegate):  to tell the World that this ROUTINE JUST ENDED (..the STARTING PHASE...):
         //
-        this.onActionComplete = onSpinComplete;
+        this.onActionComplete = onShootComplete;
         
         // Sets a mutex flag:
         //
@@ -141,7 +146,8 @@ public class SpinAction : BaseAction
         // Reset the Accumulated Rotation
         //
         _totalSpinAmount = 0.0f;
-    }
+        
+    }//End TakeAction(...)
 
     /// <summary>
     /// Generic Method for generating the necessary Input Parameters that are used in the calling of
@@ -159,7 +165,7 @@ public class SpinAction : BaseAction
         // //
         // 1- TARGET GridPosition (i.e.: the Destination of the Movement...)
         //
-        // this._spinActionBaseParameters.TargetGridPositionOfSelectedMovement = UnitActionSystem.Instance.GetSelectedUnit().GetGridPosition();
+        // this._shootActionBaseParameters.TargetGridPositionOfSelectedMovement = UnitActionSystem.Instance.GetSelectedUnit().GetGridPosition();
         
     }//End GenerateInputParameters
 
@@ -223,7 +229,7 @@ public class SpinAction : BaseAction
     {
         // CodeMonkey' version:  Write a custom class Name (string) here:
         //
-        return "Spin";
+        return "Shoot";
     }
     
     #endregion UI related utils
@@ -238,7 +244,7 @@ public class SpinAction : BaseAction
 /// Concrete-particular Class (derived as a child of "BaseParameters") for the Input Parameters,
 /// ..of every Function call to: 'TakeAction()'
 /// </summary>
-public class SpinActionBaseParameters : BaseParameters
+public class ShootActionBaseParameters : BaseParameters
 {
 
     #region Attributes
@@ -254,3 +260,4 @@ public class SpinActionBaseParameters : BaseParameters
     #endregion Methods
 
 }
+

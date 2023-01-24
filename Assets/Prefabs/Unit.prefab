@@ -110,6 +110,7 @@ GameObject:
   - component: {fileID: 1902843464558363180}
   - component: {fileID: 1537459889029726718}
   - component: {fileID: -9015054238785770785}
+  - component: {fileID: -63595787454068697}
   m_Layer: 7
   m_Name: Unit
   m_TagString: Untagged
@@ -146,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea93d9e2811325545958887771f0378c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isEnemy: 0
   _actionPoints: 2
 --- !u!65 &1902843464558363180
 BoxCollider:
@@ -194,6 +196,19 @@ MonoBehaviour:
   _isActive: 0
   _spinVelocityAndDirectionInDegreesPerSecond: 360
   _rotationGoal: 360
+--- !u!114 &-63595787454068697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6297334026975807288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1b4c438bbcfbd1eb9f1e5662b509f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _myDefaultVar: 0
 --- !u!1001 &6297334025778817227
 PrefabInstance:
   m_ObjectHideFlags: 0

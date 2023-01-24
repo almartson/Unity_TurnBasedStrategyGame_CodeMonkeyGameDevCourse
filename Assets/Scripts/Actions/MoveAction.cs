@@ -22,15 +22,15 @@ public class MoveAction : BaseAction
     [SerializeField] private float _rotateSpeed = 10.0f;
 
     
-    #region BaseParameters (INPUT) for calling the GENERIC MOVE ACTION function:  TakeAction
+    #region BaseParameters (INPUT) for calling this action as a GENERIC ACTION, with the function:  TakeAction
 
     /// <summary>
-    /// BaseParameters (INPUT) for calling the GENERIC MOVE ACTION function:  TakeAction
+    /// BaseParameters (INPUT) for calling this action as a GENERIC ACTION, with the function:  TakeAction
     /// </summary>
     private MoveActionBaseParameters _moveActionBaseParameters = new MoveActionBaseParameters();
     
 
-    #endregion BaseParameters (INPUT) for calling the GENERIC MOVE ACTION function:  TakeAction
+    #endregion BaseParameters (INPUT) for calling this action as a GENERIC ACTION, with the function:  TakeAction
     
     
     #region Animator & Animations
