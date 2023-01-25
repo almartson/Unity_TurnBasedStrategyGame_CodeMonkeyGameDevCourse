@@ -103,5 +103,25 @@ public class GridObject
     
     #endregion Validations for TakeAction Actions on each GridObject
     
+    
+    /// <summary>
+    /// Gets the first Unit that is in the (selected) Grid Object.
+    /// Usually (99.99% of the cases...)  there will be only ONE Unit / Character there, because it is a RULE of the GAME. 
+    /// </summary>
+    /// <returns>null ... OR ... The first Unit of the List, that is in this SPOT / GRID / CELL</returns>
+    public Unit GetFirstUnit()
+    {
+        if (HasAnyUnit())
+        {
+            // Return the FIRST element (i.e.: Unit) of the List<Unit>
+            //
+            return _unitList[0];
+        }
+        else
+        {
+            return null;
+        }
+    }//End GetFirstUnit
+
     #endregion Methods
 }

@@ -95,6 +95,8 @@ public abstract class BaseAction : MonoBehaviour
     }
 
 
+    #region 'Taking the Action' Logic
+    
     /// <summary>
     /// Generic Method for getting the ACTION from the GUI (the Payer's).
     /// This must be reimplemented / overriden in each Concrete (derived, child) as: 'SomethingAction' Class.
@@ -109,6 +111,38 @@ public abstract class BaseAction : MonoBehaviour
     /// This must be reimplemented / overriden in each Concrete (derived, child).
     /// </summary>
     public abstract void GenerateInputParameters();
+
+    
+    /// <summary>
+    /// Common Logic that is executed every time at the BEGINNING of the 'TakeAction()'  Method. <br />
+    /// Sets the <code>_isActive</code>  flag to TRUE (i.e.: this ACTION IS TAKING PLACE)... + Sets the CallBack: <code>this.onActionComplete</code> to the Input Parameter 'onActionComplete' of this function.
+    /// </summary>
+    /// <param name="onActionComplete"></param>
+    protected void ActionStart(Action onActionComplete)
+    {
+        // MUTEX flag  +  Set the Callback
+        //
+        _isActive = true;
+        this.onActionComplete = onActionComplete;
+        
+    }
+    
+    /// <summary>
+    /// Common Logic that is executed every time at the END of the 'TakeAction()'  Method. <br />
+    /// Here we:  Release the (mutex) flag <code>_isActive = false</code>... +  We CALL our DELEGATE:  tells everyone that the TakeAction routine ENDED:<code>onActionComplete()</code>
+    /// </summary>
+    protected void ActionComplete()
+    {
+        // Release the (mutex) flag
+        //
+        _isActive = false;
+        
+        // We CALL our DELEGATE:  tells everyone that the TakeAction routine ENDED:
+        //
+        onActionComplete?.Invoke();
+    }
+
+    #endregion 'Taking the Action' Logic
     
 
     #region Actions' Validations

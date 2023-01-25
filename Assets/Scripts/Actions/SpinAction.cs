@@ -90,20 +90,27 @@ public class SpinAction : BaseAction
         if (Mathf.Abs(_totalSpinAmount) >= Mathf.Abs(_rotationGoal))
         {
             // Release the (mutex) flag
+            // +  We CALL our DELEGATE:  tells everyone that the TakeAction routine ENDED:
             //
-            _isActive = false;
+            ActionComplete();
             
-            // We CALL our DELEGATE:  tells everyone that the TakeAction routine ENDED:
+            
+            // // It meant before:
+            // // Release the (mutex) flag
+            // //
+            // _isActive = false;
             //
-            onActionComplete();
-            //
-            // Example: other ways of calling or executing the Delegate:
-            // onActionComplete?.Invoke();
-            //
-            // if (onActionComplete != null)
-            // {
-            //     onActionComplete();
-            // }
+            // // We CALL our DELEGATE:  tells everyone that the TakeAction routine ENDED:
+            // //
+            // onActionComplete();
+            // //
+            // // Example: other ways of calling or executing the Delegate:
+            // // onActionComplete?.Invoke();
+            // //
+            // // if (onActionComplete != null)
+            // // {
+            // //     onActionComplete();
+            // // }
         }
 
     }
@@ -116,14 +123,14 @@ public class SpinAction : BaseAction
     /// <summary>
     /// Makes the Payers Character (Unit): Spin /Rotate.
     /// </summary>
-    public override void TakeAction(Action onSpinComplete)   //  (GridPosition gridPosition /* Not necessary for Spin Action */, Action onSpinComplete)
+    public override void TakeAction(Action onSpinActionComplete)   //  (GridPosition gridPosition /* Not necessary for Spin Action */, Action onSpinComplete)
     {
         
         // This is greyed out because currently there are no INPUT PARAMETERS FOR THIS ACTION: SPIN.
+        
+        // 0- Get the Input Base Parameters (for this function call):
         //
-        // // 0- Get the Input Base Parameters (for this function call):
-        // //
-        // GenerateInputParameters();
+        GenerateInputParameters();
         
         
         // 1- Here we assign the Function/Procedure (i.e.: Method) to the 'DELEGATE variable'
@@ -132,11 +139,14 @@ public class SpinAction : BaseAction
         // ..., to call the latest Method that was added in this Method TakeAction().
         // Purpose of this callback (Delegate):  to tell the World that this ROUTINE JUST ENDED (..the STARTING PHASE...):
         //
-        this.onActionComplete = onSpinComplete;
+        ActionStart(onSpinActionComplete);
         
-        // Sets a mutex flag:
+        // // This meant before:
+        // this.onActionComplete = onSpinActionComplete;
         //
-        _isActive = true;
+        // // Sets a mutex flag:
+        // //
+        // _isActive = true;
         
         // Reset the Accumulated Rotation
         //
@@ -159,7 +169,7 @@ public class SpinAction : BaseAction
         // //
         // 1- TARGET GridPosition (i.e.: the Destination of the Movement...)
         //
-        // this._spinActionBaseParameters.TargetGridPositionOfSelectedMovement = UnitActionSystem.Instance.GetSelectedUnit().GetGridPosition();
+        // this._spinActionBaseParameters.TargetGridPositionOfSelectedAction = UnitActionSystem.Instance.GetSelectedUnit().GetGridPosition();
         
     }//End GenerateInputParameters
 

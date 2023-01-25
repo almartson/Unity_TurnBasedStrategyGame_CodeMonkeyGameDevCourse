@@ -194,6 +194,23 @@ public class LevelGrid : MonoBehaviour
     }
 
     
+    /// <summary>
+    /// Gets the First 'Unit' (i.e.: _unit[0] of the List of Units),  that is in the input 'Grid Position'.
+    /// </summary>
+    /// <param name="gridPosition">A GridPosition struct, to check whether there is an 'Unit' there, or not... in that mathematical (x, y=0, z) position.</param>
+    /// <returns>True or False</returns>
+    public Unit GetUnitAtGridPosition(GridPosition gridPosition)
+    { 
+        // Get a GridObject:
+        //
+        GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+        //
+        // Check whether it is occupied..:
+        //
+        return gridObject.GetFirstUnit();
+    }
+
+    
     #endregion My Custom Methods
 
 }

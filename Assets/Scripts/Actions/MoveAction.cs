@@ -145,15 +145,22 @@ public class MoveAction : BaseAction
         // Update the Animator's Parameter:  STOP  (Walking).
         //
         _unitAnimator.SetBool(_IS_WALKING_ANIMATOR_PARAMETER, false);
-            
-        // Set this "Action" as DISABLED
-        // Release the (mutex) Lock - flag:
-        //
-        _isActive = false;
         
-        // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED:
+        
+        // Set this "Action" as DISABLED
+        // + We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED:
         //
-        this.onActionComplete();
+        ActionComplete();
+        
+        // // It meant before: 
+        // // Set this "Action" as DISABLED
+        // // Release the (mutex) Lock - flag:
+        // //
+        // _isActive = false;
+        //
+        // // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED:
+        // //
+        // this.onActionComplete();
     }
     
     #endregion Stop all Movement Action & Animation
@@ -171,16 +178,20 @@ public class MoveAction : BaseAction
         
         // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED (...at least the ACTIVATION-part of it ended):
         //
-        this.onActionComplete = onMoveActionComplete;
+        ActionStart( onMoveActionComplete );
+
+        // // This means:
+        // this.onActionComplete = onMoveActionComplete;
+        // //
+        // // Set this "Action" as ENABLED
+        // // Set the (mutex) flag:
+        // //
+        // _isActive = true;
+        
         
         // Get the WorldPosition, based on a "GridPosition" as Input.
         //
         _targetPosition = LevelGrid.Instance.GetWorldPosition(this._moveActionBaseParameters.TargetGridPositionOfSelectedMovement);
-
-        // Set this "Action" as ENABLED
-        // Set the (mutex) flag:
-        //
-        _isActive = true;
     }
     
     

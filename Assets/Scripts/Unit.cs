@@ -303,6 +303,8 @@ public class Unit : MonoBehaviour
     #endregion Actions
     
     
+    #region Grid, World and Screen Positions
+    
     /// <summary>
     /// Getter for <code>GridPosition</code>
     /// </summary>
@@ -311,7 +313,16 @@ public class Unit : MonoBehaviour
     {
         return _gridPosition;
     }
-    
+
+    /// <summary>
+    /// Gets this Unit's Position (x, y, z) in Vector3 Game World Coordinates.
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 GetWorldPosition()
+    {
+        return transform.position;
+    }
+
     /// <summary>
     /// Getter for <code>GridPosition</code> of the Player's Next Action (e.g.: Move Action, Spin Action, etc).
     /// </summary>
@@ -330,8 +341,8 @@ public class Unit : MonoBehaviour
         _finalGridPositionOfNextAction = gridPosition;
     }
 
-    #endregion My Custom Methods
-    
+    #endregion Grid, World and Screen Positions
+
     
     #region Turn System
     
@@ -383,4 +394,22 @@ public class Unit : MonoBehaviour
     }
     
     #endregion Enemy - Player - Friendnemy - etc
+
+    #region Health System - Damage
+
+    /// <summary>
+    /// Calculates the Damage the Unit is taking by a received Attack
+    /// </summary>
+    public void Damage()
+    {
+        // Todo: Debug stage: Temporary, remove soon:
+        //
+        Debug.Log(transform + " damaged!");
+        
+    }//End Damage(...)
+
+    #endregion  Health System - Damage
+    
+    
+    #endregion My Custom Methods
 }
