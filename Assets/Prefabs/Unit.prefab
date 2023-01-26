@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 6297334026975807289}
   - component: {fileID: 6297334026975807286}
   - component: {fileID: 1902843464558363180}
+  - component: {fileID: 2074268398416870624}
   - component: {fileID: 1537459889029726718}
   - component: {fileID: -9015054238785770785}
   - component: {fileID: -63595787454068697}
@@ -162,6 +163,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.557567, y: 1.8140832, z: 0.36846584}
   m_Center: {x: 0.010286629, y: 0.8956308, z: -0.014168881}
+--- !u!114 &2074268398416870624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6297334026975807288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6940bb5be44052d928e05fbc44135e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _unitAnimator: {fileID: 6210695006527653523}
 --- !u!114 &1537459889029726718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,7 +222,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1b4c438bbcfbd1eb9f1e5662b509f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _myDefaultVar: 0
+  _isActive: 0
+  _maxShootDistance: 7
+  _rotateSpeed: 10
 --- !u!1001 &6297334025778817227
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -63,6 +63,17 @@ public class ShootAction : BaseAction
     /// </summary>
     private bool _canShootBullet;
     
+    
+    #region Animator & Animations
+
+    /// <summary>
+    /// CallBack Listener (Delegate Function) for executing when Starting the Animation (i.e.: Shoot).
+    /// </summary>
+    public event EventHandler OnShootAnimation;
+    
+
+    #endregion Animator & Animations
+    
         
     #region Rotations
     
@@ -260,15 +271,16 @@ public class ShootAction : BaseAction
     /// </summary>
     private void Shoot()
     {
+        // Trigger / START the Animation Event:
+        //
+        OnShootAnimation?.Invoke(this, EventArgs.Empty);
         
         // It inflicts some DAMAGE
         //
         _targetUnit.Damage();
         
     }//End Shoot(...)
-    
-    
-        
+
     #region Rotation: LERP vs. SLERP 
     
     /// <summary>

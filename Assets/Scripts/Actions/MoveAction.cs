@@ -35,16 +35,15 @@ public class MoveAction : BaseAction
     
     #region Animator & Animations
 
-    [Tooltip("3D Character's Animator")]
-    [SerializeField] private Animator _unitAnimator;
-    
-    // Hash ANIMATOR (Parameter) CONSTANTS representing the States of the Animator
-    // ...(i.e.: to trigger the Animation Clips).
-    //
     /// <summary>
-    /// Hash ANIMATOR (Parameter) CONSTANTS:   IsWalking  (Animator State)
+    /// CallBack Listener (Delegate Function) for executing when Starting the Animation.
     /// </summary>
-    private static readonly int _IS_WALKING_ANIMATOR_PARAMETER = Animator.StringToHash("IsWalking");
+    public event EventHandler OnStartMovingAnimation;
+    
+    /// <summary>
+    /// CallBack Listener (Delegate Function) for executing when Stopping / Ending the Animation.
+    /// </summary>
+    public event EventHandler OnStopMovingAnimation;
 
     #endregion Animator & Animations
     
@@ -142,26 +141,16 @@ public class MoveAction : BaseAction
     /// </summary>
     private void StopMoveAction()
     {
-        // Update the Animator's Parameter:  STOP  (Walking).
-        //
-        _unitAnimator.SetBool(_IS_WALKING_ANIMATOR_PARAMETER, false);
-        
-        
         // Set this "Action" as DISABLED
-        // + We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED:
+        // + We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED  +  Set this "Action" as DISABLED:
         //
         ActionComplete();
         
-        // // It meant before: 
-        // // Set this "Action" as DISABLED
-        // // Release the (mutex) Lock - flag:
-        // //
-        // _isActive = false;
+        // Invoke: STOP the Animation
         //
-        // // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED:
-        // //
-        // this.onActionComplete();
-    }
+        OnStopMovingAnimation?.Invoke(this, EventArgs.Empty);
+
+    }//End StopMoveAction()
     
     #endregion Stop all Movement Action & Animation
     
@@ -176,23 +165,19 @@ public class MoveAction : BaseAction
         //
         GenerateInputParameters();
         
-        // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED (...at least the ACTIVATION-part of it ended):
+        // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED (...at least the ACTIVATION-part of it ended)   +   Set this "Action" as ENABLED (a mutex flag _isActive)
         //
         ActionStart( onMoveActionComplete );
-
-        // // This means:
-        // this.onActionComplete = onMoveActionComplete;
-        // //
-        // // Set this "Action" as ENABLED
-        // // Set the (mutex) flag:
-        // //
-        // _isActive = true;
-        
         
         // Get the WorldPosition, based on a "GridPosition" as Input.
         //
         _targetPosition = LevelGrid.Instance.GetWorldPosition(this._moveActionBaseParameters.TargetGridPositionOfSelectedMovement);
-    }
+        
+        // Invoke: 3D Animation START
+        //
+        OnStartMovingAnimation?.Invoke(this, EventArgs.Empty);
+
+    }//End TakeAction()
     
     
     /// <summary>
@@ -250,10 +235,6 @@ public class MoveAction : BaseAction
             // 1- Translation:
             //
             transform.position += moveDirection * (_moveSpeed * Time.deltaTime);
-
-            // 3- Update the Animator's Parameter: Start/Keep on Walking.
-            //
-            _unitAnimator.SetBool(_IS_WALKING_ANIMATOR_PARAMETER, true);
         }
         else
         {
