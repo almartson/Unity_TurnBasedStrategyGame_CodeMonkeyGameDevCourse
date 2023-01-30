@@ -39,9 +39,18 @@ public class UnitAnimator : MonoBehaviour
     /// </summary>
     private static readonly int _SHOOT_ANIMATOR_PARAMETER = Animator.StringToHash("Shoot");
     
-    #endregion 2- ShootAction - Animation Parameters
+    
+    [Tooltip("Bullet (Visuals) Prefab, which will be instantiated in the Scene, via Code")]
+    [SerializeField]
+    private Transform _bulletProjectilePrefab;
+
+    [Tooltip("Transform (Place - Origin) for the Initial Point where to Spawn the Bullet (Visuals) Prefab, which will be instantiated in the Scene, via Code")]
+    [SerializeField]
+    private Transform _shootPointTransform;
 
     
+    #endregion 2- ShootAction - Animation Parameters
+
     #endregion Animation Parameters
     
     #endregion Animator & Animations
@@ -143,6 +152,10 @@ public class UnitAnimator : MonoBehaviour
         // 1- Update the Animator's Parameter:  SHOOT
         //
         _unitAnimator.SetTrigger(_SHOOT_ANIMATOR_PARAMETER);
+        
+        // 2- Instantiate the BULLET Prefab in the Scene, as a GameObject:
+        //
+        Instantiate(_bulletProjectilePrefab, _shootPointTransform.position, Quaternion.identity);
     }
     
     #endregion CallBacks - Listeners: Shoot Action
