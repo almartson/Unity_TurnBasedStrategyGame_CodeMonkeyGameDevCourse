@@ -147,16 +147,26 @@ public class UnitAnimator : MonoBehaviour
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void ShootAction_OnShootAnimation(object sender, EventArgs e)
+    private void ShootAction_OnShootAnimation(object sender, ShootAction.OnShootAnimationEventArgs e)
     {
         // 1- Update the Animator's Parameter:  SHOOT
         //
         _unitAnimator.SetTrigger(_SHOOT_ANIMATOR_PARAMETER);
         
-        // 2- Instantiate the BULLET Prefab in the Scene, as a GameObject:
+        // 2- Instantiate the BULLET Prefab in the Scene, as a GameObject, at the Position:   _shootPointTransform.position
         //
-        Instantiate(_bulletProjectilePrefab, _shootPointTransform.position, Quaternion.identity);
-    }
+        Transform bulletProjectileTransform = Instantiate(_bulletProjectilePrefab, _shootPointTransform.position, Quaternion.identity);
+        //
+        //   2.2- Get the 'BulletProjectile' Script (it is a Component attached to the 'BulletProjectile' Prefab):
+        //
+        BulletProjectile bulletProjectile = bulletProjectileTransform.GetComponent<BulletProjectile>();
+        
+        // 3- Setup the BulletProjectile   (for moving through its Transform every frame..., not via Physics)
+        //
+        bulletProjectile.Setup( e.targetUnit.GetWorldPosition() );
+
+    }//End ShootAction_OnShootAnimation
+    
     
     #endregion CallBacks - Listeners: Shoot Action
     

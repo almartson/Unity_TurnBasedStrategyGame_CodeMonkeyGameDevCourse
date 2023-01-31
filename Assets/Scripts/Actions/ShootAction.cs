@@ -3,7 +3,6 @@
 */
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -66,11 +65,36 @@ public class ShootAction : BaseAction
     
     #region Animator & Animations
 
+    #region Events - Listeners - CallBack
+    
     /// <summary>
     /// CallBack Listener (Delegate Function) for executing when Starting the Animation (i.e.: Shoot).
     /// </summary>
-    public event EventHandler OnShootAnimation;
+    public event EventHandler<OnShootAnimationEventArgs> OnShootAnimation;
     
+    #region Custom Event Class - redefinition - customization
+
+    /// <summary>
+    /// Custom EventArgs Class for handling custom Events with some custom
+    /// ...Input - Output Parameters (to be used by the Functions that are to be triggered).
+    /// </summary>
+    public class OnShootAnimationEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Unit / Character that is the TARGET.
+        /// </summary>
+        public Unit targetUnit;
+        
+        /// <summary>
+        /// Unit / Character that shoots / fires the Bullet.
+        /// </summary>
+        public Unit shootingUnit;
+
+    }//End public class OnShootAnimationEventArgs : EventArgs
+    
+    #endregion Custom Event Class - redefinition - customization
+    
+    #endregion Events - Listeners - CallBack
 
     #endregion Animator & Animations
     
@@ -273,7 +297,12 @@ public class ShootAction : BaseAction
     {
         // Trigger / START the Animation Event:
         //
-        OnShootAnimation?.Invoke(this, EventArgs.Empty);
+        OnShootAnimation?.Invoke(this,
+            new OnShootAnimationEventArgs
+            {
+                targetUnit = _targetUnit,
+                shootingUnit = _unit
+            });
         
         // It inflicts some DAMAGE
         //
