@@ -45,7 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01afb1edf4c75c195893b2619b259302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _myDefaultVar: 0
+  _moveSpeed: 200
+  _trailRenderer: {fileID: 6248234995670488651}
+  _stoppingDistance: 0.1
 --- !u!1 &6248234995670488661
 GameObject:
   m_ObjectHideFlags: 0

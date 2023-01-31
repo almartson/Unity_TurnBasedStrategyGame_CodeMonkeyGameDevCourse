@@ -21,6 +21,26 @@ public class BulletProjectile : MonoBehaviour
     [Range(1.0f, 1000.0f)]
     private float _moveSpeed = 200.0f;
 
+    
+    #region Trail Renderer
+
+    [Tooltip("Trail Renderer, a Particle Effect that is drawn behind the Bullet.")]
+    [SerializeField]
+    private TrailRenderer _trailRenderer;
+
+    #endregion Trail Renderer
+    
+    
+    #region Utils
+    
+    [Tooltip("The Tolerance number to accept that a value is = ZERO")]
+    [SerializeField]
+    private float _stoppingDistance = 0.1f;
+    
+    private float _sqrStoppingDistance = 0.1f;
+
+    #endregion Utils
+    
     #endregion Attributes
 
 
@@ -29,6 +49,17 @@ public class BulletProjectile : MonoBehaviour
     /// <summary>
     /// Awake is called before the Start calls round
     /// </summary>
+    private void Awake()
+    {
+        #region Utils
+        
+        // Done: Misc Optimization: Calculating the (accepted) Square Min Distance.
+        //
+        _sqrStoppingDistance = _stoppingDistance * _stoppingDistance;
+        
+        #endregion Utils
+
+    }//End Awake()
 
 
 
@@ -44,7 +75,7 @@ public class BulletProjectile : MonoBehaviour
     private void Update()
     {
         // Simple Logic to:
-        // Move (the BULLET...) towards the:  TargetPosition.
+        // 1- Move (the BULLET...) towards the:  TargetPosition.
         // .1- Direction (Vector3)
         //   .1.1- Cache (for performance optimization): transform.position
         //
@@ -55,9 +86,12 @@ public class BulletProjectile : MonoBehaviour
         // To avoid Overshooting the Target:
         // Compare DISTANCE before moving with AFTER moving...
         // Distance BEFORE Moving:
-        // Todo: Fix: Optimization NOT using Square root here (1)
+        // Todo: Check: Optimization NOT using Square root here (1)
         //
-        float distanceBeforeMoving = Vector3.Distance(position, _targetPosition);
+        // CodeMonkey Original:     float distanceBeforeMoving = Vector3.Distance(position, _targetPosition);
+        // AlMartson Optimization Fix:
+        //
+        float sqrDistanceBeforeMoving = Vector3.SqrMagnitude(position - _targetPosition);
         
         // .2- MOVE: Increase the Position (i.e.: Move the Bullet):
         //
@@ -65,9 +99,12 @@ public class BulletProjectile : MonoBehaviour
         transform.position = position;
         
         // Distance AFTER Moving:
-        // Todo: Fix: Optimization NOT using Square root here (2)
+        // Todo: Check: Optimization NOT using Square root here (2)
         //
-        float distanceAfterMoving = Vector3.Distance(position, _targetPosition);
+        // CodeMonkey Original:     float distanceAfterMoving = Vector3.Distance(position, _targetPosition);
+        // AlMartson Optimization Fix:
+        //
+        float sqrDistanceAfterMoving = Vector3.SqrMagnitude(position - _targetPosition);
         
         // Debug TIP: With fast paced moving objects it is very common to
         //..overshoot or overpass the 'Target' (because they move too quickly)
@@ -77,13 +114,34 @@ public class BulletProjectile : MonoBehaviour
         // Check / Validation for that (above described):
         // DISTANCE before Moving should NOT be SMALLER than AFTER (moving):
         //..that means (SMALLER): there is OVERSHOOT (we passed by the Target... and continued towards the Infinity in the Horizon...) 
+        // ORIGINAL CodeMonkey's Code (NOT Optimized):
         //
-        if (distanceBeforeMoving < distanceAfterMoving)
+        // if (distanceBeforeMoving < distanceAfterMoving)
+        // {
+        //     // We Overshot the Target:
+        //     //
+        //     Destroy(gameObject);
+        // }
+        //
+        // Calculate the Square Distances & Compare them... to see if we overshot:
+        //
+        if (sqrDistanceBeforeMoving < sqrDistanceAfterMoving)
         {
             // We Overshot the Target:
+            // 1- Place the Trail + Bullet (i.e.: this GameObject) just on the Target's Position:
+            // 
+            transform.position = _targetPosition;
+            
+            // 2- Destroy / Clean the Memory:
+            // 2.1- Un-parent the Visual Trail Renderer (VFX Particle Effect):
+            //
+            _trailRenderer.transform.parent = null;
+            //
+            // 2.2- Destroy the GameObject:
             //
             Destroy(gameObject);
         }
+
     }//End Update()
 
     #endregion Unity Methods

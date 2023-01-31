@@ -162,8 +162,15 @@ public class UnitAnimator : MonoBehaviour
         BulletProjectile bulletProjectile = bulletProjectileTransform.GetComponent<BulletProjectile>();
         
         // 3- Setup the BulletProjectile   (for moving through its Transform every frame..., not via Physics)
+        //   .1- Get the Target's (Vector3) Position at his Feet (i.e.: y = 0)  (in World Game Coordinates)
         //
-        bulletProjectile.Setup( e.targetUnit.GetWorldPosition() );
+        Vector3 targetUnitShootAtPosition = e.targetUnit.GetWorldPosition();
+        //
+        //   .2- Set the y-Coordinate (the Height) of the BULLET as a Constant (for starting the SHOOTING Animation), so it will be pointing towards the Center of the Target-GameObject:  the Bullet movement will be HORIZONTAL thanks to that:
+        //
+        targetUnitShootAtPosition.y = _shootPointTransform.position.y;
+        // 3- Setup the BulletProjectile
+        bulletProjectile.Setup( targetUnitShootAtPosition );
 
     }//End ShootAction_OnShootAnimation
     
