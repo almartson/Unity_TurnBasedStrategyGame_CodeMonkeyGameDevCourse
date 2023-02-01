@@ -15,12 +15,12 @@ public class Unit : MonoBehaviour
 
     #endregion Enemy - Player - Friendnemy - etc
     
+    #region Grid System
     
     /// <summary>
     /// Keeping track of the CURRENT GridPosition of this Unit.
     /// </summary>
     private GridPosition _gridPosition;
-
     
     /// <summary>
     /// Keeping track of the TARGET (...NEXT...) GridPosition of the Player's MOVE / ACTION.
@@ -29,9 +29,20 @@ public class Unit : MonoBehaviour
     /// </summary>
     private GridPosition _finalGridPositionOfNextAction;
 
-
-    #region ACTIONS
+    #endregion Grid System
     
+
+    #region Health System
+
+    [Tooltip("Health System, for managing any Player's 'Health Points' (i.e.: your current 'health')")]
+    [SerializeField]
+    private HealthSystem _healthSystem;
+
+    #endregion Health System
+    
+    
+    #region ACTIONS
+
     #region Action's List
     
     /// <summary>
@@ -62,7 +73,6 @@ public class Unit : MonoBehaviour
     /// </summary>
     private const int _ACTION_POINTS_PER_TURN_MAX = 2;
     
-    
     /// <summary>
     /// Total amount of Points (spendable), to spend each time this Character/Unit performs an Action. <br />
     /// Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. <br />
@@ -78,8 +88,8 @@ public class Unit : MonoBehaviour
     /// <summary>
     /// Listener / Delegate Event that will be STATIC (i.e.: depending only of the CLASS not any instanced Object of this Class)...
     /// ...that will Update the Whole Turn System accordingly when ANY change
-    /// ...in Action Points occurs (NOTE: It does not indicate that a turn has changed).<br />
-    /// NOTE: This STATIC EVENT fixes the problems: There are 2 classes (this one - Unit - AND TurnSystem, that will fire an EVEN when the '_actionPoints for an Unit' Changes.... so if the ORDER OF EXECUTION is incorrect, there will be a Bug. This EVENT SHOULD BE THE FIRST ONE to be fired when we use _actionPoints, so making it a STATIC EVENT will make it be Triggered always first.
+    /// ...in Action Points occurs (NOTE: It does not indicate that a turn has changed).<br /><br />
+    /// NOTE: This STATIC EVENT fixes the problems: There are 2 classes (this one - Unit - AND TurnSystem, that will fire an EVEN when the '_actionPoints for an Unit' Changes.... so if the ORDER OF EXECUTION is incorrect, there will be a Runtime Exception. This EVENT SHOULD BE THE FIRST ONE to be fired when we use _actionPoints, so making it a STATIC EVENT will make it be Triggered always first.
     /// </summary>
     public static event EventHandler OnAnyActionPointsChanged; 
 
@@ -113,6 +123,16 @@ public class Unit : MonoBehaviour
     
     private void Awake()
     {
+        #region Health
+
+        // Get the Health System script
+        //
+        _healthSystem = GetComponent<HealthSystem>();
+        
+        #endregion Health
+        
+        #region Actions setup
+        
         // Get the Actions & the List of ALL Actions:        
         //
         _moveAction = GetComponent<MoveAction>();
@@ -123,7 +143,10 @@ public class Unit : MonoBehaviour
         // ..(or that are children / Extend from <SetBaseAction>)... in this GameObject.
         //
         _baseActionArray = GetComponents<BaseAction>();
-    }
+        
+        #endregion Actions setup
+        
+    }//End Awake()
 
     
     // Start is called before the first frame update
@@ -144,11 +167,20 @@ public class Unit : MonoBehaviour
         LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
         
         
-        // LISTENER: Listen to the   OnTurnChanged   EVENT:
-        //...(with our own Function, defined here on this Class):
+        // Subscribe to the:  LISTENER: Listen to the   OnTurnChanged   EVENT:
+        //...(with our own Function, defined here in this Class):
         //
         TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
 
+        #region Health
+
+        // Subscribe to the:  LISTENER: Listen to the   OnDead   EVENT:
+        //...(with our own Function, defined here in this Class):
+        // Health System script
+        //
+        _healthSystem.OnDead += HealthSystem_OnDead;
+
+        #endregion Health
     }//End Start()
     
 
@@ -382,6 +414,28 @@ public class Unit : MonoBehaviour
     #endregion Turn System
     
     
+    #region Health System - Delegates Listeners of On Dead
+
+    /// <summary>
+    /// Listener / CallBack / Delegate that Listens to:  a CHANGE when any Unit / Character DIES... (it is just when: <code>_health == 0</code> )<br />
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void HealthSystem_OnDead(object sender, EventArgs e)
+    {
+        // Detach the Unit from the Grid Cell
+        //
+        LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
+        
+        // Temporary: -debug-  Just Destroy the Character / Unit:
+        //
+        Destroy(gameObject);
+
+    }//End HealthSystem_OnDead
+    
+    #endregion Health System - Delegates Listeners of On Dead
+
+    
     #region  Enemy - Player - Friendnemy - etc
 
     /// <summary>
@@ -400,11 +454,16 @@ public class Unit : MonoBehaviour
     /// <summary>
     /// Calculates the Damage the Unit is taking by a received Attack
     /// </summary>
-    public void Damage()
+    public void Damage(int damageAmount)
     {
+        // Apply the Calculation:   Damage to the 'Health System'
+        //
+        _healthSystem.Damage(damageAmount);
+        
+        
         // Todo: Debug stage: Temporary, remove soon:
         //
-        Debug.Log(transform + " damaged!");
+        //Debug.Log(transform + " damaged!");
         
     }//End Damage(...)
 

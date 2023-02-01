@@ -84,6 +84,18 @@ public class UnitSelectedVisual : MonoBehaviour
         }
     }//End Method
 
+    
+    /// <summary>
+    /// Handles unsubscribing from the Events / Listeners 
+    /// </summary>
+    private void OnDestroy()
+    {
+        // Unsubscribe from the Events / Listeners, to avoid any MissingReferenceException 
+        //
+        UnitActionSystem.Instance.OnSelectedUnitChanged -= UnitActionSystem_OnSelectedUnitChange;
+        
+    }//End OnDestroy()
+
     #endregion Observer Pattern: As a Subscriber / Events Listener
     
     #endregion My Custom Methods

@@ -44,7 +44,16 @@ public class ShootAction : BaseAction
 
     #endregion Validations: of the Action
 
+    
+    #region Damage (to the Health System of the Target) by each Shoot
 
+    [Tooltip("Damage (to the Health System of the Target) by each Shoot")]
+    [SerializeField]
+    private int _shootPowerDamageInHealthPoints = 40;
+    
+    #endregion Damage (to the Health System of the Target) by each Shoot
+    
+    
     #region Taking the Action
     
     /// <summary>
@@ -306,7 +315,7 @@ public class ShootAction : BaseAction
         
         // It inflicts some DAMAGE
         //
-        _targetUnit.Damage();
+        _targetUnit.Damage(_shootPowerDamageInHealthPoints);
         
     }//End Shoot(...)
 
