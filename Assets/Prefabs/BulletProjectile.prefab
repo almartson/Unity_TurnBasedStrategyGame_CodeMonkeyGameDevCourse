@@ -47,6 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 200
   _trailRenderer: {fileID: 6248234995670488651}
+  _bulletHitVfxPrefab: {fileID: 3783068205161776627, guid: 527d6cdfa6c16a7eab51e0fd5755528b,
+    type: 3}
   _stoppingDistance: 0.1
 --- !u!1 &6248234995670488661
 GameObject:

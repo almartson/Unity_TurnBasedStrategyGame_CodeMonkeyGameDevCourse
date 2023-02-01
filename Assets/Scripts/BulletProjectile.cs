@@ -1,14 +1,11 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
-
-using System;
 using UnityEngine;
 
 
 public class BulletProjectile : MonoBehaviour
 {
-
     #region Attributes
 
     /// <summary>
@@ -22,13 +19,17 @@ public class BulletProjectile : MonoBehaviour
     private float _moveSpeed = 200.0f;
 
     
-    #region Trail Renderer
+    #region Particle VFXs and Trail Renderer
 
     [Tooltip("Trail Renderer, a Particle Effect that is drawn behind the Bullet.")]
     [SerializeField]
     private TrailRenderer _trailRenderer;
 
-    #endregion Trail Renderer
+    [Tooltip("VFX PArticle System, (multiple yellow sparks) that is drawn and lives after the Bullet HITS a Target.")]
+    [SerializeField]
+    private Transform _bulletHitVfxPrefab;
+
+    #endregion Particle VFXs and Trail Renderer
     
     
     #region Utils
@@ -122,25 +123,33 @@ public class BulletProjectile : MonoBehaviour
         //     //
         //     Destroy(gameObject);
         // }
+        // NOTE: There is an alternative (..because it overshoots 50% of times, then in the NEXT FRAME the object is destroyed)
+        // --->  Alternative:   https://community.gamedev.tv/t/calculating-bulletprojectile-wrong/205214/3
         //
         // Calculate the Square Distances & Compare them... to see if we overshot:
         //
         if (sqrDistanceBeforeMoving < sqrDistanceAfterMoving)
         {
             // We Overshot the Target:
-            // 1- Place the Trail + Bullet (i.e.: this GameObject) just on the Target's Position:
+            // 1- Place the Trail + Bullet (i.e.: this GameObject) just on the Target's Position
+            //..(to avoid a visual Glitch: it tends to overshoot and goes +1 mtr, beyond the target):
             // 
             transform.position = _targetPosition;
             
             // 2- Destroy / Clean the Memory:
-            // 2.1- Un-parent the Visual Trail Renderer (VFX Particle Effect):
+            // 2.1- Un-parent the Visual Trail Renderer (VFX Particle Effect), that will make it self-destroy in the next frame:
             //
             _trailRenderer.transform.parent = null;
             //
             // 2.2- Destroy the GameObject:
             //
             Destroy(gameObject);
-        }
+            
+            // 3- Instantiate (make spawn..) a (VFX) Particle System for: 'sparks after the Bullet Hits the Target'
+            //
+            Instantiate(_bulletHitVfxPrefab, _targetPosition, Quaternion.identity);
+
+        }//End if (sqrDistanceBeforeMoving < sqrDistanceAfterMoving)
 
     }//End Update()
 
