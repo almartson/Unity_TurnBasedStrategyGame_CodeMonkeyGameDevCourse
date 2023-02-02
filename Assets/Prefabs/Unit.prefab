@@ -227,6 +227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ragdollPrefab: {fileID: 6297334026975807289, guid: 42b1c03e4b2d847b9afac5c99fafe7a5,
     type: 3}
+  _originalCharactersRootBone: {fileID: 6302008343334695825}
 --- !u!114 &3129350450898799712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,6 +606,12 @@ Transform:
 --- !u!4 &6301901199132878731 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4580766925885248, guid: 2f3e27eecb190e44a9af50723c394274,
+    type: 3}
+  m_PrefabInstance: {fileID: 6297334025778817227}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6302008343334695825 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4966341056781146, guid: 2f3e27eecb190e44a9af50723c394274,
     type: 3}
   m_PrefabInstance: {fileID: 6297334025778817227}
   m_PrefabAsset: {fileID: 0}

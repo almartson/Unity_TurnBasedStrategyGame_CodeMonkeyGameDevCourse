@@ -15,6 +15,10 @@ public class UnitRagdollSpawner : MonoBehaviour
     [SerializeField]
     private Transform _ragdollPrefab;
 
+    [Tooltip("(Original) Character's ->Root<- (Bone) reference: it will be used to copy from them all the original Character's Bones 'Transforms' values (position, rotation, scale) to make the Ragdoll match the Character's Position right at the moment of its death event.../n/n This makes the Ragdoll's Animation consistent with the Pose the Unit/Character had a frame before spawning.")]
+    [SerializeField]
+    private Transform _originalCharactersRootBone;
+    
     
     [Tooltip("Reference to: The Unit's 'Health System', for keeping control of the event of Dying... (i.e.: when _health == 0)")]
     private HealthSystem _healthSystem;
@@ -69,9 +73,18 @@ public class UnitRagdollSpawner : MonoBehaviour
     /// <param name="e"></param>
     private void HealthSystem_OnDead(object sender, EventArgs e)
     {
-        // Spawn the RAGDOLL there:
+        // 1.1- Spawn the RAGDOLL there & save its Transform:
         //
-        Instantiate(_ragdollPrefab, transform.position, transform.rotation);
+        Transform ragdollTransform = Instantiate(_ragdollPrefab, transform.position, transform.rotation);
+        
+        //   1.2-Get the UnitRagdoll.cs Class Script from the 'ragdollTransform':
+        //
+        UnitRagdoll unitRagdoll = ragdollTransform.GetComponent<UnitRagdoll>();
+        
+        
+        // 2- Call the UnitRagdoll.cs script's Setup()  function (to set the Transforms of each & every Bone...)
+        //
+        unitRagdoll.Setup(_originalCharactersRootBone, true);
 
     }//End HealthSystem_OnDead
 
