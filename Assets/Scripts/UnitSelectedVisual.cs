@@ -2,8 +2,9 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// Observer Pattern: This is an Observer / Subscriber.
-/// It listens to the EVENTS fired by the Subject / Publisher.
+/// This Class Updates the GUI (colors)  to Highlight the Player (Unit) that is currently Selected.<br />
+/// Observer Pattern: This is an Observer / Subscriber.<br />
+/// It listens to the EVENTS fired by the Subject / Publisher.<br />
 /// </summary>
 public class UnitSelectedVisual : MonoBehaviour
 {

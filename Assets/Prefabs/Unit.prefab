@@ -140,6 +140,7 @@ GameObject:
   - component: {fileID: 6297334026975807286}
   - component: {fileID: 1902843464558363180}
   - component: {fileID: 2074268398416870624}
+  - component: {fileID: -475992067659144793}
   - component: {fileID: 3129350450898799712}
   - component: {fileID: 1537459889029726718}
   - component: {fileID: -9015054238785770785}
@@ -181,6 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isEnemy: 0
+  _healthSystem: {fileID: 0}
   _actionPoints: 2
 --- !u!65 &1902843464558363180
 BoxCollider:
@@ -211,6 +213,20 @@ MonoBehaviour:
   _bulletProjectilePrefab: {fileID: 6248234994756458832, guid: a30e5f24f1c072777a5ac42991b7e888,
     type: 3}
   _shootPointTransform: {fileID: 5934820845918124184}
+--- !u!114 &-475992067659144793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6297334026975807288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d5ba2f51967919f7b67551648db8476, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ragdollPrefab: {fileID: 6297334026975807289, guid: 42b1c03e4b2d847b9afac5c99fafe7a5,
+    type: 3}
 --- !u!114 &3129350450898799712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad798d157f372950e836071807d05809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _myDefaultVar: 0
+  _health: 100
 --- !u!114 &1537459889029726718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,7 +287,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isActive: 0
   _maxShootDistance: 7
-  _rotateSpeed: 10
+  _shootPowerDamageInHealthPoints: 40
+  _rotateSpeed: 7
 --- !u!1001 &6297334025778817227
 PrefabInstance:
   m_ObjectHideFlags: 0
