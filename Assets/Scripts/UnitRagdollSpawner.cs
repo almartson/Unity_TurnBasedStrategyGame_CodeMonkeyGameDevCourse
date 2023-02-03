@@ -77,14 +77,14 @@ public class UnitRagdollSpawner : MonoBehaviour
         //
         Transform ragdollTransform = Instantiate(_ragdollPrefab, transform.position, transform.rotation);
         
-        //   1.2-Get the UnitRagdoll.cs Class Script from the 'ragdollTransform':
+        //   1.2- Get the UnitRagdoll.cs Class Script from the 'ragdollTransform':
         //
         UnitRagdoll unitRagdoll = ragdollTransform.GetComponent<UnitRagdoll>();
         
         
         // 2- Call the UnitRagdoll.cs script's Setup()  function (to set the Transforms of each & every Bone...)
         //
-        unitRagdoll.Setup(_originalCharactersRootBone, true);
+        unitRagdoll.Setup(_originalCharactersRootBone, gameObject.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe);
 
     }//End HealthSystem_OnDead
 

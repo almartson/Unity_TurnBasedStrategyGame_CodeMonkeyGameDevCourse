@@ -213,6 +213,7 @@ MonoBehaviour:
   _bulletProjectilePrefab: {fileID: 6248234994756458832, guid: a30e5f24f1c072777a5ac42991b7e888,
     type: 3}
   _shootPointTransform: {fileID: 5934820845918124184}
+  _moveDirectionOfBulletProjectile: {x: 0, y: 0, z: 0}
 --- !u!114 &-475992067659144793
 MonoBehaviour:
   m_ObjectHideFlags: 0

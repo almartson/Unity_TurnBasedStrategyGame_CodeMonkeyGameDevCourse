@@ -49,6 +49,19 @@ public class UnitAnimator : MonoBehaviour
     private Transform _shootPointTransform;
 
     
+    /// <summary>
+    /// Direction of the Flying Bullet, when it's shot.
+    /// </summary>
+    [Tooltip("Direction of the Flying Bullet, when it's shot.")]
+    //[ReadOnlyInspector]
+    [SerializeField]
+    private Vector3 _moveDirectionOfBulletProjectileThatJustHitMe = Vector3.zero;
+    //
+    /// <summary>
+    /// Property Accessor to Private Field '_moveDirectionOfBulletProjectileThatJustHitMe'.
+    /// </summary>
+    public Vector3 MoveDirectionOfBulletProjectileThatJustHitMe { get => _moveDirectionOfBulletProjectileThatJustHitMe ; set => _moveDirectionOfBulletProjectileThatJustHitMe = value; }
+    
     #endregion 2- ShootAction - Animation Parameters
 
     #endregion Animation Parameters
@@ -169,8 +182,17 @@ public class UnitAnimator : MonoBehaviour
         //   .2- Set the y-Coordinate (the Height) of the BULLET as a Constant (for starting the SHOOTING Animation), so it will be pointing towards the Center of the Target-GameObject:  the Bullet movement will be HORIZONTAL thanks to that:
         //
         targetUnitShootAtPosition.y = _shootPointTransform.position.y;
+        //
         // 3- Setup the BulletProjectile
-        bulletProjectile.Setup( targetUnitShootAtPosition );
+        //
+        bulletProjectile.Setup(targetUnitShootAtPosition);
+        //
+        // 4- Save in the TargetUnit (Character) the Bullet / Projectile _moveDirection... of the Shoot  (this is for the Animation when it Hits the Target):
+        //
+        e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe =
+            bulletProjectile.MoveDirection;
+        //
+        Debug.Log("e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe = " + e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe);
 
     }//End ShootAction_OnShootAnimation
     

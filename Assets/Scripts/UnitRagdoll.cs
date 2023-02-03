@@ -23,6 +23,11 @@ public class UnitRagdoll : MonoBehaviour
     [SerializeField]
     private float _explosionRange = 10.0f;
 
+    
+    [Tooltip("Displacement (Offset) from the (original) center of the Sphere of Explosion, to be applied. This is a proportional number to the Radius, meaning that it is measured in terms of '_explosionRange' times. This is OPTIONAL: it is to generate a Push-Effect on the Unit (Target) that receives the Attack./n/n This makes the Ragdoll's Animation a little bit spicier and fun.")]
+    [SerializeField]
+    private float _explosionOffsetPositioningInTermsOfExplosionRange = 0.1f;
+    
     #endregion Explosion Force
     
     #endregion Attributes
@@ -56,7 +61,7 @@ public class UnitRagdoll : MonoBehaviour
     /// Function to initiate a:  Copy all the ORIGINAL 3D CHARACTER'S (i.e.: Unit) Transform (of every Bone...) to the RAGDOLL Bones... so the Ragdoll will be spawned in the same Pose as the original Character / Unit (and not in T-POSE, as it is by default).
     /// </summary>
     /// <param name="originalCharactersRootBone"></param>
-    public void Setup(Transform originalCharactersRootBone, bool applyExplosionForceToRagdollWhenSpawning)
+    public void Setup(Transform originalCharactersRootBone, Vector3 applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet)
     {
         // Call the Recursive+Iterative Function that will COPY & PASTE all the Original Unit Skeleton Bone Transforms... to the RAGDOLL's:
         //
@@ -64,13 +69,24 @@ public class UnitRagdoll : MonoBehaviour
         
         // Add some Explosion Force Effect to the Ragdoll, because we want to see it flying... :)
         //
-        if (applyExplosionForceToRagdollWhenSpawning)
+        if ((applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet != null) &&  !Equals(applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet, Vector3.zero))
         {
             // Explosion:
             //
-            ApplyExplosionToTargetRagdoll(_ragdollRootBone, _explosionForce, transform.position, _explosionRange);
+            // Original: ApplyExplosionToTargetRagdoll(_ragdollRootBone, _explosionForce, transform.position, _explosionRange);
+            //
+            // Use the Direction Vector3 to calculate a Position 1 mtr before the Target Unit (Character)... so there will be a KnockBack Effect with the Explosion:
+            //
+            Vector3 normalizedDirection = -1 * applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet;
+            Vector3 newPositionOriginForExplosion = transform.position - (normalizedDirection * (_explosionOffsetPositioningInTermsOfExplosionRange * _explosionRange));
+            //
+            Debug.Log("transform.position = " + transform.position);
+            Debug.Log("applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet = " + applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet);
+            Debug.Log("newPositionOriginForExplosion = " + newPositionOriginForExplosion);
+            //
+            ApplyExplosionToTargetRagdoll(_ragdollRootBone, _explosionForce, newPositionOriginForExplosion, _explosionRange);
     
-        }//End if (applyExplosionForceToRagdollWhenSpawning)
+        }//End if (applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet)
         
     }// End Setup
 
@@ -142,7 +158,12 @@ public class UnitRagdoll : MonoBehaviour
             {
                 // 2- Apply the EXPLOSION
                 //
-                childRigidbody.AddExplosionForce(explosionForce, explosionPosition, explosionRange);
+                // ORIGINAL: childRigidbody.AddExplosionForce(explosionForce, explosionPosition, explosionRange);
+                //
+                //public void AddExplosionForce(float explosionForce, Vector3 explosionPosition, float explosionRadius, float upwardsModifier = 0.0f, ForceMode mode = ForceMode.Force));
+                //
+                childRigidbody.AddExplosionForce(explosionForce, explosionPosition, explosionRange /* , 0.5f*/);
+                
                 
             }//End if (child.TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
             

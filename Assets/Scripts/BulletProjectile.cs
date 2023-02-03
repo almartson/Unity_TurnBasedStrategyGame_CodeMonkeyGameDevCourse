@@ -39,6 +39,26 @@ public class BulletProjectile : MonoBehaviour
     private float _stoppingDistance = 0.1f;
     
     private float _sqrStoppingDistance = 0.1f;
+    
+    /// <summary>
+    /// Direction of the Flying Bullet, when it's shot.
+    /// </summary>
+    [Tooltip("Direction of the Flying Bullet, when it's shot.")]
+    //[ReadOnlyInspector]
+    [SerializeField]
+    private Vector3 _moveDirection = Vector3.zero;
+    //
+    /// <summary>
+    /// Property Accessor to Private Field '_moveDirection'.
+    /// </summary>
+    public Vector3 MoveDirection { get => _moveDirection ; private set => _moveDirection = value; }
+    
+    
+    /// <summary>
+    /// Cached Vector3 Position of the Flying Bullet, at any moment.
+    /// </summary>
+    [Tooltip("Cached Vector3 Position of the Flying Bullet, at any moment.")]
+    private Vector3 _cachedPosition;
 
     #endregion Utils
     
@@ -60,6 +80,22 @@ public class BulletProjectile : MonoBehaviour
         
         #endregion Utils
 
+        
+        #region Initializing the Bullet
+        
+        // Simple Logic to:
+        // 1- Move (the BULLET...) towards the:  TargetPosition.
+        // .1- Direction (Vector3)
+        //   .1.1- Cache (for performance optimization): transform.position
+        //
+        _cachedPosition = transform.position;
+        //
+        // .1- Direction
+        //
+        _moveDirection = (_targetPosition - _cachedPosition).normalized;
+        
+        #endregion Initializing the Bullet
+        
     }//End Awake()
 
 
@@ -75,14 +111,14 @@ public class BulletProjectile : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        // Simple Logic to:
-        // 1- Move (the BULLET...) towards the:  TargetPosition.
-        // .1- Direction (Vector3)
-        //   .1.1- Cache (for performance optimization): transform.position
-        //
-        var position = transform.position;
-        // .1- Direction
-        Vector3 moveDir = (_targetPosition - position).normalized;
+        // // Simple Logic to:
+        // // 1- Move (the BULLET...) towards the:  TargetPosition.
+        // // .1- Direction (Vector3)
+        // //   .1.1- Cache (for performance optimization): transform.position
+        // //
+        // var position = transform.position;
+        // // .1- Direction
+        // _moveDirection = (_targetPosition - position).normalized;
         
         // To avoid Overshooting the Target:
         // Compare DISTANCE before moving with AFTER moving...
@@ -92,12 +128,12 @@ public class BulletProjectile : MonoBehaviour
         // CodeMonkey Original:     float distanceBeforeMoving = Vector3.Distance(position, _targetPosition);
         // AlMartson Optimization Fix:
         //
-        float sqrDistanceBeforeMoving = Vector3.SqrMagnitude(position - _targetPosition);
+        float sqrDistanceBeforeMoving = Vector3.SqrMagnitude(_cachedPosition - _targetPosition);
         
-        // .2- MOVE: Increase the Position (i.e.: Move the Bullet):
+        // .2- MOVE: Update->Increase the Position (i.e.: Move the Bullet):
         //
-        position += moveDir * (_moveSpeed * Time.deltaTime);
-        transform.position = position;
+        _cachedPosition += _moveDirection * (_moveSpeed * Time.deltaTime);
+        transform.position = _cachedPosition;
         
         // Distance AFTER Moving:
         // Todo: Check: Optimization NOT using Square root here (2)
@@ -105,7 +141,7 @@ public class BulletProjectile : MonoBehaviour
         // CodeMonkey Original:     float distanceAfterMoving = Vector3.Distance(position, _targetPosition);
         // AlMartson Optimization Fix:
         //
-        float sqrDistanceAfterMoving = Vector3.SqrMagnitude(position - _targetPosition);
+        float sqrDistanceAfterMoving = Vector3.SqrMagnitude(_cachedPosition - _targetPosition);
         
         // Debug TIP: With fast paced moving objects it is very common to
         //..overshoot or overpass the 'Target' (because they move too quickly)
@@ -131,6 +167,10 @@ public class BulletProjectile : MonoBehaviour
         if (sqrDistanceBeforeMoving < sqrDistanceAfterMoving)
         {
             // We Overshot the Target:
+            
+            // 0- Save the Move Direction (_moveDirection) of this Bullet (pass it to the TargetUnit, the receiver...), to use it as an Explosion Vector, for Animations on the Target:
+            //...see it in the Awake()... it is initialized there as:  _moveDirection
+
             // 1- Place the Trail + Bullet (i.e.: this GameObject) just on the Target's Position
             //..(to avoid a visual Glitch: it tends to overshoot and goes +1 mtr, beyond the target):
             // 
