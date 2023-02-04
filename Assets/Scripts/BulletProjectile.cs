@@ -38,6 +38,9 @@ public class BulletProjectile : MonoBehaviour
     [SerializeField]
     private float _stoppingDistance = 0.1f;
     
+    /// <summary>
+    /// The square value of: <code>_stoppingDistance</code>.
+    /// </summary>
     private float _sqrStoppingDistance = 0.1f;
     
     /// <summary>
@@ -90,7 +93,7 @@ public class BulletProjectile : MonoBehaviour
         //
         _cachedPosition = transform.position;
         //
-        // .1- Direction
+        // .1- Direction   (of the Bullet-Projectile while its FLYING):
         //
         _moveDirection = (_targetPosition - _cachedPosition).normalized;
         
@@ -119,6 +122,7 @@ public class BulletProjectile : MonoBehaviour
         // var position = transform.position;
         // // .1- Direction
         // _moveDirection = (_targetPosition - position).normalized;
+        //...NOTE: The previous LOGIC has been pasted in the Awake() Method.
         
         // To avoid Overshooting the Target:
         // Compare DISTANCE before moving with AFTER moving...

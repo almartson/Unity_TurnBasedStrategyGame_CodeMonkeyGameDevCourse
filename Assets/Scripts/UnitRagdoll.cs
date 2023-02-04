@@ -92,6 +92,34 @@ public class UnitRagdoll : MonoBehaviour
 
     
     /// <summary>
+    /// 'Iterative', Optimized version of 'MatchAllChildrenTransforms': A Function used to COPY all the ORIGINAL 3D CHARACTER'S (i.e.: Unit) Transform (of every Bone...) to the RAGDOLL Bones... so the Ragdoll will be spawned in the same Pose as the original Character / Unit (and not in T-POSE, as it is by default).<br />
+    /// We assume as a PRE-CONDITION:  Input parameters are correcly set before calling this Function.
+    /// </summary>
+    /// <param name="originalBonesTransformList">(COPY FROM HERE) The ROOT of the ORIGINAL Skeleton (i.e: the Bone Hierachy). This is what we want to duplicate.</param>
+    /// <param name="cloneBonesTransformList">(PASTE HERE) The ROOT of the CLONE Skeleton (i.e: the Bone Hierachy). This is the 'new' Skeleton, we are creating...</param>
+    private void MatchAllChildrenTransformsOptimized(Transform[] originalBonesTransformList, Transform[] cloneBonesTransformList)
+    {
+        #region AlMartson's Implementation... Optimized for the Best Performance possible in this case
+        
+        // Go through each Child Bone in the Bone Hierarchy...
+        // Lenght of the Array
+        //
+        int arrayLength = Mathf.Min(originalBonesTransformList.Length , cloneBonesTransformList.Length);
+        //
+        for (int i = 0; i < arrayLength; i++)
+        {
+            // 1- Copy & Paste all the Transform, (POSITION & ROTATION), values to the:  cloneChild
+            //
+            cloneBonesTransformList[i].SetPositionAndRotation(originalBonesTransformList[i].position, originalBonesTransformList[i].rotation);
+
+        }//End for
+        
+        #endregion AlMartson's Implementation... Optimized for the Best Performance possible in this case
+        
+    }// End MatchAllChildrenTransformsOptimized
+
+    
+    /// <summary>
     /// 'Iterative + Recursive' Function to COPY all the ORIGINAL 3D CHARACTER'S (i.e.: Unit) Transform (of every Bone...) to the RAGDOLL Bones... so the Ragdoll will be spawned in the same Pose as the original Character / Unit (and not in T-POSE, as it is by default).
     /// </summary>
     /// <param name="root">(COPY FROM HERE) The ROOT of the ORIGINAL Skeleton (i.e: the Bone Hierachy). This is what we want to duplicate.</param>
