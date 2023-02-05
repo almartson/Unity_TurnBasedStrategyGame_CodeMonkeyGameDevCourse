@@ -104,9 +104,9 @@ public class UnitRagdoll : MonoBehaviour
             Vector3 normalizedDirection = -1 * applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet;
             Vector3 newPositionOriginForExplosion = transform.position - (normalizedDirection * (_explosionOffsetPositioningInTermsOfExplosionRange * _explosionRange));
             //
-            Debug.Log("transform.position = " + transform.position);
-            Debug.Log("applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet = " + applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet);
-            Debug.Log("newPositionOriginForExplosion = " + newPositionOriginForExplosion);
+            // Debug.Log("transform.position = " + transform.position);
+            // Debug.Log("applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet = " + applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet);
+            // Debug.Log("newPositionOriginForExplosion = " + newPositionOriginForExplosion);
             //
             ApplyExplosionToTargetRagdollOptimized(ragdollPrefabsCharacterBonesAreRagdollized, _explosionForce, newPositionOriginForExplosion, _explosionRange);
     
@@ -138,9 +138,9 @@ public class UnitRagdoll : MonoBehaviour
             Vector3 normalizedDirection = -1 * applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet;
             Vector3 newPositionOriginForExplosion = transform.position - (normalizedDirection * (_explosionOffsetPositioningInTermsOfExplosionRange * _explosionRange));
             //
-            Debug.Log("transform.position = " + transform.position);
-            Debug.Log("applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet = " + applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet);
-            Debug.Log("newPositionOriginForExplosion = " + newPositionOriginForExplosion);
+            // Debug.Log("transform.position = " + transform.position);
+            // Debug.Log("applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet = " + applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet);
+            // Debug.Log("newPositionOriginForExplosion = " + newPositionOriginForExplosion);
             //
             ApplyExplosionToTargetRagdoll(_ragdollRootBone, _explosionForce, newPositionOriginForExplosion, _explosionRange);
     

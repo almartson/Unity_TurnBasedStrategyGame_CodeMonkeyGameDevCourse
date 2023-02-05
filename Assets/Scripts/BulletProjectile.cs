@@ -127,7 +127,6 @@ public class BulletProjectile : MonoBehaviour
         // To avoid Overshooting the Target:
         // Compare DISTANCE before moving with AFTER moving...
         // Distance BEFORE Moving:
-        // Todo: Check: Optimization NOT using Square root here (1)
         //
         // CodeMonkey Original:     float distanceBeforeMoving = Vector3.Distance(position, _targetPosition);
         // AlMartson Optimization Fix:
@@ -140,7 +139,6 @@ public class BulletProjectile : MonoBehaviour
         transform.position = _cachedPosition;
         
         // Distance AFTER Moving:
-        // Todo: Check: Optimization NOT using Square root here (2)
         //
         // CodeMonkey Original:     float distanceAfterMoving = Vector3.Distance(position, _targetPosition);
         // AlMartson Optimization Fix:

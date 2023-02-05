@@ -192,7 +192,7 @@ public class UnitAnimator : MonoBehaviour
         e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe =
             bulletProjectile.MoveDirection;
         //
-        Debug.Log("e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe = " + e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe);
+        // Debug.Log("e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe = " + e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe);
 
     }//End ShootAction_OnShootAnimation
     

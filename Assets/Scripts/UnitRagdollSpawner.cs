@@ -121,9 +121,9 @@ public class UnitRagdollSpawner : MonoBehaviour
         {
             //   2.2- OPTIMIZED Version (AlMartson's)
             //  By the Designer need to previously link the Bones in the Unit and Ragdoll Prefabs: (in the UnitRagDollSpawner.cs  Script...)
-            // Todo: remove the debug.log
-            //
-            Debug.Log("It is about to execute: SetupOptimized(...), Script: " + this.GetType().Name);
+            // // Todo: remove the debug.log
+            // //
+            // Debug.Log("It is about to execute: SetupOptimized(...), Script: " + this.GetType().Name);
             //
             unitRagdoll.SetupOptimized( _originalCharacterBonesThatAreRagdollized, unitRagdoll.RagdollPrefabsCharacterBonesAreRagdollized, _originalCharactersRootBone, gameObject.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe );
    
@@ -132,9 +132,9 @@ public class UnitRagdollSpawner : MonoBehaviour
         {
             //   2.1- Set the Transforms of each & every Bone, of the RAGDOLL:
             //
-            // Todo: remove the debug.log
-            //
-            Debug.Log("It is about to execute the NON-OPTIMIZED form of: Setup(...), Script: " + this.GetType().Name);
+            // // Todo: remove the debug.log
+            // //
+            // Debug.Log("It is about to execute the NON-OPTIMIZED form of: Setup(...), Script: " + this.GetType().Name);
             //
             unitRagdoll.Setup(_originalCharactersRootBone, gameObject.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe);
                 

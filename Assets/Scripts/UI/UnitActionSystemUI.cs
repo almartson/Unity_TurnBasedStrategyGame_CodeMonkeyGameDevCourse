@@ -296,7 +296,7 @@ public class UnitActionSystemUI : MonoBehaviour
         //     
         // }//End foreach
         //
-        // B- AlMartson's way:   Performant: TODO: check this Optimization here.
+        // B- AlMartson's way:   Performant:
         //
         int listLength = _actionButtonUIList.Count;
         //
@@ -325,7 +325,7 @@ public class UnitActionSystemUI : MonoBehaviour
         
         // Set Text
         // TODO: Fix Performance issue here: String CONCAT "+" generates Garbage...
-        // 1- It is possible to use the Vexe GitHubs solution: Strings using pointers & Dictionaries... or
+        // 1- It is possible to use the Vexe GitHub's solution: Strings using pointers & Dictionaries... or
         // 2- Use Images and ""Action Points: " would also be an Image... so the INT Numbers would be Images (Prefabs) that would be selected on this Function here or another...or
         // 3- Use a function here that transforms every INT number to String. We would need to use 2 separate Text Containers:
         //    1- "_actionPointsTextLabel.text" and
@@ -338,10 +338,6 @@ public class UnitActionSystemUI : MonoBehaviour
         // Option, does this generates a Garbage Allocation?
         //
         //_actionPointsText.text = $"Action Points: {selectedUnit.GetActionPoints().ToString()}";
-        //
-        // TODO: AlMartson's Optimization (need a review)
-        //
-        //_actionPointsText.text = selectedUnit.GetActionPoints().ToString();
 
     }//End UpdateActionPoints(...
     

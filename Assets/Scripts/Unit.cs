@@ -459,12 +459,7 @@ public class Unit : MonoBehaviour
         // Apply the Calculation:   Damage to the 'Health System'
         //
         _healthSystem.Damage(damageAmount);
-        
-        
-        // Todo: Debug stage: Temporary, remove soon:
-        //
-        //Debug.Log(transform + " damaged!");
-        
+
     }//End Damage(...)
 
     #endregion  Health System - Damage

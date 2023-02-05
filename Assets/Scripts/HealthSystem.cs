@@ -83,12 +83,7 @@ public class HealthSystem : MonoBehaviour
         {
             Die();
         }
-        
-        
-        // Todo: Remove or comment these lines, it is only for Debugging:
-        //
-        //Debug.Log(_health);
-        
+
     }//End Damage()
 
 
@@ -100,10 +95,6 @@ public class HealthSystem : MonoBehaviour
         // Call the 'Die'  Event  in another (specialized) Script:
         //
         OnDead?.Invoke(this, EventArgs.Empty);
-
-        // Todo: Remove or comment these lines, it is only for Debugging:
-        //
-        //Debug.Log(_health);
 
     }//End Die()
 
