@@ -3,7 +3,10 @@
 */
 using UnityEngine;
 
-
+/// <summary>
+/// Bullet Projectile's GameObject Logic. <br />
+/// This should be attached to a BulletProjectile Prefab, and instantiated when it is been Fired. <br />
+/// </summary>
 public class BulletProjectile : MonoBehaviour
 {
     #region Attributes
@@ -58,10 +61,10 @@ public class BulletProjectile : MonoBehaviour
     
     
     /// <summary>
-    /// Cached Vector3 Position of the Flying Bullet, at any moment.
+    /// Cached Transform of the Flying Bullet, at any moment.
     /// </summary>
-    [Tooltip("Cached Vector3 Position of the Flying Bullet, at any moment.")]
-    private Vector3 _cachedPosition;
+    [Tooltip("Cached Transform of the Flying Bullet, at any moment.")]
+    private Transform _cachedTransform;
 
     #endregion Utils
     
@@ -82,23 +85,22 @@ public class BulletProjectile : MonoBehaviour
         _sqrStoppingDistance = _stoppingDistance * _stoppingDistance;
         
         #endregion Utils
-
         
         #region Initializing the Bullet
-        
+        //
         // Simple Logic to:
         // 1- Move (the BULLET...) towards the:  TargetPosition.
         // .1- Direction (Vector3)
-        //   .1.1- Cache (for performance optimization): transform.position
+        //   .1.1- Cache (for performance optimization): transform
         //
-        _cachedPosition = transform.position;
+        _cachedTransform = transform;
+        // //
+        // // .1- Direction   (of the Bullet-Projectile while its FLYING):
+        // //
+        // _moveDirection = (_targetPosition - _cachedTransform.position).normalized;
         //
-        // .1- Direction   (of the Bullet-Projectile while its FLYING):
-        //
-        _moveDirection = (_targetPosition - _cachedPosition).normalized;
-        
         #endregion Initializing the Bullet
-        
+
     }//End Awake()
 
 
@@ -114,15 +116,27 @@ public class BulletProjectile : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        // // Simple Logic to:
-        // // 1- Move (the BULLET...) towards the:  TargetPosition.
-        // // .1- Direction (Vector3)
-        // //   .1.1- Cache (for performance optimization): transform.position
-        // //
-        // var position = transform.position;
-        // // .1- Direction
-        // _moveDirection = (_targetPosition - position).normalized;
-        //...NOTE: The previous LOGIC has been pasted in the Awake() Method.
+        #region Initializing the Bullet
+        
+        // Simple Logic to:
+        // 1- Move (the BULLET...) towards the:  TargetPosition.
+        // .1- Direction (Vector3)
+        //   .1.1- Cache (for performance optimization): transform.position
+        // :
+        //   .1.1- Cache (for performance optimization): transform.position
+        //
+        // (This is done in the Awake:)  _cachedTransform = transform.position;
+        // Another cache, valid only during the scope of each the Update() for: each frame (changes with each frame):
+        //
+        Vector3 position = _cachedTransform.position;
+        //
+        // .1- Direction   (of the Bullet-Projectile while its FLYING):
+        //
+        _moveDirection = (_targetPosition - position).normalized;
+
+        
+        #endregion Initializing the Bullet
+        
         
         // To avoid Overshooting the Target:
         // Compare DISTANCE before moving with AFTER moving...
@@ -131,19 +145,19 @@ public class BulletProjectile : MonoBehaviour
         // CodeMonkey Original:     float distanceBeforeMoving = Vector3.Distance(position, _targetPosition);
         // AlMartson Optimization Fix:
         //
-        float sqrDistanceBeforeMoving = Vector3.SqrMagnitude(_cachedPosition - _targetPosition);
+        float sqrDistanceBeforeMoving = Vector3.SqrMagnitude(position - _targetPosition);
         
         // .2- MOVE: Update->Increase the Position (i.e.: Move the Bullet):
         //
-        _cachedPosition += _moveDirection * (_moveSpeed * Time.deltaTime);
-        transform.position = _cachedPosition;
-        
+        position += _moveDirection * (_moveSpeed * Time.deltaTime);
+        _cachedTransform.position = position;
+
         // Distance AFTER Moving:
         //
         // CodeMonkey Original:     float distanceAfterMoving = Vector3.Distance(position, _targetPosition);
         // AlMartson Optimization Fix:
         //
-        float sqrDistanceAfterMoving = Vector3.SqrMagnitude(_cachedPosition - _targetPosition);
+        float sqrDistanceAfterMoving = Vector3.SqrMagnitude(position - _targetPosition);
         
         // Debug TIP: With fast paced moving objects it is very common to
         //..overshoot or overpass the 'Target' (because they move too quickly)
@@ -172,12 +186,13 @@ public class BulletProjectile : MonoBehaviour
             
             // 0- Save the Move Direction (_moveDirection) of this Bullet (pass it to the TargetUnit, the receiver...), to use it as an Explosion Vector, for Animations on the Target:
             //...see it in the Awake()... it is initialized there as:  _moveDirection
+            
 
             // 1- Place the Trail + Bullet (i.e.: this GameObject) just on the Target's Position
             //..(to avoid a visual Glitch: it tends to overshoot and goes +1 mtr, beyond the target):
             // 
-            transform.position = _targetPosition;
-            
+            _cachedTransform.position = _targetPosition;
+
             // 2- Destroy / Clean the Memory:
             // 2.1- Un-parent the Visual Trail Renderer (VFX Particle Effect), that will make it self-destroy in the next frame:
             //

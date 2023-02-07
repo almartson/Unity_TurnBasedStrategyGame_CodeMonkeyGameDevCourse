@@ -34,8 +34,10 @@ public class Unit : MonoBehaviour
 
     #region Health System
 
+    /// <summary>
+    /// Health System, for managing any Player's 'Health Points' (i.e.: your current 'health')
+    /// </summary>
     [Tooltip("Health System, for managing any Player's 'Health Points' (i.e.: your current 'health')")]
-    [SerializeField]
     private HealthSystem _healthSystem;
 
     #endregion Health System

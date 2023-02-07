@@ -3,7 +3,11 @@
 */
 using UnityEngine;
 
-
+/// <summary>
+/// Unit's Ragdoll GameObject Logic. <br />
+/// This should be attached to a UnitRagdoll Prefab. <br />
+/// This is spawned in-place of an Unit / Character that is dying.
+/// </summary>
 public class UnitRagdoll : MonoBehaviour
 {
     #region Attributes
@@ -101,7 +105,7 @@ public class UnitRagdoll : MonoBehaviour
             //
             // Use the Direction Vector3 to calculate a Position 1 mtr before the Target Unit (Character)... so there will be a KnockBack Effect with the Explosion:
             //
-            Vector3 normalizedDirection = -1 * applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet;
+            Vector3 normalizedDirection = applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet;
             Vector3 newPositionOriginForExplosion = transform.position - (normalizedDirection * (_explosionOffsetPositioningInTermsOfExplosionRange * _explosionRange));
             //
             // Debug.Log("transform.position = " + transform.position);
@@ -135,7 +139,7 @@ public class UnitRagdoll : MonoBehaviour
             //
             // Use the Direction Vector3 to calculate a Position 1 mtr before the Target Unit (Character)... so there will be a KnockBack Effect with the Explosion:
             //
-            Vector3 normalizedDirection = -1 * applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet;
+            Vector3 normalizedDirection = applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet;
             Vector3 newPositionOriginForExplosion = transform.position - (normalizedDirection * (_explosionOffsetPositioningInTermsOfExplosionRange * _explosionRange));
             //
             // Debug.Log("transform.position = " + transform.position);

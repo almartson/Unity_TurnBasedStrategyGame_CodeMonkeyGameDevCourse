@@ -1,10 +1,8 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
-
 using System;
 using UnityEngine;
-
 
 public class UnitAnimator : MonoBehaviour
 {
@@ -188,11 +186,18 @@ public class UnitAnimator : MonoBehaviour
         bulletProjectile.Setup(targetUnitShootAtPosition);
         //
         // 4- Save in the TargetUnit (Character) the Bullet / Projectile _moveDirection... of the Shoot  (this is for the Animation when it Hits the Target):
+        // NOTE:  This does NOT work because the Bullet has not ran its AWAKE() yest, so it does not have a calculated Direction yet:
+        //e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe = bulletProjectile.MoveDirection;
         //
-        e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe =
-            bulletProjectile.MoveDirection;
+        // NOTE: This line DOES WORK:  [ target_position - origin_position = direction_vector ]
         //
-        // Debug.Log("e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe = " + e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe);
+        Vector3 normalizedBulletDirectionVector = (e.targetUnit.transform.position - e.shootingUnit.transform.position).normalized;
+        //
+        // Assign it to a Field / Attribute of Class to transmit it:
+        //
+        e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe = normalizedBulletDirectionVector;
+        //
+        // Debug.Log("ShootAction_OnShootAnimation: e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe = " + normalizedBulletDirectionVector);
 
     }//End ShootAction_OnShootAnimation
     

@@ -5,7 +5,8 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// This Class handles the Spawning of a RAGDOLL PREFAB, (associated to a Character / Unit), in the place-Transform-Position-Rotation-etc of an Unit, when it dies, to make an Animations of 'Falling down / drop death'.
+/// This Class handles the Spawning of a RAGDOLL PREFAB, (associated to a Character / Unit), in the place-Transform-Position-Rotation-etc of an Unit, when it dies, to make an Animations of 'Falling down / drop death'. <br />
+/// This should be attached to an Unit / Character GameObject and its PREFAB.
 /// </summary>
 public class UnitRagdollSpawner : MonoBehaviour
 {

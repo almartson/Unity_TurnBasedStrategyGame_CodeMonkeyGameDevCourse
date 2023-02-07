@@ -1,11 +1,15 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
-
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
+/// <summary>
+/// Unit's 'UI Action Points' and data Script - Logic.
+/// This should be attached to a UnitWorldUI Canvas - GameObject. <br />
+/// </summary>
 public class UnitWorldUI : MonoBehaviour
 {
 
@@ -20,6 +24,13 @@ public class UnitWorldUI : MonoBehaviour
     [SerializeField]
     private Unit _unit;
     
+    [Tooltip("(Reference to) the Unit/Character's UI HEALTH BAR IMAGE - UI Element")]
+    [SerializeField]
+    private Image _healthBarImage;
+
+    [Tooltip("(Reference to) the Unit/Character's HEALTH SYSTEM Script - Logic")]
+    [SerializeField]
+    private HealthSystem _healthSystem;
 
     #endregion Attributes
 
@@ -37,15 +48,24 @@ public class UnitWorldUI : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        // Listen - CallBack:  (Unit.OnAnyActionPointsChanged  is a STATIC DELEGATE... meaning it comes with the WHOLE CLASS, not just a particular 'Unit / Character' GameObject), so:
+        // Listener - CallBack:  (Unit.OnAnyActionPointsChanged  is a STATIC DELEGATE... meaning it comes with the WHOLE CLASS, not just a particular 'Unit / Character' GameObject), so:
         // Everytime anybody's 'Action Point' variable changes:  DO THIS CALLBACK:
         // (actually this is non-performant if you have 1000 Units moving at the same time, changing that number... but for this case we'll only have ON1 (1) changing per Turn, so it's perfect)... The IDEAL Perfect solution would be NOT to use a 'STATIC DELEGATE' () 
         //
         Unit.OnAnyActionPointsChanged += Unit_OnAnyActionPointsChanged;
         
+        // Listener - CallBack:
+        // When the Unit/Character receives DAMAGE (because it was under attack):
+        //
+        _healthSystem.OnDamaged += HealthSystem_OnDamaged;
+        
         // Update the Unit's: 'Action Points' TEXT UI:
         //
         UpdateActionPointsText();
+        //
+        // Update the Unit's: 'Health Bar' image UI:
+        //
+        UpdateHealthBar();
         
     }// End Start()
 
@@ -89,6 +109,41 @@ public class UnitWorldUI : MonoBehaviour
 
     #endregion Delegate - Listener When ACTION POINTS change
 
+
+    #region UI Health Bar
+
+    /// <summary>
+    /// Updates the UI Health Bar.
+    /// </summary>
+    private void UpdateHealthBar()
+    {
+        // Update the UI Image's 'Fill Amount' Slider value:
+        //
+        _healthBarImage.fillAmount = _healthSystem.GetHealthNormalized();
+
+    }// End UpdateHealthBar
+
+    
+    #region Listener - CallBack: when this Unit/Character is DAMAGED
+    
+    /// <summary>
+    /// This Event is triggered when this Unit/Character is DAMAGED (i.e.: <code>_health</code> is reduced).
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void HealthSystem_OnDamaged(object sender, EventArgs e)
+    {
+        
+        // Update the UI:   'Health Bar'  (image)
+        //
+        UpdateHealthBar();
+        
+    }// End HealthSystem_OnDamaged
+    
+    #endregion Listener - CallBack: when this Unit/Character is DAMAGED
+    
+    #endregion UI Health Bar
+    
     #endregion My Custom Methods
 
 }

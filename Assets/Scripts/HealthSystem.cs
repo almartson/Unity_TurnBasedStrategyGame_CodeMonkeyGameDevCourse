@@ -1,7 +1,6 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
-
 using System;
 using UnityEngine;
 
@@ -16,7 +15,12 @@ public class HealthSystem : MonoBehaviour
     [Tooltip("Health Points (i.e.: your current 'health')")]
     [SerializeField]
     private int _health = 100;
-    
+
+    /// <summary>
+    /// Maximum (possible) Health for this game.
+    /// </summary>
+    private int _HEALTH_MAX;
+
     #endregion Health
 
     
@@ -26,6 +30,11 @@ public class HealthSystem : MonoBehaviour
     /// Even to be called/invoked when <code>_health == 0</code>.
     /// </summary>
     public event EventHandler OnDead;
+    
+    /// <summary>
+    /// Even to be called/invoked when <code>_health</code> is dimished... that means:  when the Character receives DAMAGE.
+    /// </summary>
+    public event EventHandler OnDamaged;
     
     #endregion Event - Listeners - CallBacks
     
@@ -38,7 +47,13 @@ public class HealthSystem : MonoBehaviour
     /// <summary>
     /// Awake is called before the Start calls round
     /// </summary>
+    private void Awake()
+    {
+        // Initialize the Max Health pseudo CONSTANT for this game:
+        //
+        _HEALTH_MAX = _health;
 
+    }// End Awake
 
 
     /// <summary>
@@ -67,6 +82,12 @@ public class HealthSystem : MonoBehaviour
         // Take Damage:  decrement 'health'
         //
         _health -= damageAmount;
+        
+        
+        // Invoke the Event:  when this Character is DAMAGED:
+        //
+        OnDamaged?.Invoke(this, EventArgs.Empty);
+        
         
         // Validation:
         // Health must not be under zero
@@ -98,6 +119,19 @@ public class HealthSystem : MonoBehaviour
 
     }//End Die()
 
+    
+    /// <summary>
+    /// Calculates (and returns) the (percentage of) % Health, based on the range [0.0, 1.0] 
+    /// </summary>
+    /// <returns></returns>
+    public float GetHealthNormalized()
+    {
+        // Calculate the (percentage of) % Health, based on the range [0.0, 1.0]
+        //
+        return (float)_health / _HEALTH_MAX;
+
+    }// End GetHealthNormalized
+    
     #endregion My Custom Methods
 
 }
