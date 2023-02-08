@@ -62,33 +62,64 @@ public class LookAtCamera : MonoBehaviour
 
 
     /// <summary>
-    /// Update is called once per frame... and 'LateUpdate' runs after 'Update' once per frame.
+    /// Update is called once per frame... and 'LateUpdate' runs after 'Update', it runs last before the ending of each frame, once per frame.
     /// </summary>
     private void LateUpdate()
     {
-        //Direct the UI element facing towards the Camera:
+        
+        #region 1- CodeMonkey's Approach:  Classic  'LookAt'
+        
+        // //Direct the UI element facing towards the Camera:
+        // //
+        // if (_invertHorizontallySoItsReadable)
+        // {
+        //     // 0- Cache every frame .position... fro performance:
+        //     //
+        //     Vector3 position = _cachedTransform.position;
+        //     
+        //     // Calculate the Vector3: Direction Towards the Camera:
+        //     //
+        //     Vector3 directionToCamera = (_cameraTransform.position - position).normalized;
+        //     
+        //     // Make the UI element's 'back' (bottom) face the Camera, to make it readable for Humans:
+        //     //
+        //     _cachedTransform.LookAt(position + (directionToCamera * -1));
+        // }
+        // else
+        // {
+        //     // Make this GameObject's front face Rotate towards the Camera, facing the Camera:
+        //     //
+        //     _cachedTransform.LookAt(_cameraTransform);
+        //     
+        // }//End else of if (_invertHorizontallySoItsReadable)
+        
+        #endregion 1- CodeMonkey's Approach:  Classic  'LookAt'
+        
+        
+        #region 2- Alternative Code (simpler Math)
+        
+        // Short version, with the Ternary Operator:
+        // _cachedTransform.forward = (_invertHorizontallySoItsReadable ? 1 : -1) * _cameraTransform.forward;
+
+        
+        // Explicit version:
+        // Direct the UI element facing towards the Camera:
         //
         if (_invertHorizontallySoItsReadable)
         {
-            // 0- Cache every frame .position... fro performance:
-            //
-            Vector3 position = _cachedTransform.position;
-            
-            // Calculate the Vector3: Direction Towards the Camera:
-            //
-            Vector3 directionToCamera = (_cameraTransform.position - position).normalized;
-            
             // Make the UI element's 'back' (bottom) face the Camera, to make it readable for Humans:
             //
-            _cachedTransform.LookAt(position + (directionToCamera * -1));
+            _cachedTransform.forward = _cameraTransform.forward;
         }
         else
         {
             // Make this GameObject's front face Rotate towards the Camera, facing the Camera:
             //
-            _cachedTransform.LookAt(_cameraTransform);
+            _cachedTransform.forward = -1 * _cameraTransform.forward;
             
         }//End else of if (_invertHorizontallySoItsReadable)
+
+        #endregion 2- Alternative Code (simpler Math)
         
     }// End LateUpdate
 
