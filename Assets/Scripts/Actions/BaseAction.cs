@@ -29,8 +29,20 @@ public abstract class BaseAction : MonoBehaviour
     
     #region Delegates: Purpose: Managing (allowing only...) just ONE Action at a Time
    
+    /// <summary>
+    /// Delegate: to tell when ANY [ TakeAction ] (Action & the ActionStart() function...) Routine STARTS.
+    /// It is related to this CLASS, NOT to a specific Object - instance of this Class, SO IT DOESN'T DEPEND OF: Move, Spin, Shoot Action, etc... -  (although we can get the Character/'Unit' GameObject from the SENDER of the Event (by casting to 'Unit')...). ANY TIME any Action is called: (a descendant of BaseAction, THIS CALLBACK WILL BE TRIGGERED / CALLED).
+    /// Note:  The Type: EventHandler   is a System-defined type, of Standard DELEGATE.
+    /// </summary>
+    public static event EventHandler OnAnyActionStarted;    /// <summary>
+    
+    /// Delegate: to tell when ANY [ TakeAction ] (Action & the ActionStart() function...) Routine ENDS.
+    /// It is related to this CLASS, NOT to a specific Object - instance of this Class.
+    /// </summary>
+    public static event EventHandler OnAnyActionCompleted;
+    
+    
     // Delegate: For 'ACTION Completed': Purpose: Telling everyone when the TakeAction (Action) Routine ends.
-
     /// <summary>
     /// Delegate: to tell when the: [ TakeAction ] (Action) Routine ends.
     /// Note:  The Type: ACTION   is a System-defined type, of Standard DELEGATE.
@@ -125,7 +137,12 @@ public abstract class BaseAction : MonoBehaviour
         _isActive = true;
         this.onActionComplete = onActionComplete;
         
-    }
+        
+        // When ANY Action Starts:   Call the CallBack:
+        //
+        OnAnyActionStarted?.Invoke(this, EventArgs.Empty);
+        
+    }// End ActionStart
     
     /// <summary>
     /// Common Logic that is executed every time at the END of the 'TakeAction()'  Method. <br />
@@ -140,6 +157,11 @@ public abstract class BaseAction : MonoBehaviour
         // We CALL our DELEGATE:  tells everyone that the TakeAction routine ENDED:
         //
         onActionComplete?.Invoke();
+        
+        
+        // CALL to DELEGATE:  tells everyone that ANY TakeAction (i.e.: Shoot, Spin, Move, etc) routine ENDED:
+        //
+        OnAnyActionCompleted?.Invoke(this, EventArgs.Empty);
     }
 
     #endregion 'Taking the Action' Logic
@@ -187,11 +209,23 @@ public abstract class BaseAction : MonoBehaviour
     #endregion POINTS  - for every Action
 
     #endregion Actions' Validations
+    
+    #region Misc, Getters, Setters, etc
 
+    /// <summary>
+    /// Gets the (Character) Unit   (i.e.: the INITIATOR of this Action).
+    /// </summary>
+    /// <returns></returns>
+    public Unit GetUnit()
+    {
+        return _unit;
+    }
+
+    #endregion Misc, Getters, Setters, etc
 
     #endregion My Custom Methods
 
-}
+}// End Class BaseAction
 
 
 
@@ -215,4 +249,4 @@ public abstract class BaseParameters
 
     #endregion Methods
 
-}
+}// End Class BaseParameters

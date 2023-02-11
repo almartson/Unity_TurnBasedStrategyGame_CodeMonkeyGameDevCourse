@@ -1,12 +1,13 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// This class handles the execution of the Shooting Action (Animations, timers, stages of the animation itself - even if it is a chain of animations tied up to each other and triggered together, - etc) <br />
+/// This concrete class, (derived from BaseAction), handles the execution of the Shooting Action (Animations, timers, stages of the animation itself - even if it is a chain of animations tied up to each other and triggered together, - etc) <br />
 /// Here it is implemented a State Machine, handling STATES which are on an Enum variable, for the Animation STATES of the 'Shooting'.
 /// </summary>
 public class ShootAction : BaseAction
@@ -74,6 +75,22 @@ public class ShootAction : BaseAction
     
     #region Animator & Animations
 
+    #region Misc, Physics, Directional Vectors, etc
+    
+    /// <summary>
+    /// Direction (Vector3) of the Character's (Unit) Animation AIM. 
+    /// </summary>
+    private Vector3 _aimDirection;
+    /// <summary>
+    /// Field (Property Accessor) to: _aimDirection
+    /// </summary>
+    public Vector3 AimDirection { get => _aimDirection;
+        private set => _aimDirection = value;
+    }
+    
+    #endregion Misc, Physics, Directional Vectors, etc
+    
+    
     #region Events - Listeners - CallBack
     
     /// <summary>
@@ -173,11 +190,11 @@ public class ShootAction : BaseAction
                 // Rotate towards the TARGET, and Aim at it:
                 // .1- Direction Vector3 to shoot (normalized)
                 //
-                Vector3 aimDir = ( _targetUnit.GetWorldPosition() - _unit.GetWorldPosition() ).normalized;
+                _aimDirection = ( _targetUnit.GetWorldPosition() - _unit.GetWorldPosition() ).normalized;
                 //
                 // .2- Rotate, Animation:
                 //
-                RotateUnitUsingVector3SlerpApproach( aimDir );
+                RotateUnitUsingVector3SlerpApproach( _aimDirection );
                 
                 break;
             
@@ -237,7 +254,32 @@ public class ShootAction : BaseAction
         GenerateInputParameters();
         
         
-        // 2- Event Listener (it is a Delegate)
+        // 2- Calculate the TARGET's constraints
+        // ...(to Shoot to - based on a TARGET "GridPosition" selected by a Mouse Click, as Input.)
+        //
+        _targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(_shootActionBaseParameters.TargetGridPositionOfSelectedAction);
+        
+
+        // // 3- Debug, remove soon
+        // //
+        // Debug.Log("1- Aiming");
+
+        // 4- Set the STATE variable, for it to START
+        //
+        _state = State.Aiming;
+
+        // 5- TIMER of this action:
+        // Set the (Next..) STATE's Timer
+        //
+        float aimingStateTimer = 1.0f;
+        _stateTimer = aimingStateTimer;
+        
+        // 6- Set Flags for the Initial SHOOTING ANIMATION
+        //
+        _canShootBullet = true;
+
+        
+        // X- Event Listener (it is a Delegate)
         //   .1- Here we assign the Function/Procedure (i.e.: Method) to the 'DELEGATE variable'
         //   .2- In another line (latter, in another Script.cs),
         // we'll do a calling / invoke, something like:   'onActionComplete()'
@@ -253,31 +295,7 @@ public class ShootAction : BaseAction
         // //
         // _isActive = true;
         
-        
-        // 3- Calculate the TARGET's constraints
-        // ...(to Shoot to - based on a TARGET "GridPosition" selected by a Mouse Click, as Input.)
-        //
-        _targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(this._shootActionBaseParameters.TargetGridPositionOfSelectedAction);
-        
-
-        // // Debug, remove soon
-        // //
-        // Debug.Log("1- Aiming");
-
-        // 4- Set the STATE variable, for it to START
-        //
-        _state = State.Aiming;
-
-        // 5- Set THAT (Next..) STATE's Timer
-        //
-        float aimingStateTimer = 1.0f;
-        _stateTimer = aimingStateTimer;
-        
-        // 6- St Flags for the Initial SHOOTING ANIMATION
-        //
-        _canShootBullet = true;
-
-    }//End TakeAction(...)
+    }// End TakeAction(...)
 
     
     /// <summary>
@@ -292,7 +310,7 @@ public class ShootAction : BaseAction
         //
         // 1- TARGET GridPosition (i.e.: the Destination of the Movement...)
         //
-        this._shootActionBaseParameters.TargetGridPositionOfSelectedAction = UnitActionSystem.Instance.GetSelectedUnit().GetFinalGridPositionOfNextPlayersAction();
+        _shootActionBaseParameters.TargetGridPositionOfSelectedAction = UnitActionSystem.Instance.GetSelectedUnit().GetFinalGridPositionOfNextPlayersAction();
         
     }//End GenerateInputParameters
 
@@ -328,7 +346,6 @@ public class ShootAction : BaseAction
     /// <param name="moveDirection"></param>
     private void RotateUnitUsingVector3SlerpApproach(Vector3 moveDirection)
     {
-        
         // Quaternions + Spherical Interpolation, SLERP, (Quaternions behind the Scenes):
         //...it rotates in a better way (first Rotates, then Walks):
         //
@@ -350,10 +367,8 @@ public class ShootAction : BaseAction
     }
     
     #endregion  Rotation: LERP vs. SLERP
-
     
     #endregion Taking the Action Methods
-    
     
     #region Finite State Machine Methods
     
@@ -556,10 +571,23 @@ public class ShootAction : BaseAction
     
     #endregion UI related utils
 
+    
+    #region Misc, Getters, Setters, etc
+
+    /// <summary>
+    /// Gets the (Character) Unit, that is the TARGET.
+    /// </summary>
+    /// <returns></returns>
+    public Unit GetTargetUnit()
+    {
+        return _targetUnit;
+    }
+
+    #endregion Misc, Getters, Setters, etc
 
     #endregion My Custom Methods
 
-}
+}// End Class ShootActionBaseParameters
 
 
 /// <summary>
@@ -592,5 +620,5 @@ public class ShootActionBaseParameters : BaseParameters
 
     #endregion Methods
 
-}
+}// End Class ShootActionBaseParameters
 

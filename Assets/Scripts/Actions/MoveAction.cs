@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// This concrete class, (derived from BaseAction), handles the execution of the MOVE Action (Animations, timers, stages of the animation / action itself - even if it is a chain of animations tied up to each other and triggered together, - etc) <br />
+/// </summary>
 public class MoveAction : BaseAction
 {
     #region Attributes
@@ -141,15 +143,16 @@ public class MoveAction : BaseAction
     /// </summary>
     private void StopMoveAction()
     {
+        // Invoke: STOP the Animation
+        //
+        OnStopMovingAnimation?.Invoke(this, EventArgs.Empty);
+
+        
         // Set this "Action" as DISABLED
         // + We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED  +  Set this "Action" as DISABLED:
         //
         ActionComplete();
         
-        // Invoke: STOP the Animation
-        //
-        OnStopMovingAnimation?.Invoke(this, EventArgs.Empty);
-
     }//End StopMoveAction()
     
     #endregion Stop all Movement Action & Animation
@@ -160,14 +163,10 @@ public class MoveAction : BaseAction
     /// </summary>
     public override void TakeAction(Action onMoveActionComplete)   //   (GridPosition gridPosition /* Used in MoveAction */, Action onMoveActionComplete)
     {
-        
         // 1- Get the Input Base Parameters (for this function call):
         //
         GenerateInputParameters();
         
-        // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine ENDED (...at least the ACTIVATION-part of it ended)   +   Set this "Action" as ENABLED (a mutex flag _isActive)
-        //
-        ActionStart( onMoveActionComplete );
         
         // Get the WorldPosition, based on a "GridPosition" as Input.
         //
@@ -176,6 +175,11 @@ public class MoveAction : BaseAction
         // Invoke: 3D Animation START
         //
         OnStartMovingAnimation?.Invoke(this, EventArgs.Empty);
+        
+        
+        // We CALL our DELEGATE (which is on the PARENT-Base Class):  tells everyone that the 'TakeAction() Action' routine BEGAN (...the ACTIVATION-part of it)   +   Set this "Action" as ENABLED (a mutex flag _isActive)
+        //
+        ActionStart( onMoveActionComplete );
 
     }//End TakeAction()
     
@@ -205,9 +209,6 @@ public class MoveAction : BaseAction
     [Obsolete("This method is deprecated. Use: 'public void TakeAction(GridPosition gridPosition)' instead", true)]
     public void Move(Vector3 newTargetPosition, Action onMoveActionComplete)
     {
-        // We CALL our DELEGATE:  tells everyone that the 'TakeAction() Action' routine ENDED:
-        //
-        this.onActionComplete = onMoveActionComplete;
         
         _targetPosition = newTargetPosition;
         
@@ -215,6 +216,11 @@ public class MoveAction : BaseAction
         // Set the (mutex) flag:
         //
         _isActive = true;
+        
+        
+        // We CALL our DELEGATE:  tells everyone that the 'TakeAction() Action' routine ENDED:
+        //
+        this.onActionComplete = onMoveActionComplete;
     }
     
     /// <summary>

@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// This concrete class, (derived from BaseAction), handles the execution of the SPIN Action (Animations, timers, stages of the animation / action itself - even if it is a chain of animations tied up to each other and triggered together, - etc) <br />
+/// </summary>
 public class SpinAction : BaseAction
 {
     #region Attributes
@@ -125,12 +127,14 @@ public class SpinAction : BaseAction
     /// </summary>
     public override void TakeAction(Action onSpinActionComplete)   //  (GridPosition gridPosition /* Not necessary for Spin Action */, Action onSpinComplete)
     {
-        
-        // This is greyed out because currently there are no INPUT PARAMETERS FOR THIS ACTION: SPIN.
-        
         // 0- Get the Input Base Parameters (for this function call):
         //
         GenerateInputParameters();
+        
+        
+        // Reset the Accumulated Rotation
+        //
+        _totalSpinAmount = 0.0f;
         
         
         // 1- Here we assign the Function/Procedure (i.e.: Method) to the 'DELEGATE variable'
@@ -147,11 +151,9 @@ public class SpinAction : BaseAction
         // // Sets a mutex flag:
         // //
         // _isActive = true;
-        
-        // Reset the Accumulated Rotation
-        //
-        _totalSpinAmount = 0.0f;
-    }
+
+    }// End TakeAction
+    
 
     /// <summary>
     /// Generic Method for generating the necessary Input Parameters that are used in the calling of
