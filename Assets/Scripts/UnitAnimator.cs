@@ -45,6 +45,11 @@ public class UnitAnimator : MonoBehaviour
     [Tooltip("Transform (Place - Origin) for the Initial Point where to Spawn the Bullet (Visuals) Prefab, which will be instantiated in the Scene, via Code")]
     [SerializeField]
     private Transform _shootPointTransform;
+    //
+    /// <summary>
+    /// Property Accessor to Private Field '_shootPointTransform'.
+    /// </summary>
+    public Transform ShootPointTransform { get => _shootPointTransform ; private set => _shootPointTransform = value; }
 
     
     /// <summary>

@@ -102,9 +102,13 @@ public class UnitRagdollSpawner : MonoBehaviour
     /// <param name="e"></param>
     private void HealthSystem_OnDead(object sender, EventArgs e)
     {
+        // 0.0- Cache, Optimzation:
+        //
+        Transform gameObjectTransform = gameObject.transform;
+        
         // 1.1- Spawn the RAGDOLL there & save its Transform:
         //
-        Transform ragdollTransform = Instantiate(_ragdollPrefab, transform.position, transform.rotation);
+        Transform ragdollTransform = Instantiate(_ragdollPrefab, gameObjectTransform.position, gameObjectTransform.rotation);
         
         //   1.2- Get the UnitRagdoll.cs Class Script from the 'ragdollTransform':
         //
@@ -125,8 +129,13 @@ public class UnitRagdollSpawner : MonoBehaviour
             // // Todo: remove the debug.log
             // //
             // Debug.Log("It is about to execute: SetupOptimized(...), Script: " + this.GetType().Name);
+            // Cache, optimization:
             //
-            unitRagdoll.SetupOptimized( _originalCharacterBonesThatAreRagdollized, unitRagdoll.RagdollPrefabsCharacterBonesAreRagdollized, _originalCharactersRootBone, gameObject.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe );
+            UnitAnimator unitAnimator = gameObject.GetComponent<UnitAnimator>();
+            //
+            // Setup:
+            //
+            unitRagdoll.SetupOptimized( _originalCharacterBonesThatAreRagdollized, unitRagdoll.RagdollPrefabsCharacterBonesAreRagdollized, _originalCharactersRootBone, unitAnimator.MoveDirectionOfBulletProjectileThatJustHitMe, new UnityEngine.Vector3( gameObjectTransform.position.x, unitAnimator.ShootPointTransform.position.y, gameObjectTransform.position.z) );
    
         }
         else

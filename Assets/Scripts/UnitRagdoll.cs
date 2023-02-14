@@ -48,10 +48,16 @@ public class UnitRagdoll : MonoBehaviour
     [SerializeField]
     private float _explosionRange = 10.0f;
 
+
+    [Tooltip("Whether you want (Realistic) Physics-based Explosions (i.e: set it to TRUE); or an funny (exaggerated) Explosion (Recommended, (i.e: set it to FALSE))./n/n This makes the Ragdoll's Animation a little bit spicier and fun when spawning.")]
+    [SerializeField]
+    private bool _realisticExplosionPhysics = false;
+
     
     [Tooltip("Displacement (Offset) from the (original) center of the Sphere of Explosion, to be applied. This is a proportional number to the Radius, meaning that it is measured in terms of '_explosionRange' times. This is OPTIONAL: it is to generate a Push-Effect on the Unit (Target) that receives the Attack./n/n This makes the Ragdoll's Animation a little bit spicier and fun.")]
+    [Range( -1.1f, 1.1f)]
     [SerializeField]
-    private float _explosionOffsetPositioningInTermsOfExplosionRange = 0.1f;
+    private float _explosionOffsetInHorizontalAxisPositioningProportionalToExplosionRange = 0.077f;
     
     #endregion Explosion Force
     
@@ -88,7 +94,7 @@ public class UnitRagdoll : MonoBehaviour
     /// <summary>
     /// Function to initiate a:  Copy all the ORIGINAL 3D CHARACTER'S (i.e.: Unit) Transform (of every Bone...) to the RAGDOLL Bones... so the Ragdoll will be spawned in the same Pose as the original Character / Unit (and not in T-POSE, as it is by default).
     /// </summary>
-    public void SetupOptimized(Transform[] originalCharacterBonesThatAreRagdollized, Transform[] ragdollPrefabsCharacterBonesAreRagdollized, Transform originalCharactersRootBone, Vector3 applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet)
+    public void SetupOptimized(Transform[] originalCharacterBonesThatAreRagdollized, Transform[] ragdollPrefabsCharacterBonesAreRagdollized, Transform originalCharactersRootBone, Vector3 bulletProjectileDirectionVector3, Vector3 pointPositionOfImpactVector3)
     {
         // Call the 'Optimized' Function that will COPY & PASTE all the Original Unit Skeleton Bone Transforms... to the RAGDOLL's:
         //
@@ -97,7 +103,7 @@ public class UnitRagdoll : MonoBehaviour
         
         // Fin: Add some Explosion Force Effect to the Ragdoll, because we want to see it flying... :)
         //
-        if ((applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet != null) &&  !applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet.Equals( Vector3.zero ))
+        if ((bulletProjectileDirectionVector3 != null) &&  !bulletProjectileDirectionVector3.Equals( Vector3.zero ))
         {
             // Explosion:
             //
@@ -105,16 +111,54 @@ public class UnitRagdoll : MonoBehaviour
             //
             // Use the Direction Vector3 to calculate a Position 1 mtr before the Target Unit (Character)... so there will be a KnockBack Effect with the Explosion:
             //
-            Vector3 normalizedDirection = applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet;
-            Vector3 newPositionOriginForExplosion = transform.position - (normalizedDirection * (_explosionOffsetPositioningInTermsOfExplosionRange * _explosionRange));
+            // Auxiliary variables declaration:
             //
-            // Debug.Log("transform.position = " + transform.position);
-            // Debug.Log("applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet = " + applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet);
-            // Debug.Log("newPositionOriginForExplosion = " + newPositionOriginForExplosion);
+            Vector3 normalizedDirection, newPositionOriginForExplosion;
+            //
+            // Calculations:
+            //
+            if (_realisticExplosionPhysics)
+            {
+                
+                // Realistic Vector3 (Position of the Explosion) calculation, based on y=the height of the Bullet.
+                //
+                // (Normalized) Direction of the Bullet:
+                //
+                normalizedDirection = bulletProjectileDirectionVector3.normalized;
+                //
+                // New Position (Bullet's Point of Impact, for the EXPLOSION to occur):
+                //
+                newPositionOriginForExplosion = pointPositionOfImpactVector3 - (normalizedDirection * (_explosionOffsetInHorizontalAxisPositioningProportionalToExplosionRange * _explosionRange));
+                //
+                // We fix the height of the Explosion (again):
+                //
+                newPositionOriginForExplosion.y = pointPositionOfImpactVector3.y;
+            }
+            else
+            {
+                
+                // Non-Realistic Vector3 (Position of the Explosion) calculation, based on y=0.
+                //
+                // (Normalized) Direction of the Bullet:
+                //
+                normalizedDirection = bulletProjectileDirectionVector3.normalized;
+                //
+                // New Position (Bullet's Point of Impact, for the EXPLOSION to occur):
+                //
+                newPositionOriginForExplosion = transform.position - (normalizedDirection * (_explosionOffsetInHorizontalAxisPositioningProportionalToExplosionRange * _explosionRange));
+
+            }//End if (_realisticExplosionPhysics)
+            
+            // Debug
+            //
+            Debug.Log("transform.position = " + transform.position);
+            Debug.Log("bulletProjectileDirectionVector3 = " + bulletProjectileDirectionVector3);
+            Debug.Log("pointPositionOfImpactVector3 = " + pointPositionOfImpactVector3);
+            Debug.Log("newPositionOriginForExplosion = " + newPositionOriginForExplosion);
             //
             ApplyExplosionToTargetRagdollOptimized(ragdollPrefabsCharacterBonesAreRagdollized, _explosionForce, newPositionOriginForExplosion, _explosionRange);
     
-        }//End if (applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet)
+        }//End if (bulletProjectileDirectionVector3)
 
     }// End SetupOptimized
     
@@ -140,15 +184,17 @@ public class UnitRagdoll : MonoBehaviour
             // Use the Direction Vector3 to calculate a Position 1 mtr before the Target Unit (Character)... so there will be a KnockBack Effect with the Explosion:
             //
             Vector3 normalizedDirection = applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet;
-            Vector3 newPositionOriginForExplosion = transform.position - (normalizedDirection * (_explosionOffsetPositioningInTermsOfExplosionRange * _explosionRange));
+            Vector3 newPositionOriginForExplosion = transform.position - (normalizedDirection * (_explosionOffsetInHorizontalAxisPositioningProportionalToExplosionRange * _explosionRange));
+            //
+            // Vector3 newPositionOriginForExplosion = transform.position - (_explosionOffsetInHorizontalAxisPositioningProportionalToExplosionRange * _explosionRange);
             //
             // Debug.Log("transform.position = " + transform.position);
-            // Debug.Log("applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet = " + applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet);
+            // Debug.Log("bulletProjectileDirectionVector3 = " + bulletProjectileDirectionVector3);
             // Debug.Log("newPositionOriginForExplosion = " + newPositionOriginForExplosion);
             //
             ApplyExplosionToTargetRagdoll(_ragdollRootBone, _explosionForce, newPositionOriginForExplosion, _explosionRange);
     
-        }//End if (applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet)
+        }//End if (bulletProjectileDirectionVector3)
         
     }// End Setup
     

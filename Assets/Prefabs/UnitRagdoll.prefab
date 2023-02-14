@@ -91,9 +91,10 @@ MonoBehaviour:
   - {fileID: 6298859368396572581}
   - {fileID: 6299030026203097719}
   - {fileID: 6298917181548063221}
-  _explosionForce: 450
+  _explosionForce: 800
   _explosionRange: 10
-  _explosionOffsetPositioningInTermsOfExplosionRange: 0.077
+  _realisticExplosionPhysics: 1
+  _explosionOffsetInHorizontalAxisPositioningProportionalToExplosionRange: 0.077
 --- !u!1001 &6297334025778817227
 PrefabInstance:
   m_ObjectHideFlags: 0
