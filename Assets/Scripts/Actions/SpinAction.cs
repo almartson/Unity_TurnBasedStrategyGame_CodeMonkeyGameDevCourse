@@ -243,7 +243,7 @@ public class SpinAction : BaseAction
 
     #endregion My Custom Methods
 
-}
+}//End Class SpinAction
 
 
 /// <summary>
@@ -265,4 +265,4 @@ public class SpinActionBaseParameters : BaseParameters
 
     #endregion Methods
 
-}
+}//End Class SpinActionBaseParameters

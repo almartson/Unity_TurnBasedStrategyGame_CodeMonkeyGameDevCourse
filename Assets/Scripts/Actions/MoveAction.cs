@@ -400,7 +400,7 @@ public class MoveAction : BaseAction
     
     #endregion My Custom Methods
 
-}
+}//End Class MoveAction
 
 
 /// <summary>
@@ -434,4 +434,4 @@ public class MoveActionBaseParameters : BaseParameters
 
     #endregion Methods
 
-}
+}//End Class MoveActionBaseParameters

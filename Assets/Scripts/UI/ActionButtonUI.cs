@@ -5,6 +5,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/// <summary>
+/// GUI / UI Graphical User Interface's related features are INVOKED from this class. <br />
+/// The associated logic is not here in this class, because of the 'Single Responsibility Principle'. It only handles the Graphical & Button / behavioural aspect, by means of using: Delegates as Listeners and CallBack to other script's Logic (Functions), such as:   _button.onClick.AddListener({...})
+/// This script must be attached to a Prefab / GameObject in the scene with the same name.
+/// </summary>
 public class ActionButtonUI : MonoBehaviour
 {
     #region Attributes

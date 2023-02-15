@@ -1,6 +1,13 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Main Player's 3D Character Class' Logic.<br />
+/// It handles all the base 'Unit' Character's functionality
+/// (Unit: it is a Prefab that is spawned in the Scene, (representing the Player's team players...)<br />
+///..and it contains several scripts related to ACTIONS the player <br />
+///..can execute in order to play in each turn, such as: MoveAction, ShootAction, SpinAction, etc.).
+/// </summary>
 public class Unit : MonoBehaviour
 {
 

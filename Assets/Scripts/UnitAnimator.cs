@@ -4,6 +4,11 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// This class handles the 'Unit' Game Character's Animations.<br />
+/// For each ACTION (Classes derived from the Base Class: 'BaseAction', such as: MoveAction, SpinAction, ShootAction, etc.)<br />
+/// It is some sort of 'Animation Manager', just for the 'Unit' Prefab / GameObject.<br />
+/// </summary>
 public class UnitAnimator : MonoBehaviour
 {
 
@@ -211,4 +216,4 @@ public class UnitAnimator : MonoBehaviour
     
     #endregion My Custom Methods
 
-}
+}//End Class UnitAnimator

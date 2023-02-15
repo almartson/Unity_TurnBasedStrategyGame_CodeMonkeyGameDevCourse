@@ -225,7 +225,7 @@ public abstract class BaseAction : MonoBehaviour
 
     #endregion My Custom Methods
 
-}// End Class BaseAction
+}//End Class BaseAction
 
 
 
@@ -249,4 +249,4 @@ public abstract class BaseParameters
 
     #endregion Methods
 
-}// End Class BaseParameters
+}//End Class BaseParameters
