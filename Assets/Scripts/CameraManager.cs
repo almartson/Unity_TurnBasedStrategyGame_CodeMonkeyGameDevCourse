@@ -1,11 +1,18 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
-
 using System;
 using UnityEngine;
 
-
+/// <summary>
+/// It is the Camera Manager for each one of the Unit's Actions: Move, Shoot, Spin, etc..<br />
+/// (unlike CameraController.cs, which handles the movement of the 'CameraController' GameObject (which is the Cinemachine's
+///...Target to Follow and to Aim to...) via C# Code, anytime I want (and that will be done in each Turn during the game,
+///...when a new action happens...), so the Cinemachine Camera System will follow this GameObject and C# code). <br /><br />
+/// CameraManager:  handles the Camera's Positions and Transitions, <br />
+/// ..depending on (the Logic of) what Action of the Game is being executed...<br />
+/// ..(e.g.: MoveAction, SpinAction, ShootAction, etc).<br />
+/// </summary>
 public class CameraManager : MonoBehaviour
 {
 
