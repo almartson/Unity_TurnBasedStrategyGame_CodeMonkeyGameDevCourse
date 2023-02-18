@@ -3934,6 +3934,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionCameraGameObject: {fileID: 62186422}
+  _shoulderHeightForUnitCharacter: 1.7
 --- !u!1 &1918455510
 GameObject:
   m_ObjectHideFlags: 0
