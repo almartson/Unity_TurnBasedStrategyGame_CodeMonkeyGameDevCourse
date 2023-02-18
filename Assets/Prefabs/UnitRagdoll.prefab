@@ -91,7 +91,7 @@ MonoBehaviour:
   - {fileID: 6298859368396572581}
   - {fileID: 6299030026203097719}
   - {fileID: 6298917181548063221}
-  _explosionForce: 1111
+  _explosionForce: 777
   _explosionRange: 10
   _realisticExplosionPhysics: 1
   _explosionOffsetInHorizontalAxisPositioningProportionalToExplosionRange: 0.077
