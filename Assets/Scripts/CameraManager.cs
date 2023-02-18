@@ -152,6 +152,9 @@ public class CameraManager : MonoBehaviour
                 
                 // Camera SET for ending:
                 // ..the whole SHOOTING ANIMATIONS:
+                //
+                EndTakeCameraShootAction();
+                
                 // Hide the ActionVirtual Camera:
                 //
                 HideActionCamera();
@@ -228,6 +231,14 @@ public class CameraManager : MonoBehaviour
         _actionCameraGameObject.transform.LookAt(targetUnit.GetWorldPosition() + _cameraCharacterHeight);
 
     }//End BeginTakeCameraShootAction
+    
+    
+    /// <summary>
+    /// Does the Final Mathematical calculations when finishing the executiion of a SHOOT ACTION.
+    /// </summary>
+    private void EndTakeCameraShootAction()
+    {
+    }//End EndTakeCameraShootAction
     
     #endregion Shooting Animation
     
