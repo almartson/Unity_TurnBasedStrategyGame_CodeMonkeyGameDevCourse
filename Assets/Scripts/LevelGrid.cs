@@ -2,6 +2,7 @@
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,7 +30,16 @@ public class LevelGrid : MonoBehaviour
     /// Contains: GridObjects (the Logical Squares/Cells) + GridPositions (the Mathematical Positions and Data: (x, y, z))
     /// </summary>
     private GridSystem _gridSystem;
-    
+
+
+    #region Delegates - CallBacks - Listeners
+
+    /// <summary>
+    /// Delegate - that Listens to..: Whenever any Unit changes its 'Grid Position'.
+    /// </summary>
+    public event EventHandler OnAnyUnitMovedGridPosition; 
+
+    #endregion Delegates - CallBacks - Listeners
     
     #endregion Attributes
 
@@ -132,8 +142,15 @@ public class LevelGrid : MonoBehaviour
         // 2- Set Unit at the NEW GridPosition:
         //
         AddUnitAtGridPosition(toGridPosition, unit);
-    }
+        
+        // 3- Any Unit (Character) moved its Grid Position, so Trigger the CallBack
+        // (for updating the cell color, Visuals, GUI):
+        //
+        OnAnyUnitMovedGridPosition?.Invoke(this, EventArgs.Empty);
 
+    }// End UnitMovedGridPosition
+
+    
     /// <summary>
     /// Gets a Grid Position.
     /// </summary>

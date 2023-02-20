@@ -24,11 +24,54 @@ public class GridSystemVisual : MonoBehaviour
     private Transform _gridSystemVisualSinglePrefab;
 
     /// <summary>
-    /// (Array/ 2x2 Matrix... of GridSystemVisualSingle, a Prefab): Array with ALL the: Visual Representations (the Prefabs...) called by the same names, for generating Visual cues about the Cells/Squares,'Grid System' where the Player can move in to.
+    /// (Array / 2x2 Matrix... of GridSystemVisualSingle, a Prefab): Array with ALL the: Visual Representations (the Prefabs...) called by the same names, for generating Visual cues about the Cells/Squares,'Grid System' where the Player can move in to.
     /// </summary>
     private GridSystemVisualSingle[,] _gridSystemVisualSingleArray;
 
 
+    #region Colors: Grid Cells
+
+    #region Color and Material VARIABLES / FIELDS
+
+    [Tooltip("List of Materials / Colors associated to the Numbered: (Grid Positions...): Ground Squares of the Game Board.")]
+    [SerializeField]
+    private List<GridVisualTypeMaterial> _gridVisualTypeMaterials;
+
+    #endregion Color and Material VARIABLES / FIELDS
+    
+    
+    #region Color and Material Types
+
+    /// <summary>
+    /// (In bigger Projects we would use: Whether this on ANOTHER FILE.cs... OR we would define a SCRIPTABLE OBJECT to have these data - Colors and Materials, which are CONSTANTS in the Game...) <br /> <br />
+    /// Materials used for the Grid Position Visuals / GUI on the ground, for the squares (i.e.: each Color is meant to represent a Possible ACTION that is currently selected). <br /> <br />
+    /// NOTE: To Serialize a STRUCT in the Inspector, [Serializable]  must be used.
+    /// </summary>
+    [Tooltip("(In bigger Projects we would use: Whether this on ANOTHER FILE.cs... OR we would define a SCRIPTABLE OBJECT to have these data - Colors and Materials, which are CONSTANTS in the Game...)./n/n Materials used for the Grid Position Visuals / GUI on the ground, for the squares (i.e.: each Color is meant to represent a Possible ACTION that is currently selected). /n/n NOTE: To Serialize a STRUCT in the Inspector, [Serializable]  must be used.")]
+    [Serializable]
+    public struct GridVisualTypeMaterial
+    {
+        
+        [Tooltip("Grid Visual Type of COLOR:")]
+        public GridVisualColorType gridVisualColorType;
+
+        /// <summary>
+        /// Material
+        /// </summary>
+        public Material material;
+
+    }// End struct GridVisualTypeMaterial
+    
+    /// <summary>
+    /// Type of Colors used for the Grid Position Visuals / GUI on the ground, for the squares (i.e.: each Color is meant to represent a Possible ACTION that is currently selected).
+    /// </summary>
+    public enum GridVisualColorType { White, Green, Blue, Red, Yellow, }
+    
+    #endregion Color and Material Types
+    
+
+    #endregion Colors: Grid Cells
+    
     #endregion Attributes
 
 
@@ -102,19 +145,31 @@ public class GridSystemVisual : MonoBehaviour
 
             }//End for 2
         }//End for 1
+
+        
+        #region Subscribing Events - Delegates
+
+        // Subscribe to the Event:   OnSelectedActionChanged
+        //
+        UnitActionSystem.Instance.OnSelectedActionChanged += UnitActionSystem_OnSelectedActionChanged;
+        
+        // Subscribe to the Event:   OnSelectedActionChanged
+        //
+        LevelGrid.Instance.OnAnyUnitMovedGridPosition += LevelGrid_OnAnyUnitMovedGridPosition;
+        
+        #endregion Subscribing Events - Delegates
+
+        
+        // Rendering the available positions, the Game Board, to move in to, in the next Turn. 
+        //
+        UpdateGridVisual();
+        
     }// End Start
 
 
     /// <summary>
     /// Update is called once per frame
     /// </summary>
-    private void Update()
-    {
-        // Update the Grid Visual... (re*rendering the available positions, to move in to, in this Turn):
-        //
-        UpdateGridVisual();
-        
-    }//End Update
 
     #endregion Unity Methods
 
@@ -183,6 +238,43 @@ public class GridSystemVisual : MonoBehaviour
 
     }//End UpdateGridVisual()
 
+    
+    #region Subscribing Events - Delegates
+
+    /// <summary>
+    /// Event that Updates the Grid Cells color on the ground, anytime a new Action is selected (that's the Trigger).
+    /// (re-rendering the available positions, to move in to, in this Turn).
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void UnitActionSystem_OnSelectedActionChanged(object sender, EventArgs e)
+    {
+        // Update the Grid System Visual (GUI) on the ground  (i.e.: the GAME BOARD):
+        //..(re-rendering the available positions, to move in to, in this Turn):
+        // Update the Grid Visual... 
+        //
+        UpdateGridVisual();
+        
+    }// End UnitActionSystem_OnSelectedActionChanged
+    
+    /// <summary>
+    /// Event that Updates the Grid Cells color on the ground, whenever a player / Unit / Character moves... thus changing its 'Grid Position' (that's the Trigger).
+    /// (re-rendering the available positions, the Game Board, to move in to, in the next Turn).
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void LevelGrid_OnAnyUnitMovedGridPosition(object sender, EventArgs e)
+    {
+        // Update the Grid System Visual (GUI) on the ground  (i.e.: the GAME BOARD):
+        //..(re-rendering the available positions, the Game Board, to move in to, in the next Turn). 
+        //
+        UpdateGridVisual();
+        
+    }// End LevelGrid_OnAnyUnitMovedGridPosition
+
+    #endregion Subscribing Events - Delegates
+
+    
     #endregion My Custom Methods
 
 }
