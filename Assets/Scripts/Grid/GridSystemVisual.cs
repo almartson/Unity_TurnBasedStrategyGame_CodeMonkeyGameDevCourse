@@ -8,7 +8,6 @@ using UnityEngine;
 /// </summary>
 public class GridSystemVisual : MonoBehaviour
 {
-
     #region Attributes
 
     #region Singleton Utils
@@ -28,7 +27,20 @@ public class GridSystemVisual : MonoBehaviour
     /// </summary>
     private GridSystemVisualSingle[,] _gridSystemVisualSingleArray;
 
+    #region Obstacles for Shooting (Experimental)
 
+    [Tooltip("Obstacles Label-LayerMask in the AIM or 'Shooting Path'")]
+    [SerializeField]
+    private LayerMask _obstaclesLayerMask;
+    //
+    /// <summary>
+    /// Getter and Setter Property for Field: _obstaclesLayerMask
+    /// </summary>
+    public LayerMask ObstaclesLayerMask { get => _obstaclesLayerMask; private set => _obstaclesLayerMask = value; }
+
+
+    #endregion Obstacles for Shooting (Experimental)
+    
     #region Colors: Grid Cells
 
     #region Color and Material VARIABLES / FIELDS
@@ -36,7 +48,7 @@ public class GridSystemVisual : MonoBehaviour
     [Tooltip("List of Materials / Colors associated to the Numbered: (Grid Positions...): Ground Squares of the Game Board.")]
     [SerializeField]
     private List<GridVisualTypeMaterial> _gridVisualTypeMaterialList;
-
+    
     #endregion Color and Material VARIABLES / FIELDS
     
     #region Color and Material Types
@@ -311,6 +323,23 @@ public class GridSystemVisual : MonoBehaviour
                     // Not Valid: continue / SKIP: to the NEXT ITERATION.
                     continue;
                 }
+
+                #region Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
+
+                float unitShoulderHeight = 1.7f;
+                Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(gridPosition) + Vector3.up *unitShoulderHeight;
+                Vector3 testWorldPosition = LevelGrid.Instance.GetWorldPosition(testGridPosition) + Vector3.up *unitShoulderHeight;
+
+                Vector3 aimDir = (testWorldPosition - unitWorldPosition).normalized;
+                
+                if (Physics.Raycast(unitWorldPosition, aimDir, Vector3.Distance(unitWorldPosition,testWorldPosition),
+                        _obstaclesLayerMask))
+                {
+                    //line of sight blocked by obstacle
+                    continue;
+                }
+
+                #endregion Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
 
                 
                 #region Calculating the RANGE AREA
