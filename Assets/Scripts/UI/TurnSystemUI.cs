@@ -67,7 +67,7 @@ public class TurnSystemUI : MonoBehaviour
         //
         UpdateEnemyTurnVisual();
 
-        // Show the UI Button 'End Turn' Button: when it is the Player's Turn
+        // ShowAndSetMaterial the UI Button 'End Turn' Button: when it is the Player's Turn
         //
         UpdateEndButtonVisibility();
 
@@ -103,7 +103,7 @@ public class TurnSystemUI : MonoBehaviour
         //
         UpdateEnemyTurnVisual();
         
-        // Show the UI Button 'End Turn' Button: when it is the Player's Turn
+        // ShowAndSetMaterial the UI Button 'End Turn' Button: when it is the Player's Turn
         //
         UpdateEndButtonVisibility();
         
@@ -141,11 +141,11 @@ public class TurnSystemUI : MonoBehaviour
     /// Updates the Visibility (Visible or invisible - GameObject Enabled or Disabled)
     /// ..according to the Enemy's Turn: <br />
     /// Enemy Turn:   Hide it,<br />
-    /// Player Turn:  Show it. <br />
+    /// Player Turn:  ShowAndSetMaterial it. <br />
     /// </summary>
     private void UpdateEndButtonVisibility()
     {
-        // Show the UI Button 'End Turn' Button: when it is the Player's Turn
+        // ShowAndSetMaterial the UI Button 'End Turn' Button: when it is the Player's Turn
         //
         _endTurnBtn.gameObject.SetActive(TurnSystem.Instance.IsPlayerTurn);
     }

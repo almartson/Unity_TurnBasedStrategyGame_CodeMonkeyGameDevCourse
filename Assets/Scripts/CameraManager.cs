@@ -88,7 +88,7 @@ public class CameraManager : MonoBehaviour
     #region My Custom Methods
 
     /// <summary>
-    /// Show the Action Camera, by Enabling the GameObject its Scripts reside on.
+    /// ShowAndSetMaterial the Action Camera, by Enabling the GameObject its Scripts reside on.
     /// </summary>
     private void ShowActionCamera()
     {
@@ -125,7 +125,7 @@ public class CameraManager : MonoBehaviour
                 //
                 BeginTakeCameraShootAction(shootAction);
 
-                // Show / Initiate the Camera Transitional MOVEMENT:
+                // ShowAndSetMaterial / Initiate the Camera Transitional MOVEMENT:
                 //
                 ShowActionCamera();
                 

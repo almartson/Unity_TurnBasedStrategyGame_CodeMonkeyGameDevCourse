@@ -80,7 +80,7 @@ public class ActionBusyUI : MonoBehaviour
 
     /// <summary>
     /// Logic itself of the Delegate Method call:
-    /// ...Show / Hide a GUI Image that says: "I AM BUSY" on Screen..., according to the "Bussyness", whether its currently working on an Action, or not.
+    /// ...ShowAndSetMaterial / Hide a GUI Image that says: "I AM BUSY" on Screen..., according to the "Bussyness", whether its currently working on an Action, or not.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="isBusy"></param>

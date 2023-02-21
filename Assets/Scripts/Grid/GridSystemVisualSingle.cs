@@ -41,11 +41,13 @@ public class GridSystemVisualSingle : MonoBehaviour
     #region My Custom Methods
     
     /// <summary>
-    /// Shows (sets as VISIBLE) the referenced 3D Mesh. 
+    /// Shows (sets as VISIBLE) the referenced 3D Mesh.<br />
+    /// It also set the Material based on the the COLOR of the selected ACTION. 
     /// </summary>
-    public void Show()
+    public void ShowAndSetMaterial(Material material)
     {
         _meshRenderer.enabled = true;
+        _meshRenderer.material = material;
     }
     
     /// <summary>

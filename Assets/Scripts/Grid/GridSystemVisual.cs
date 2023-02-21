@@ -35,13 +35,17 @@ public class GridSystemVisual : MonoBehaviour
 
     [Tooltip("List of Materials / Colors associated to the Numbered: (Grid Positions...): Ground Squares of the Game Board.")]
     [SerializeField]
-    private List<GridVisualTypeMaterial> _gridVisualTypeMaterials;
+    private List<GridVisualTypeMaterial> _gridVisualTypeMaterialList;
 
     #endregion Color and Material VARIABLES / FIELDS
     
-    
     #region Color and Material Types
-
+    
+    /// <summary>
+    /// Type of Colors used for the Grid Position Visuals / GUI on the ground, for the squares (i.e.: each Color is meant to represent a Possible ACTION that is currently selected).
+    /// </summary>
+    public enum GridVisualColorType { White, Green, Blue, Red, RedSoft, Yellow, }
+    
     /// <summary>
     /// (In bigger Projects we would use: Whether this on ANOTHER FILE.cs... OR we would define a SCRIPTABLE OBJECT to have these data - Colors and Materials, which are CONSTANTS in the Game...) <br /> <br />
     /// Materials used for the Grid Position Visuals / GUI on the ground, for the squares (i.e.: each Color is meant to represent a Possible ACTION that is currently selected). <br /> <br />
@@ -61,12 +65,7 @@ public class GridSystemVisual : MonoBehaviour
         public Material material;
 
     }// End struct GridVisualTypeMaterial
-    
-    /// <summary>
-    /// Type of Colors used for the Grid Position Visuals / GUI on the ground, for the squares (i.e.: each Color is meant to represent a Possible ACTION that is currently selected).
-    /// </summary>
-    public enum GridVisualColorType { White, Green, Blue, Red, Yellow, }
-    
+
     #endregion Color and Material Types
     
 
@@ -176,6 +175,86 @@ public class GridSystemVisual : MonoBehaviour
 
     #region My Custom Methods
 
+    #region Getters and Setters
+    
+    /// <summary>
+    /// Getter (it searches through the List...) for a specific GameObject of Type:  'GridVisualTypeMaterial', from the List of Struct: List of GridVisualTypeMaterial. 
+    /// </summary>
+    /// <returns>The Material, parting the Color Input.... from the Struct <code>List of GridVisualTypeMaterial</code></returns>
+    private Material GetGridVisualTypeMaterial(GridVisualColorType gridVisualColorType)
+    {
+        #region CodeMonkey's initial implementation (using FOR EACH...)
+
+        // // Search (for the Material that matches the Input: COLOR -> gridVisualColorType) through the List
+        // //
+        // foreach (GridVisualTypeMaterial gridVisualTypeMaterial in _gridVisualTypeMaterialList)
+        // {
+        //     // If you find a Material made with that COLOR, return it:
+        //     //
+        //     if (gridVisualTypeMaterial.gridVisualColorType == gridVisualColorType)
+        //     {
+        //         // Return the Material we were looking for:
+        //         //
+        //         return gridVisualTypeMaterial.material;
+        //
+        //     }// End if (gridVisualTypeMaterial.gridVisualColorType ==...
+        //     
+        // }//End foreach
+        // //
+        // // If you did not find a Material matching the Input COLOR,
+        // // 1- Log / Inform of an Exception (it should NEVER happen):
+        // //
+        // Debug.LogError($"Could not find a defined 'GridVisualTypeMaterial' for an Input 'GridVisualColorType'!./nScript: {GetType().Name} /n/nGameObject: ---> {transform} - {Instance}./n/nReturning 'null'");
+        // //
+        // // 2- return null:
+        // //
+        // return null;
+
+        #endregion CodeMonkey's initial implementation (using FOR EACH...)
+
+
+        #region AlMartson's (optimized) implementation (using FOR...)
+
+        // Search (for the Material that matches the Input: COLOR -> gridVisualColorType) through the List
+        //
+        // List Lenght:
+        //
+        int listLenght = _gridVisualTypeMaterialList.Count;
+        //
+        for (int i = 0; i < listLenght ; i++)
+        {
+            // Get a pointer (i.e.: a reference...) to: the Item from the List, to work with it:
+            //
+            GridVisualTypeMaterial gridVisualTypeMaterial = _gridVisualTypeMaterialList[i];
+            
+            // If you find a Material made with that COLOR, return it:
+            //
+            if (gridVisualTypeMaterial.gridVisualColorType == gridVisualColorType)
+            {
+                // Return the Material we were looking for:
+                //
+                return gridVisualTypeMaterial.material;
+
+            }// End if (gridVisualTypeMaterial.gridVisualColorType ==...
+            
+        }//End for
+        //
+        // If you did not find a Material matching the Input COLOR,
+        // 1- Log / Inform of an Exception (it should NEVER happen):
+        //
+        Debug.LogError($"Could not find a defined 'GridVisualTypeMaterial' for an Input 'GridVisualColorType' = {gridVisualColorType}!.\nScript: {GetType().Name} \n\nGameObject: ---> {transform} - {Instance}.\n\nReturning 'null'");
+        //
+        // 2- return null:
+        //
+        return null;
+
+        #endregion AlMartson's (optimized) implementation (using FOR...)
+
+    }//End GetGridVisualTypeMaterial
+    
+    #endregion Getters and Setters
+    
+    
     /// <summary>
     /// Hides all Visual cues (i.e.: the Visual Prefabs...) of the Grid System.
     /// </summary>
@@ -197,28 +276,124 @@ public class GridSystemVisual : MonoBehaviour
             }//End for 2
         }//End for 1
     }
+    
+       
+    /// <summary>
+    /// Shows the Visual cues (GridPositions), for the RANGE of the SELECTED ACTION (e.g.: for ShootAction, the 'range' is the reach of the -shoot- AIM...), which must be passed in as Input.<br />
+    /// It also sets the right Material, based on the Color of the ACTION that is selected (2nd Parameter:  gridVisualColorType).
+    /// </summary>
+    public void ShowGridPositionRange(GridPosition gridPosition, int range, GridVisualColorType gridVisualColorType)
+    {
+        // Auxiliary List to work with:
+        //
+        List<GridPosition> gridPositionList = new List<GridPosition>();
+        
+        // Cycle through the Rows & Columns of the GridSystem (i.e.: Board).
+        // Columns... limited by the 'range' INPUT.
+        //
+        for (int x = -range; x <= range; x++)
+        {
+            // Rows... limited by the 'range' INPUT.
+            //
+            for (int z = -range; z <= range; z++)
+            {
+                
+                // Create an Item: GridPosition CELL, and fill it in with data for the (COLUMN, ROW)
+                //
+                GridPosition testGridPosition = gridPosition + new GridPosition(x, z);
+                
+                // Validation:
+                //
+                // 1- "GridPosition" Must be inside the Grid System, not off-limits:
+                //
+                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                {
+                    // Not Valid: continue / SKIP: to the NEXT ITERATION.
+                    continue;
+                }
+
+                
+                #region Calculating the RANGE AREA
+
+                #region Shape of th Area: Case of: Triangular shape
+
+                // // Then: Calculating the RANGE AREA:  valid Squared/Cells:
+                // // Shape of th Area: Case of: Circular shape made with square pixels  (using Pythagoras Theorem):
+                // //
+                // int testDistance = Mathf.Abs(x) + Mathf.Abs(z);
+                //
+                // // This is the Triangular Shape, for the RANGE
+                // //
+                // if (testDistance > range)
+                // {
+                //     continue;
+                //
+                // }//End if (testDistance > ...
+
+                #endregion Shape of th Area: Case of: Triangular shape
+                
+                
+                #region Shape of th Area: Case of: Circular shape made with square pixels  (using Pythagoras Theorem)
+                
+                // Then: Calculating the RANGE AREA:  valid Squared/Cells:
+                // Shape of th Area: Case of: Circular shape made with square pixels  (using Pythagoras Theorem):
+                //
+                int squareTestDistance = (x * x) + (z * z);
+                
+                // This is the Circular Shape, for the RANGE (using Pythagoras):
+                //
+                if (squareTestDistance > ((range * range) + range + 0.25f))
+                {
+                    continue;
+                
+                }//End if (testDistance > ...
+                
+                #endregion Shape of th Area: Case of: Circular shape made with square pixels  (using Pythagoras Theorem)
+
+                #endregion Calculating the RANGE AREA
+                
+                
+                // Finally:  Add the Grid Position Cell to the List of VALID ones (within RANGE):
+                //
+                gridPositionList.Add(testGridPosition);
+                
+            }//End for 2
+        }//End for 1
+        
+        // Print / Render on-screen the Grid / Cells AREA  (that's valid...)
+        //
+        ShowGridPositionList(gridPositionList, gridVisualColorType);
+
+    }//End ShowGridPositionRange
+
 
     /// <summary>
-    /// Shows the Visual cues (GridPositions) passed in as Input.
+    /// Shows the Visual cues (GridPositions) passed in as Input.<br />
+    /// It also sets the right Material, based on the Color of the ACTION that is selected (2nd Parameter:  gridVisualColorType).
     /// </summary>
     /// <param name="gridPositionList"></param>
-    public void ShowGridPositionList(List<GridPosition> gridPositionList)
+    /// <param name="gridVisualColorType"></param>
+    public void ShowGridPositionList(List<GridPosition> gridPositionList, GridVisualColorType gridVisualColorType)
     {
-        // Cycle through the items in the List of: <GridPosition> 
+        // Cycle through the items in the List of: <GridPosition>
+        // Lenght:
         //
-        for (int i = 0; i < gridPositionList.Count; i++)
+        int listLenght = gridPositionList.Count;
+        //
+        for (int i = 0; i < listLenght; i++)
         {
 
-            // Show the selected items (GridPositionsss) passed as Input: so they are VISIBLE, (in the Scene :)
+            // Show (And Set the Material of...) the selected items (i.e.: GridPositions) passed as Input: so they are VISIBLE, (in the Scene :)
             //
-            _gridSystemVisualSingleArray[gridPositionList[i].x, gridPositionList[i].z].Show();
+            _gridSystemVisualSingleArray[gridPositionList[i].x, gridPositionList[i].z].ShowAndSetMaterial(GetGridVisualTypeMaterial(gridVisualColorType));
 
         }//End for 1
     }
 
-    
+
     /// <summary>
-    /// Updates (Re-renders) the Grid System Visual cues about: available Cells to 'Take Action' to (...or to move in to), in this turn.
+    /// Updates (Re-renders) the Grid System Visual cues about: available Cells to 'Take Action' to (...or to move in to), in this turn. <br />
+    /// Also, the (Grid) COLORS are updated (set...) according to the (selected) ACTION's COLOR.
     /// </summary>
     private void UpdateGridVisual()
     {
@@ -231,15 +406,52 @@ public class GridSystemVisual : MonoBehaviour
         // 2- Get the Player's currently: SELECTED ACTION
         //
         BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedAction();
-
-        // 3- Final- Show only the VALID Cells of the Grid, to 'Take Action' to (...or to move in to),  (based on the Player's SELECTED Unit):
         //
-        ShowGridPositionList( selectedAction.GetValidActionGridPositionList() );
+        // Get the Player's Unit / Character:
+        //
+        Unit selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
+
+        // 3- Select the COLOR (Material) of the Grid Cells, according to the ACTIONS that's currently selected:
+        // Initialization:
+        //
+        GridVisualColorType gridVisualColorType;        // = GridVisualColorType.White;
+
+        switch (selectedAction)
+        {
+            // Change the Material + Color, based on the selected ACTION:
+            //
+            default:
+            case MoveAction moveAction:
+
+                gridVisualColorType = GridVisualColorType.Green;
+                break;
+
+            case SpinAction spinAction:
+
+                gridVisualColorType = GridVisualColorType.Yellow;      // GridVisualColorType.Blue;
+                break;
+            
+            case ShootAction shootAction:
+
+                // Target Grid Color
+                //
+                gridVisualColorType = GridVisualColorType.Red;
+                //
+                // Area Grid(s) Color
+                //
+                ShowGridPositionRange(selectedUnit.GetGridPosition(), shootAction.GetMaxShootDistance(), GridVisualColorType.RedSoft);
+                break;
+
+        }//End switch (selectedAction)
+        
+        // 3- Final- ShowAndSetMaterial only the VALID Cells of the Grid, to 'Take Action' to (...or to move in to),  (based on the Player's SELECTED Unit):
+        //
+        ShowGridPositionList( selectedAction.GetValidActionGridPositionList(), gridVisualColorType );
 
     }//End UpdateGridVisual()
 
     
-    #region Subscribing Events - Delegates
+    #region Subscribing to Events - Delegates
 
     /// <summary>
     /// Event that Updates the Grid Cells color on the ground, anytime a new Action is selected (that's the Trigger).
@@ -272,7 +484,7 @@ public class GridSystemVisual : MonoBehaviour
         
     }// End LevelGrid_OnAnyUnitMovedGridPosition
 
-    #endregion Subscribing Events - Delegates
+    #endregion Subscribing to Events - Delegates
 
     
     #endregion My Custom Methods

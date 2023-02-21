@@ -279,7 +279,7 @@ public class UnitActionSystemUI : MonoBehaviour
     
     /// <summary>
     /// Enables / Disables a Green Outline color (that is an GUI Image on the Prefab)...
-    /// ..to Show to the user which ACTION is currently Enabled to be used.
+    /// ..to ShowAndSetMaterial to the user which ACTION is currently Enabled to be used.
     /// </summary>
     private void UpdateSelectedVisual()
     {

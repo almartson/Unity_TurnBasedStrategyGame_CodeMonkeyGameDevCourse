@@ -582,6 +582,15 @@ public class ShootAction : BaseAction
         return _targetUnit;
     }
 
+    /// <summary>
+    /// Gets the <code>_maxShootDistance</code>.
+    /// </summary>
+    /// <returns>_maxShootDistance</returns>
+    public int GetMaxShootDistance()
+    {
+        return _maxShootDistance;
+    }
+    
     #endregion Misc, Getters, Setters, etc
 
     #endregion My Custom Methods
