@@ -483,19 +483,14 @@ public class ShootAction : BaseAction
                 }
                 
                 #region Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
-
-                // TODO:  Refactor and CLEAN this Code below, using Fields (Attributes) from a specific - Sigle Resposibility Class (that handles this kind of data, such as Unit for:  unitShoulderHeight, etc). 
-                // TODO: Refactor this Physics.Raycast.. for a a non-alloc  Raycast option...
-                //
-                float unitShoulderHeight = 1.7f;
-                Vector3 unitWorldPosition = _unit.GetWorldPosition() + Vector3.up * unitShoulderHeight;
-                Vector3 testWorldPosition = LevelGrid.Instance.GetWorldPosition(testGridPosition) + Vector3.up *unitShoulderHeight;
-
-                Vector3 aimDir = (testWorldPosition - unitWorldPosition).normalized;
                 
-                if (Physics.Raycast(unitWorldPosition, aimDir, Vector3.Distance(unitWorldPosition,testWorldPosition), GridSystemVisual.Instance.ObstaclesLayerMask))
+                // Validate: Can NOT shoot behind WALLS or OBSTACLES
+                // TODO: put this Variable in a correct class, following the S.O.L.I.D. Principle:
+                //
+                float shoulderHeightForLineOfSight = 1.7f;
+                //
+                if (GridSystemVisual.Instance.ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(unitGridPosition, testGridPosition, shoulderHeightForLineOfSight))
                 {
-                    //line of sight blocked by obstacle
                     continue;
                 }
 

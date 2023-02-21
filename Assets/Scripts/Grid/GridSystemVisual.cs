@@ -326,16 +326,13 @@ public class GridSystemVisual : MonoBehaviour
 
                 #region Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
 
-                float unitShoulderHeight = 1.7f;
-                Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(gridPosition) + Vector3.up *unitShoulderHeight;
-                Vector3 testWorldPosition = LevelGrid.Instance.GetWorldPosition(testGridPosition) + Vector3.up *unitShoulderHeight;
-
-                Vector3 aimDir = (testWorldPosition - unitWorldPosition).normalized;
-                
-                if (Physics.Raycast(unitWorldPosition, aimDir, Vector3.Distance(unitWorldPosition,testWorldPosition),
-                        _obstaclesLayerMask))
+                // Validate: Can NOT shoot behind WALLS or OBSTACLES
+                // TODO: put this Variable in a correct class, following the S.O.L.I.D. Principle:
+                //
+                float shoulderHeightForLineOfSight = 1.7f;
+                //
+                if (ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(gridPosition, testGridPosition, shoulderHeightForLineOfSight))
                 {
-                    //line of sight blocked by obstacle
                     continue;
                 }
 
@@ -394,6 +391,36 @@ public class GridSystemVisual : MonoBehaviour
         ShowGridPositionList(gridPositionList, gridVisualColorType);
 
     }//End ShowGridPositionRange
+    
+
+    /// <summary>
+    /// Validates: Is the Path between two (2) 'GridPosition'(s)  Blocked by an Obstacle. <br />
+    /// Requires: That the Obstacle be set up with a LayerMask:   Obstacle. The Field Attribute for that: is this Class.
+    /// </summary>
+    /// <param name="fromGridPosition"></param>
+    /// <param name="toTestGridPosition"></param>
+    /// <param name="height"></param>
+    /// <returns></returns>
+    public bool ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(GridPosition fromGridPosition, GridPosition toTestGridPosition, float height)
+    {
+        // TODO:  Refactor and CLEAN this Code below, using Fields (Attributes) from a specific - Single Responsibility Class (that handles this kind of data, such as Unit for:  unitShoulderHeight, etc). According to the S.O.L.I.D. Principle.
+        // TODO: Refactor this Physics.Raycast.. for a a non-alloc  Raycast option...
+        //
+        Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(fromGridPosition) + Vector3.up * height;
+        Vector3 testWorldPosition = LevelGrid.Instance.GetWorldPosition(toTestGridPosition) + Vector3.up * height;
+
+        Vector3 aimDir = (testWorldPosition - unitWorldPosition).normalized;
+
+        if (Physics.Raycast(unitWorldPosition, aimDir, Vector3.Distance(unitWorldPosition, testWorldPosition),
+                _obstaclesLayerMask))
+        {
+            // Line Of Sight   blocked   by obstacle
+            //
+            return true;
+        }
+
+        return false;
+    }// End ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions
 
 
     /// <summary>
