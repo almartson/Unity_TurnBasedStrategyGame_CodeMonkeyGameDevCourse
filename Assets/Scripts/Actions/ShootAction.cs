@@ -482,21 +482,7 @@ public class ShootAction : BaseAction
                     continue;
                 }
                 
-                #region Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
-                
-                // Validate: Can NOT shoot behind WALLS or OBSTACLES
-                // TODO: put this Variable in a correct class, following the S.O.L.I.D. Principle:
-                //
-                float shoulderHeightForLineOfSight = 1.7f;
-                //
-                if (GridSystemVisual.Instance.ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(unitGridPosition, testGridPosition, shoulderHeightForLineOfSight))
-                {
-                    continue;
-                }
 
-                #endregion Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
-                
-                
                 ///////////////// Temporary: Circular shape made with square pixels:
                 int testDistance = (x * x) + (z * z);
 
@@ -530,6 +516,21 @@ public class ShootAction : BaseAction
                     //
                     continue;
                 }
+
+                #region Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
+                
+                // Validate: Can NOT shoot behind WALLS or OBSTACLES
+                // TODO: put this Variable in a correct class, following the S.O.L.I.D. Principle:
+                //
+                float shoulderHeightForLineOfSight = _unit.ShoulderHeightForUnitCharacter;
+                //
+                if (GridSystemVisual.Instance.ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(unitGridPosition, testGridPosition, shoulderHeightForLineOfSight))
+                {
+                    continue;
+                }
+
+                #endregion Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
+                
                 
                 // Finally, Conclusion: Add the Tested & Valid GridPosition to the Local VALID List
                 //

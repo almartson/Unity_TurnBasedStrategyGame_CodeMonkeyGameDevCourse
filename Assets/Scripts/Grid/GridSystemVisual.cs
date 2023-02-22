@@ -324,21 +324,6 @@ public class GridSystemVisual : MonoBehaviour
                     continue;
                 }
 
-                #region Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
-
-                // Validate: Can NOT shoot behind WALLS or OBSTACLES
-                // TODO: put this Variable in a correct class, following the S.O.L.I.D. Principle:
-                //
-                float shoulderHeightForLineOfSight = 1.7f;
-                //
-                if (ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(gridPosition, testGridPosition, shoulderHeightForLineOfSight))
-                {
-                    continue;
-                }
-
-                #endregion Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
-
-                
                 #region Calculating the RANGE AREA
 
                 #region Shape of th Area: Case of: Triangular shape
@@ -379,6 +364,21 @@ public class GridSystemVisual : MonoBehaviour
                 #endregion Calculating the RANGE AREA
                 
                 
+                #region Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
+
+                // Validate: Can NOT shoot behind WALLS or OBSTACLES
+                // TODO: put this Variable in a correct class, following the S.O.L.I.D. Principle:
+                //
+                float shoulderHeightForLineOfSight = UnitActionSystem.Instance.GetSelectedUnit().ShoulderHeightForUnitCharacter;
+                //
+                if (ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(gridPosition, testGridPosition, shoulderHeightForLineOfSight))
+                {
+                    continue;
+                }
+
+                #endregion Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
+
+
                 // Finally:  Add the Grid Position Cell to the List of VALID ones (within RANGE):
                 //
                 gridPositionList.Add(testGridPosition);

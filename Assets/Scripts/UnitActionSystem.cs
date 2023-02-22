@@ -170,7 +170,7 @@ public class UnitActionSystem : MonoBehaviour
         {
             // Then (if it's TRUE): the Mouse is over: a GUI Element
             // Stop all the rest of actions, in this Frame:
-            // ...we don't want to 'TryHandleUnitSelection'  or  'HandleSelectedAction'  if  the Player clicked on a GUI (ACTION) Button:
+            // ...we don't want to 'TryHandleUnitSelection'  or  'HandleSelectedActionCalculatingGridPositions'  if  the Player clicked on a GUI (ACTION) Button:
             //
             return;
         }
@@ -234,11 +234,146 @@ public class UnitActionSystem : MonoBehaviour
     
     #region My Custom Methods
 
+    
     /// <summary>
+    /// (Experimental Implementation, to apply an ACTION on an ENEMY with a single CLick - DISTINCTIVE Characteristic:  It determines the grid position where we clicked) <br />
+    /// General Method I should always Invoke: Given INPUT: <code>GridPosition</code> where the Click is produced: <br />
     /// Selects / Sets an ACTION selected by clicking on the (related Action's...) GUI Button.
     /// </summary>
     /// <returns>True or False for the Success of the previous >Validations, before performing the 'TakeAction()' routine, called inside of this Method.</returns>
     private bool HandleSelectedAction()
+    {
+        // Try to TakeAction
+        //...with: the SELECTED UNIT... (by Raycasting on the Ground Plane (Mask Layer...))
+        //
+        if (MouseWorld.TryGetPosition(out Vector3 mousePosition))
+        {
+            // Get the CENTER of the selected / CLICKED: "GridPosition",
+            // ...instead of a corner or any random position inside of it ;
+            // ...because sometimes the Player/user clicks in random places of a Cell/Square/Grid,
+            // ...not necessarily in the CENTER of it:
+            //
+            GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(mousePosition);
+
+            // Pass the POSITION on to the overloaded method:
+            // To:   Handle  the Action   (on even ENEMIES, with a single Click).
+            //
+            return HandleSelectedAction(mouseGridPosition);
+
+                    
+            #region 2- Option 2 of Code, Just in Case
+
+            // // Here we determine the clicked grid position, and pass the position on to the overloaded method
+            // //
+            // GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
+            //
+            // // Pass the POSITION on to the overloaded method:
+            // // To:   Handle  the Action   (on even ENEMIES, with a single Click):
+            // //
+            // return HandleSelectedAction(mouseGridPosition);
+
+            #endregion 2- Option 2 of Code, Just in Case
+
+            
+        }//End if (MouseWorld.TryGetPosition...
+        else
+        {
+            // Return the Success/Failure State of the 'Take Action' process:  false (failure, could NOT handle the ACTION)
+            //
+            return false;
+
+        }//End else of if (MouseWorld.TryGetPosition...
+        
+    }// End HandleSelectedAction()
+    
+    
+    /// <summary>
+    /// (Experimental Implementation, to apply an ACTION on an ENEMY with a single CLick) <br />
+    /// Given INPUT: <code>GridPosition</code> where the Click is produced: <br />
+    /// Selects / Sets an ACTION selected by clicking on the (related Action's...) GUI Button.
+    /// </summary>
+    /// <returns>True or False for the Success of the previous >Validations, before performing the 'TakeAction()' routine, called inside of this Method.</returns>
+    private bool HandleSelectedAction(GridPosition mouseGridPosition)
+    {
+        #region 2- Option 2: Only ONE General Function Handles everything, using Abstract and Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...).
+        
+        // 2- Option 2: Only ONE General Function Handles everything, using Abstract and Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derived from BaseAction Class...). This one should take a big number of Input Parameters, that cover ALL scenarios for all the Actions of the Game (although we could create a class for the Input... and make particular children for each Action, so we could cast the particular Type in line one of this Method... but we are not going to cover that in this Game because it would be for bigger AAA Games...)
+        
+        // Take the Action.
+        
+        // 'TakeAction' method has a particular Implementation in each of the derived Classes (e.g.: MoveAction, SpinAction, etc.).
+        //
+        //  .1- Validation of the Action:
+        //
+        if (_selectedAction.IsValidActionGridPosition(mouseGridPosition))
+        {
+
+            // Try to Spend this Unit's available "actionPoints": on this Action
+            //
+            if (_selectedUnit.TrySpendActionPointsToTakeAction(_selectedAction))
+            {
+                // .2.0- The actionPoints are Spent / used by now, already...
+                
+                // .2- 'Take the Action'
+                //
+                // .2.1- Save the Valid GridPosition:
+                //
+                // .2.1.1- Save the original Mouse Position (just in case... as a backup)
+                //
+                _selectedUnit.MousePosition.Set(mouseGridPosition.x, 0, mouseGridPosition.z);
+                //
+                // .2.1.1- In _selectedUnit, for later use in 'TakeAction()':
+                //
+                _selectedUnit.SetFinalGridPositionOfNextPlayersAction(mouseGridPosition);
+            
+            
+                // .3- Set this Class (SERVICE) Methods as: BUSY .. until it ends:  Set MUTEX ON
+                //
+                SetBusy();
+                //
+                // .4- TakeAction() , asked by the Player, on the Game
+                // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: ) -> Sets Mutex OFF (when TakeAction() Ends...)
+                //
+                _selectedAction.TakeAction(ClearBusy);
+                
+                
+                // Update the GUI for ActionPoints:
+                //
+                OnActionStarted?.Invoke(this, EventArgs.Empty);
+
+                // Return the Success/Failure State of the 'Take Action' process:
+                //
+                return true;
+                
+            }//End if (_selectedUnit.CanSpendActionPointsToTakeAction...
+            else
+            {
+                // Did not pass the Validation:     CanSpendActionPointsToTakeAction(...)
+                // Return the Success/Failure State of the 'Take Action' process:  false (failure)
+                //
+                return false;
+                
+            }//End else of if (_selectedUnit.CanSpendActionPointsToTakeAction...
+            
+        }//End if (_selectedAction.IsValidActionGridPosition
+        else
+        {
+            // Return the Success/Failure State of the 'Take Action' process:  false (failure)
+            //
+            return false;
+        }
+
+        #endregion 2- Option 2: Only ONE General Function Handles everything, using Abstract and Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...).
+        
+    }// End HandleSelectedAction( GridPosition...)
+
+    
+    /// <summary>
+    /// (Original CodeMonkey's Implementation) <br />
+    /// Selects / Sets an ACTION selected by clicking on the (related Action's...) GUI Button.
+    /// </summary>
+    /// <returns>True or False for the Success of the previous >Validations, before performing the 'TakeAction()' routine, called inside of this Method.</returns>
+    private bool HandleSelectedActionCalculatingGridPositions()
     {
         // THERE ARE 2 (Architecture) OPTIONS to make an ACTION Selection:
         //
@@ -396,7 +531,7 @@ public class UnitActionSystem : MonoBehaviour
         
         #endregion 2- Option 2: Only ONE General Function Handles everything, using Abstract and Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...).
         
-    }// End HandleSelectedAction()
+    }// End HandleSelectedActionCalculatingGridPositions()
     
     
     /// <summary>
@@ -452,7 +587,14 @@ public class UnitActionSystem : MonoBehaviour
         }
         // An ENEMY UNIT was Clicked with the Mouse:
         //
-        return true;
+        // GET the GRID POSITION of the ENEMY we clicked on:
+        //
+        GridPosition enemyGridPosition = clickedUnit.GetGridPosition();
+
+        // HandleSelectedAction
+        //..using the  ENEMY GRID POSITION:
+        //
+        return HandleSelectedAction(enemyGridPosition);
         
     }// End TryHandleEnemyUnitClicked
     
@@ -513,7 +655,7 @@ public class UnitActionSystem : MonoBehaviour
 
         }//End else of if (MouseWorld.MainSceneCamera != null)
         
-        // There are NO Units / Charactters in that MOUSE POINTER location:
+        // There are NO Units / Characters in that MOUSE POINTER location:
         //
         return false;
 

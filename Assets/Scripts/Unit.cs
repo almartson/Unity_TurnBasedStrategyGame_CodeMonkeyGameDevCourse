@@ -10,9 +10,7 @@ using UnityEngine;
 /// </summary>
 public class Unit : MonoBehaviour
 {
-
     #region Attributes
-
 
     #region  Enemy - Player - Friendnemy - etc
 
@@ -30,6 +28,7 @@ public class Unit : MonoBehaviour
     private GridPosition _gridPosition;
     
     /// <summary>
+    /// It happens to be updated and Valid just after the User Clicked on an ACTION, associated with a GRID POSITION.
     /// Keeping track of the TARGET (...NEXT...) GridPosition of the Player's MOVE / ACTION.
     /// This Position comes from a Conversion of the MousePointer Coordinates into: a valid GridPosition.
     /// This is already Validated.
@@ -37,7 +36,25 @@ public class Unit : MonoBehaviour
     private GridPosition _finalGridPositionOfNextAction;
 
     #endregion Grid System
+
     
+    #region 3D Mesh Proportions and Characteristics
+    
+    [Tooltip("(Set by the Designer...): Height of this Character-Unit's Shoulder, in Game World Coordinates")]
+    [SerializeField]
+    [Range(0.0f, 5.0f)]
+    private float _shoulderHeightForUnitCharacter = 1.7f;
+    //
+    /// <summary>
+    /// Property Accessor for Field:  _shoulderHeightForUnitCharacter
+    /// </summary>
+    public float ShoulderHeightForUnitCharacter
+    {
+        get => _shoulderHeightForUnitCharacter;
+        private set => _shoulderHeightForUnitCharacter = value;
+    }
+    
+    #endregion 3D Mesh Proportions and Characteristics
 
     #region Health System
 

@@ -26,11 +26,15 @@ public class CameraManager : MonoBehaviour
     #region Camera Positions
     
     #region Shooting Animation
-    
-    [Tooltip("(Set by the Designer...): Height of the Character-Unit's Shoulder, in Game World Coordinates")]
-    [SerializeField]
-    [Range(0.0f, 5.0f)]
-    private float _shoulderHeightForUnitCharacter = 1.7f;
+
+    // NOTE:   _shoulderHeightForUnitCharacter
+    // ...this was Moved to: 'Unit.cs'   ... can be accesed via the Singleton:   UnitActionSystem.Instance.GetSelectedUnit().ShoulderHeightForUnitCharacter   
+    // Use lines such as:   float shoulderHeightForLineOfSight = UnitActionSystem.Instance.GetSelectedUnit().ShoulderHeightForUnitCharacter;
+    //
+    // [Tooltip("(Set by the Designer...): Height of the Character-Unit's Shoulder, in Game World Coordinates")]
+    // [SerializeField]
+    // [Range(0.0f, 5.0f)]
+    // private float _shoulderHeightForUnitCharacter = 1.7f;
 
     /// <summary>
     /// Overall calculated Position to place the Camera during a SHOOTING ANIMATION.
@@ -191,7 +195,7 @@ public class CameraManager : MonoBehaviour
 
         // Calculate the 'SHOULDER HEIGHT', to put the Camera there:
         //
-        _cameraCharacterHeight = Vector3.up * _shoulderHeightForUnitCharacter;
+        _cameraCharacterHeight = Vector3.up * shooterUnit.ShoulderHeightForUnitCharacter;
 
         // Calculate (or get) the SHOOT DIRECTION  (vector)
         //
@@ -206,6 +210,7 @@ public class CameraManager : MonoBehaviour
         // Calculate:  an small Offset to the Camera Rotation, to look in a 3RD CAMERA PERSPECTIVE towards the Target & Shooter together:
         // This is the 'Unit shoulder's lenght'... because we want to displace the Camera View (from the center of the Character's Neck...) to the right shoulder:
         // NOTE: although the exact value, with the current Scale of (1, 1, 1), is: 0.34f.
+        // TODO: Move this variables into the UNIT.cs ... AND MAKE A PUBLIC GETTER  (the same I just did with   shooterUnit.ShoulderHeightForUnitCharacter):
         //
         float shoulderOffsetAmount = 0.5f;
         //
@@ -234,7 +239,7 @@ public class CameraManager : MonoBehaviour
     
     
     /// <summary>
-    /// Does the Final Mathematical calculations when finishing the executiion of a SHOOT ACTION.
+    /// Does the Final Mathematical calculations when finishing the execution of a SHOOT ACTION.
     /// </summary>
     private void EndTakeCameraShootAction()
     {
