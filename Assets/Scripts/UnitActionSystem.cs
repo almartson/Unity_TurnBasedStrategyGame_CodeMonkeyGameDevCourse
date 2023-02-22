@@ -179,12 +179,46 @@ public class UnitActionSystem : MonoBehaviour
         //
         if (Input.GetMouseButtonDown(0))
         {
-            // Try to select an Unit (a Character / Soldier, etc):
+            #region Try to SELECT a friendly UNIT: CodeMonkey's Original Implementation
+            
+            // // Try to select an Unit (a Character / Soldier, etc):
+            // //
+            // if (TryHandleUnitSelection())
+            // {
+            //     return;
+            // }
+            
+            #endregion Try to SELECT a friendly UNIT: CodeMonkey's Original Implementation
+            
+            
+            #region Try to SELECT a ++ANY++ UNIT: CodeMonkey's Original Implementation
+            
+            // After the MOUSE CLICK:
+            // Try to SELECT a ++ANY++ UNIT (a Character / Soldier... FRIENDLY on my TEAM, ... or an ENEMY).. that was CLICKED ON with the Mouse Pointer:
             //
-            if (TryHandleUnitSelection())
+            if (TryGetClickedUnit(out Unit clickedUnit))
             {
-                return;
-            }
+                // Try to get the UNIT that was clicked
+                // &
+                // Try to handle the UNIT if it's a PLAYER
+                //
+                if (TryHandlePlayerUnitClicked(clickedUnit))
+                {
+                    return;
+
+                }//End if (TryHandlePlayerUnitClicked(clickedUnit))
+                //
+                // Try to handle the UNIT if it's an ENEMY
+                //
+                if (TryHandleEnemyUnitClicked(clickedUnit))
+                {
+                    return;
+
+                }//End if (TryHandleEnemyUnitClicked(clickedUnit))
+
+            }//End if (TryGetClickedUnit(..
+            
+            #endregion Try to SELECT a ++ANY++ UNIT: CodeMonkey's Original Implementation
             
             
             // Try to: Receive (process...) the 'Action'  (from a mouse click on the GUI)
@@ -362,10 +396,132 @@ public class UnitActionSystem : MonoBehaviour
         
         #endregion 2- Option 2: Only ONE General Function Handles everything, using Abstract and Virtual Classes (..working as a General Interface, a Contract...) and Functions to be Implemented in each particular way inside each particular ActionClass (derivated from BaseAction Class...).
         
-    }
+    }// End HandleSelectedAction()
     
     
     /// <summary>
+    /// (Experimental Implementation, for Clicking on ANY UNIT, even Enemies, and Handling an ACTION on them with the same Mouse Click...) <br />
+    /// Case:   Player UNIT was CLICKED <br /> <br />
+    /// This is the new function that checks if the CLICKED
+    ///..UNIT is the PLAYER and if it is, SELECTS it. <br />
+    /// Otherwise: Returns FALSE.
+    /// </summary>
+    /// <param name="clickedUnit"></param>
+    /// <returns></returns>
+    private bool TryHandlePlayerUnitClicked(Unit clickedUnit)
+    {
+        // UNIT is already selected
+        //
+        if (clickedUnit == _selectedUnit)
+        {
+            return false;
+        }
+
+        // Clicked on an ENEMY
+        //
+        if (clickedUnit.IsEnemy())
+        {
+            return false;
+        }
+
+        // If a new Unit is being selected, return it + our TRUE flag:
+        //
+        SetSelectedUnit(clickedUnit);
+        //
+        return true;
+
+    }// End TryHandlePlayerUnitClicked
+    
+    
+    /// <summary>
+    /// (Experimental Implementation, for Clicking on ANY UNIT, even Enemies, and Handling an ACTION on them with the same Mouse Click...) <br />
+    /// Case:   ENEMY UNIT was CLICKED <br /> <br />
+    /// So far this does not do much. We need to make another
+    /// small change before we can complete this function
+    /// </summary>
+    /// <param name="clickedUnit"></param>
+    /// <returns>TRUE if it is an ENEMY. <br /> <br />
+    /// FALSE if it is a PLAYER UNIT</returns>
+    private bool TryHandleEnemyUnitClicked(Unit clickedUnit)
+    {
+        // Clicked on a Player unit
+        //
+        if (!clickedUnit.IsEnemy())
+        {
+            return false;
+        }
+        // An ENEMY UNIT was Clicked with the Mouse:
+        //
+        return true;
+        
+    }// End TryHandleEnemyUnitClicked
+    
+    
+    /// <summary>
+    /// (Experimental Feature: Clicking on ENEMIES (..instead of 'on the Grid Position on the ground...'): to Apply an ACTION on them) <br />
+    /// Allows you to select an UNIT (Character: 'Friend' or even 'Enemy'), for giving him/her orders later (if it is a TEAMMATE - a 'Friendly' -)... or to execute an ACTION on it, if it is an 'Enemy' (an Action, such as: a "ShootAction", "Attack with Grenade", etc.).
+    /// How? By shooting a Raycast from the camera across the Mouse Pointer to the Game World, and returning the hit data.
+    /// </summary>
+    /// <returns>
+    /// <p>True    if the Raycast is successful in hitting an UNIT or ENEMY UNIT (i.e.: there is HitData type: RaycastHit)</p>
+    /// False   if the user clicked on an not permitted area,
+    ///...or if in any case the Raycast is NOT successful in hitting an UNIT (i.e.: filtered by the LayerMask).
+    /// </returns>
+    private bool TryGetClickedUnit(out Unit clickedUnit)
+    {
+        // Initialization of Input parameter:
+        //
+        clickedUnit = default;
+        
+        // Collision Check, using a Raycast:
+        // Get the Main Scene Camera:
+        //
+        if (MouseWorld.MainSceneCamera != null)         // TODO: Fix the != NULL (OPTIMIZATION)
+        {
+            // Check the Mouse-Pointer Coordinates on the Screen: 
+            //
+            Ray ray = MouseWorld.MainSceneCamera.ScreenPointToRay(Input.mousePosition);
+            //
+            // Physics RayCast:
+            //
+            if (Physics.RaycastNonAlloc(ray, _raycastHitInfo, float.MaxValue,
+                    _unitLayerMask ) > 0)
+            {
+                
+                // 'Try' to check (it also returns a Boolean...): does it have a Component of Type <Unit>??
+                //
+                if (_raycastHitInfo[0].transform.TryGetComponent<Unit>(out clickedUnit))
+                {
+
+                    // We have found a UNIT that was clicked on. return true;
+                    //
+                    return true;
+                    
+                }//End if (_raycastHitInfo[0]....
+                
+            }//End if ((Physics.RaycastNonAlloc...
+            
+        }//End if (_camera != null)
+        else
+        {
+            // Camera is NULL...
+            // Log Error:
+            //
+            Debug.LogError($"'MouseWorld.MainSceneCamera' is {MouseWorld.MainSceneCamera}, IN:\nScript: ---> {GetType().Name} \nGameObject: ---> {transform} - {Instance}.\nReturning 'false' in Function: 'TryGetClickedUnit(...)'");
+
+            return false;
+
+        }//End else of if (MouseWorld.MainSceneCamera != null)
+        
+        // There are NO Units / Charactters in that MOUSE POINTER location:
+        //
+        return false;
+
+    }// End TryGetClickedUnit
+
+    
+    /// <summary>
+    /// (Original CodeMonkey's implementation): <br />
     /// Allows you to select an UNIT (Character), for giving him/her orders later.
     /// How? By shooting a Raycast from the camera across the Mouse Pointer to the Game World, and returning the hit data.
     /// </summary>
@@ -479,6 +635,7 @@ public class UnitActionSystem : MonoBehaviour
 
     }
 
+    
     public Unit GetSelectedUnit()
     {
         return _selectedUnit;
