@@ -46,8 +46,13 @@ public class GridSystemVisualSingle : MonoBehaviour
     /// </summary>
     public void ShowAndSetMaterial(Material material)
     {
-        _meshRenderer.enabled = true;
-        _meshRenderer.material = material;
+        // Validate that "_meshRenderer" is not null: 
+        //
+        if (_meshRenderer != null)
+        {
+            _meshRenderer.enabled = true;
+            _meshRenderer.material = material;   
+        }
     }
     
     /// <summary>
@@ -55,7 +60,14 @@ public class GridSystemVisualSingle : MonoBehaviour
     /// </summary>
     public void Hide()
     {
-        _meshRenderer.enabled = false;
+        // Validate that "_meshRenderer" is not null: 
+        //
+        if (_meshRenderer != null)
+        {
+            // Hide it:
+            //
+            _meshRenderer.enabled = false;    
+        }
     }
 
     #endregion My Custom Methods

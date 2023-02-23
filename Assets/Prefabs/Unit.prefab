@@ -389,6 +389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isEnemy: 0
+  _shoulderHeightForUnitCharacter: 1.7
   _actionPoints: 2
 --- !u!65 &1902843464558363180
 BoxCollider:
@@ -475,6 +476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isActive: 0
+  _myActionPointCost: 1
   _targetPosition: {x: 0, y: 0, z: 0}
   _moveSpeed: 4
   _rotateSpeed: 10
@@ -493,6 +495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isActive: 0
+  _myActionPointCost: 1
   _spinVelocityAndDirectionInDegreesPerSecond: 360
   _rotationGoal: 360
 --- !u!114 &-63595787454068697
@@ -508,6 +511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isActive: 0
+  _myActionPointCost: 1
   _maxShootDistance: 7
   _shootPowerDamageInHealthPoints: 40
   _rotateSpeed: 7

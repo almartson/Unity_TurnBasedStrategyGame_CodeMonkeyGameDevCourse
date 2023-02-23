@@ -545,15 +545,16 @@ public class ShootAction : BaseAction
     
     #region POINTS  - for every Action
 
-    /// <summary>
-    /// Gets the ActionPoints (Cost) for this Current SELECTED ACTION.
-    /// </summary>
-    /// <returns></returns>
-    public override int GetActionPointsCost()
-    {
-        return 2;
-    }
-    
+    // Commented: Reason: It is in the BASE ACTION CLASS. And it is based on an "protected _attribute" of that class...
+    //...that this Derived (Children) Classes receive as "Inheritance":
+    // /// <summary>
+    // /// Gets the ActionPoints (Cost) for this Current SELECTED ACTION.
+    // /// </summary>
+    // /// <returns></returns>
+    // public override int GetActionPointsCost()
+    // {
+    //     return 2;
+    // }
 
     #endregion POINTS  - for every Action
 

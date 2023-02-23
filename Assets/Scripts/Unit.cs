@@ -64,6 +64,19 @@ public class Unit : MonoBehaviour
     [Tooltip("Health System, for managing any Player's 'Health Points' (i.e.: your current 'health')")]
     private HealthSystem _healthSystem;
 
+    
+    #region Death: Event Delegates - CallBacks
+    
+    /// <summary>
+    /// Listener / Delegate Event that will be STATIC (i.e.: depending only of the CLASS not any instanced Object of this Class)...
+    /// ...that will Update the Whole Turn System accordingly when ANY change
+    /// ...in the LIFE / DEATH occurs:  i.e.: When an Unit (Player) DIES: It will be Triggered. <br /><br />
+    /// NOTE: This STATIC EVENT will be triggered forst, not asociated with any specific GameOnject or instance of the Unit.cs Class... so it will be executed faster and before any other.
+    /// </summary>
+    public static event EventHandler OnAnyUnitDied;
+
+    #endregion Death: Event Delegates - CallBacks
+
     #endregion Health System
     
     
@@ -117,9 +130,8 @@ public class Unit : MonoBehaviour
     /// ...in Action Points occurs (NOTE: It does not indicate that a turn has changed).<br /><br />
     /// NOTE: This STATIC EVENT fixes the problems: There are 2 classes (this one - Unit - AND TurnSystem, that will fire an EVEN when the '_actionPoints for an Unit' Changes.... so if the ORDER OF EXECUTION is incorrect, there will be a Runtime Exception. This EVENT SHOULD BE THE FIRST ONE to be fired when we use _actionPoints, so making it a STATIC EVENT will make it be Triggered always first.
     /// </summary>
-    public static event EventHandler OnAnyActionPointsChanged; 
+    public static event EventHandler OnAnyActionPointsChanged;
 
-    
     #endregion Turn System
     
     
@@ -448,7 +460,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void HealthSystem_OnDead(object sender, EventArgs e)
+    public void HealthSystem_OnDead(object sender, EventArgs e)
     {
         // Detach the Unit from the Grid Cell
         //
@@ -457,6 +469,10 @@ public class Unit : MonoBehaviour
         // Temporary: -debug-  Just Destroy the Character / Unit:
         //
         Destroy(gameObject);
+        
+        // Fire the STATIC EVENT  related to when ANY UNIT (Character)  DIES...
+        //
+        OnAnyUnitDied?.Invoke(this, EventArgs.Empty);
 
     }//End HealthSystem_OnDead
     

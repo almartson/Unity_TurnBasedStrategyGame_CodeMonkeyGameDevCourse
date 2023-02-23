@@ -191,7 +191,7 @@ public class UnitActionSystem : MonoBehaviour
             #endregion Try to SELECT a friendly UNIT: CodeMonkey's Original Implementation
             
             
-            #region Try to SELECT a ++ANY++ UNIT: CodeMonkey's Original Implementation
+            #region Try to SELECT a ++ANY++ UNIT: Implementation version 2.0
             
             // After the MOUSE CLICK:
             // Try to SELECT a ++ANY++ UNIT (a Character / Soldier... FRIENDLY on my TEAM, ... or an ENEMY).. that was CLICKED ON with the Mouse Pointer:
@@ -218,7 +218,7 @@ public class UnitActionSystem : MonoBehaviour
 
             }//End if (TryGetClickedUnit(..
             
-            #endregion Try to SELECT a ++ANY++ UNIT: CodeMonkey's Original Implementation
+            #endregion Try to SELECT a ++ANY++ UNIT: Implementation version 2.0
             
             
             // Try to: Receive (process...) the 'Action'  (from a mouse click on the GUI)
@@ -538,28 +538,43 @@ public class UnitActionSystem : MonoBehaviour
     /// (Experimental Implementation, for Clicking on ANY UNIT, even Enemies, and Handling an ACTION on them with the same Mouse Click...) <br />
     /// Case:   Player UNIT was CLICKED <br /> <br />
     /// This is the new function that checks if the CLICKED
-    ///..UNIT is the PLAYER and if it is, SELECTS it. <br />
+    ///..UNIT is the PLAYER and if it is, SELECTS it. If it was a FRIENDLY, and already SELECTED: Tries to Perform an ACTION on that 'Grid Position'  <br />
     /// Otherwise: Returns FALSE.
     /// </summary>
     /// <param name="clickedUnit"></param>
     /// <returns></returns>
     private bool TryHandlePlayerUnitClicked(Unit clickedUnit)
     {
-        // UNIT is already selected
+        // "UNIT is already selected"  OR  "Clicked on an ENEMY"
         //
         if (clickedUnit == _selectedUnit)
         {
-            return false;
-        }
+            // Philosophy:
+            // Try to EXECUTE THE ACTION with the already Selected Unit (e.g.: A SPIN ACTION that requires to click on the Unit itself... or in its GRID POSITION on the Ground):
+            //
+            // GET the GRID POSITION of the UNIT (FRIENDLY) we clicked on:
+            //
+            GridPosition unitGridPosition = clickedUnit.GetGridPosition();
+
+            // HandleSelectedAction
+            //..using the current UNIT's:  GRID POSITION:
+            // Tell the Update() Method (the Invoker of this Function...) that: This Action ended here.
+            // No more processing is needed:   (unless: there was a problem during the execution of 'HandleSelectedAction')
+            //
+            return HandleSelectedAction(unitGridPosition);
+            
+            
+        }//End if ((clickedUnit == _selectedUnit) || (clickedUnit.IsEnemy()))
 
         // Clicked on an ENEMY
+        // ..(for the First time...: so do NOT perform any ACTION just yet: JUST  SELECT IT):
         //
         if (clickedUnit.IsEnemy())
         {
             return false;
         }
 
-        // If a new Unit is being selected, return it + our TRUE flag:
+        // If a new Unit is being selected (for the FIRST TIME), return it + our TRUE (SUCCESS in processing..) flag:
         //
         SetSelectedUnit(clickedUnit);
         //
@@ -571,8 +586,7 @@ public class UnitActionSystem : MonoBehaviour
     /// <summary>
     /// (Experimental Implementation, for Clicking on ANY UNIT, even Enemies, and Handling an ACTION on them with the same Mouse Click...) <br />
     /// Case:   ENEMY UNIT was CLICKED <br /> <br />
-    /// So far this does not do much. We need to make another
-    /// small change before we can complete this function
+    /// It Tries to perform an ACTION (e.g.: ShootAction, etc.) on that Enemy's 'Grid Position'.
     /// </summary>
     /// <param name="clickedUnit"></param>
     /// <returns>TRUE if it is an ENEMY. <br /> <br />
@@ -600,7 +614,8 @@ public class UnitActionSystem : MonoBehaviour
     
     
     /// <summary>
-    /// (Experimental Feature: Clicking on ENEMIES (..instead of 'on the Grid Position on the ground...'): to Apply an ACTION on them) <br />
+    /// (Experimental Feature: Clicking on ENEMIES (..instead of 'on the Grid Position on the ground...'): to Apply an ACTION on them) <br /> <br />
+    /// JUST:  GETS the UNIT that was Clicked with the Mouse. Just that!!!!!!!!<br /> <br />
     /// Allows you to select an UNIT (Character: 'Friend' or even 'Enemy'), for giving him/her orders later (if it is a TEAMMATE - a 'Friendly' -)... or to execute an ACTION on it, if it is an 'Enemy' (an Action, such as: a "ShootAction", "Attack with Grenade", etc.).
     /// How? By shooting a Raycast from the camera across the Mouse Pointer to the Game World, and returning the hit data.
     /// </summary>

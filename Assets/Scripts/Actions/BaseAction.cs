@@ -24,7 +24,16 @@ public abstract class BaseAction : MonoBehaviour
     /// Part of the ACTION Name, that, coming from this derivates' (ergo: this Children's) Class Names
     ///...must be Stripped.
     /// </summary>
-    private const string _CLASS_ACTION_NAME_PART_TO_BE_STRIPPED = "Action"; 
+    private const string _CLASS_ACTION_NAME_PART_TO_BE_STRIPPED = "Action";
+
+
+    #region Action Points Cost  (of this Action)
+
+    [Tooltip("(DEFAULT VALUE of...) Cost of this ACTION, in terms of (CURRENCY = ) 'Action Points'")]
+    [SerializeField]
+    protected int _myActionPointCost = 1;
+    
+    #endregion Action Points Cost  (of this Action)
     
     
     #region Delegates: Purpose: Managing (allowing only...) just ONE Action at a Time
@@ -34,8 +43,9 @@ public abstract class BaseAction : MonoBehaviour
     /// It is related to this CLASS, NOT to a specific Object - instance of this Class, SO IT DOESN'T DEPEND OF: Move, Spin, Shoot Action, etc... -  (although we can get the Character/'Unit' GameObject from the SENDER of the Event (by casting to 'Unit')...). ANY TIME any Action is called: (a descendant of BaseAction, THIS CALLBACK WILL BE TRIGGERED / CALLED).
     /// Note:  The Type: EventHandler   is a System-defined type, of Standard DELEGATE.
     /// </summary>
-    public static event EventHandler OnAnyActionStarted;    /// <summary>
+    public static event EventHandler OnAnyActionStarted;
     
+    /// <summary>
     /// Delegate: to tell when ANY [ TakeAction ] (Action & the ActionStart() function...) Routine ENDS.
     /// It is related to this CLASS, NOT to a specific Object - instance of this Class.
     /// </summary>
@@ -48,7 +58,7 @@ public abstract class BaseAction : MonoBehaviour
     /// Note:  The Type: ACTION   is a System-defined type, of Standard DELEGATE.
     /// </summary>
     protected Action onActionComplete;
-
+    
     #endregion Delegates: Purpose: Managing (allowing only...) just ONE Action at a Time
     
     #endregion Attributes
@@ -199,11 +209,11 @@ public abstract class BaseAction : MonoBehaviour
     /// Gets the ActionPoints (Cost) for this Current SELECTED ACTION.
     /// </summary>
     /// <returns></returns>
-    public virtual int GetActionPointsCost()
+    public int GetActionPointsCost()
     {
-        // Return DEFAULT value:  1
+        // Return DEFAULT value:   (usually is 1)
         //
-        return 1;
+        return _myActionPointCost;
     }
 
     #endregion POINTS  - for every Action

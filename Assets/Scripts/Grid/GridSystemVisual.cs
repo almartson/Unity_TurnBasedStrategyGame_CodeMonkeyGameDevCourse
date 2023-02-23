@@ -168,6 +168,10 @@ public class GridSystemVisual : MonoBehaviour
         //
         LevelGrid.Instance.OnAnyUnitMovedGridPosition += LevelGrid_OnAnyUnitMovedGridPosition;
         
+        // Subscribe to the Event:   Unit.OnAnyUnitDied
+        //
+        Unit.OnAnyUnitDied += Unit_OnAnyUnitDied;
+        
         #endregion Subscribing Events - Delegates
 
         
@@ -540,6 +544,23 @@ public class GridSystemVisual : MonoBehaviour
         
     }// End LevelGrid_OnAnyUnitMovedGridPosition
 
+    
+    /// <summary>
+    /// Event that Updates the Grid Cells color on the ground, whenever a Game Character / Unit:
+    /// ..."DIES"... (ALL the GAME BOARD:  'Grid Position'(s) are RE-RENDERED).
+    /// (re-rendering the Grid Position Cell's numbers and characters, the Game Board, to move in to, in the next Turn).
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Unit_OnAnyUnitDied(object sender, EventArgs e)
+    {
+        // Update the Grid System Visual (GUI) on the ground  (i.e.: the GAME BOARD):
+        //..(re-rendering the available positions, the Game Board, to move in to, in the next Turn). 
+        //
+        UpdateGridVisual();
+
+    }// End Unit_OnAnyUnitDied
+    
     #endregion Subscribing to Events - Delegates
 
     
