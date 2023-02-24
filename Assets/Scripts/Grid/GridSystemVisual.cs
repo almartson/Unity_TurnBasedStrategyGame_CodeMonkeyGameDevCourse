@@ -168,9 +168,9 @@ public class GridSystemVisual : MonoBehaviour
         //
         LevelGrid.Instance.OnAnyUnitMovedGridPosition += LevelGrid_OnAnyUnitMovedGridPosition;
         
-        // Subscribe to the Event:   Unit.OnAnyUnitDied
+        // Subscribe to the Event:   Unit.OnAnyUnitDead
         //
-        Unit.OnAnyUnitDied += Unit_OnAnyUnitDied;
+        Unit.OnAnyUnitDead += UnitOnAnyUnitDead;
         
         #endregion Subscribing Events - Delegates
 
@@ -552,14 +552,14 @@ public class GridSystemVisual : MonoBehaviour
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Unit_OnAnyUnitDied(object sender, EventArgs e)
+    private void UnitOnAnyUnitDead(object sender, EventArgs e)
     {
         // Update the Grid System Visual (GUI) on the ground  (i.e.: the GAME BOARD):
         //..(re-rendering the available positions, the Game Board, to move in to, in the next Turn). 
         //
         UpdateGridVisual();
 
-    }// End Unit_OnAnyUnitDied
+    }// End UnitOnAnyUnitDead
     
     #endregion Subscribing to Events - Delegates
 

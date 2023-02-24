@@ -100,7 +100,6 @@ public class UnitActionSystem : MonoBehaviour
     
     private void Awake()
     {
-        
         // RayCast info (for the Collisions):
         //
         _raycastHitInfo = new RaycastHit[3];
@@ -114,7 +113,6 @@ public class UnitActionSystem : MonoBehaviour
         //
         if (Instance != null)
         {
-            
             Debug.LogError("There's more than one '" + GetType().Name + "'!. GameObject: ---> " + transform + "  - " + Instance);
             //
             // Destroy, to be able to continue the Gameplay (i.e.: Recovery from the Error/Exception...)

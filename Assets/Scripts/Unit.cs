@@ -64,6 +64,16 @@ public class Unit : MonoBehaviour
     [Tooltip("Health System, for managing any Player's 'Health Points' (i.e.: your current 'health')")]
     private HealthSystem _healthSystem;
 
+
+    #region Enemy A.I. (related... helpers): Event Delegates - CallBacks
+    
+    /// <summary>
+    /// Listener / Delegate Event that will be STATIC (i.e.: depending only of the CLASS not any instanced Object of this Class)...
+    /// ...that will Update the Whole Turn System accordingly when ANY change
+    /// ...as a POP-UP or SPAWN occurs (i.e.: an Unit or Player instantiation in the Scene...):  It will be Triggered. <br /><br />
+    /// NOTE: This STATIC EVENT will be triggered first, not associated with any specific GameObject or instance of the Unit.cs Class... so it will be executed faster and before any other.
+    /// </summary>
+    public static event EventHandler OnAnyUnitSpawned;
     
     #region Death: Event Delegates - CallBacks
     
@@ -71,12 +81,15 @@ public class Unit : MonoBehaviour
     /// Listener / Delegate Event that will be STATIC (i.e.: depending only of the CLASS not any instanced Object of this Class)...
     /// ...that will Update the Whole Turn System accordingly when ANY change
     /// ...in the LIFE / DEATH occurs:  i.e.: When an Unit (Player) DIES: It will be Triggered. <br /><br />
-    /// NOTE: This STATIC EVENT will be triggered forst, not asociated with any specific GameOnject or instance of the Unit.cs Class... so it will be executed faster and before any other.
+    /// NOTE: This STATIC EVENT will be triggered first, not associated with any specific GameObject or instance of the Unit.cs Class... so it will be executed faster and before any other.
     /// </summary>
-    public static event EventHandler OnAnyUnitDied;
+    public static event EventHandler OnAnyUnitDead;
 
     #endregion Death: Event Delegates - CallBacks
-
+    
+    #endregion Enemy A.I. (related... helpers): Event Delegates - CallBacks
+    
+    
     #endregion Health System
     
     
@@ -122,7 +135,7 @@ public class Unit : MonoBehaviour
     private int _actionPoints = _ACTION_POINTS_PER_TURN_MAX;
     
     
-    #region Turn System
+    #region Turn System - and its Events
 
     /// <summary>
     /// Listener / Delegate Event that will be STATIC (i.e.: depending only of the CLASS not any instanced Object of this Class)...
@@ -132,7 +145,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     public static event EventHandler OnAnyActionPointsChanged;
 
-    #endregion Turn System
+    #endregion Turn System - and its Events
     
     
     #endregion POINTS  - for every Action
@@ -219,6 +232,15 @@ public class Unit : MonoBehaviour
         _healthSystem.OnDead += HealthSystem_OnDead;
 
         #endregion Health
+
+        #region Unit's Spawning (instantiation) process in the Scene
+        
+        // Fire the (STATIC) EVENT  related to any UNIT Instantiation in the Scene:
+        //
+        OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
+
+        #endregion Unit's Spawning (instantiation) process in the Scene
+        
     }//End Start()
     
 
@@ -472,7 +494,7 @@ public class Unit : MonoBehaviour
         
         // Fire the STATIC EVENT  related to when ANY UNIT (Character)  DIES...
         //
-        OnAnyUnitDied?.Invoke(this, EventArgs.Empty);
+        OnAnyUnitDead?.Invoke(this, EventArgs.Empty);
 
     }//End HealthSystem_OnDead
     

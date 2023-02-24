@@ -99,6 +99,8 @@ public class EnemyAI : MonoBehaviour
         //
         switch (_state)
         {
+            default:
+                
             case State.WaitingForEnemyTurn:
                 break;
             
@@ -117,6 +119,7 @@ public class EnemyAI : MonoBehaviour
                     
                     // Set the NEXT STATE after this one:
                     // A.I. is  BUUUSYYY... Working... Taking ACTION!
+                    // Set MUTEX LOCK.
                     //
                     _state = State.Busy;
                     
@@ -178,7 +181,6 @@ public class EnemyAI : MonoBehaviour
         //
         if (!TurnSystem.Instance.IsPlayerTurn)
         {
-            
             // Set the current "_state"
             //
             _state = State.TakingTurn;
@@ -191,15 +193,143 @@ public class EnemyAI : MonoBehaviour
         
     }// End TurnSystem_OnTurnChanged
 
+    
+    #region A.I. "TakeAction"
 
     /// <summary>
     /// Executes the (current FSM state)  A.I. 'ACTION':
     /// </summary>
     private void TakeEnemyAIAction(Action onEnemyAIActionComplete)
     {
+        #region Original (non-performant) CodeMonkey's Implementation
+
+        // Cycling through every ENEMY Unit..
+        //
+        foreach (Unit enemyUnit in UnitManager.Instance.GetEnemyUnitList())
+        {
+            // Make the ENEMY UNIT take "ACTION"
+            //
+            //////////////////7
+            Debug.Log( $"TakeEnemyAIAction(enemyUnit, onEnemyAIActionComplete) = {TakeEnemyAIAction(enemyUnit, onEnemyAIActionComplete)} ... by Unit -> {enemyUnit.name}" );
+            //////////////////
+            
+            // Original:   TakeEnemyAIAction(enemyUnit, onEnemyAIActionComplete);
+
+        }//End foreach
+
+        #endregion  Original (non-performant) CodeMonkey's Implementation
         
     }// End TakeEnemyAIAction
+
+
+    /// <summary>
+    /// Given an "Enemy Unit": <br />
+    /// It Executes a particular ENEMY Unit  'ACTION'  (A.I.)
+    /// </summary>
+    private bool TakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
+    {
+        // 0- Simple Version:  just a SPIN ACTION:
+        
+        // Get the ACTION   (as object)
+        //
+        SpinAction spinAction = enemyUnit.GetSpinAction();
+
+        
+        #region TakeAction Logic
+
+        // Try to TakeAction the selected Unit... (by Raycasting on the Ground Plane (Mask Layer...))
+        //
+        if (MouseWorld.TryGetPosition(out Vector3 mousePosition))
+        {
+            // Get the CENTER of the selected "GridPosition", instead of a corner or any random position inside of it
+            // ...because sometimes the Player/user clicks in random places of a Cell/Square/Grid,
+            // ...not necessarily in the CENTER of it:
+            //
+            GridPosition actionGridPosition = enemyUnit.GetGridPosition();
+
+            // Take the Action.
+            
+            // 'TakeAction' method has a particular Implementation in each of the derived Classes (e.g.: MoveAction, SpinAction, etc.).
+            //
+            //  .1- Validation of the Action:
+            //
+            if (   spinAction.IsValidActionGridPosition(actionGridPosition))
+            {
+
+                // Try to Spend this Unit's available "actionPoints": on this Action
+                //
+                if (enemyUnit.TrySpendActionPointsToTakeAction(   spinAction))
+                {
+                    // .2.0- The actionPoints are Spent / used by now, already...
+                    
+                    // .2- 'Take the Action'
+                    //
+                    // .2.1- Save the Valid GridPosition:
+                    //
+                    // .2.1.1- Save the original Mouse Position (just in case... as a backup)
+                    //
+                    enemyUnit.MousePosition.Set(actionGridPosition.x, 0, actionGridPosition.z);
+                    //
+                    // .2.1.1- In _selectedUnit, for later use in 'TakeAction()':
+                    //
+                    enemyUnit.SetFinalGridPositionOfNextPlayersAction(actionGridPosition);
+                
+                
+                    // .3- Set this Class (SERVICE) Methods as: BUSY .. until it ends:  Set MUTEX ON
+                    //
+                    // SetBusy();  // This is not necessary here, because it happens in the Update() of this STATE MACHINE Script.
+                    //
+                    // .4- TakeAction() , A.I. ACTION
+                    // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: ) -> Sets Mutex OFF (when TakeAction() Ends...)
+                    //
+                            
+                    ///////
+        
+                    Debug.Log($" Take enemy AI Action -> {spinAction}");
+                    ///////
+                    
+                    spinAction.TakeAction(onEnemyAIActionComplete);
+                    
+                    
+                    // // Update the GUI for ActionPoints:
+                    // //
+                    // OnActionStarted?.Invoke(this, EventArgs.Empty);
+
+                    // Return the Success/Failure State of the 'Take Action' process:
+                    //
+                    return true;
+                    
+                }//End if (_selectedUnit.CanSpendActionPointsToTakeAction...
+                else
+                {
+                    // Did not pass the Validation:     CanSpendActionPointsToTakeAction(...)
+                    // Return the Success/Failure State of the 'Take Action' process:  false (failure)
+                    //
+                    return false;
+                    
+                }//End else of if (_selectedUnit.CanSpendActionPointsToTakeAction...
+                
+            }//End if (_selectedAction.IsValidActionGridPosition
+            else
+            {
+                // Return the Success/Failure State of the 'Take Action' process:  false (failure)
+                //
+                return false;
+            }
+
+        }//End if (MouseWorld.TryGetPosition
     
+        // Return the Success/Failure State of the 'Take Action' process:  false (failure)
+        //
+        return false;
+        
+        #endregion TakeAction Logic
+        
+    }// End TakeEnemyAIAction(Action onEnemyAIActionComplete)
+    
+    
+    #endregion A.I. "TakeAction"
+
     #endregion A.I. Finite State Machine
     
     #endregion My Custom Methods
