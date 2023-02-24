@@ -1,9 +1,0 @@
-{
-  "name": "com.dragyngames.debug",
-  "displayName": "In Game Logger",
-  "version": "0.0.1",
-  "description": "Get log messages in game, either with a UI or output to a file or both",
-  "documentationUrl": "README.md",
-  "changelogUrl": "CHANGELOG.md"
-}
-
