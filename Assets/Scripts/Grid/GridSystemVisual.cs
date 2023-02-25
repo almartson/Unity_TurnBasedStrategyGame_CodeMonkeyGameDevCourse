@@ -27,6 +27,7 @@ public class GridSystemVisual : MonoBehaviour
     /// </summary>
     private GridSystemVisualSingle[,] _gridSystemVisualSingleArray;
 
+    
     #region Obstacles for Shooting (Experimental)
 
     [Tooltip("Obstacles Label-LayerMask in the AIM or 'Shooting Path'")]
@@ -38,6 +39,14 @@ public class GridSystemVisual : MonoBehaviour
     /// </summary>
     public LayerMask ObstaclesLayerMask { get => _obstaclesLayerMask; private set => _obstaclesLayerMask = value; }
 
+    #region Raycast
+    
+    /// <summary>
+    /// Raycast Hit (past) Summary / info.
+    /// </summary>
+    private RaycastHit[] _raycastHitInfo;
+    
+    #endregion
 
     #endregion Obstacles for Shooting (Experimental)
     
@@ -93,6 +102,9 @@ public class GridSystemVisual : MonoBehaviour
     /// </summary>
     private void Awake()
     {
+        
+        #region Singleton Pattern
+        
         // Singleton Pattern, protocol:
         //
         // Validation: There MUST be ONLY ONE Instance of this Class (i.e.: ONE Object):
@@ -111,7 +123,19 @@ public class GridSystemVisual : MonoBehaviour
         // If everything went well, create / assign THIS Instance:
         //
         Instance = this;
-    }
+        
+        #endregion Singleton Pattern
+
+        #region Utils
+
+        // Raycast info:
+        //
+        _raycastHitInfo = new RaycastHit[7];
+        
+        #endregion
+
+        
+    }// End Awake
 
     /// <summary>
     /// Start is called before the first frame update
@@ -408,22 +432,46 @@ public class GridSystemVisual : MonoBehaviour
     public bool ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(GridPosition fromGridPosition, GridPosition toTestGridPosition, float height)
     {
         // TODO:  Refactor and CLEAN this Code below, using Fields (Attributes) from a specific - Single Responsibility Class (that handles this kind of data, such as Unit for:  unitShoulderHeight, etc). According to the S.O.L.I.D. Principle.
-        // TODO: Refactor this Physics.Raycast.. for a a non-alloc  Raycast option...
         //
-        Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(fromGridPosition) + Vector3.up * height;
-        Vector3 testWorldPosition = LevelGrid.Instance.GetWorldPosition(toTestGridPosition) + Vector3.up * height;
+        Vector3 unitWorldPositionAtTheFloorLevel = LevelGrid.Instance.GetWorldPosition(fromGridPosition);
+        Vector3 unitWorldPosition = unitWorldPositionAtTheFloorLevel + Vector3.up * height;
+        Vector3 testWorldPositionAtTheFloorLevel = LevelGrid.Instance.GetWorldPosition(toTestGridPosition);
+        //Vector3 testWorldPosition = testWorldPositionAtTheFloorLevel + Vector3.up * height;
+        //
+        // Direction Vector3
+        //
+        //Vector3 aimDirectionNotNormalized = (testWorldPositionAtTheFloorLevel - unitWorldPositionAtTheFloorLevel);
+        //
+        Vector3 aimDirectionNormalized = (testWorldPositionAtTheFloorLevel - unitWorldPositionAtTheFloorLevel).normalized;
+        
+        #region Raycast: Original Code
+        
+        // if (Physics.Raycast(unitWorldPosition, aimDir, Vector3.Distance(unitWorldPosition, testWorldPosition),
+        //         _obstaclesLayerMask))
+        // {
+        //     // Line Of Sight   blocked   by obstacle
+        //     //
+        //     return true;
+        // }
+        //
+        // return false;
+        
+        #endregion Raycast: Original Code
+        
+        #region Raycast: Optimized Code - v-2.0
 
-        Vector3 aimDir = (testWorldPosition - unitWorldPosition).normalized;
-
-        if (Physics.Raycast(unitWorldPosition, aimDir, Vector3.Distance(unitWorldPosition, testWorldPosition),
-                _obstaclesLayerMask))
+        if ( Physics.RaycastNonAlloc(unitWorldPosition, aimDirectionNormalized, _raycastHitInfo, Vector3.Distance(unitWorldPositionAtTheFloorLevel, testWorldPositionAtTheFloorLevel), _obstaclesLayerMask) > 0 )
         {
             // Line Of Sight   blocked   by obstacle
             //
             return true;
-        }
+
+        }//End if ( Physics.RaycastNonAlloc
 
         return false;
+        
+        #endregion Raycast: Optimized Code - v-2.0
+
     }// End ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions
 
 

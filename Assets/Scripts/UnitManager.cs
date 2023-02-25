@@ -132,17 +132,11 @@ public class UnitManager : MonoBehaviour
         // 0- Get the Unit from CASTING the sender Object:
         //
         Unit unit = sender as Unit;
-        
-        /////////Remove Debug messages
-        //
-        Debug.Log($"{unit} Spawned.");
-        /////////
-        
         //
         // 0.2- Validation =! null
         // Todo:  Optimization Fix: Substitute  !=  (non performant) by its best equivalent.
         //
-        if ( unit != null)
+        if (unit != null)
         {
             // 1- Add it to:  the ALL in..:  List<Unit>
             //
@@ -159,7 +153,7 @@ public class UnitManager : MonoBehaviour
             }//End if (unit.IsEnemy...
             else
             {
-                // if not:  it's a:  "Friendly"
+                // "Friendly"
                 // Add:
                 //
                 _getFriendlyUnitList.Add(unit);
@@ -185,17 +179,11 @@ public class UnitManager : MonoBehaviour
         // 0- Get the referenced "Unit", from CASTING the "sender" Object:
         //
         Unit unit = sender as Unit;
-        
-        /////////Remove Debug messages
-        //
-        Debug.Log($"{unit} Died.");
-        /////////
-        
         //
         // 0.2- Validation =! null
         // Todo:  Optimization Fix: Substitute  !=  (non performant) by its best equivalent.
         //
-        if ( unit != null)
+        if (unit != null)
         {
             // 1- Remove it from:  the ALL in..:  List<Unit>
             //
@@ -212,7 +200,7 @@ public class UnitManager : MonoBehaviour
             }//End if (unit.IsEnemy...
             else
             {
-                // if not:  it's a:  "Friendly"
+                // "Friendly"
                 // Remove:
                 //
                 _getFriendlyUnitList.Remove(unit);

@@ -149,12 +149,12 @@ public class UnitRagdoll : MonoBehaviour
 
             }//End if (_realisticExplosionPhysics)
             
-            // Debug
-            //
-            Debug.Log("transform.position = " + transform.position);
-            Debug.Log("bulletProjectileDirectionVector3 = " + bulletProjectileDirectionVector3);
-            Debug.Log("pointPositionOfImpactVector3 = " + pointPositionOfImpactVector3);
-            Debug.Log("newPositionOriginForExplosion = " + newPositionOriginForExplosion);
+            // // Debug
+            // //
+            // Debug.Log("transform.position = " + transform.position);
+            // Debug.Log("bulletProjectileDirectionVector3 = " + bulletProjectileDirectionVector3);
+            // Debug.Log("pointPositionOfImpactVector3 = " + pointPositionOfImpactVector3);
+            // Debug.Log("newPositionOriginForExplosion = " + newPositionOriginForExplosion);
             //
             ApplyExplosionToTargetRagdollOptimized(ragdollPrefabsCharacterBonesAreRagdollized, _explosionForce, newPositionOriginForExplosion, _explosionRange);
     

@@ -2,6 +2,7 @@
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -117,21 +118,25 @@ public class EnemyAI : MonoBehaviour
                 if (_timer <= 0.0f)
                 {
                     
-                    // Set the NEXT STATE after this one:
-                    // A.I. is  BUUUSYYY... Working... Taking ACTION!
-                    // Set MUTEX LOCK.
+                    // (Try to...)  Take ACTION!
                     //
-                    _state = State.Busy;
-                    
-                    // Take ACTION!
-                    //
-                    TakeEnemyAIAction( SetStateTakingTurn );
+                    if (TryTakeEnemyAIAction(SetStateTakingTurn))
+                    {
+                        
+                        // Set the NEXT STATE after this one:
+                        // A.I. is  BUUUSYYY... Working... Taking ACTION!
+                        // Set MUTEX LOCK.
+                        //
+                        _state = State.Busy;
+                    }
+                    else
+                    {
+                        // No ENEMY (in the List<_enemyUnit>) could "Take A.I. Action"...
+                        // ...So:   End THIS TURN   (for the ENEMY A.I.).
+                        //
+                        TurnSystem.Instance.NextTurn();
 
-                    
-                    // End this Unit's Turn  (this is an Enemy, so...
-                    // ..this means:  the Enemy's Turn is OVER):
-                    //
-                    TurnSystem.Instance.NextTurn();
+                    }//End else of if (TryTakeEnemyAIAction...
 
                 }//End if (_timer <= 0.0f)
                 
@@ -197,36 +202,80 @@ public class EnemyAI : MonoBehaviour
     #region A.I. "TakeAction"
 
     /// <summary>
-    /// Executes the (current FSM state)  A.I. 'ACTION':
+    /// Executes the (current FSM state)  A.I. 'ACTION':   for all "Units" in the ENEMY's TEAM.
     /// </summary>
-    private void TakeEnemyAIAction(Action onEnemyAIActionComplete)
+    private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
     {
         #region Original (non-performant) CodeMonkey's Implementation
 
-        // Cycling through every ENEMY Unit..
+        // // Cycling through every ENEMY Unit..
+        // //
+        // foreach (Unit enemyUnit in UnitManager.Instance.GetEnemyUnitList())
+        // {
+        //     // Make the ENEMY UNIT take "ACTION"
+        //     //
+        //     if (TryTakeEnemyAIAction(enemyUnit, onEnemyAIActionComplete))
+        //     {
         //
-        foreach (Unit enemyUnit in UnitManager.Instance.GetEnemyUnitList())
-        {
-            // Make the ENEMY UNIT take "ACTION"
-            //
-            //////////////////7
-            Debug.Log( $"TakeEnemyAIAction(enemyUnit, onEnemyAIActionComplete) = {TakeEnemyAIAction(enemyUnit, onEnemyAIActionComplete)} ... by Unit -> {enemyUnit.name}" );
-            //////////////////
-            
-            // Original:   TakeEnemyAIAction(enemyUnit, onEnemyAIActionComplete);
-
-        }//End foreach
-
+        //         // If the ACTION is Completed:
+        //         //
+        //         return true;
+        //
+        //     }//if (TryTakeEnemyAIAction...
+        //
+        // }//End foreach
+        //
+        // // No success in "Taking A.I. ACTION":
+        // //
+        // return false;
+        
         #endregion  Original (non-performant) CodeMonkey's Implementation
         
-    }// End TakeEnemyAIAction
+        
+        #region Optimized Code Version (v-2.0). AlMartson's Implementation
+
+        // Cycling through every ENEMY Unit..  ( Get Enemy Unit List )
+        //
+        List<Unit> enemyUnitList = UnitManager.Instance.GetEnemyUnitList();
+        //
+        // Lenght of th List
+        //
+        int enemyUnitListLenght = enemyUnitList.Count;
+
+        
+        // Cycling through every ENEMY Unit..
+        //
+        for (int i = 0; i < enemyUnitListLenght; i++)
+        {
+
+            // Make the ENEMY UNIT take "ACTION"
+            //
+            if (TryTakeEnemyAIAction(enemyUnitList[i], onEnemyAIActionComplete))
+            {
+
+                // If the ACTION is Completed, for ANY ENEMY:  end this Loop
+                // ...(so, we will have to do another for the NEXT ENEMY later... and so on,... until all ENEMIES have been checked - tried to execute an "A.I. ACTION"):
+                //
+                return true;
+
+            }//if (TryTakeEnemyAIAction...
+
+        }//End for
+
+        // No success in "Taking A.I. ACTION"... for ANY Enemy Unit (in the whole ENEMY TEAM), at all:
+        //
+        return false;
+        
+        #endregion Optimized Code Version (v-2.0). AlMartson's Implementation
+
+    }// End TryTakeEnemyAIAction
 
 
     /// <summary>
     /// Given an "Enemy Unit": <br />
     /// It Executes a particular ENEMY Unit  'ACTION'  (A.I.)
     /// </summary>
-    private bool TakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
+    private bool TryTakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
     {
         // 0- Simple Version:  just a SPIN ACTION:
         
@@ -282,12 +331,6 @@ public class EnemyAI : MonoBehaviour
                     // .4- TakeAction() , A.I. ACTION
                     // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: ) -> Sets Mutex OFF (when TakeAction() Ends...)
                     //
-                            
-                    ///////
-        
-                    Debug.Log($" Take enemy AI Action -> {spinAction}");
-                    ///////
-                    
                     spinAction.TakeAction(onEnemyAIActionComplete);
                     
                     
@@ -325,7 +368,7 @@ public class EnemyAI : MonoBehaviour
         
         #endregion TakeAction Logic
         
-    }// End TakeEnemyAIAction(Action onEnemyAIActionComplete)
+    }// End TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
     
     
     #endregion A.I. "TakeAction"
