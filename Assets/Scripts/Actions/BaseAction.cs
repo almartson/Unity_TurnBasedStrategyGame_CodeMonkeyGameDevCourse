@@ -231,7 +231,53 @@ public abstract class BaseAction : MonoBehaviour
         return _unit;
     }
 
-    #endregion Misc, Getters, Setters, etc
+    #endregion Misc, Getters, Setters, etc    
+    
+    
+    #region A.I. - AI
+
+    /// <summary>
+    /// (Calculates and then...):  Gets the BEST possible "A.I. ACTION", after considering all possibilities at this moment in the "Present" (right now).
+    /// </summary>
+    /// <returns></returns>
+    public EnemyAIAction GetBestEnemyAIAction()
+    {
+        // Make a List of "ENEMY A.I. ACTION":
+        //
+        List<EnemyAIAction> enemyAIActionList = new List<EnemyAIAction>();
+        
+        // Cycle through all the "Valid"  GridPositions  for this (..each..) ACTION:
+        //
+        List<GridPosition> validActionGridPositionList = GetValidActionGridPositionList();
+        
+        #region Original (foreach - non-performant) CodeMonkey Implementation
+
+        // foreach (GridPosition gridPosition in validActionGridPositionList)
+        // {
+        //     // We want to:
+        //     // Generate the:   ENEMY "A.I. ACTION"
+        //     // ..for:
+        //     // 1- THIS specific ACTION   (selected)
+        //     // 2- on this (Grid) POSITION
+        //     //
+        //     EnemyAIAction enemyAIAction = GetEnemyAIAction( gridPosition );
+        //     //
+        //     // Add the ACTION to the LIST
+        //     //
+        //     enemyAIActionList.Add(enemyAIAction);
+        //
+        // }//End foreach
+        
+        #endregion Original (foreach - non-performant) CodeMonkey Implementation
+
+        
+        //temporary
+        //
+        return null;
+
+    }// End GetBestEnemyAIAction
+
+    #endregion A.I. - AI
 
     #endregion My Custom Methods
 
@@ -247,14 +293,12 @@ public abstract class BaseParameters
 
     #region Attributes
     
-    
     protected float exampleOfSyntaxProtectedIsLikeAPublic = 0.0f;
     
     #endregion Attributes
     
     
     #region Methods
-
     
 
     #endregion Methods

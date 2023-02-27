@@ -1,6 +1,7 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
+using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 
@@ -65,19 +66,19 @@ public static class PromptOnExitAndLogEditorTime
     private static bool ExitGameConfirmation()
     {
         bool decision = EditorUtility.DisplayDialog(
-            "Exit Game", // title
-            "Are you sure want to exit the game?", // description
-            "Yes", // OK button
-            "No" // Cancel button
+            "Exit the Unity3D Editor", // title
+            "Quit the Unity3D Editor?", // description
+            "Quit", // OK button
+            "Cancel" // Cancel button
         );
 
         if (decision)
         {
-            Debug.Log($"Quitting the Editor... after {EditorApplication.timeSinceStartup.ToString()} seconds");
+            Debug.Log($"Quitting the Editor... \n... being up for: {EditorApplication.timeSinceStartup.ToString(CultureInfo.InvariantCulture)} seconds.");
         }
         else
         {
-            Debug.Log($"Continue with the Unity Editor... after {EditorApplication.timeSinceStartup.ToString()} seconds");
+            Debug.Log($"Continue with the Unity Editor... \n... being up for: {EditorApplication.timeSinceStartup.ToString(CultureInfo.InvariantCulture)} seconds.");
         }
 
         return decision;
