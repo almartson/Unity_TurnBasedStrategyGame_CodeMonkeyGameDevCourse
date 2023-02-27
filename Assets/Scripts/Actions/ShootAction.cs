@@ -145,6 +145,18 @@ public class ShootAction : BaseAction
     #endregion BaseParameters (INPUT) for calling this action as a GENERIC ACTION, with the function:  TakeAction
     
     
+    #region A.I. - AI
+    
+    // /// <summary>
+    // /// (DEFAULT VALUE of...) Cost "PER UNIT" of this ACTION, for any ENEMY A.I., in terms of (CURRENCY = ) 'Action Points' <br />
+    // /// ...this value should be summed to any other values, to represent the TOTAL "WORTH" of Taking This ACTION  (vs.  "Not Taking It").
+    // /// </summary>
+    // [Tooltip("(DEFAULT VALUE of...) Cost \"PER UNIT\" of this ACTION, for any ENEMY A.I., in terms of (CURRENCY = ) 'Action Points'\n...this value should be summed to any other values, to represent the TOTAL \"WORTH\" of Taking This ACTION  (vs.  \"Not Taking It\").")]
+    // [SerializeField]
+    // protected int _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION = 100;
+
+    #endregion A.I. - AI
+    
     #endregion Attributes
 
 
@@ -153,7 +165,17 @@ public class ShootAction : BaseAction
     /// <summary>
     /// Awake is called before the Start calls round
     /// </summary>
+    protected override void Awake()
+    {
+        base.Awake();
+        
+        #region A.I. - AI
+        
+        // Here we accept the "base.Awake();"  code regarding A.I., because the DEFAULT VALUE of an A.I. ACTION is (already set)  OK   for "ShootAction"
+        
+        #endregion A.I. - AI
 
+    }// End Awake
 
 
     /// <summary>
@@ -453,12 +475,28 @@ public class ShootAction : BaseAction
     /// <returns>Valid (GridPosition(s)) places where the Unit/Character can TakeAction to, in this Turn.</returns>
     public override List<GridPosition> GetValidActionGridPositionList()
     {
-        List<GridPosition> validGridPositionList = new List<GridPosition>();
-        
+
         // Get the Unit's GridPosition
         //
         GridPosition unitGridPosition = _unit.GetGridPosition();
-        
+
+
+        // Get a List of the Valid places where the Unit/Character can 'TakeAction(...)' to (i.e.: GridPosition(s)).
+        //
+        return GetValidActionGridPositionList(unitGridPosition);
+
+    }// End GetValidActionGridPositionList
+
+    
+    /// <summary>
+    /// Get a List of the Valid places where the Unit/Character can 'TakeAction(...)' to (i.e.: GridPosition(s)).
+    /// This method cycles through the squares/Grids...(using FOR )... to get a list of the valid ones.
+    /// </summary>
+    /// <returns>Valid (GridPosition(s)) places where the Unit/Character can TakeAction to, in this Turn.</returns>
+    public List<GridPosition> GetValidActionGridPositionList(GridPosition unitGridPosition)
+    {
+        List<GridPosition> validGridPositionList = new List<GridPosition>();
+
         // Cycle through the Rows and Columns (Cells in general) to find the Valid ones for Tak(ing)Action (i.e.: Shooting...) to.. in this Turn
         //
         for (int x = -_maxShootDistance; x <= _maxShootDistance; x++)
@@ -612,6 +650,43 @@ public class ShootAction : BaseAction
     
     #endregion Misc, Getters, Setters, etc
 
+    
+    #region A.I. - AI
+
+    /// <summary>
+    /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position".
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns>A set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
+    public override EnemyAIAction GetEnemyAIActionData(GridPosition gridPosition)
+    {
+        // Execute the "Base Action" routine:
+        //
+        EnemyAIAction enemyAIActionData = base.GetEnemyAIActionData(gridPosition);
+        
+        // Return DATA
+        //
+        return enemyAIActionData;
+        
+    }// End GetEnemyAIActionData
+
+    
+    /// <summary>
+    /// (Calculates and...):  Gets the "NUMBER OF UNIT-PLAYERS" (i.e.: Targets for any ENEMY NPC - A.I...), that are VALID / SHOOTABLES, for this NPC-ENEMY-UNIT in a given GridPosition.
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns></returns>
+    public int GetTargetCountAtPosition(GridPosition gridPosition)
+    {
+
+        // Return the Number of VALID TARGETS this ENEMY-NPC-AI can Shoot at:
+        //
+        return  GetValidActionGridPositionList(gridPosition).Count;
+
+    }// End GetTargetCountAtPosition
+    
+    #endregion A.I. - AI
+    
     #endregion My Custom Methods
 
 }//End Class ShootAction
@@ -648,4 +723,3 @@ public class ShootActionBaseParameters : BaseParameters
     #endregion Methods
 
 }//End Class ShootActionBaseParameters
-

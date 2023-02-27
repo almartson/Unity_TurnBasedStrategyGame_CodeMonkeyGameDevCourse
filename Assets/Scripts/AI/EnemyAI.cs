@@ -283,6 +283,17 @@ public class EnemyAI : MonoBehaviour
         //
         SpinAction spinAction = enemyUnit.GetSpinAction();
 
+        //////////////////////
+
+        // Premature Test (DELETE / REMOVE):   Debug.Log(Premature TEST)
+        //
+        spinAction.GetBestEnemyAIAction();
+
+        MoveAction moveAction = enemyUnit.GetMoveAction();
+
+        moveAction.GetBestEnemyAIAction();
+
+        //////////////////////
         
         #region TakeAction Logic
 

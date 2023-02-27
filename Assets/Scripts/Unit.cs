@@ -102,7 +102,6 @@ public class Unit : MonoBehaviour
     /// </summary>
     private BaseAction[] _baseActionArray;
     
-    
     /// <summary>
     /// Reference to the MoveAction script to make the Units / Characters able to execute the Action: 'TakeAction' (Walk, etc...). 
     /// </summary>
@@ -113,6 +112,11 @@ public class Unit : MonoBehaviour
     /// </summary>
     private SpinAction _spinAction;
 
+    /// <summary>
+    /// Reference to the ShootAction script to make the Units / Characters able to execute the Action: 'TakeAction' (Shoot attack). 
+    /// </summary>
+    private ShootAction _shootAction;
+    
     #endregion Action's List
 
 
@@ -188,10 +192,11 @@ public class Unit : MonoBehaviour
         //
         _moveAction = GetComponent<MoveAction>();
         _spinAction = GetComponent<SpinAction>();
+        _shootAction = GetComponent<ShootAction>();
         //
         // Get the List of Actions:
-        // NOTE: GetComponentSSSS<TYPE>: gets ALL Components of TYPE=<SetBaseAction>
-        // ..(or that are children / Extend from <SetBaseAction>)... in this GameObject.
+        // NOTE: GetComponentSSSS<TYPE>: gets ALL Components of TYPE=< BaseAction >
+        // ..(or that are children / Extend from < BaseAction >)... in this GameObject.
         //
         _baseActionArray = GetComponents<BaseAction>();
         
@@ -303,6 +308,14 @@ public class Unit : MonoBehaviour
         return _spinAction;
     }
 
+    /// <summary>
+    /// Getter for <code>ShootAction</code>
+    /// </summary>
+    /// <returns></returns>
+    public ShootAction GetShootAction()
+    {
+        return _shootAction;
+    }
     
     #region POINTS  - for every Action
 

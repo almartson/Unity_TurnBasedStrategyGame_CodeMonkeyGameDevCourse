@@ -32,6 +32,27 @@ public abstract class BaseAction : MonoBehaviour
     [Tooltip("(DEFAULT VALUE of...) Cost of this ACTION, in terms of (CURRENCY = ) 'Action Points'")]
     [SerializeField]
     protected int _myActionPointCost = 1;
+
+    
+    #region A.I. - AI
+    
+    /// <summary>
+    /// (DEFAULT VALUE of...) Cost "PER UNIT" of this ACTION, for any ENEMY A.I., in terms of (CURRENCY = ) 'Action Points' <br />
+    /// ...this value should be summed to any other values, to represent the TOTAL "WORTH" of Taking This ACTION  (vs.  "Not Taking It").
+    /// </summary>
+    [Tooltip("(DEFAULT VALUE of...) Cost \"PER UNIT\" of this ACTION, for any ENEMY A.I., in terms of (CURRENCY = ) 'Action Points'\n...this value should be summed to any other values, to represent the TOTAL \"WORTH\" of Taking This ACTION  (vs.  \"Not Taking It\").")]
+    [SerializeField]
+    protected int _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION = 100;
+    
+    [Tooltip("(MULTIPLIER VALUE of...) Cost of this ACTION, for any ENEMY A.I., in terms of (CURRENCY = ) 'Action Points'\n\nNOTE:\n\n* This value is a multiplier, so it has to be multiplied by '_AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION' in the AWAKE() code of this Class.")]
+    [SerializeField]
+    protected int _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction = 0;
+
+    [Tooltip("(FINAL VALUE of...) Cost of this ACTION, for any ENEMY A.I., in terms of (CURRENCY = ) 'Action Points.")]
+    [SerializeField]
+    protected int _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction = 0;
+    
+    #endregion A.I. - AI
     
     #endregion Action Points Cost  (of this Action)
     
@@ -74,6 +95,15 @@ public abstract class BaseAction : MonoBehaviour
         // Get the Unit / Character this Script is attached to in the Unity Editor.
         //
         _unit = GetComponent<Unit>();
+        
+        
+        #region A.I. - AI
+
+        // Set the Default COST "Value" of THIS ACTION for A.I.: so any ENEMY A.I. can decide on choosing this ACTION over another (...i.e.: the GREATER the value, the BETTER):
+        //
+        _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction = _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION * _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction;
+
+        #endregion A.I. - AI
         
     }//End Awake()
 
@@ -252,31 +282,82 @@ public abstract class BaseAction : MonoBehaviour
         
         #region Original (foreach - non-performant) CodeMonkey Implementation
 
-        // foreach (GridPosition gridPosition in validActionGridPositionList)
-        // {
-        //     // We want to:
-        //     // Generate the:   ENEMY "A.I. ACTION"
-        //     // ..for:
-        //     // 1- THIS specific ACTION   (selected)
-        //     // 2- on this (Grid) POSITION
-        //     //
-        //     EnemyAIAction enemyAIAction = GetEnemyAIAction( gridPosition );
-        //     //
-        //     // Add the ACTION to the LIST
-        //     //
-        //     enemyAIActionList.Add(enemyAIAction);
-        //
-        // }//End foreach
+        foreach (GridPosition gridPosition in validActionGridPositionList)
+        {
+            // We want to:
+            // Generate the:   ENEMY "A.I. ACTION"
+            // ..for:
+            // 1- THIS (each) specific ACTION   (selected)
+            // 2- on this (each... Grid) POSITION
+            //
+            EnemyAIAction enemyAIAction = GetEnemyAIActionData( gridPosition );
+            //
+            // 3- Add the ACTION to the LIST
+            //
+            enemyAIActionList.Add(enemyAIAction);
+        
+        }//End foreach
         
         #endregion Original (foreach - non-performant) CodeMonkey Implementation
 
         
-        //temporary
+        // Final Step:
+        // Check to see if it found   ANY Possible ACTIONS
         //
-        return null;
+        if (enemyAIActionList.Count > 0)
+        {
+            
+            // Sort the possible ACTIONS... to get the BEST of the BEST,.. 
+            //...to execute it FIRST!
+            // Sorted based on "ActionValue":
+            //
+            enemyAIActionList.Sort((EnemyAIAction a, EnemyAIAction b) => b.actionValue - a.actionValue);
+
+            // Return THE BEST ONE:   i.e.: the one at Index: [0]
+            //
+            return enemyAIActionList[0];
+
+        }
+        else
+        {
+            // There are  No possible ENEMY A.I. ACTIONS
+            //
+            return null;
+
+        }//End else of if (enemyAIActionList.Count > 0)
 
     }// End GetBestEnemyAIAction
 
+
+    // /// <summary>
+    // /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position".
+    // /// </summary>
+    // /// <param name="gridPosition"></param>
+    // /// <returns>An set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
+    // public abstract EnemyAIAction GetEnemyAIActionData(GridPosition gridPosition);
+
+
+    /// <summary>
+    /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position".
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns>A set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
+    public virtual EnemyAIAction GetEnemyAIActionData(GridPosition gridPosition)
+    {
+        // Calculate the "Cost" & GridPosition  DATA:
+        //
+        _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction = _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction * _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION;
+        
+        // Return the basic DATA:
+        //
+        return new EnemyAIAction()
+        {
+            gridPosition = gridPosition,
+            actionValue = _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction,
+        };
+    }// End GetEnemyAIActionData
+
+    
     #endregion A.I. - AI
 
     #endregion My Custom Methods

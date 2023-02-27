@@ -41,6 +41,18 @@ public class SpinAction : BaseAction
 
     #endregion BaseParameters (INPUT) for calling this action as a GENERIC ACTION, with the function:  TakeAction
     
+    #region A.I. - AI
+    
+    // /// <summary>
+    // /// (DEFAULT VALUE of...) Cost "PER UNIT" of this ACTION, for any ENEMY A.I., in terms of (CURRENCY = ) 'Action Points' <br />
+    // /// ...this value should be summed to any other values, to represent the TOTAL "WORTH" of Taking This ACTION  (vs.  "Not Taking It").
+    // /// </summary>
+    // [Tooltip("(DEFAULT VALUE of...) Cost \"PER UNIT\" of this ACTION, for any ENEMY A.I., in terms of (CURRENCY = ) 'Action Points'\n...this value should be summed to any other values, to represent the TOTAL \"WORTH\" of Taking This ACTION  (vs.  \"Not Taking It\").")]
+    // [SerializeField]
+    // protected int _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION = 0;
+
+    #endregion A.I. - AI
+    
     #endregion Attributes
 
 
@@ -49,7 +61,17 @@ public class SpinAction : BaseAction
     /// <summary>
     /// Awake is called before the Start calls round
     /// </summary>
+    protected override void Awake()
+    {
+        base.Awake();
+        
+        #region A.I. - AI
+        
+        // Here we accept the "base.Awake();"  code regarding A.I., because the DEFAULT VALUE of an A.I. ACTION is (already set to 0 Zero)  OK   for "Spin Action"
+        
+        #endregion A.I. - AI
 
+    }// End Awake
 
 
     /// <summary>
@@ -196,7 +218,7 @@ public class SpinAction : BaseAction
         };
     }
 
-    
+
     #region POINTS  - for every Action
 
     // Commented: Reason: It is in the BASE ACTION CLASS. And it is based on an "protected _attribute" of that class...
@@ -241,10 +263,30 @@ public class SpinAction : BaseAction
     
     #endregion UI related utils
 
+    
+    #region A.I. - AI
 
+    /// <summary>
+    /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position".
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns>A set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
+    public override EnemyAIAction GetEnemyAIActionData(GridPosition gridPosition)
+    {
+        // Execute the "Base Action" routine:
+        //
+        return base.GetEnemyAIActionData(gridPosition);
+
+    }// End GetEnemyAIActionData
+    
+    
+    #endregion A.I. - AI
+
+    
     #endregion My Custom Methods
 
 }//End Class SpinAction
+
 
 
 /// <summary>

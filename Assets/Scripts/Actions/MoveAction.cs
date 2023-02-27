@@ -69,8 +69,20 @@ public class MoveAction : BaseAction
     [SerializeField]
     private int _maxMoveDistance = 4;
     
-    
     #endregion Validations: Movement
+    
+    
+    #region A.I. - AI
+    
+    // /// <summary>
+    // /// (DEFAULT VALUE of...) Cost "PER UNIT" of this ACTION, for any ENEMY A.I., in terms of (CURRENCY = ) 'Action Points' <br />
+    // /// ...this value should be summed to any other values, to represent the TOTAL "WORTH" of Taking This ACTION  (vs.  "Not Taking It").
+    // /// </summary>
+    // [Tooltip("(DEFAULT VALUE of...) Cost \"PER UNIT\" of this ACTION, for any ENEMY A.I., in terms of (CURRENCY = ) 'Action Points'\n...this value should be summed to any other values, to represent the TOTAL \"WORTH\" of Taking This ACTION  (vs.  \"Not Taking It\").")]
+    // [SerializeField]
+    // protected int _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION = 10;
+
+    #endregion A.I. - AI
     
     #endregion Attributes
 
@@ -398,6 +410,52 @@ public class MoveAction : BaseAction
     
     #endregion UI related utils
     
+    
+     
+    #region A.I. - AI
+
+    /// <summary>
+    /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position".
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns>A set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
+    public override EnemyAIAction GetEnemyAIActionData(GridPosition gridPosition)
+    {
+        // We want the Player not to move "RANDOMLY", but TOWARDS the weakest Unit-Player of the "Player team" (to attack it and Win in a easier way...):
+        //
+        // 1- TRY to FIND if there are any "SHOOTABLE" -> "UNIT-PLAYERS (i.e.: "Targets") in the given  "Grid Position"...
+        // 2- Use that number of ""SHOOTABLE" -> "UNIT-PLAYERS (i.e.: "Targets")" (from (1)) to calculate the  "WORTHINESS" of this ACTION (i.e.: the ACTION COST-VALUE):
+        //
+        // Process:
+        //
+        // 1- TRY to FIND if there are any "SHOOTABLE" -> "UNIT-PLAYERS...
+        //
+        int targetCountAtPosition = _unit.GetShootAction().GetTargetCountAtPosition(gridPosition);
+        //
+        // Save the 'targetCountAtPosition'  as the 'Cost Multiplier' of this  "A.I. ACTION":
+        //
+        _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction = targetCountAtPosition;
+
+        // 2- Use that number of ""SHOOTABLE" -> "UNIT-PLAYERS (i.e.: "Targets")" (from (1)) to calculate the  "WORTHINESS" of this ACTION (i.e.: the ACTION COST-VALUE):   MULTIPLY IT..!
+        //
+        //    2.2- Execute the "Base Action" routine:
+        //
+        EnemyAIAction enemyAIActionData = base.GetEnemyAIActionData(gridPosition);
+        
+
+        //////////////
+        Debug.Log($"enemyAIActionData.actionValue = {enemyAIActionData.actionValue.ToString()}");
+        //////////////
+        
+        // Return the final ENEMY A.I. DATA:
+        //
+        return enemyAIActionData;
+
+    }// End GetEnemyAIActionData
+
+    
+    #endregion A.I. - AI
+
     #endregion My Custom Methods
 
 }//End Class MoveAction
