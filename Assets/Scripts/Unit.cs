@@ -353,7 +353,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     /// <param name="baseAction"></param>
     /// <returns></returns>
-    private bool CanSpendActionPointsToTakeAction(BaseAction baseAction)
+    public bool CanSpendActionPointsToTakeAction(BaseAction baseAction)
     {
         if (_actionPoints >= baseAction.GetActionPointsCost())
         {

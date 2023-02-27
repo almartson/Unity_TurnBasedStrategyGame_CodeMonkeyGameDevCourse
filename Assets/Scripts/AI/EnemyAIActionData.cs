@@ -4,9 +4,10 @@
 using UnityEngine;
 
 /// <summary>
-/// Handles (simple) A.I. Action "DATA".
+/// Handles the "DATA" 
+///...for an associated:  "A.I. Action".
 /// </summary>
-public class EnemyAIAction
+public class EnemyAIActionData
 {
     #region Attributes
     
@@ -33,4 +34,4 @@ public class EnemyAIAction
 
     #endregion My Custom Methods
 
-}// End EnemyAIAction
+}// End EnemyAIActionData

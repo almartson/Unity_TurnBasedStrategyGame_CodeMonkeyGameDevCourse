@@ -208,14 +208,21 @@ public class ShootAction : BaseAction
         {
             case State.Aiming:
 
-                // Rotate towards the TARGET, and Aim at it:
-                // .1- Direction Vector3 to shoot (normalized)
+                // Validate that "_targetUnit"  &  "_unit"  are not NULL
                 //
-                _aimDirection = ( _targetUnit.GetWorldPosition() - _unit.GetWorldPosition() ).normalized;
-                //
-                // .2- Rotate, Animation:
-                //
-                RotateUnitUsingVector3SlerpApproach( _aimDirection );
+                if ((_targetUnit != null) &&  (_unit != null))
+                {
+                    
+                    // Rotate towards the TARGET, and Aim at it:
+                    // .1- Direction Vector3 to shoot (normalized)
+                    //
+                    _aimDirection = ( _targetUnit.GetWorldPosition() - _unit.GetWorldPosition() ).normalized;
+                    //
+                    // .2- Rotate, Animation:
+                    //
+                    RotateUnitUsingVector3SlerpApproach( _aimDirection );
+                    
+                }//End if ((_targetUnit != null) &&  (_unit != null))
                 
                 break;
             
@@ -658,11 +665,11 @@ public class ShootAction : BaseAction
     /// </summary>
     /// <param name="gridPosition"></param>
     /// <returns>A set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
-    public override EnemyAIAction GetEnemyAIActionData(GridPosition gridPosition)
+    public override EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition)
     {
         // Execute the "Base Action" routine:
         //
-        EnemyAIAction enemyAIActionData = base.GetEnemyAIActionData(gridPosition);
+        EnemyAIActionData enemyAIActionData = base.GetEnemyAIActionData(gridPosition);
         
         // Return DATA
         //

@@ -271,7 +271,7 @@ public class SpinAction : BaseAction
     /// </summary>
     /// <param name="gridPosition"></param>
     /// <returns>A set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
-    public override EnemyAIAction GetEnemyAIActionData(GridPosition gridPosition)
+    public override EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition)
     {
         // Execute the "Base Action" routine:
         //

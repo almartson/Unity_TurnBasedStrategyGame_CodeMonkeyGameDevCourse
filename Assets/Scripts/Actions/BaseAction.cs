@@ -267,16 +267,19 @@ public abstract class BaseAction : MonoBehaviour
     #region A.I. - AI
 
     /// <summary>
-    /// (Calculates and then...):  Gets the BEST possible "A.I. ACTION", after considering all possibilities at this moment in the "Present" (right now).
+    /// (Calculates and then...):  Gets the BEST possible DATA - "Grid Position(s)" to execute THIS  "A.I. ACTION"  -, <br />
+    /// ..after considering all possibilities (of Positions / Locations == Grid Positions) at this moment in the "Present" (right now).
     /// </summary>
     /// <returns></returns>
-    public EnemyAIAction GetBestEnemyAIAction()
+    public EnemyAIActionData GetBestEnemyAIActionData()
     {
-        // Make a List of "ENEMY A.I. ACTION":
+
+        // Make a List of DATA of: "ENEMY A.I. ACTION"(s):
         //
-        List<EnemyAIAction> enemyAIActionList = new List<EnemyAIAction>();
+        List<EnemyAIActionData> enemyAIActionDataList = new List<EnemyAIActionData>();
         
-        // Cycle through all the "Valid"  GridPositions  for this (..each..) ACTION:
+        // Cycle through all the "Valid"  GridPositions  for THIS selected (..each..) ACTION
+        // ..("BaseAction" is casted as a derived-child "ConcreteAction"... so for THAT ONE):
         //
         List<GridPosition> validActionGridPositionList = GetValidActionGridPositionList();
         
@@ -285,16 +288,16 @@ public abstract class BaseAction : MonoBehaviour
         foreach (GridPosition gridPosition in validActionGridPositionList)
         {
             // We want to:
-            // Generate the:   ENEMY "A.I. ACTION"
+            // Generate the  DATA  for:   ENEMY "A.I. ACTION"
             // ..for:
-            // 1- THIS (each) specific ACTION   (selected)
-            // 2- on this (each... Grid) POSITION
+            // 1- THIS (BaseAction casted-as a SPECIFIC ACTION)   (selected)
+            // 2- on this (each... Grid) POSITION ...
             //
-            EnemyAIAction enemyAIAction = GetEnemyAIActionData( gridPosition );
+            EnemyAIActionData enemyAIActionData = GetEnemyAIActionData( gridPosition );
             //
             // 3- Add the ACTION to the LIST
             //
-            enemyAIActionList.Add(enemyAIAction);
+            enemyAIActionDataList.Add(enemyAIActionData);
         
         }//End foreach
         
@@ -302,20 +305,21 @@ public abstract class BaseAction : MonoBehaviour
 
         
         // Final Step:
-        // Check to see if it found   ANY Possible ACTIONS
+        // Check to see if it found   ANY Possible "Grid Positions" (Positional DATA)... where to TAKE THIS Action:
         //
-        if (enemyAIActionList.Count > 0)
+        if (enemyAIActionDataList.Count > 0)
         {
             
-            // Sort the possible ACTIONS... to get the BEST of the BEST,.. 
+            // Final:
+            // SORT the possible DATA ACTIONS... to get the BEST of the BEST,.. 
             //...to execute it FIRST!
             // Sorted based on "ActionValue":
             //
-            enemyAIActionList.Sort((EnemyAIAction a, EnemyAIAction b) => b.actionValue - a.actionValue);
+            enemyAIActionDataList.Sort((EnemyAIActionData a, EnemyAIActionData b) => b.actionValue - a.actionValue);
 
             // Return THE BEST ONE:   i.e.: the one at Index: [0]
             //
-            return enemyAIActionList[0];
+            return enemyAIActionDataList[0];
 
         }
         else
@@ -326,7 +330,7 @@ public abstract class BaseAction : MonoBehaviour
 
         }//End else of if (enemyAIActionList.Count > 0)
 
-    }// End GetBestEnemyAIAction
+    }// End GetBestEnemyAIActionData
 
 
     // /// <summary>
@@ -334,15 +338,19 @@ public abstract class BaseAction : MonoBehaviour
     // /// </summary>
     // /// <param name="gridPosition"></param>
     // /// <returns>An set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
-    // public abstract EnemyAIAction GetEnemyAIActionData(GridPosition gridPosition);
+    // public abstract EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition);
 
 
     /// <summary>
-    /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position".
+    /// (Calculates and...):  Gets the "A.I. ACTION" DATA ("Cost" Value, final, calculated "Points", to see if it's worth it + LOCATION to move to: "Grid Position"...)  that is possible in a given (as INPUT:),  "Grid Position".
     /// </summary>
     /// <param name="gridPosition"></param>
-    /// <returns>A set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
-    public virtual EnemyAIAction GetEnemyAIActionData(GridPosition gridPosition)
+    /// <returns>A set of  DATA  for taking this selected ACTION <br />
+    /// Specially: <br /><br />
+    /// 1- "Cost" of taking THIS ACTION... <br />
+    /// 2- "Location":  GridPosition
+    /// </returns>
+    public virtual EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition)
     {
         // Calculate the "Cost" & GridPosition  DATA:
         //
@@ -350,7 +358,7 @@ public abstract class BaseAction : MonoBehaviour
         
         // Return the basic DATA:
         //
-        return new EnemyAIAction()
+        return new EnemyAIActionData()
         {
             gridPosition = gridPosition,
             actionValue = _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction,

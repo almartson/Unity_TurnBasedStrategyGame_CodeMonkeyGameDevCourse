@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
+/// ENEMIES' (NPC's) Artificial Intelligence (A.I.) MAIN BRAIN MANAGER. <br /> <br />
 /// Originally it is implementing a "Bad Practice" or "dirty" way of using a FINITE STATE MACHINE Pattern... because it is based on SWITCH - CASE _state....<br />
 /// It also uses a similar approach (using DELEGATES, Action Events...) as:  UnitActionSystem.cs   (see for more details). <br />
 /// TODO:   Change it later to the Jason Weimann's general solution: FSM using Delegates + Dictionaries (i.e: the "State" Pattern, see my example on GitHub:  https://github.com/almartson/AI_StateMachine_DronesDemo  ).
@@ -198,40 +199,17 @@ public class EnemyAI : MonoBehaviour
         
     }// End TurnSystem_OnTurnChanged
 
-    
-    #region A.I. "TakeAction"
 
+    #region A.I. "TakeAction"
+    
     /// <summary>
-    /// Executes the (current FSM state)  A.I. 'ACTION':   for all "Units" in the ENEMY's TEAM.
+    /// Executes the (current FSM state)  A.I. 'ACTION':   for all "Units" in the ENEMY's TEAM. <br/> <br/>
+    ///
+    /// (Optimized Code Version (v-2.0). AlMartson's Implementation)
     /// </summary>
     private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
     {
-        #region Original (non-performant) CodeMonkey's Implementation
 
-        // // Cycling through every ENEMY Unit..
-        // //
-        // foreach (Unit enemyUnit in UnitManager.Instance.GetEnemyUnitList())
-        // {
-        //     // Make the ENEMY UNIT take "ACTION"
-        //     //
-        //     if (TryTakeEnemyAIAction(enemyUnit, onEnemyAIActionComplete))
-        //     {
-        //
-        //         // If the ACTION is Completed:
-        //         //
-        //         return true;
-        //
-        //     }//if (TryTakeEnemyAIAction...
-        //
-        // }//End foreach
-        //
-        // // No success in "Taking A.I. ACTION":
-        // //
-        // return false;
-        
-        #endregion  Original (non-performant) CodeMonkey's Implementation
-        
-        
         #region Optimized Code Version (v-2.0). AlMartson's Implementation
 
         // Cycling through every ENEMY Unit..  ( Get Enemy Unit List )
@@ -277,111 +255,192 @@ public class EnemyAI : MonoBehaviour
     /// </summary>
     private bool TryTakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
     {
-        // 0- Simple Version:  just a SPIN ACTION:
+
+        // GOAL: Get the BEST  ACTION   (as object)  possible to take:
+        // CALCULATIONS:
+
+        // 0- Keeping track of the  BEST "Enemy A.I. ACTION"  (possible to choose:
+        //    0.1- Position - DATA
+        //
+        EnemyAIActionData bestEnemyAIActionData = null;
+        //
+        //    0.2- ACTION  object
+        //
+        BaseAction bestBaseAction = null;
         
-        // Get the ACTION   (as object)
-        //
-        SpinAction spinAction = enemyUnit.GetSpinAction();
 
-        //////////////////////
-
-        // Premature Test (DELETE / REMOVE):   Debug.Log(Premature TEST)
-        //
-        spinAction.GetBestEnemyAIAction();
-
-        MoveAction moveAction = enemyUnit.GetMoveAction();
-
-        moveAction.GetBestEnemyAIAction();
-
-        //////////////////////
+        #region Find: the BEST TYPE of ACTION the NPC can afford with its actionPoints: Original (non-performant) CodeMonkey's Implementation
         
-        #region TakeAction Logic
-
-        // Try to TakeAction the selected Unit... (by Raycasting on the Ground Plane (Mask Layer...))
+        // 0- Get all possible kind of   ACTIONS   the NPC  (Enemy) can take:
+        // Cycle through all ACTIONS
         //
-        if (MouseWorld.TryGetPosition(out Vector3 mousePosition))
+        foreach (BaseAction baseAction in enemyUnit.GetBaseActionArray())
         {
-            // Get the CENTER of the selected "GridPosition", instead of a corner or any random position inside of it
-            // ...because sometimes the Player/user clicks in random places of a Cell/Square/Grid,
-            // ...not necessarily in the CENTER of it:
+            // For each ACTION...  See:
+            // 1- Has enough  Action "POINTS" ?
             //
-            GridPosition actionGridPosition = enemyUnit.GetGridPosition();
+            if (!enemyUnit.CanSpendActionPointsToTakeAction(baseAction))
+            {
+                // This ENEMY-NPC does NOT have enough "POINTS" to take THIS ACTION
+                // (Enemy cannot afford this Action)
+                // Ignore this Action... SKIP
+                //
+                continue;
 
-            // Take the Action.
+            }//End if (enemyUnit.CanSpendActionPointsToTakeAction...
             
-            // 'TakeAction' method has a particular Implementation in each of the derived Classes (e.g.: MoveAction, SpinAction, etc.).
+            
+            // This ENEMY-NPC has enough "POINTS"  ... for this ACTION
+            // Check: 
+            // Is there a previous BEST ONE ?  ( "bestEnemyAIActionData" )
             //
-            //  .1- Validation of the Action:
-            //
-            if (   spinAction.IsValidActionGridPosition(actionGridPosition))
+            if (bestEnemyAIActionData == null)
             {
 
-                // Try to Spend this Unit's available "actionPoints": on this Action
-                //
-                if (enemyUnit.TrySpendActionPointsToTakeAction(   spinAction))
-                {
-                    // .2.0- The actionPoints are Spent / used by now, already...
-                    
-                    // .2- 'Take the Action'
-                    //
-                    // .2.1- Save the Valid GridPosition:
-                    //
-                    // .2.1.1- Save the original Mouse Position (just in case... as a backup)
-                    //
-                    enemyUnit.MousePosition.Set(actionGridPosition.x, 0, actionGridPosition.z);
-                    //
-                    // .2.1.1- In _selectedUnit, for later use in 'TakeAction()':
-                    //
-                    enemyUnit.SetFinalGridPositionOfNextPlayersAction(actionGridPosition);
-                
-                
-                    // .3- Set this Class (SERVICE) Methods as: BUSY .. until it ends:  Set MUTEX ON
-                    //
-                    // SetBusy();  // This is not necessary here, because it happens in the Update() of this STATE MACHINE Script.
-                    //
-                    // .4- TakeAction() , A.I. ACTION
-                    // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: ) -> Sets Mutex OFF (when TakeAction() Ends...)
-                    //
-                    spinAction.TakeAction(onEnemyAIActionComplete);
-                    
-                    
-                    // // Update the GUI for ActionPoints:
-                    // //
-                    // OnActionStarted?.Invoke(this, EventArgs.Empty);
+                // The was NO PREVIOUS BEST  "Action"
 
-                    // Return the Success/Failure State of the 'Take Action' process:
-                    //
-                    return true;
-                    
-                }//End if (_selectedUnit.CanSpendActionPointsToTakeAction...
-                else
-                {
-                    // Did not pass the Validation:     CanSpendActionPointsToTakeAction(...)
-                    // Return the Success/Failure State of the 'Take Action' process:  false (failure)
-                    //
-                    return false;
-                    
-                }//End else of if (_selectedUnit.CanSpendActionPointsToTakeAction...
+                // 2- Use:  the FIRST ONE we just found  ("baseAction", 2 lines above):
                 
-            }//End if (_selectedAction.IsValidActionGridPosition
+                //   2.1- Get all DATA for THIS action, which is casted into - selected - (for each TYPE of)  ACTION
+                //
+                bestEnemyAIActionData = baseAction.GetBestEnemyAIActionData();
+                //
+                //   2.2- Save the Best ACTION  type
+                //
+                bestBaseAction = baseAction;
+
+
+            }//End if (bestEnemyAIActionData...
             else
             {
-                // Return the Success/Failure State of the 'Take Action' process:  false (failure)
-                //
-                return false;
-            }
+                // The WAS a PREVIOUS "BEST"  "Action"
+                
+                // TEST
+                // 2- "Test" to see:  What ACTION is the BEST ??
 
-        }//End if (MouseWorld.TryGetPosition
-    
-        // Return the Success/Failure State of the 'Take Action' process:  false (failure)
+                EnemyAIActionData testEnemyAIActionData = baseAction.GetBestEnemyAIActionData();
+                
+                //    2.1-  TEST:
+                //      a) testEnemyAIActionData      NOT NULL
+                // ...( CAN the ENEMY-NPC  "TAKE"  the Action ? )
+                //
+                //      b) Compare:  "actionValue"    (GREATER means BETTER)
+                //
+                if ( (testEnemyAIActionData != null) && (testEnemyAIActionData.actionValue > bestEnemyAIActionData.actionValue) )
+                {
+
+                    // testEnemyAIActionData & bestBaseAction   WIN!
+
+                    // 3- Copy its DATA
+                    //
+                    //   3.1- Get all DATA for THIS action, which is casted into - selected - (for each TYPE of)  ACTION
+                    //
+                    bestEnemyAIActionData = testEnemyAIActionData;
+                    //
+                    //   3.2- Save the Best ACTION  type
+                    //
+                    bestBaseAction = baseAction;
+
+                }//End if ( (testEnemyAIActionData != null)...
+
+            }//End if (bestEnemyAIActionData...
+
+        }//End foreach (looking for the BEST  ACTION TYPE (type of action)... the ENEMY-NPC can AFFORD).
+        
+        #endregion Find: the BEST TYPE of ACTION the NPC can afford with its actionPoints: Original (non-performant) CodeMonkey's Implementation
+
+        
+        #region Take the  BEST  Action Logic
+
+        // Take the calculated  "BEST ACTION"
+        
+        // Validate  ACTION != null  &&   Have enough (ACTION) POINTS ?
         //
-        return false;
+        if ( (bestEnemyAIActionData != null)  &&  (enemyUnit.TrySpendActionPointsToTakeAction(bestBaseAction)) )
+        {
+
+            // .2.0- The actionPoints are Spent / used by now, already...
+                    
+            // .2- 'Take the Action'
+            //
+            // .2.1- Save the Valid GridPosition:
+            //
+            // .2.1.1- Save the original Mouse Position (just in case... as a backup)
+            //
+            enemyUnit.MousePosition.Set(bestEnemyAIActionData.gridPosition.x, 0, bestEnemyAIActionData.gridPosition.z);
+            //
+            // .2.1.1- In _selectedUnit, for later use in 'TakeAction()':
+            //
+            enemyUnit.SetFinalGridPositionOfNextPlayersAction(bestEnemyAIActionData.gridPosition);
+                
+                
+            // .3- Set this Class (SERVICE) Methods as: BUSY .. until it ends:  Set MUTEX ON
+            //
+            // SetBusy();  // This is not necessary here, because it happens in the Update() of this STATE MACHINE Script.
+            //
+            // .4- TakeAction() , A.I. ACTION
+            // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: ) -> Sets Mutex OFF (when TakeAction() Ends...)
+            //
+            bestBaseAction.TakeAction(onEnemyAIActionComplete);
+
+
+            // Return the "Success" State of the 'Take Action' process:
+            //
+            return true;
+            
+        }//End if (bestEnemyAIActionData != null)...
+        else
+        {
+            // Did not pass the Validation:     TrySpendActionPointsToTakeAction(...)  or "bestEnemyAIActionData"  was NULL:
+            // Could not TAKE the "BEST" ACTION
+            // Return the Success/Failure State of the 'Take Action' process:  false (failure)
+            //
+            return false;
+
+        }//End else of if (bestEnemyAIActionData != null)...
         
-        #endregion TakeAction Logic
-        
+        #endregion Take the  BEST  Action Logic
+
     }// End TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
     
     
+    #region (Deprecated) A.I. "TakeAction"
+    
+    /// <summary>
+    /// (Deprecated, do not use - Original (non-performant) CodeMonkey's Implementation) <br /><br />
+    /// Executes the (current FSM state)  A.I. 'ACTION':   for all "Units" in the ENEMY's TEAM.
+    /// </summary>
+    private bool DeprecatedTryTakeEnemyAIAction(Action onEnemyAIActionComplete)
+    {
+        #region Original (non-performant) CodeMonkey's Implementation
+
+        // Cycling through every ENEMY Unit..
+        //
+        foreach (Unit enemyUnit in UnitManager.Instance.GetEnemyUnitList())
+        {
+            // Make the ENEMY UNIT take "ACTION"
+            //
+            if (TryTakeEnemyAIAction(enemyUnit, onEnemyAIActionComplete))
+            {
+        
+                // If the ACTION is Completed:
+                //
+                return true;
+        
+            }//if (TryTakeEnemyAIAction...
+        
+        }//End foreach
+        
+        // No success in "Taking A.I. ACTION":
+        //
+        return false;
+        
+        #endregion  Original (non-performant) CodeMonkey's Implementation
+ 
+    }// End TryTakeEnemyAIAction
+    
+    #endregion (Deprecated) A.I. "TakeAction"
+
     #endregion A.I. "TakeAction"
 
     #endregion A.I. Finite State Machine

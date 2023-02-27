@@ -183,31 +183,38 @@ public class UnitAnimator : MonoBehaviour
         BulletProjectile bulletProjectile = bulletProjectileTransform.GetComponent<BulletProjectile>();
         
         // 3- Setup the BulletProjectile   (for moving through its Transform every frame..., not via Physics)
-        //   .1- Get the Target's (Vector3) Position at his Feet (i.e.: y = 0)  (in World Game Coordinates)
+        // Validate:   the "sender" must not be NULL
         //
-        Vector3 targetUnitShootAtPosition = e.targetUnit.GetWorldPosition();
-        //
-        //   .2- Set the y-Coordinate (the Height) of the BULLET as a Constant (for starting the SHOOTING Animation), so it will be pointing towards the Center of the Target-GameObject:  the Bullet movement will be HORIZONTAL thanks to that:
-        //
-        targetUnitShootAtPosition.y = _shootPointTransform.position.y;
-        //
-        // 3- Setup the BulletProjectile
-        //
-        bulletProjectile.Setup(targetUnitShootAtPosition);
-        //
-        // 4- Save in the TargetUnit (Character) the Bullet / Projectile _moveDirection... of the Shoot  (this is for the Animation when it Hits the Target):
-        // NOTE:  This does NOT work because the Bullet has not ran its AWAKE() yest, so it does not have a calculated Direction yet:
-        //e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe = bulletProjectile.MoveDirection;
-        //
-        // NOTE: This line DOES WORK:  [ target_position - origin_position = direction_vector ]
-        //
-        Vector3 normalizedBulletDirectionVector = (e.targetUnit.transform.position - e.shootingUnit.transform.position).normalized;
-        //
-        // Assign it to a Field / Attribute of Class to transmit it:
-        //
-        e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe = normalizedBulletDirectionVector;
-        //
-        // Debug.Log("ShootAction_OnShootAnimation: e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe = " + normalizedBulletDirectionVector);
+        if ((e != null) && (e.targetUnit != null))
+        {
+
+            //   .1- Get the Target's (Vector3) Position at his Feet (i.e.: y = 0)  (in World Game Coordinates)
+            //
+            Vector3 targetUnitShootAtPosition = e.targetUnit.GetWorldPosition();
+            //
+            //   .2- Set the y-Coordinate (the Height) of the BULLET as a Constant (for starting the SHOOTING Animation), so it will be pointing towards the Center of the Target-GameObject:  the Bullet movement will be HORIZONTAL thanks to that:
+            //
+            targetUnitShootAtPosition.y = _shootPointTransform.position.y;
+            //
+            // 3- Setup the BulletProjectile
+            //
+            bulletProjectile.Setup(targetUnitShootAtPosition);
+            //
+            // 4- Save in the TargetUnit (Character) the Bullet / Projectile _moveDirection... of the Shoot  (this is for the Animation when it Hits the Target):
+            // NOTE:  This does NOT work because the Bullet has not ran its AWAKE() yest, so it does not have a calculated Direction yet:
+            //e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe = bulletProjectile.MoveDirection;
+            //
+            // NOTE: This line DOES WORK:  [ target_position - origin_position = direction_vector ]
+            //
+            Vector3 normalizedBulletDirectionVector = (e.targetUnit.transform.position - e.shootingUnit.transform.position).normalized;
+            //
+            // Assign it to a Field / Attribute of Class to transmit it:
+            //
+            e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe = normalizedBulletDirectionVector;
+            //
+            // Debug.Log("ShootAction_OnShootAnimation: e.targetUnit.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe = " + normalizedBulletDirectionVector);
+
+        }//End if ((e != null) ...
 
     }//End ShootAction_OnShootAnimation
     

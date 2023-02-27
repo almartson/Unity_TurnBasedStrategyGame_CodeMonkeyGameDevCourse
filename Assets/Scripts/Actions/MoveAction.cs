@@ -419,7 +419,7 @@ public class MoveAction : BaseAction
     /// </summary>
     /// <param name="gridPosition"></param>
     /// <returns>A set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
-    public override EnemyAIAction GetEnemyAIActionData(GridPosition gridPosition)
+    public override EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition)
     {
         // We want the Player not to move "RANDOMLY", but TOWARDS the weakest Unit-Player of the "Player team" (to attack it and Win in a easier way...):
         //
@@ -440,7 +440,7 @@ public class MoveAction : BaseAction
         //
         //    2.2- Execute the "Base Action" routine:
         //
-        EnemyAIAction enemyAIActionData = base.GetEnemyAIActionData(gridPosition);
+        EnemyAIActionData enemyAIActionData = base.GetEnemyAIActionData(gridPosition);
         
 
         //////////////
