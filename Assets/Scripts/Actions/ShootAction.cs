@@ -549,7 +549,7 @@ public class ShootAction : BaseAction
                 // Check:  Are you an 'Enemy' like myself?... or:  Are you a 'Player'
                 //..as myself?
                 //
-                if (targetUnit.IsEnemy() == _unit.IsEnemy())
+                if ((targetUnit.IsEnemy() && _unit.IsEnemy()) || ((!targetUnit.IsEnemy()) && (!_unit.IsEnemy())) || (targetUnit == _unit))
                 {
                     // Not Valid:   Both Units on same 'Team'.
                     // Skip to next iteration:

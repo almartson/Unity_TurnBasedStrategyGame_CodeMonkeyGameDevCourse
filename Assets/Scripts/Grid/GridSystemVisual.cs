@@ -422,7 +422,7 @@ public class GridSystemVisual : MonoBehaviour
     
 
     /// <summary>
-    /// Validates: Is the Path between two (2) 'GridPosition'(s)  Blocked by an Obstacle. <br />
+    /// Validates: Is the Path between two (2) 'GridPosition'(s)  Blocked by an Obstacle ? <br />
     /// Requires: That the Obstacle be set up with a LayerMask:   Obstacle. The Field Attribute for that: is this Class.
     /// </summary>
     /// <param name="fromGridPosition"></param>

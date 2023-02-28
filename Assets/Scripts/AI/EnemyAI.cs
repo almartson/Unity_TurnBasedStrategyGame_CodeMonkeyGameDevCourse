@@ -309,7 +309,6 @@ public class EnemyAI : MonoBehaviour
                 //
                 bestBaseAction = baseAction;
 
-
             }//End if (bestEnemyAIActionData...
             else
             {
