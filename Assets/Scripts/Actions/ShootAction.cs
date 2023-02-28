@@ -208,21 +208,14 @@ public class ShootAction : BaseAction
         {
             case State.Aiming:
 
-                // Validate that "_targetUnit"  &  "_unit"  are not NULL
+                // Rotate towards the TARGET, and Aim at it:
+                // .1- Direction Vector3 to shoot (normalized)
                 //
-                if ((_targetUnit != null) &&  (_unit != null))
-                {
-                    
-                    // Rotate towards the TARGET, and Aim at it:
-                    // .1- Direction Vector3 to shoot (normalized)
-                    //
-                    _aimDirection = ( _targetUnit.GetWorldPosition() - _unit.GetWorldPosition() ).normalized;
-                    //
-                    // .2- Rotate, Animation:
-                    //
-                    RotateUnitUsingVector3SlerpApproach( _aimDirection );
-                    
-                }//End if ((_targetUnit != null) &&  (_unit != null))
+                _aimDirection = ( _targetUnit.GetWorldPosition() - _unit.GetWorldPosition() ).normalized;
+                //
+                // .2- Rotate, Animation:
+                //
+                RotateUnitUsingVector3SlerpApproach( _aimDirection );
                 
                 break;
             
