@@ -132,6 +132,19 @@ public class HealthSystem : MonoBehaviour
 
     }// End GetHealthNormalized
     
+    
+    /// <summary>
+    /// Calculates (and returns) the (percentage of) % Health, based on the range [0, 100] 
+    /// </summary>
+    /// <returns></returns>
+    public float GetHealthPercent()
+    {
+        // Calculate the (percentage of) % Health, based on the range [0.0, 1.0]
+        //
+        return ((1.0f - GetHealthNormalized()) * 100.0f);
+
+    }// End GetHealthNormalized
+    
     #endregion My Custom Methods
 
 }

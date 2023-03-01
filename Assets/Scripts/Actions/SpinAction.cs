@@ -193,7 +193,7 @@ public class SpinAction : BaseAction
         // //
         // 1- TARGET GridPosition (i.e.: the Destination of the Movement...)
         //
-        // this._spinActionBaseParameters.TargetGridPositionOfSelectedAction = UnitActionSystem.Instance.GetSelectedUnit().GetGridPosition();
+        // This does NOT work when a NPC ENEMY A.I. is Playing (because: UnitActionSystem.Instance.GetSelectedUnit()... only saves the last HUMAN PLAYER that was playing in the last turn...):   this._spinActionBaseParameters.TargetGridPositionOfSelectedAction = UnitActionSystem.Instance.GetSelectedUnit().GetGridPosition();
         
     }//End GenerateInputParameters
 

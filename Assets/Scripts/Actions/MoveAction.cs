@@ -208,7 +208,12 @@ public class MoveAction : BaseAction
         //
         // 1- TARGET GridPosition (i.e.: the Destination of the Movement...)
         //
-        this._moveActionBaseParameters.TargetGridPositionOfSelectedMovement = UnitActionSystem.Instance.GetSelectedUnit().GetFinalGridPositionOfNextPlayersAction();
+        // Not working for ENEMY A.I.:  this._moveActionBaseParameters.TargetGridPositionOfSelectedMovement = UnitActionSystem.Instance.GetSelectedUnit().GetFinalGridPositionOfNextPlayersAction();
+        //
+        // Getting the "GridPosition" of the Target, regardless of the Team that is playing (CPU or Player's):
+        //
+        _moveActionBaseParameters.TargetGridPositionOfSelectedMovement =
+            this._unit.GetFinalGridPositionOfNextPlayersAction();
         
     }//End GenerateInputParameters
 

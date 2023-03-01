@@ -278,7 +278,7 @@ public class ShootAction : BaseAction
         /////////
         
         // 2- Calculate the TARGET's constraints
-        // ...(to Shoot to - based on a TARGET "GridPosition" selected by a Mouse Click, as Input.)
+        // ...(to Shoot to - based on a TARGET "GridPosition" selected by a Mouse Click, as Input in the case of a HUMAN PLAYER... if it's a NPC-ENEMY-A.I. the selction of the "Target" happens automatically.)
         //
         _targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(_shootActionBaseParameters.TargetGridPositionOfSelectedAction);
         
@@ -333,8 +333,13 @@ public class ShootAction : BaseAction
         //
         // 1- TARGET GridPosition (i.e.: the Destination of the Movement...)
         //
-        _shootActionBaseParameters.TargetGridPositionOfSelectedAction = UnitActionSystem.Instance.GetSelectedUnit().GetFinalGridPositionOfNextPlayersAction();
-        
+        // This works only for HUMAN PLAYERS... NOT for ENEMY A.I.:  _shootActionBaseParameters.TargetGridPositionOfSelectedAction = UnitActionSystem.Instance.GetSelectedUnit().GetFinalGridPositionOfNextPlayersAction();
+        //
+        // Getting the "GridPosition" of the Target, regardless of the Team that is playing (CPU or Player's):
+        //
+        _shootActionBaseParameters.TargetGridPositionOfSelectedAction =
+            this._unit.GetFinalGridPositionOfNextPlayersAction();
+
     }//End GenerateInputParameters
 
     
@@ -654,15 +659,27 @@ public class ShootAction : BaseAction
     #region A.I. - AI
 
     /// <summary>
-    /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position".
+    /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position". <br /><br />
+    /// Strategy: To Shoot to the "Weakest Player First"... that means: assigning more "Value" to the "GridPosition" where the Player with the "least amount of HEALTH" is located.
     /// </summary>
     /// <param name="gridPosition"></param>
     /// <returns>A set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
     public override EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition)
     {
+        // Getting the "Weakest" Character (i.e.: Target) to Shoot at:  We need the Health of each Character of the Opposite Team:
+        //
+        Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
+        
+        
         // Execute the "Base Action" routine:
         //
         EnemyAIActionData enemyAIActionData = base.GetEnemyAIActionData(gridPosition);
+        
+        
+        // Calculate the "Target"'s HEALTH, and add it as a VALUE to the "Action Value" (for the Enemy A.I. to decide on the Greatest one):
+        //
+        _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction += Mathf.RoundToInt(targetUnit.GetHealthPercent());
+
         
         // Return DATA
         //

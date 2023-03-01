@@ -540,6 +540,25 @@ public class Unit : MonoBehaviour
 
     }//End Damage(...)
 
+
+    /// <summary>
+    /// Gets the Unit's (Character) Health on a base to 1.0f.
+    /// </summary>
+    public float GetHealthNormalized()
+    {
+        return _healthSystem.GetHealthNormalized();
+
+    }//End GetHealthNormalized
+    
+    /// <summary>
+    /// Gets the Unit's (Character) Health on a base to the range [ 0 % ; 100 %.]
+    /// </summary>
+    public float GetHealthPercent()
+    {
+        return _healthSystem.GetHealthPercent();
+
+    }//End GetHealthNormalized
+    
     #endregion  Health System - Damage
     
     

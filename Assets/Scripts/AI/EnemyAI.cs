@@ -371,8 +371,8 @@ public class EnemyAI : MonoBehaviour
             // .2.1.1- In _selectedUnit, for later use in 'TakeAction()':
             //
             enemyUnit.SetFinalGridPositionOfNextPlayersAction(bestEnemyAIActionData.gridPosition);
-                
-                
+            
+
             // .3- Set this Class (SERVICE) Methods as: BUSY .. until it ends:  Set MUTEX ON
             //
             // SetBusy();  // This is not necessary here, because it happens in the Update() of this STATE MACHINE Script.
