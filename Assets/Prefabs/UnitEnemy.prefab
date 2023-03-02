@@ -13,6 +13,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4998818018336852574, guid: 7ac8f47f1a68238568c60ebdba861fa2,
         type: 3}
+    - target: {fileID: -63595787454068697, guid: e33704893089a7f5dbe6efcbce3306d4,
+        type: 3}
+      propertyPath: _makeEnemyAIDoSillyThings
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6236878121081643677, guid: e33704893089a7f5dbe6efcbce3306d4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
