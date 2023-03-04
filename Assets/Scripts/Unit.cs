@@ -540,6 +540,8 @@ public class Unit : MonoBehaviour
 
     }//End Damage(...)
 
+    
+    #region Getter and Setter for Health and Damage
 
     /// <summary>
     /// Gets the Unit's (Character) Health on a base to 1.0f.
@@ -558,7 +560,30 @@ public class Unit : MonoBehaviour
         return _healthSystem.GetHealthPercent();
 
     }//End GetHealthNormalized
+
+
+    /// <summary>
+    /// Calculates (and returns) the COMPLEMENT of Health (that means: the percentage DAMAGE & TAKEN); NORMALIZED: based on the range [0.0, 1.0] 
+    /// </summary>
+    /// <returns></returns>
+    public float GetDamageTakenOfHealthNormalized()
+    {
+        return _healthSystem.GetDamageTakenOfHealthNormalized();
+
+    }// End GetDamageTakenOfHealthNormalized
     
+    /// <summary>
+    /// Calculates (and returns) the (percentage of) the COMPLEMENT of Health (that means: the percentage DAMAGE & TAKEN), based on the range [0 %, 100 %] 
+    /// </summary>
+    /// <returns></returns>
+    public float GetDamageTakenOfHealthPercent()
+    {
+        return _healthSystem.GetDamageTakenOfHealthPercent();
+
+    }// End GetDamageTakenOfHealthPercent
+
+    #endregion Getter and Setter for Health and Damage
+
     #endregion  Health System - Damage
     
     

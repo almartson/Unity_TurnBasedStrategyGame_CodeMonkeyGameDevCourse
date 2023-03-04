@@ -420,7 +420,11 @@ public class MoveAction : BaseAction
     #region A.I. - AI
 
     /// <summary>
-    /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position".
+    /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position". <br />
+    /// For the "MoveAction":   The A.I. will prioritize "GridPositions" where it can Shoot multiple Targets from... <br />
+    /// ...that means:  if "moving to" a certain "GridPosition" normally has a "VALUE" of "10.0f" Action Points,...
+    /// ...but from that GridPosition it could shoot to TWO (2) TARGETS (i.e.: Players Characters/Units-...) <br />
+    /// ...then this Algorithm would prioritize THAT "child of BaseAction", with THAT "ActionData"... (on that "GridPosition"). <br />
     /// </summary>
     /// <param name="gridPosition"></param>
     /// <returns>A set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
@@ -433,7 +437,7 @@ public class MoveAction : BaseAction
         //
         // Process:
         //
-        // 1- TRY to FIND if there are any "SHOOTABLE" -> "UNIT-PLAYERS...
+        // 1- TRY to FIND HOW MANY "SHOOTABLE" "Targets" ("UNIT-PLAYERS) are there, from that POSITION  (GridPosition):
         //
         int targetCountAtPosition = _unit.GetShootAction().GetTargetCountAtPosition(gridPosition);
         //
@@ -449,7 +453,12 @@ public class MoveAction : BaseAction
         
 
         //////////////
-        Debug.Log($"enemyAIActionData.actionValue = {enemyAIActionData.actionValue.ToString()}");
+        // Show only when the WORTHINESS OF THIS ACTION surpasses the STANDARD REASON / VALUE (i.e.: 10):
+        //
+        if (enemyAIActionData.actionValue > 10.0f)
+        {
+            Debug.Log($"enemyAIActionData.actionValue = {enemyAIActionData.actionValue.ToString()} \n* At enemyAIActionData.gridPosition() = ( {enemyAIActionData.gridPosition.x.ToString()} , 0, {enemyAIActionData.gridPosition.z.ToString()} )");
+        }
         //////////////
         
         // Return the final ENEMY A.I. DATA:

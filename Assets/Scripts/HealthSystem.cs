@@ -120,6 +120,8 @@ public class HealthSystem : MonoBehaviour
     }//End Die()
 
     
+    #region Health Value
+
     /// <summary>
     /// Calculates (and returns) the (percentage of) % Health, based on the range [0.0, 1.0] 
     /// </summary>
@@ -132,7 +134,6 @@ public class HealthSystem : MonoBehaviour
 
     }// End GetHealthNormalized
     
-    
     /// <summary>
     /// Calculates (and returns) the (percentage of) % Health, based on the range [0, 100] 
     /// </summary>
@@ -141,9 +142,42 @@ public class HealthSystem : MonoBehaviour
     {
         // Calculate the (percentage of) % Health, based on the range [0.0, 1.0]
         //
-        return ((1.0f - GetHealthNormalized()) * 100.0f);
+        return (GetHealthNormalized() * 100.0f);
 
     }// End GetHealthNormalized
+    
+    #endregion Health Value
+    
+    
+    #region Damage Value
+    
+    /// <summary>
+    /// Calculates (and returns) the COMPLEMENT of Health (that means: the percentage DAMAGE & TAKEN); NORMALIZED: based on the range [0.0, 1.0] 
+    /// </summary>
+    /// <returns></returns>
+    public float GetDamageTakenOfHealthNormalized()
+    {
+        // Calculate the COMPLEMENT of Health (a.k.a.: Damage taken...), based on the range [0.0, 1.0]
+        //
+        return (float)(1.0000f - GetHealthNormalized());
+
+    }// End GetDamageTakenOfHealthNormalized
+    
+    /// <summary>
+    /// Calculates (and returns) the (percentage of) the COMPLEMENT of Health (that means: the percentage DAMAGE & TAKEN), based on the range [0 %, 100 %] 
+    /// </summary>
+    /// <returns></returns>
+    public float GetDamageTakenOfHealthPercent()
+    {
+
+        // Calculate the PERCENTAGE (%) COMPLEMENT of Health (a.k.a.: Damage taken...), based on the range [0 - 100 %]
+        //
+        return (GetDamageTakenOfHealthNormalized() * 100.0f);
+
+    }// End GetDamageTakenOfHealthPercent
+    
+    #endregion Damage Value
+    
     
     #endregion My Custom Methods
 

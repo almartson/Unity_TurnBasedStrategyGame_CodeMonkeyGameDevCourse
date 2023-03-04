@@ -476,7 +476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isActive: 0
-  _myActionPointCost: 1
+  _myActionPointCost: 2
   _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 10
   _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 1
   _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
@@ -500,7 +500,7 @@ MonoBehaviour:
   _isActive: 0
   _myActionPointCost: 1
   _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 0
-  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
+  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 1
   _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
   _spinVelocityAndDirectionInDegreesPerSecond: 360
   _rotationGoal: 360

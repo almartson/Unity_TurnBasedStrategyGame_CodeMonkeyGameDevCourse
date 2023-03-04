@@ -267,10 +267,13 @@ public abstract class BaseAction : MonoBehaviour
     #region A.I. - AI
 
     /// <summary>
-    /// (Calculates and then...):  Gets the BEST possible DATA - "Grid Position(s)" to execute THIS  "A.I. ACTION"  -, <br />
-    /// ..after considering all possibilities (of Positions / Locations == Grid Positions) at this moment in the "Present" (right now).
+    /// (Calculates and then...):  Gets the BEST possible DATA - "Grid Position(s)" to execute THIS "A.I. ACTION": the casted ACTION. <br />
+    /// (EXAMPLE:   ShootAction myShootAction = myBaseAction as ShootAction; ) ... so "myShootAction" is THAT "A.I. ACTION" we are talking about..., <br />
+    /// THAT "A.I. ACTION" will be used to test it out in each "GridPosition", and we get the ASSOCIATED DATA TO TAKING THAT ACTION..., <br />
+    /// ..after considering all (A.I. ACTIONS in each "GridPosition"...) possibilities (of Positions / Locations == Grid Positions) at this moment in the "Present" (right now):  we return the BEST ONE, based on the ACTION POINTS VALUE.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The DATA of the BEST possible A.I. ACTION (BaseAction):  "EnemyAIActionData"... <br />,
+    /// ...based on the ACTION POINTS VALUE of each Action / Possibility</returns>
     public EnemyAIActionData GetBestEnemyAIActionData()
     {
 

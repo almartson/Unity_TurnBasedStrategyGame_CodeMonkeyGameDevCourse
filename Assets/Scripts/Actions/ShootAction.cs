@@ -678,7 +678,7 @@ public class ShootAction : BaseAction
         
         // Calculate the "Target"'s HEALTH, and add it as a VALUE to the "Action Value" (for the Enemy A.I. to decide on the Greatest one):
         //
-        _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction += Mathf.RoundToInt(targetUnit.GetHealthPercent());
+        _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction += Mathf.RoundToInt(targetUnit.GetDamageTakenOfHealthPercent());
 
         
         // Return DATA
