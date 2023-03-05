@@ -62,7 +62,9 @@ public class ShootAction : BaseAction
     private float _stateTimer;
     
     /// <summary>
-    /// Unit / Character we will Shoot To.
+    /// Unit / Character we will Shoot To. <br />
+    /// NOTES: <br />
+    /// 1- WARNING:  It is usually NULL during the preparatory stage and even the VALIDATION stages..., until the SHOOT ACTION is finally started (a.k.a.: "TakeAction()"  method).
     /// </summary>
     private Unit _targetUnit;
 
@@ -676,10 +678,19 @@ public class ShootAction : BaseAction
         EnemyAIActionData enemyAIActionData = base.GetEnemyAIActionData(gridPosition);
         
         
+        ////////////////
+        Debug.Log($"(Before using 'targetUnit.GetDamageTakenOfHealthPercent()...' ->  )_myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction = {_myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction.ToString()} ... ... Attacker = {_unit} | Target = {_targetUnit} ");
+        ////////////////
+        
+        
         // Calculate the "Target"'s HEALTH, and add it as a VALUE to the "Action Value" (for the Enemy A.I. to decide on the Greatest one):
         //
         _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction += Mathf.RoundToInt(targetUnit.GetDamageTakenOfHealthPercent());
 
+        
+        ////////////////
+        Debug.Log($"(Using 'targetUnit.GetDamageTakenOfHealthPercent()...' ->  )_myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction = {_myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction.ToString()} ... ... Attacker = {_unit} | Target = {_targetUnit} ");
+        ////////////////
         
         // Return DATA
         //

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -134,8 +135,14 @@ public class UnitActionSystem : MonoBehaviour
     {
         SetSelectedUnit( _selectedUnit );
         
-    }//End Start()
+        #region Listeners and Events - Subscribing
 
+        TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
+
+        #endregion Listeners and Events - Subscribing
+
+    }// End Start()
+    
 
     private void Update()
     {
@@ -855,6 +862,53 @@ public class UnitActionSystem : MonoBehaviour
     }
     
     #endregion Managing (allowing only...) just ONE Action at a Time
+    
+
+    #region Listeners and Events:  ON TURN CHANGED
+    
+    /// <summary>
+    /// This Event Routine is triggered each time the TURN CHANGES. <br />
+    /// At that moment: we check if the SELECTED UNIT has just DIED on the last previous TURN, so we can validate it and avoid a "NullReferenceException".
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
+    {
+
+        // When the TURN CHANGES:
+        // 1- Check if the current "selectedUnit" is "dead"
+        //
+        if ( _selectedUnit.IsDead() )
+        {
+
+            // 2- Get the Player's Team Units / Characters
+            //
+            List<Unit> friendlyUnitList = UnitManager.Instance.GetFriendlyUnitList();
+            
+            // 3- Find the next available "Unit" / Character.
+            // If none is available, if all are dead, then it’s game over.
+            //
+            if ( friendlyUnitList.Count > 0 )
+            {
+                // Set the next available "Unit" / Character
+                //
+                SetSelectedUnit( friendlyUnitList[0] );
+
+            }
+            else
+            {
+                // If none is available, if all are dead, then it’s game over.
+                // TODO: PLEASE INSERT Game Over CODE around these LINES...
+                //
+                Debug.LogWarning($"++ GAME OVER! ++ \n PLEASE INSERT Game Over CODE around these LINES...");
+                
+            }//End if ( friendlyUnitList.Count > 0 )
+            
+        }//End if (_selectedUnit.GetHealthNormalized...
+
+    }// End TurnSystem_OnTurnChanged
+
+    #endregion Listeners and Events:  ON TURN CHANGED
     
     #endregion My Custom Methods
 

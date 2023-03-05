@@ -269,6 +269,177 @@ public class EnemyAI : MonoBehaviour
         BaseAction bestBaseAction = null;
         
 
+        #region Find: the BEST TYPE of ACTION the NPC can afford with its actionPoints: AlMartson's (performance-oriented) Implementation
+        
+        // 0- Get all possible kind of   ACTIONS   the NPC  (Enemy) can take:
+        //
+        BaseAction[] baseActionList = enemyUnit.GetBaseActionArray();
+        //
+        // Lenght of the Array:
+        //
+        int baseActionListLenght = baseActionList.Length;
+            
+        // Cycle through all ACTIONS
+        //
+        for (int i = 0; i < baseActionListLenght; i++)
+        {
+            
+            // 0- Cache the "possible" ACTION to evaluate:
+            //
+            BaseAction baseAction = baseActionList[i];
+
+
+            // For each ACTION...  See:
+            // 1- Has enough  Action "POINTS" ?
+            //
+            if (! enemyUnit.CanSpendActionPointsToTakeAction( baseAction ))
+            {
+                // This ENEMY-NPC does NOT have enough "POINTS" to take THIS ACTION
+                // (Enemy cannot afford this Action)
+                // Ignore this Action... SKIP
+                //
+                continue;
+
+            }//End if (! enemyUnit.CanSpendActionPointsToTakeAction...
+            
+            
+            // This ENEMY-NPC has enough "POINTS"  ... for this ACTION
+            // Check: 
+            // Is there a previous BEST ONE ?  ( "bestEnemyAIActionData" )
+            //
+            if (bestEnemyAIActionData == null)
+            {
+
+                // The was NO PREVIOUS BEST  "Action"
+
+                // 2- Use:  the FIRST ONE we just found  ("baseAction", 2 lines above):
+                
+                //   2.1- Get all DATA for THIS action, which is casted into - selected - (for each TYPE of)  ACTION
+                //
+                bestEnemyAIActionData = baseAction.GetBestEnemyAIActionData();
+                //
+                //   2.2- Save the Best ACTION  type
+                //
+                bestBaseAction = baseAction;
+
+            }//End if (bestEnemyAIActionData...
+            else
+            {
+                // The WAS a PREVIOUS "BEST"  "Action"
+                
+                // TEST
+                // 2- "Test" to see:  What ACTION is the BEST ??
+
+                EnemyAIActionData testEnemyAIActionData = baseAction.GetBestEnemyAIActionData();
+                
+                //    2.1-  TEST:
+                //      a) testEnemyAIActionData      NOT NULL
+                // ...( CAN the ENEMY-NPC  "TAKE"  the Action ? )
+                //
+                //      b) Compare:  "actionValue"    (GREATER means BETTER)
+                //
+                if ( (testEnemyAIActionData != null) && (testEnemyAIActionData.actionValue > bestEnemyAIActionData.actionValue) )
+                {
+
+                    // testEnemyAIActionData & bestBaseAction   WIN!
+
+                    // 3- Copy its DATA
+                    //
+                    //   3.1- Get all DATA for THIS action, which is casted into - selected - (for each TYPE of)  ACTION
+                    //
+                    bestEnemyAIActionData = testEnemyAIActionData;
+                    //
+                    //   3.2- Save the Best ACTION  type
+                    //
+                    bestBaseAction = baseAction;
+
+                }//End if ( (testEnemyAIActionData != null)...
+
+            }//End if (bestEnemyAIActionData...
+
+        }//End for... (looking for the BEST  ACTION TYPE (type of action)... the ENEMY-NPC can AFFORD).
+        
+        #endregion Find: the BEST TYPE of ACTION the NPC can afford with its actionPoints: AlMartson's (performance-oriented) Implementation
+
+        
+        #region Take the  BEST  Action Logic
+
+        // Take the calculated  "BEST ACTION"
+        
+        // Validate  ACTION != null  &&   Have enough (ACTION) POINTS ?
+        //
+        if ( (bestEnemyAIActionData != null)  &&  (enemyUnit.TrySpendActionPointsToTakeAction(bestBaseAction)) )
+        {
+
+            // .2.0- The actionPoints are Spent / used by now, already...
+                    
+            // .2- 'Take the Action'
+            //
+            // .2.1- Save the Valid GridPosition:
+            //
+            // .2.1.1- Save the original Mouse Position (just in case... as a backup)
+            //
+            enemyUnit.MousePosition.Set(bestEnemyAIActionData.gridPosition.x, 0, bestEnemyAIActionData.gridPosition.z);
+            //
+            // .2.1.1- In _selectedUnit, for later use in 'TakeAction()':
+            //
+            enemyUnit.SetFinalGridPositionOfNextPlayersAction(bestEnemyAIActionData.gridPosition);
+            
+
+            // .3- Set this Class (SERVICE) Methods as: BUSY .. until it ends:  Set MUTEX ON
+            //
+            // SetBusy();  // This is not necessary here, because it happens in the Update() of this STATE MACHINE Script.
+            //
+            // .4- TakeAction() , A.I. ACTION
+            // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: ) -> Sets Mutex OFF (when TakeAction() Ends...)
+            //
+            bestBaseAction.TakeAction(onEnemyAIActionComplete);
+
+
+            // Return the "Success" State of the 'Take Action' process:
+            //
+            return true;
+            
+        }//End if (bestEnemyAIActionData != null)...
+        else
+        {
+            // Did not pass the Validation:     TrySpendActionPointsToTakeAction(...)  or "bestEnemyAIActionData"  was NULL:
+            // Could not TAKE the "BEST" ACTION
+            // Return the Success/Failure State of the 'Take Action' process:  false (failure)
+            //
+            return false;
+
+        }//End else of if (bestEnemyAIActionData != null)...
+        
+        #endregion Take the  BEST  Action Logic
+
+    }// End TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
+    
+    
+    
+    #region (Deprecated) A.I. "TakeAction"
+
+    /// <summary>
+    /// (Deprecated because of performance issues - a "foreach" is inside)
+    /// Given an "Enemy Unit": <br />
+    /// It Executes a particular ENEMY Unit  'ACTION'  (A.I.)
+    /// </summary>
+    private bool DeprecatedTryTakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
+    {
+
+        // GOAL: Get the BEST  ACTION   (as object)  possible to take:
+        // CALCULATIONS:
+
+        // 0- Keeping track of the  BEST "Enemy A.I. ACTION"  (possible to choose:
+        //    0.1- Position - DATA
+        //
+        EnemyAIActionData bestEnemyAIActionData = null;
+        //
+        //    0.2- ACTION  object
+        //
+        BaseAction bestBaseAction = null;
+        
+
         #region Find: the BEST TYPE of ACTION the NPC can afford with its actionPoints: Original (non-performant) CodeMonkey's Implementation
         
         // 0- Get all possible kind of   ACTIONS   the NPC  (Enemy) can take:
@@ -400,11 +571,9 @@ public class EnemyAI : MonoBehaviour
         
         #endregion Take the  BEST  Action Logic
 
-    }// End TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
-    
-    
-    #region (Deprecated) A.I. "TakeAction"
-    
+    }// End DeprecatedTryTakeEnemyAIAction(Action onEnemyAIActionComplete)
+
+
     /// <summary>
     /// (Deprecated, do not use - Original (non-performant) CodeMonkey's Implementation) <br /><br />
     /// Executes the (current FSM state)  A.I. 'ACTION':   for all "Units" in the ENEMY's TEAM.

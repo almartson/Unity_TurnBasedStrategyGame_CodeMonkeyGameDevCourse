@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -16,7 +17,7 @@ public abstract class BaseAction : MonoBehaviour
     [SerializeField]
     protected bool _isActive = false;
     
-    [Tooltip("Reference to the Unit / Character to apply the 'Action' to...")]
+    [Tooltip("Reference to the Unit / Character this Script is attached to in the Unity Editor. \n(i.e.: the INITIATOR of this Action)")]
     protected Unit _unit;
 
 
@@ -150,7 +151,7 @@ public abstract class BaseAction : MonoBehaviour
     #region 'Taking the Action' Logic
     
     /// <summary>
-    /// Generic Method for getting the ACTION from the GUI (the Payer's).
+    /// Generic Method for getting the ACTION from the GUI (the Player's).
     /// This must be reimplemented / overriden in each Concrete (derived, child) as: 'SomethingAction' Class.
     /// </summary>
     /// <returns></returns>
@@ -285,6 +286,116 @@ public abstract class BaseAction : MonoBehaviour
         // ..("BaseAction" is casted as a derived-child "ConcreteAction"... so for THAT ONE):
         //
         List<GridPosition> validActionGridPositionList = GetValidActionGridPositionList();
+        //
+        // Lenght of the List:
+        //
+        int validActionGridPositionListLenght = validActionGridPositionList.Count;
+        
+
+        #region (Generate the  DATA  for:   ENEMY "A.I. ACTION").  Performance-oriented AlMartson's Implementation
+
+        // Cycle through all the "Valid"  GridPositions  for THIS selected (..each..) ACTION
+        //
+        for (int i = 0; i < validActionGridPositionListLenght; i++)
+        {
+            // We want to:
+            // Generate the  DATA  for:   ENEMY "A.I. ACTION"
+            // ..for:
+            // 1- on this (each... Grid) POSITION ...
+            //
+            // GridPosition gridPosition = validActionGridPositionList[i];
+
+            // 2- THIS test  "ACTION"  (BaseAction casted-as a SPECIFIC ACTION)   (selected)
+            //
+            EnemyAIActionData enemyAIActionData = GetEnemyAIActionData( validActionGridPositionList[i] );
+            //
+            // 3- Add the ACTION to the LIST
+            //
+            enemyAIActionDataList.Add(enemyAIActionData);
+        
+        }//End for...  (Cycle through all the "Valid"  GridPositions  for THIS selected (..each..) ACTION)
+        
+        #endregion Performance-oriented AlMartson's Implementation
+
+        
+        // Final Step:
+        // Check to see if it found   ANY Possible "Grid Positions" (Positional DATA)... where to TAKE THIS Action:
+        //
+        if (enemyAIActionDataList.Count > 0)
+        {
+            
+            // Final:
+            // SORT the possible DATA ACTIONS... to get the BEST of the BEST,.. 
+            //...to execute it FIRST!
+            // Sorted based on "ActionValue":
+            //
+            enemyAIActionDataList.Sort((EnemyAIActionData a, EnemyAIActionData b) => b.actionValue - a.actionValue);
+
+            // Return THE BEST ONE:   i.e.: the one at Index: [0]
+            //
+            return enemyAIActionDataList[0];
+
+        }
+        else
+        {
+            // There are  No possible ENEMY A.I. ACTIONS
+            //
+            return null;
+
+        }//End else of if (enemyAIActionList.Count > 0)
+
+    }// End GetBestEnemyAIActionData
+    
+
+
+    /// <summary>
+    /// (Calculates and...):  Gets the "A.I. ACTION" DATA ("Cost" Value, final, calculated "Points", to see if it's worth it + LOCATION to move to: "Grid Position"...)  that is possible in a given (as INPUT:),  "Grid Position".
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns>A set of  DATA  for taking this selected ACTION <br />
+    /// Specially: <br /><br />
+    /// 1- "Cost" of taking THIS ACTION... <br />
+    /// 2- "Location":  GridPosition
+    /// </returns>
+    public virtual EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition)
+    {
+        // Calculate the "Cost" & GridPosition  DATA:
+        //
+        _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction = _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction * _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION;
+        
+        // Return the basic DATA:
+        //
+        return new EnemyAIActionData()
+        {
+            gridPosition = gridPosition,
+            actionValue = _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction,
+        };
+    }// End GetEnemyAIActionData
+
+    
+    
+    #region Deprecated Methods
+    
+    /// <summary>
+    /// (Deprecated as it uses a FOREACH, and it has been replaced by a for + other micro-optimizations)... <br /> <br />
+    /// (Calculates and then...):  Gets the BEST possible DATA - "Grid Position(s)" to execute THIS "A.I. ACTION": the casted ACTION. <br />
+    /// (EXAMPLE:   ShootAction myShootAction = myBaseAction as ShootAction; ) ... so "myShootAction" is THAT "A.I. ACTION" we are talking about..., <br />
+    /// THAT "A.I. ACTION" will be used to test it out in each "GridPosition", and we get the ASSOCIATED DATA TO TAKING THAT ACTION..., <br />
+    /// ..after considering all (A.I. ACTIONS in each "GridPosition"...) possibilities (of Positions / Locations == Grid Positions) at this moment in the "Present" (right now):  we return the BEST ONE, based on the ACTION POINTS VALUE.
+    /// </summary>
+    /// <returns>The DATA of the BEST possible A.I. ACTION (BaseAction):  "EnemyAIActionData"... <br />,
+    /// ...based on the ACTION POINTS VALUE of each Action / Possibility</returns>
+    public EnemyAIActionData DeprecatedGetBestEnemyAIActionData()
+    {
+
+        // Make a List of DATA of: "ENEMY A.I. ACTION"(s):
+        //
+        List<EnemyAIActionData> enemyAIActionDataList = new List<EnemyAIActionData>();
+        
+        // Cycle through all the "Valid"  GridPositions  for THIS selected (..each..) ACTION
+        // ..("BaseAction" is casted as a derived-child "ConcreteAction"... so for THAT ONE):
+        //
+        List<GridPosition> validActionGridPositionList = GetValidActionGridPositionList();
         
         #region Original (foreach - non-performant) CodeMonkey Implementation
 
@@ -333,41 +444,9 @@ public abstract class BaseAction : MonoBehaviour
 
         }//End else of if (enemyAIActionList.Count > 0)
 
-    }// End GetBestEnemyAIActionData
+    }// End DeprecatedGetBestEnemyAIActionData
 
-
-    // /// <summary>
-    // /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position".
-    // /// </summary>
-    // /// <param name="gridPosition"></param>
-    // /// <returns>An set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
-    // public abstract EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition);
-
-
-    /// <summary>
-    /// (Calculates and...):  Gets the "A.I. ACTION" DATA ("Cost" Value, final, calculated "Points", to see if it's worth it + LOCATION to move to: "Grid Position"...)  that is possible in a given (as INPUT:),  "Grid Position".
-    /// </summary>
-    /// <param name="gridPosition"></param>
-    /// <returns>A set of  DATA  for taking this selected ACTION <br />
-    /// Specially: <br /><br />
-    /// 1- "Cost" of taking THIS ACTION... <br />
-    /// 2- "Location":  GridPosition
-    /// </returns>
-    public virtual EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition)
-    {
-        // Calculate the "Cost" & GridPosition  DATA:
-        //
-        _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction = _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction * _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION;
-        
-        // Return the basic DATA:
-        //
-        return new EnemyAIActionData()
-        {
-            gridPosition = gridPosition,
-            actionValue = _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction,
-        };
-    }// End GetEnemyAIActionData
-
+    #endregion Deprecated Methods
     
     #endregion A.I. - AI
 

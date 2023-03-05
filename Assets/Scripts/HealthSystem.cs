@@ -72,6 +72,24 @@ public class HealthSystem : MonoBehaviour
 
     #region My Custom Methods
 
+    #region Getters and Setters
+
+    /// <summary>
+    /// Checks whether (...the Character / Unit this Script is attached to...) is DEAD, or not.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsDead()
+    {
+        return (_health <= 0);
+
+    }// End IsDead
+
+
+    #endregion Getters and Setters
+
+    
+    #region Take Damage and Die
+
     /// <summary>
     /// Computes the 'damage' that is being taken (by an attack, or any similar sort of action).<br />
     /// Also, if <code>_health == 0</code>, then the Die() function will be called.
@@ -118,17 +136,19 @@ public class HealthSystem : MonoBehaviour
         OnDead?.Invoke(this, EventArgs.Empty);
 
     }//End Die()
-
+    
+    #endregion Take Damage and Die
+    
     
     #region Health Value
 
     /// <summary>
-    /// Calculates (and returns) the (percentage of) % Health, based on the range [0.0, 1.0] 
+    /// Calculates (and returns) the Health, based on the range [0.0, 1.0] 
     /// </summary>
     /// <returns></returns>
     public float GetHealthNormalized()
     {
-        // Calculate the (percentage of) % Health, based on the range [0.0, 1.0]
+        // Calculate the Health, based on the range [0.0, 1.0]
         //
         return (float)_health / _HEALTH_MAX;
 
@@ -152,7 +172,7 @@ public class HealthSystem : MonoBehaviour
     #region Damage Value
     
     /// <summary>
-    /// Calculates (and returns) the COMPLEMENT of Health (that means: the percentage DAMAGE & TAKEN); NORMALIZED: based on the range [0.0, 1.0] 
+    /// Calculates (and returns) the COMPLEMENT of Health (that means: the percentage DAMAGE TAKEN); NORMALIZED: based on the range [0.0, 1.0] 
     /// </summary>
     /// <returns></returns>
     public float GetDamageTakenOfHealthNormalized()
@@ -164,7 +184,7 @@ public class HealthSystem : MonoBehaviour
     }// End GetDamageTakenOfHealthNormalized
     
     /// <summary>
-    /// Calculates (and returns) the (percentage of) the COMPLEMENT of Health (that means: the percentage DAMAGE & TAKEN), based on the range [0 %, 100 %] 
+    /// Calculates (and returns) the (percentage of) the COMPLEMENT of Health (that means: the percentage % DAMAGE TAKEN), based on the range [0 , 100].
     /// </summary>
     /// <returns></returns>
     public float GetDamageTakenOfHealthPercent()

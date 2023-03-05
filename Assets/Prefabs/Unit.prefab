@@ -522,7 +522,7 @@ MonoBehaviour:
   _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 1
   _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
   _maxShootDistance: 7
-  _shootPowerDamageInHealthPoints: 40
+  _shootPowerDamageInHealthPoints: 20
   _rotateSpeed: 7
 --- !u!1 &7156872604032505470
 GameObject:

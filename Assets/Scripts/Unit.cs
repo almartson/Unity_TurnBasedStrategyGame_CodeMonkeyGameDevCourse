@@ -573,7 +573,7 @@ public class Unit : MonoBehaviour
     }// End GetDamageTakenOfHealthNormalized
     
     /// <summary>
-    /// Calculates (and returns) the (percentage of) the COMPLEMENT of Health (that means: the percentage DAMAGE & TAKEN), based on the range [0 %, 100 %] 
+    /// Calculates (and returns) the (percentage of) the COMPLEMENT of Health (that means: the percentage DAMAGE TAKEN), based on the range [0 %, 100 %] 
     /// </summary>
     /// <returns></returns>
     public float GetDamageTakenOfHealthPercent()
@@ -581,6 +581,18 @@ public class Unit : MonoBehaviour
         return _healthSystem.GetDamageTakenOfHealthPercent();
 
     }// End GetDamageTakenOfHealthPercent
+    
+
+    /// <summary>
+    /// Checks whether (...the Unit / Character this Script is attached to...) is DEAD, or not.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsDead()
+    {
+        return _healthSystem.IsDead();
+
+    }// End IsDead
+
 
     #endregion Getter and Setter for Health and Damage
 
