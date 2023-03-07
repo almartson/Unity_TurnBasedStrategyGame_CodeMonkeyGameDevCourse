@@ -64,10 +64,16 @@ public class EnemyAI : MonoBehaviour
     [Tooltip("Keeping track of the  BEST 'Enemy A.I. ACTION' (that's possible to choose):  ACTION (object instance of 'BaseAction' Class)) chosen.")]
     [SerializeField]
     private BaseAction _bestBaseAction;
+    
+    [Tooltip("Keeping track of the  BEST 'Enemy A.I. ACTION' (that's possible to choose):  ACTION (object instance of 'BaseAction' Class)) chosen.")]
+    [SerializeField]
+    private string _bestBaseActionName;
+    
 
     [Tooltip("In the end of the BEST ENEMY A.I. ACTION: \nIf there WAS a PREVIOUS 'BEST'  'Action' \n\n * TEST: \n\n2- 'Test' to see:  What ACTION is the BEST ?? \n\n * The results of the intermediate TEST is saved here\n\n * In the END: this the 'SECOND TO BEST'  ACTION chosen, generally.")]
     [SerializeField]
     private EnemyAIActionData _testEnemyAIActionData;
+
 
     #endregion A.I. DEBUG
     
@@ -284,6 +290,10 @@ public class EnemyAI : MonoBehaviour
         //    0.2- ACTION  object
         //
         _bestBaseAction = null;
+        //
+        // DEBUG:   Reset the name of the _bestBaseActionName
+        //
+        _bestBaseActionName = "";
         
 
         #region Find: the BEST TYPE of ACTION the NPC can afford with its actionPoints: AlMartson's (performance-oriented) Implementation
@@ -338,6 +348,11 @@ public class EnemyAI : MonoBehaviour
                 //   2.2- Save the Best ACTION  type
                 //
                 _bestBaseAction = baseAction;
+                //
+                //     2.2.1- Save the Best ACTION NAME
+                //
+                _bestBaseActionName = _bestBaseAction.GetActionNameByStrippingClassName();
+
 
             }//End if (bestEnemyAIActionData...
             else
@@ -369,6 +384,11 @@ public class EnemyAI : MonoBehaviour
                     //   3.2- Save the Best ACTION  type
                     //
                     _bestBaseAction = baseAction;
+                    //
+                    //     3.2.1- Save the Best ACTION NAME
+                    //
+                    _bestBaseActionName = _bestBaseAction.GetActionNameByStrippingClassName();
+
 
                 }//End if ( (testEnemyAIActionData != null)...
             }//End if (bestEnemyAIActionData...
@@ -382,9 +402,9 @@ public class EnemyAI : MonoBehaviour
 
         // Take the calculated  "BEST ACTION"
         
-        // Validate  ACTION != null  &&   Have enough (ACTION) POINTS ?
+        // Validate  ACTION != null  &&   Have enough (ACTION) POINTS    &&  ACTION is  MEANINGFULLY?
         //
-        if ( ((_bestEnemyAIActionData != null) && (_bestBaseAction != null))  &&  (enemyUnit.TrySpendActionPointsToTakeAction(_bestBaseAction)) )
+        if ( ((_bestEnemyAIActionData != null) && (_bestBaseAction != null))  &&  (enemyUnit.TrySpendActionPointsToTakeAction(_bestBaseAction)) && (_bestEnemyAIActionData.actionValue > 0) /* This means: Just TAKE ACTION when the ACTION is MEANINGFULLY... more that ZERO POINTS in VALUE / WORTH */ )
         {
 
             // .2.0- The actionPoints are Spent / used by now, already...
@@ -419,8 +439,14 @@ public class EnemyAI : MonoBehaviour
         }//End if (bestEnemyAIActionData != null)...
         else
         {
-            // Did not pass the Validation:     TrySpendActionPointsToTakeAction(...)  or "bestEnemyAIActionData"  was NULL:
+            // Did not pass the Validation:     TrySpendActionPointsToTakeAction(...)  or "bestEnemyAIActionData"  was NULL   or  maybe even the ACTION CHOSEN wan not MEANINGFUL... more that ZERO POINTS in VALUE / WORTH:
+            //
             // Could not TAKE the "BEST" ACTION
+            //
+            //     3.2.1- Save the "NULL":  Best ACTION NAME
+            //
+            _bestBaseActionName = $"Did not pass the Validation:     TrySpendActionPointsToTakeAction(...)  or 'bestEnemyAIActionData'  was NULL. \n\n * Could not TAKE the 'BEST' ACTION & RETURNING 'false' in CLASS:  {this.GetType().Name} \n * ... METHOD:  private bool TryTakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)";
+            
             // Return the Success/Failure State of the 'Take Action' process:  false (failure)
             //
             return false;
