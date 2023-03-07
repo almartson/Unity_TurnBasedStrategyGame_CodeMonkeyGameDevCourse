@@ -52,6 +52,21 @@ public abstract class BaseAction : MonoBehaviour
     [Tooltip("(FINAL VALUE of...) Cost of this ACTION, for any ENEMY A.I., in terms of (CURRENCY = ) 'Action Points.")]
     [SerializeField]
     protected int _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction = 0;
+
+
+    #region BEST A.I. ACTION - Inspector Debug
+    
+    [Tooltip("List of DATA of: 'ENEMY A.I. ACTION'(s)... that are being considered (although: NOT yet chosen)")]
+    [SerializeField]
+    private List<EnemyAIActionData> _enemyAIActionDataList;
+
+    
+    [Tooltip("All the Valid  GridPositions  for THIS selected (..each..) ACTION")]
+    [SerializeField]
+    private List<GridPosition> _validActionGridPositionList;
+
+    
+    #endregion BEST A.I. ACTION - Inspector Debug
     
     #endregion A.I. - AI
     
@@ -80,7 +95,7 @@ public abstract class BaseAction : MonoBehaviour
     /// Note:  The Type: ACTION   is a System-defined type, of Standard DELEGATE.
     /// </summary>
     protected Action onActionComplete;
-    
+
     #endregion Delegates: Purpose: Managing (allowing only...) just ONE Action at a Time
     
     #endregion Attributes
@@ -281,16 +296,16 @@ public abstract class BaseAction : MonoBehaviour
 
         // Make a List of DATA of: "ENEMY A.I. ACTION"(s):
         //
-        List<EnemyAIActionData> enemyAIActionDataList = new List<EnemyAIActionData>();
+        _enemyAIActionDataList = new List<EnemyAIActionData>();
         
         // Cycle through all the "Valid"  GridPositions  for THIS selected (..each..) ACTION
         // ..("BaseAction" is casted as a derived-child "ConcreteAction"... so for THAT ONE):
         //
-        List<GridPosition> validActionGridPositionList = GetValidActionGridPositionList();
+        _validActionGridPositionList = GetValidActionGridPositionList();
         //
         // Lenght of the List:
         //
-        int validActionGridPositionListLenght = validActionGridPositionList.Count;
+        int validActionGridPositionListLenght = _validActionGridPositionList.Count;
         
 
         #region (Generate the  DATA  for:   ENEMY "A.I. ACTION").  Performance-oriented AlMartson's Implementation
@@ -308,11 +323,11 @@ public abstract class BaseAction : MonoBehaviour
 
             // 2- THIS test  "ACTION"  (BaseAction casted-as a SPECIFIC ACTION)   (selected)
             //
-            EnemyAIActionData enemyAIActionData = GetEnemyAIActionData( validActionGridPositionList[i] );
+            EnemyAIActionData enemyAIActionData = GetEnemyAIActionData( _validActionGridPositionList[i] );
             //
             // 3- Add the ACTION to the LIST
             //
-            enemyAIActionDataList.Add(enemyAIActionData);
+            _enemyAIActionDataList.Add(enemyAIActionData);
         
         }//End for...  (Cycle through all the "Valid"  GridPositions  for THIS selected (..each..) ACTION)
         
@@ -322,7 +337,7 @@ public abstract class BaseAction : MonoBehaviour
         // Final Step:
         // Check to see if it found   ANY Possible "Grid Positions" (Positional DATA)... where to TAKE THIS Action:
         //
-        if (enemyAIActionDataList.Count > 0)
+        if (_enemyAIActionDataList.Count > 0)
         {
             
             // Final:
@@ -330,11 +345,11 @@ public abstract class BaseAction : MonoBehaviour
             //...to execute it FIRST!
             // Sorted based on "ActionValue":
             //
-            enemyAIActionDataList.Sort((EnemyAIActionData a, EnemyAIActionData b) => b.actionValue - a.actionValue);
+            _enemyAIActionDataList.Sort((EnemyAIActionData a, EnemyAIActionData b) => b.actionValue - a.actionValue);
 
             // Return THE BEST ONE:   i.e.: the one at Index: [0]
             //
-            return enemyAIActionDataList[0];
+            return _enemyAIActionDataList[0];
 
         }
         else
