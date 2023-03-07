@@ -268,6 +268,7 @@ public abstract class BaseAction : MonoBehaviour
     #region A.I. - AI
 
     /// <summary>
+    /// Given THIS concrete-particular <code>XxyyzzAction : BaseAction</code> <br />
     /// (Calculates and then...):  Gets the BEST possible DATA - "Grid Position(s)" to execute THIS "A.I. ACTION": the casted ACTION. <br />
     /// (EXAMPLE:   ShootAction myShootAction = myBaseAction as ShootAction; ) ... so "myShootAction" is THAT "A.I. ACTION" we are talking about..., <br />
     /// THAT "A.I. ACTION" will be used to test it out in each "GridPosition", and we get the ASSOCIATED DATA TO TAKING THAT ACTION..., <br />
