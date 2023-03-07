@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -9,6 +8,7 @@ using UnityEngine;
 ///..(Attributes) and implement (Methods).
 /// Each concrete 'Action Class' that will derive from this one, will override most of this class' Methods.
 /// </summary>
+[System.Serializable]
 public abstract class BaseAction : MonoBehaviour
 {
     #region Attributes
@@ -58,12 +58,12 @@ public abstract class BaseAction : MonoBehaviour
     
     [Tooltip("List of DATA of: 'ENEMY A.I. ACTION'(s)... that are being considered (although: NOT yet chosen)")]
     [SerializeField]
-    private List<EnemyAIActionData> _enemyAIActionDataList;
+    protected List<EnemyAIActionData> _enemyAIActionDataList;
 
     
     [Tooltip("All the Valid  GridPositions  for THIS selected (..each..) ACTION")]
     [SerializeField]
-    private List<GridPosition> _validActionGridPositionList;
+    protected List<GridPosition> _validActionGridPositionList;
 
     
     #endregion BEST A.I. ACTION - Inspector Debug
@@ -323,7 +323,7 @@ public abstract class BaseAction : MonoBehaviour
 
             // 2- THIS test  "ACTION"  (BaseAction casted-as a SPECIFIC ACTION)   (selected)
             //
-            EnemyAIActionData enemyAIActionData = GetEnemyAIActionData( _validActionGridPositionList[i] );
+            EnemyAIActionData enemyAIActionData = GetEnemyAIActionData( _validActionGridPositionList[i], 0 );
             //
             // 3- Add the ACTION to the LIST
             //
@@ -361,23 +361,23 @@ public abstract class BaseAction : MonoBehaviour
         }//End else of if (enemyAIActionList.Count > 0)
 
     }// End GetBestEnemyAIActionData
-    
 
 
     /// <summary>
     /// (Calculates and...):  Gets the "A.I. ACTION" DATA ("Cost" Value, final, calculated "Points", to see if it's worth it + LOCATION to move to: "Grid Position"...)  that is possible in a given (as INPUT:),  "Grid Position".
     /// </summary>
     /// <param name="gridPosition"></param>
+    /// <param name="initialAdditionalAIActionPointCostValueOfThisAction">_myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction's INITIAL VALUE to add</param>
     /// <returns>A set of  DATA  for taking this selected ACTION <br />
     /// Specially: <br /><br />
     /// 1- "Cost" of taking THIS ACTION... <br />
     /// 2- "Location":  GridPosition
     /// </returns>
-    public virtual EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition)
+    public virtual EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition, int initialAdditionalAIActionPointCostValueOfThisAction)
     {
         // Calculate the "Cost" & GridPosition  DATA:
         //
-        _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction = _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction * _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION;
+        _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction = initialAdditionalAIActionPointCostValueOfThisAction + ( _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction * _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION);
         
         // Return the basic DATA:
         //
@@ -423,7 +423,7 @@ public abstract class BaseAction : MonoBehaviour
             // 1- THIS (BaseAction casted-as a SPECIFIC ACTION)   (selected)
             // 2- on this (each... Grid) POSITION ...
             //
-            EnemyAIActionData enemyAIActionData = GetEnemyAIActionData( gridPosition );
+            EnemyAIActionData enemyAIActionData = GetEnemyAIActionData( gridPosition, 0 );
             //
             // 3- Add the ACTION to the LIST
             //

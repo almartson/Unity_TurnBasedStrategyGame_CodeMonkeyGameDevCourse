@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>
 /// This concrete class, (derived from BaseAction), handles the execution of the MOVE Action (Animations, timers, stages of the animation / action itself - even if it is a chain of animations tied up to each other and triggered together, - etc) <br />
 /// </summary>
+[System.Serializable]
 public class MoveAction : BaseAction
 {
     #region Attributes
@@ -427,8 +428,9 @@ public class MoveAction : BaseAction
     /// ...then this Algorithm would prioritize THAT "child of BaseAction", with THAT "ActionData"... (on that "GridPosition"). <br />
     /// </summary>
     /// <param name="gridPosition"></param>
+    /// <param name="initialAdditionalAIActionPointCostValueOfThisAction">_myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction's INITIAL VALUE to add</param>
     /// <returns>A set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
-    public override EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition)
+    public override EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition, int initialAdditionalAIActionPointCostValueOfThisAction)
     {
         // We want the Player not to move "RANDOMLY", but TOWARDS the weakest Unit-Player of the "Player team" (to attack it and Win in a easier way...):
         //
@@ -449,7 +451,7 @@ public class MoveAction : BaseAction
         //
         //    2.2- Execute the "Base Action" routine:
         //
-        EnemyAIActionData enemyAIActionData = base.GetEnemyAIActionData(gridPosition);
+        EnemyAIActionData enemyAIActionData = base.GetEnemyAIActionData(gridPosition, 0);
         
 
         //////////////

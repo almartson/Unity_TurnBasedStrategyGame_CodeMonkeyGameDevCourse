@@ -7,6 +7,7 @@ using UnityEngine;
 /// Handles the "DATA" 
 ///...for an associated:  "A.I. Action".
 /// </summary>
+[System.Serializable]
 public class EnemyAIActionData
 {
     #region Attributes

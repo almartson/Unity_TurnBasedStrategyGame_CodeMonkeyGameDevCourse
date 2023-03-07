@@ -54,6 +54,23 @@ public class EnemyAI : MonoBehaviour
 
     #endregion Timer: Semi-realistic "time delay" in-between FSM States
 
+    
+    #region A.I. DEBUG
+    
+    [Tooltip("Keeping track of the  BEST 'Enemy A.I. ACTION' (that's possible to choose):  Positional DATA.")]
+    [SerializeField]
+    private EnemyAIActionData _bestEnemyAIActionData;
+
+    [Tooltip("Keeping track of the  BEST 'Enemy A.I. ACTION' (that's possible to choose):  ACTION (object instance of 'BaseAction' Class)) chosen.")]
+    [SerializeField]
+    private BaseAction _bestBaseAction;
+
+    [Tooltip("In the end of the BEST ENEMY A.I. ACTION: \nIf there WAS a PREVIOUS 'BEST'  'Action' \n\n * TEST: \n\n2- 'Test' to see:  What ACTION is the BEST ?? \n\n * The results of the intermediate TEST is saved here\n\n * In the END: this the 'SECOND TO BEST'  ACTION chosen, generally.")]
+    [SerializeField]
+    private EnemyAIActionData _testEnemyAIActionData;
+
+    #endregion A.I. DEBUG
+    
     #endregion Attributes
 
 
@@ -262,11 +279,11 @@ public class EnemyAI : MonoBehaviour
         // 0- Keeping track of the  BEST "Enemy A.I. ACTION"  (possible to choose:
         //    0.1- Position - DATA
         //
-        EnemyAIActionData bestEnemyAIActionData = null;
+        _bestEnemyAIActionData = null;
         //
         //    0.2- ACTION  object
         //
-        BaseAction bestBaseAction = null;
+        _bestBaseAction = null;
         
 
         #region Find: the BEST TYPE of ACTION the NPC can afford with its actionPoints: AlMartson's (performance-oriented) Implementation
@@ -307,7 +324,7 @@ public class EnemyAI : MonoBehaviour
             // Check: 
             // Is there a previous BEST ONE ?  ( "bestEnemyAIActionData" )
             //
-            if (bestEnemyAIActionData == null)
+            if (_bestEnemyAIActionData == null)
             {
 
                 // The was NO PREVIOUS BEST  "Action"
@@ -316,11 +333,11 @@ public class EnemyAI : MonoBehaviour
                 
                 //   2.1- Get all DATA for THIS action, which is casted into - selected - (for each TYPE of)  ACTION
                 //
-                bestEnemyAIActionData = baseAction.GetBestEnemyAIActionData();
+                _bestEnemyAIActionData = baseAction.GetBestEnemyAIActionData();
                 //
                 //   2.2- Save the Best ACTION  type
                 //
-                bestBaseAction = baseAction;
+                _bestBaseAction = baseAction;
 
             }//End if (bestEnemyAIActionData...
             else
@@ -330,15 +347,15 @@ public class EnemyAI : MonoBehaviour
                 // TEST
                 // 2- "Test" to see:  What ACTION is the BEST ??
 
-                EnemyAIActionData testEnemyAIActionData = baseAction.GetBestEnemyAIActionData();
-                
+                _testEnemyAIActionData = baseAction.GetBestEnemyAIActionData();
+
                 //    2.1-  TEST:
                 //      a) testEnemyAIActionData      NOT NULL
                 // ...( CAN the ENEMY-NPC  "TAKE"  the Action ? )
                 //
                 //      b) Compare:  "actionValue"    (GREATER means BETTER)
                 //
-                if ( (testEnemyAIActionData != null) && (testEnemyAIActionData.actionValue > bestEnemyAIActionData.actionValue) )
+                if ( (_testEnemyAIActionData != null) && (_testEnemyAIActionData.actionValue > _bestEnemyAIActionData.actionValue) )
                 {
 
                     // testEnemyAIActionData & bestBaseAction   WIN!
@@ -347,14 +364,13 @@ public class EnemyAI : MonoBehaviour
                     //
                     //   3.1- Get all DATA for THIS action, which is casted into - selected - (for each TYPE of)  ACTION
                     //
-                    bestEnemyAIActionData = testEnemyAIActionData;
+                    _bestEnemyAIActionData = _testEnemyAIActionData;
                     //
                     //   3.2- Save the Best ACTION  type
                     //
-                    bestBaseAction = baseAction;
+                    _bestBaseAction = baseAction;
 
                 }//End if ( (testEnemyAIActionData != null)...
-
             }//End if (bestEnemyAIActionData...
 
         }//End for... (looking for the BEST  ACTION TYPE (type of action)... the ENEMY-NPC can AFFORD).
@@ -368,7 +384,7 @@ public class EnemyAI : MonoBehaviour
         
         // Validate  ACTION != null  &&   Have enough (ACTION) POINTS ?
         //
-        if ( (bestEnemyAIActionData != null)  &&  (enemyUnit.TrySpendActionPointsToTakeAction(bestBaseAction)) )
+        if ( ((_bestEnemyAIActionData != null) && (_bestBaseAction != null))  &&  (enemyUnit.TrySpendActionPointsToTakeAction(_bestBaseAction)) )
         {
 
             // .2.0- The actionPoints are Spent / used by now, already...
@@ -379,11 +395,11 @@ public class EnemyAI : MonoBehaviour
             //
             // .2.1.1- Save the original Mouse Position (just in case... as a backup)
             //
-            enemyUnit.MousePosition.Set(bestEnemyAIActionData.gridPosition.x, 0, bestEnemyAIActionData.gridPosition.z);
+            enemyUnit.MousePosition.Set(_bestEnemyAIActionData.gridPosition.x, 0, _bestEnemyAIActionData.gridPosition.z);
             //
             // .2.1.1- In _selectedUnit, for later use in 'TakeAction()':
             //
-            enemyUnit.SetFinalGridPositionOfNextPlayersAction(bestEnemyAIActionData.gridPosition);
+            enemyUnit.SetFinalGridPositionOfNextPlayersAction(_bestEnemyAIActionData.gridPosition);
             
 
             // .3- Set this Class (SERVICE) Methods as: BUSY .. until it ends:  Set MUTEX ON
@@ -393,7 +409,7 @@ public class EnemyAI : MonoBehaviour
             // .4- TakeAction() , A.I. ACTION
             // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: ) -> Sets Mutex OFF (when TakeAction() Ends...)
             //
-            bestBaseAction.TakeAction(onEnemyAIActionComplete);
+            _bestBaseAction.TakeAction(onEnemyAIActionComplete);
 
 
             // Return the "Success" State of the 'Take Action' process:

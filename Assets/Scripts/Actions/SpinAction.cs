@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>
 /// This concrete class, (derived from BaseAction), handles the execution of the SPIN Action (Animations, timers, stages of the animation / action itself - even if it is a chain of animations tied up to each other and triggered together, - etc) <br />
 /// </summary>
+[System.Serializable]
 public class SpinAction : BaseAction
 {
     #region Attributes
@@ -270,12 +271,13 @@ public class SpinAction : BaseAction
     /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position".
     /// </summary>
     /// <param name="gridPosition"></param>
+    /// <param name="initialAdditionalAIActionPointCostValueOfThisAction">_myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction's INITIAL VALUE to add</param>
     /// <returns>A set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
-    public override EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition)
+    public override EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition, int initialAdditionalAIActionPointCostValueOfThisAction)
     {
         // Execute the "Base Action" routine:
         //
-        return base.GetEnemyAIActionData(gridPosition);
+        return base.GetEnemyAIActionData(gridPosition, 0);
 
     }// End GetEnemyAIActionData
     

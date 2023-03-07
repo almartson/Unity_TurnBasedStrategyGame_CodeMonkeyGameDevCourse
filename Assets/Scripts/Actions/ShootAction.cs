@@ -9,6 +9,7 @@ using UnityEngine;
 /// This concrete class, (derived from BaseAction), handles the execution of the Shooting Action (Animations, timers, stages of the animation itself - even if it is a chain of animations tied up to each other and triggered together, - etc) <br />
 /// Here it is implemented a State Machine, handling STATES which are on an Enum variable, for the Animation STATES of the 'Shooting'.
 /// </summary>
+[System.Serializable]
 public class ShootAction : BaseAction
 {
     #region Attributes
@@ -665,27 +666,28 @@ public class ShootAction : BaseAction
     /// Strategy: To Shoot to the "Weakest Player First"... that means: assigning more "Value" to the "GridPosition" where the Player with the "least amount of HEALTH" is located.
     /// </summary>
     /// <param name="gridPosition"></param>
+    /// <param name="initialAdditionalAIActionPointCostValueOfThisAction">_myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction's INITIAL VALUE to add</param>
     /// <returns>A set of DATA  (note: specially the "Cost" of taking THIS ACTION...) for taking this selected ACTION.</returns>
-    public override EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition)
+    public override EnemyAIActionData GetEnemyAIActionData(GridPosition gridPosition, int initialAdditionalAIActionPointCostValueOfThisAction)
     {
         // Getting the "Weakest" Character (i.e.: Target) to Shoot at:  We need the Health of each Character of the Opposite Team:
         //
         Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
-        
-        
-        // Execute the "Base Action" routine:
-        //
-        EnemyAIActionData enemyAIActionData = base.GetEnemyAIActionData(gridPosition);
-        
+
         
         ////////////////
         Debug.Log($"(Before using 'targetUnit.GetDamageTakenOfHealthPercent()...' ->  )_myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction = {_myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction.ToString()} ... ... Attacker = {_unit} | Target = {_targetUnit} ");
         ////////////////
         
         
-        // Calculate the "Target"'s HEALTH, and add it as a VALUE to the "Action Value" (for the Enemy A.I. to decide on the Greatest one):
+        
+        // Calculate the "Target"'s TOTAL DAMAGE TAKEN so far in the game..., and add it as a VALUE to the "Action WORTH-Value" (for the Enemy A.I. to decide on the Greatest one):
         //
-        _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction += Mathf.RoundToInt(targetUnit.GetDamageTakenOfHealthPercent());
+        int unitTargetTotalDamageTaken = Mathf.RoundToInt(targetUnit.GetDamageTakenOfHealthPercent());
+
+        // Execute the "Base Action" routine:
+        //
+        EnemyAIActionData enemyAIActionData = base.GetEnemyAIActionData(gridPosition, unitTargetTotalDamageTaken);
 
         
         ////////////////
