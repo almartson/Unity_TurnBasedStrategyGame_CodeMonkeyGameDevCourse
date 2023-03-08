@@ -404,7 +404,10 @@ public class EnemyAI : MonoBehaviour
         
         // Validate  ACTION != null  &&   Have enough (ACTION) POINTS    &&  ACTION is  MEANINGFULLY?
         //
-        if ( ((_bestEnemyAIActionData != null) && (_bestBaseAction != null))  &&  (enemyUnit.TrySpendActionPointsToTakeAction(_bestBaseAction)) && (_bestEnemyAIActionData.actionValue > 0) /* This means: Just TAKE ACTION when the ACTION is MEANINGFULLY... more that ZERO POINTS in VALUE / WORTH */ )
+        if ( ((_bestEnemyAIActionData != null) && (_bestBaseAction != null))  &&  (enemyUnit.TrySpendActionPointsToTakeAction(_bestBaseAction)) 
+            /* Rework this Next Guard, because some ACTIONS can have a VALUE=0 in THIS TURN... for the SAKE OF A MORE COMPLEX CHAINED-STRATEGY of 2, 3 OR MORE CONSECUTIVE STEPS-TURNS:  See below:
+             
+             && (_bestEnemyAIActionData.actionValue > 0)*/ /* This means: Just TAKE ACTION when the ACTION is MEANINGFULLY... more that ZERO POINTS in VALUE / WORTH */ )
         {
 
             // .2.0- The actionPoints are Spent / used by now, already...
