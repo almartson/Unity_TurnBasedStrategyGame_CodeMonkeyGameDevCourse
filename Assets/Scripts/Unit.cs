@@ -309,7 +309,7 @@ public class Unit : MonoBehaviour
         //
         // Go through every "BaseAction" TYPE, in the LIST (_baseActionArray)... in a FOR-LOOP:
         //
-        for (int i = 0; i < baseActionArrayLenght; i++) // (BaseAction baseAction in _baseActionArray)
+        for (int i = 0; i < baseActionArrayLenght; i++)
         {
         
             // Extract a ITEM of the Array to work with it:
@@ -328,7 +328,7 @@ public class Unit : MonoBehaviour
         
             }// End if (baseAction is T)
         
-        }//End foreach Cycling - looping through All TYPES of ACTION CLASSES
+        }//End for Cycling - looping through All TYPES of ACTION CLASSES
         
         #endregion AlMartson's Code - Performance oriented
         
