@@ -1,12 +1,5 @@
 {
   "dependencies": {
-    "com.dragyngames.debug": {
-      "version": "https://github.com/Dragyn85/InGameDebugLoggs.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "778564d8c8b1a4bdadbdbca166190eb0042c6602"
-    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
