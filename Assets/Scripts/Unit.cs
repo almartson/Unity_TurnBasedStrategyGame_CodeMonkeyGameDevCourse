@@ -101,22 +101,7 @@ public class Unit : MonoBehaviour
     /// LIST of ALL ACTIONS that can be performed (by this type of Unit / Character of the game). 
     /// </summary>
     private BaseAction[] _baseActionArray;
-    
-    /// <summary>
-    /// Reference to the MoveAction script to make the Units / Characters able to execute the Action: 'TakeAction' (Walk, etc...). 
-    /// </summary>
-    private MoveAction _moveAction;
-    
-    /// <summary>
-    /// Reference to the SpinAction script to make the Units / Characters able to execute the Action: 'TakeAction' (Rotate). 
-    /// </summary>
-    private SpinAction _spinAction;
 
-    /// <summary>
-    /// Reference to the ShootAction script to make the Units / Characters able to execute the Action: 'TakeAction' (Shoot attack). 
-    /// </summary>
-    private ShootAction _shootAction;
-    
     #endregion Action's List
 
 
@@ -185,15 +170,10 @@ public class Unit : MonoBehaviour
         _healthSystem = GetComponent<HealthSystem>();
         
         #endregion Health
-        
+
+
         #region Actions setup
         
-        // Get the Actions & the List of ALL Actions:        
-        //
-        _moveAction = GetComponent<MoveAction>();
-        _spinAction = GetComponent<SpinAction>();
-        _shootAction = GetComponent<ShootAction>();
-        //
         // Get the List of Actions:
         // NOTE: GetComponentSSSS<TYPE>: gets ALL Components of TYPE=< BaseAction >
         // ..(or that are children / Extend from < BaseAction >)... in this GameObject.
@@ -290,32 +270,74 @@ public class Unit : MonoBehaviour
         return _baseActionArray;
     }
     
-    /// <summary>
-    /// Getter for <code>MoveAction</code>
-    /// </summary>
-    /// <returns></returns>
-    public MoveAction GetMoveAction()
-    {
-        return _moveAction;
-    }
     
     /// <summary>
-    /// Getter for <code>SpinAction</code>
+    /// Getter for <code>ANY Action</code>CLASS... using C# Generics.
     /// </summary>
     /// <returns></returns>
-    public SpinAction GetSpinAction()
+    public T GetAction<T>() where T : BaseAction
     {
-        return _spinAction;
-    }
 
-    /// <summary>
-    /// Getter for <code>ShootAction</code>
-    /// </summary>
-    /// <returns></returns>
-    public ShootAction GetShootAction()
-    {
-        return _shootAction;
-    }
+        #region CodeMonkey's Original Code - Non Performant
+
+        // // Go through every "BaseAction" TYPE, in the LIST (_baseActionArray)... in a FOR-LOOP:
+        // //
+        // foreach (BaseAction baseAction in _baseActionArray)
+        // {
+        //     // if baseAction of the FOR-LOOP found a match with: a <T> TYPE  "BaseAction"   (i.e.: Shoot, Move, Spin, etc ... ACTION), then:
+        //     //
+        //     if (baseAction is T)
+        //     {
+        //
+        //         // Return the Object of that:  TYPE 
+        //         // Cast baseAction  -> to ->   "baseAction"
+        //         //
+        //         return (T) baseAction;
+        //
+        //     }// End if (baseAction is T)
+        //
+        // }//End foreach Cycling - looping through All TYPES of ACTION CLASSES
+        
+        #endregion CodeMonkey's Original Code - Non Performant
+
+        
+        #region AlMartson's Code - Performance oriented
+
+        // _baseActionArray  Length
+        //
+        int baseActionArrayLenght = _baseActionArray.Length;
+        //
+        // Go through every "BaseAction" TYPE, in the LIST (_baseActionArray)... in a FOR-LOOP:
+        //
+        for (int i = 0; i < baseActionArrayLenght; i++) // (BaseAction baseAction in _baseActionArray)
+        {
+        
+            // Extract a ITEM of the Array to work with it:
+            //
+            BaseAction baseAction = _baseActionArray[i];
+            
+            // if baseAction of the FOR-LOOP found a match with: a <T> TYPE  "BaseAction"   (i.e.: Shoot, Move, Spin, etc ... ACTION), then:
+            //
+            if (baseAction is T)
+            {
+        
+                // Return the Object of that:  TYPE 
+                // Cast baseAction  -> to ->   "baseAction"
+                //
+                return (T) baseAction;
+        
+            }// End if (baseAction is T)
+        
+        }//End foreach Cycling - looping through All TYPES of ACTION CLASSES
+        
+        #endregion AlMartson's Code - Performance oriented
+        
+        // If: it  did NOT FIND a match (Input parameter's TYPE = T  vs.:  one TYPE in that LIST - _baseActionArray -)
+        //
+        return null;
+
+    }// End GetAction
+    
     
     #region POINTS  - for every Action
 

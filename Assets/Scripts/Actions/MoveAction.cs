@@ -441,7 +441,7 @@ public class MoveAction : BaseAction
         //
         // 1- TRY to FIND HOW MANY "SHOOTABLE" "Targets" ("UNIT-PLAYERS) are there, from that POSITION  (GridPosition):
         //
-        int targetCountAtPosition = _unit.GetShootAction().GetTargetCountAtPosition(gridPosition);
+        int targetCountAtPosition = _unit.GetAction<ShootAction>().GetTargetCountAtPosition(gridPosition);
         //
         // Save the 'targetCountAtPosition'  as the 'Cost Multiplier' of this  "A.I. ACTION":
         //

@@ -777,7 +777,7 @@ public class UnitActionSystem : MonoBehaviour
         
         // Select a Default Action for the Character / Unit:  MOVE ACTION
         //
-        SetSelectedAction( unit.GetMoveAction() );
+        SetSelectedAction( unit.GetAction<MoveAction>() );
         
         // Fire the EVENT (Observer Pattern) from the PUBLISHER (i.e.: represented by this Class).
         // 1- Do a NULL check on the EventHandler:
