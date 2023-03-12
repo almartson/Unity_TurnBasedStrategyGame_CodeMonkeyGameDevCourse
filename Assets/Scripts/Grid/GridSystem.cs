@@ -174,7 +174,7 @@ public class GridSystem<TGridObject>
             }//End for 2
             
         }//End for 1
-    }
+    }// End CreateDebugObjects
 
 
     /// <summary>
