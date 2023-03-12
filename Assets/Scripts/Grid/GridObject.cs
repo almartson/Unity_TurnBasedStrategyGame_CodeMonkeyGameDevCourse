@@ -3,19 +3,20 @@ using UnityEngine;
 
 /// <summary>
 /// Entity that references "Logically" (in terms of Business Logic)
-///...a Cell / Grid in the 'Grid System'.
+///...a Cell / Grid in the "Game Board":  a.k.a.:   'Grid System'. <br />
 /// It contains GameObjects, and Items in a Cell, and also
-///...a Mathematical Position (x, z) in the Struct called: GridPosition
+///...a Mathematical Position ((x, z), similar to Vector2 i.e. (x, y)...) in the Struct called: "GridPosition" <br />
+/// Reference: Check this project's UML Class Diagram. <br />
 /// </summary>
 public class GridObject
 {
     #region Attributes
 
     
-    [Tooltip("System that created this Object")]
-    private GridSystem _gridSystem;
+    [Tooltip("System that created this Object. This System is the Game Board, with its Logic.")]
+    private GridSystem<GridObject> _gridSystem;
     
-    [Tooltip("Position this Object belongs to...")]
+    [Tooltip("Mathematical (x, z) Position this Object belongs to...")]
     private GridPosition _gridPosition;
 
     [Tooltip("Unit/Game Characters, this Object contains...")]
@@ -27,7 +28,12 @@ public class GridObject
 
     #region Constructors
 
-    public GridObject(GridSystem gridSystem, GridPosition gridPosition)
+    /// <summary>
+    /// Main Constructor
+    /// </summary>
+    /// <param name="gridSystem"></param>
+    /// <param name="gridPosition"></param>
+    public GridObject(GridSystem<GridObject> gridSystem, GridPosition gridPosition)
     {
         _gridSystem = gridSystem;
         _gridPosition = gridPosition;

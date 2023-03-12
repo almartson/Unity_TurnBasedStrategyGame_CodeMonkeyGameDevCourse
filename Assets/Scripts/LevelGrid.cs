@@ -1,12 +1,16 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
-
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// ("GridSystem"'s) MANAGER that: <br />
+/// 1- Spawns the "GridSystem" (i.e.: the Game Board). <br />
+/// 2- Modifies the "GridObjects" (i.e.: Cells / Grids in the "Game Board") that are in the "GridSystem" based on "GridPositions". <br />
+/// Reference: Check this project's UML Class Diagram. <br />
+/// </summary>
 public class LevelGrid : MonoBehaviour
 {
 
@@ -23,13 +27,23 @@ public class LevelGrid : MonoBehaviour
     
     
     /// <summary>
-    /// The Grid Cells.
+    /// The Grid Cells, the GAME BOARD.
     ///
     /// From a Logical point of view.
     /// 
     /// Contains: GridObjects (the Logical Squares/Cells) + GridPositions (the Mathematical Positions and Data: (x, y, z))
     /// </summary>
-    private GridSystem _gridSystem;
+    private GridSystem<GridObject> _gridSystem;
+
+    /// <summary>
+    /// Number of Cells (horizontally), (that are about to be used to create the Game Board).
+    /// </summary>
+    private const int _WIDTH_OF_GAME_BOARD_GRID_SYSTEM = 10;
+    
+    /// <summary>
+    /// Number of Cells (vertically), (that are about to be used to create the Game Board).
+    /// </summary>
+    private const int _HEIGHT_OF_GAME_BOARD_GRID_SYSTEM = 10;
 
 
     #region Delegates - CallBacks - Listeners
@@ -74,7 +88,8 @@ public class LevelGrid : MonoBehaviour
         
         // 2- Grid System Initialization
         //
-        _gridSystem = new GridSystem(10, 10, 2f);
+        _gridSystem = new GridSystem<GridObject>(_WIDTH_OF_GAME_BOARD_GRID_SYSTEM, _HEIGHT_OF_GAME_BOARD_GRID_SYSTEM, 2f, 
+            (GridSystem<GridObject> g, GridPosition gridPosition ) => new GridObject(g, gridPosition) );
         //
         // Create the GameObject that will hold a Visual Representation of the Grid System. Calling the Constructor:
         //

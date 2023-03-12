@@ -1,13 +1,18 @@
-
 using System;
 
+/// <summary>
+/// Mathematical 2-dimensional (x, z) Vector that contains Positional Data. <br />
+/// Reference: Check this project's UML Class Diagram. <br />
+/// </summary>
 [System.Serializable]
 public struct GridPosition : IEquatable<GridPosition>
 {
+    #region Attributes
     
     public int x;
     public int z;
 
+    #endregion Attributes
 
     
     #region Constructor
@@ -22,6 +27,8 @@ public struct GridPosition : IEquatable<GridPosition>
 
     
     #region Methods
+
+    #region Misc
 
     /// <summary>
     /// Prints this Object's <code>GridPosition</code> data.
@@ -44,6 +51,11 @@ public struct GridPosition : IEquatable<GridPosition>
         //
         return $"( {x}, 0, {z} )";
     }
+
+    #endregion Misc
+
+    
+    #region Getters and Setters
     
     /// <summary>
     /// Sets all parameters (x, z): together.
@@ -55,7 +67,31 @@ public struct GridPosition : IEquatable<GridPosition>
         this.x = x;
         this.z = z;
     }
+    
+    #endregion Getters and Setters
+    
+    
+    #region Equality. Automatically, Generated Metods
 
+    public bool Equals(GridPosition other)
+    {
+        return this == other;
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is GridPosition other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(x, z);
+    }
+    
+    #endregion Equality. Automatically, Generated Metods
+
+    
+    #region == and != Operators
     
     /// <summary>
     /// Override Definition of the == Operator for this Struct. 
@@ -79,25 +115,8 @@ public struct GridPosition : IEquatable<GridPosition>
         return !(a == b);
     }
 
+    #endregion == and != Operators
     
-    #region Equality (Automatically) Generated Metods
-
-    public bool Equals(GridPosition other)
-    {
-        return this == other;
-    }
-
-    public override bool Equals(object obj)
-    {
-        return obj is GridPosition other && Equals(other);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(x, z);
-    }
-
-    #endregion Equality (Automatically) Generated Metods
 
     #region + and - Operators
 
