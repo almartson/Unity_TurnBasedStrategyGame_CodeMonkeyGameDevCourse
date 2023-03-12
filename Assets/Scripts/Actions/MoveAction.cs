@@ -454,14 +454,14 @@ public class MoveAction : BaseAction
         EnemyAIActionData enemyAIActionData = base.GetEnemyAIActionData(gridPosition, 0);
         
 
-        //////////////
-        // Show only when the WORTHINESS OF THIS ACTION surpasses the STANDARD REASON / VALUE (i.e.: 10):
-        //
-        if (enemyAIActionData.actionValue > this._AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION)
-        {
-            Debug.Log($"enemyAIActionData.actionValue = {enemyAIActionData.actionValue.ToString()} \n* At enemyAIActionData.gridPosition() = ( {enemyAIActionData.gridPosition.x.ToString()} , 0, {enemyAIActionData.gridPosition.z.ToString()} )");
-        }
-        //////////////
+        // //////////////
+        // // Show only when the WORTHINESS OF THIS ACTION surpasses the STANDARD REASON / VALUE (i.e.: 10):
+        // //
+        // if (enemyAIActionData.actionValue > this._AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION)
+        // {
+        //     Debug.Log($"enemyAIActionData.actionValue = {enemyAIActionData.actionValue.ToString()} \n* At enemyAIActionData.gridPosition() = ( {enemyAIActionData.gridPosition.x.ToString()} , 0, {enemyAIActionData.gridPosition.z.ToString()} )");
+        // }
+        // //////////////
         
         // Return the final ENEMY A.I. DATA:
         //
