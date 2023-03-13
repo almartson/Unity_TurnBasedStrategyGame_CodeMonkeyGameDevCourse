@@ -9,6 +9,7 @@ using UnityEngine;
 /// ("GridSystem"'s) MANAGER that: <br />
 /// 1- Spawns the "GridSystem" (i.e.: the Game Board). <br />
 /// 2- Modifies the "GridObjects" (i.e.: Cells / Grids in the "Game Board") that are in the "GridSystem" based on "GridPositions". <br />
+/// 
 /// Reference: Check this project's UML Class Diagram. <br />
 /// </summary>
 public class LevelGrid : MonoBehaviour
@@ -36,14 +37,21 @@ public class LevelGrid : MonoBehaviour
     private GridSystem<GridObject> _gridSystem;
 
     /// <summary>
+    /// Todo: Move these Constants to a Scriptable Object.
+    /// 
     /// Number of Cells (horizontally), (that are about to be used to create the Game Board).
     /// </summary>
-    private const int _WIDTH_OF_GAME_BOARD_GRID_SYSTEM = 10;
+    public const int WIDTH_OF_GAME_BOARD_GRID_SYSTEM = 10;
     
     /// <summary>
     /// Number of Cells (vertically), (that are about to be used to create the Game Board).
     /// </summary>
-    private const int _HEIGHT_OF_GAME_BOARD_GRID_SYSTEM = 10;
+    public const int HEIGHT_OF_GAME_BOARD_GRID_SYSTEM = 10;
+
+    /// <summary>
+    /// Size of each Squared Cell (that compounds the Game Board).
+    /// </summary>
+    public const float CELL_SIZE_OF_GAME_BOARD_GRID_SYSTEM = 2f;
 
 
     #region Delegates - CallBacks - Listeners
@@ -88,13 +96,16 @@ public class LevelGrid : MonoBehaviour
         
         // 2- Grid System Initialization
         //
-        _gridSystem = new GridSystem<GridObject>(_WIDTH_OF_GAME_BOARD_GRID_SYSTEM, _HEIGHT_OF_GAME_BOARD_GRID_SYSTEM, 2f, 
+        _gridSystem = new GridSystem<GridObject>(WIDTH_OF_GAME_BOARD_GRID_SYSTEM, HEIGHT_OF_GAME_BOARD_GRID_SYSTEM, CELL_SIZE_OF_GAME_BOARD_GRID_SYSTEM, 
             (GridSystem<GridObject> g, GridPosition gridPosition ) => new GridObject(g, gridPosition) );
         //
         // Create the GameObject that will hold a Visual Representation of the Grid System. Calling the Constructor:
         //
-        _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
-    }
+        // Original Implementation:  _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+        //
+        //_gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+
+    }// End Awake
 
 
     /// <summary>

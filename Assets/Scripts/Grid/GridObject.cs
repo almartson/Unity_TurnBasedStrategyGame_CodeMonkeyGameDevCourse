@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Entity that references "Logically" (in terms of Business Logic)
-///...a Cell / Grid in the "Game Board":  a.k.a.:   'Grid System'. <br />
+/// Entity that references "Logically" (in terms of Business Logic):  a Cell / Grid in the "Game Board" (a.k.a.:   'Grid System'). <br />
 /// It contains GameObjects, and Items in a Cell, and also
 ///...a Mathematical Position ((x, z), similar to Vector2 i.e. (x, y)...) in the Struct called: "GridPosition" <br />
+/// 
 /// Reference: Check this project's UML Class Diagram. <br />
 /// </summary>
 public class GridObject

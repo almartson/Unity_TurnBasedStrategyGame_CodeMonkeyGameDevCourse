@@ -9,26 +9,29 @@ public class GridDebugObject : MonoBehaviour
 
     [SerializeField] private TextMeshPro _textMeshPro;
     
-    public GridObject gridObject;
+    /// <summary>
+    /// Generic C# Object, able to be casted into 'GridObject'.
+    /// </summary>
+    private object _gridObject;
 
 
     #region Unity Methods
 
     // private void Start()
     // {
-    //     _textMeshPro.text = gridObject.ToString();
+    //     _textMeshPro.text = _gridObject.ToString();
     // }
 
     
     /// <summary>
     /// TODO: Fix: This Codemonkey's implementation is NOT Performant.
     /// </summary>
-    private void Update()
+    protected virtual void Update()
     {
         
         // TODO: Fix: This Codemonkey's implementation is NOT Performant.
         //
-        _textMeshPro.text = gridObject.ToString();
+        _textMeshPro.text = _gridObject.ToString();
     }
 
     #endregion Unity Methods
@@ -36,9 +39,9 @@ public class GridDebugObject : MonoBehaviour
     
     #region Custom Methods
     
-    public void SetGridObject(GridObject gridObject)
+    public virtual void SetGridObject(object gridObject)
     {
-        this.gridObject = gridObject;
+        this._gridObject = gridObject;
     }
 
     #endregion Custom Methods

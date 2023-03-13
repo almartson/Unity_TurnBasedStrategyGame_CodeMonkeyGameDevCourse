@@ -4,6 +4,7 @@ using UnityEngine;
 /// <summary>
 /// This is basically the GAME's BOARD (in logic terms). <br />
 /// It contains all the (Square) Cells called "GridObject" (with the C# Generic Name Type: TGridObject) in a list-Array: <br /> <code>_gridObjectArray</code> <br />
+/// 
 /// Reference: Check this project's UML Class Diagram. <br />
 /// </summary>
 public class GridSystem<TGridObject>
@@ -140,7 +141,7 @@ public class GridSystem<TGridObject>
     {
         // Create a parent GameObject for organizing the multiple GameObjects that will be instantiated later...
         //
-        GameObject parentCell = new GameObject("GridCells_ForDebugging_(x,y,z)PositionsAndUnitName");
+        GameObject parentCell = new GameObject("Pathfinding_GridCells_ForDebugging_(x,y,z)Nodes_G,H,F_Pathfinding");
         
         
         for (int x = 0; x < _width; x++)
@@ -165,7 +166,7 @@ public class GridSystem<TGridObject>
                 // Set the whole numbering of the Cells / Grid in the whole Grid System
                 //..(NOTE: the best approach is to use a Method, and not to paste the code here):
                 //
-                gridDebugObject.SetGridObject(GetGridObject(gridPosition) as GridObject);
+                gridDebugObject.SetGridObject(GetGridObject(gridPosition));
 
                 // Set & update the Numbers of each Cell/Grid: (x, y, z)
                 //...this is done in the Start() Method of: 'GridDebugObject' 
