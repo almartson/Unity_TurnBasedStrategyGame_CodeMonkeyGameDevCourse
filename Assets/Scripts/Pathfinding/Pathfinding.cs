@@ -39,11 +39,11 @@ public class Pathfinding : MonoBehaviour
     #region GridSystem, Game Board
 
     /// <summary>
-    /// The Grid Cells, the GAME BOARD.
+    /// The System of:  NODES (Pathfinding), the Grid Cells, the 'GAME BOARD' itself. <br /> <br />
     ///
-    /// From a Logical point of view.
+    /// From a Logical point of view. <br /> <br />
     /// 
-    /// Contains: Path Nodes (the Logical Squares/Cells) that contain inside: "GridPositions" (Structs: the Mathematical Positions and Data: (x, y, z))
+    /// Contains: Path Nodes (the Logical Squares/Cells) that contain inside: "GridPositions" (Structs: the Mathematical Positions and Data: (x, y, z)).
     /// </summary>
     private GridSystem<PathNode> _gridSystem;
     

@@ -2,7 +2,8 @@ using System;
 
 /// <summary>
 /// Entity that references "Logically" (in terms of Business Logic)
-///...a ( "GridObject" ): Cell / Grid in the "Game Board" (i.e.: 'Grid System', but only for PATHFINDING). <br />
+///...a (Pathfinding...) 'NODE'  ( "GridObject" ): <br /> <br />
+/// Cell / Grid in the "Game Board" (i.e.: 'Grid System', but only for PATHFINDING). <br /> <br />
 /// It contains GameObjects, and Items in a Cell, and also
 ///...a Mathematical Position ((x, z), similar to Vector2 i.e. (x, y)...) in the Struct called: "GridPosition" <br />
 /// 
