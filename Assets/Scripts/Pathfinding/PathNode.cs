@@ -100,13 +100,67 @@ public class PathNode
     #region Getters and Setters
 
     public int GetGCost() => _gCost;
-    
+
     public int GetHCost() => _hCost;
     
     public int GetFCost() => _fCost;
+    
+    public void SetGCost(int gCost)
+    {
+        _gCost = gCost;
+    }
 
+    public void SetHCost(int hCost)
+    {
+        _hCost = hCost;
+    }
+
+    /// <summary>
+    /// Calculates the F Cost of the Pathfinding Algorithm on this PathNode: <br />
+    /// <code>F = G + H</code> 
+    /// </summary>
+    public void CalculateFCost()
+    {
+        _fCost = _gCost + _hCost;
+
+    }// End CalculateFCost
+
+
+    /// <summary>
+    /// Initialize '_cameFromPathNode' to NULL.
+    /// </summary>
+    public void ResetCameFromPathNode()
+    {
+        _cameFromPathNode = null;
+
+    }// End ResetCameFromPathNode
+
+    /// <summary>
+    /// Set '_cameFromPathNode'.
+    /// </summary>
+    public void SetCameFromPathNode(PathNode cameFromPathNode)
+    {
+        _cameFromPathNode = cameFromPathNode;
+
+    }// End SetCameFromPathNode
+    
+    /// <summary>
+    /// Get '_cameFromPathNode'.
+    /// </summary>
+    public PathNode GetCameFromPathNode()
+    {
+        return _cameFromPathNode;
+
+    }// End GetCameFromPathNode
+    
+
+    public GridPosition GetGridPosition()
+    {
+        return _gridPosition;
+    }
+    
     #endregion Getters and Setters
-
+    
 
     #endregion My Custom Methods
 
