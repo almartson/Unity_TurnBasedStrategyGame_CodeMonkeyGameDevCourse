@@ -24,6 +24,32 @@ public class Pathfinding : MonoBehaviour
     #endregion Singleton Pattern's
 
     
+    #region Constants
+    
+    /// <summary>
+    /// Math position of a Movement to another 'GridPosition':  Forwards
+    /// ...(Cache: for Performance reasons)
+    /// </summary>
+    public static readonly GridPosition _A_FORWARDS_GRID_POSITION = new GridPosition(0, 1);
+    /// <summary>
+    /// Math position of a Movement to another 'GridPosition':  Backwards
+    /// ...(Cache: for Performance reasons)
+    /// </summary>
+    public static readonly GridPosition _A_BACKWARDS_GRID_POSITION = new GridPosition(0, -1);
+    /// <summary>
+    /// Math position of a Movement to another 'GridPosition':  Rightwards
+    /// ...(Cache: for Performance reasons)
+    /// </summary>
+    public static readonly GridPosition _A_RIGHTWARDS_GRID_POSITION = new GridPosition(1, 0);
+    /// <summary>
+    /// Math position of a Movement to another 'GridPosition':  Leftwards
+    /// ...(Cache: for Performance reasons)
+    /// </summary>
+    public static readonly GridPosition _A_LEFTWARDS_GRID_POSITION = new GridPosition(-1, 0);
+
+    #endregion Constants
+    
+    
     [Tooltip("Visuals of Grid System, for Visual Debugging in the Unity Editor")]
     [SerializeField]
     private Transform _gridDebugObjectPrefab;
@@ -551,14 +577,23 @@ public class Pathfinding : MonoBehaviour
         //
         List<GridPosition> neighbourPositionList = new List<GridPosition>()
         {
-            gridPosition + new GridPosition( 0,  1), // N
-            gridPosition + new GridPosition( 1,  1), // NE
-            gridPosition + new GridPosition( 1,  0), // E
-            gridPosition + new GridPosition( 1, -1), // SE
-            gridPosition + new GridPosition( 0, -1), // S
-            gridPosition + new GridPosition(-1, -1), // SW
-            gridPosition + new GridPosition(-1,  0), // W
-            gridPosition + new GridPosition(-1,  1), // NW
+            // gridPosition + new GridPosition( 0,  1), // N
+            // gridPosition + new GridPosition( 1,  1), // NE
+            // gridPosition + new GridPosition( 1,  0), // E
+            // gridPosition + new GridPosition( 1, -1), // SE
+            // gridPosition + new GridPosition( 0, -1), // S
+            // gridPosition + new GridPosition(-1, -1), // SW
+            // gridPosition + new GridPosition(-1,  0), // W
+            // gridPosition + new GridPosition(-1,  1), // NW
+            //
+            gridPosition + _A_FORWARDS_GRID_POSITION, // N
+            gridPosition + _A_FORWARDS_GRID_POSITION + _A_RIGHTWARDS_GRID_POSITION, // NE
+            gridPosition + _A_RIGHTWARDS_GRID_POSITION, // E
+            gridPosition + _A_BACKWARDS_GRID_POSITION + _A_RIGHTWARDS_GRID_POSITION, // SE
+            gridPosition + _A_BACKWARDS_GRID_POSITION, // S
+            gridPosition + _A_BACKWARDS_GRID_POSITION + _A_LEFTWARDS_GRID_POSITION, // SW
+            gridPosition + _A_LEFTWARDS_GRID_POSITION, // W
+            gridPosition + _A_FORWARDS_GRID_POSITION + _A_LEFTWARDS_GRID_POSITION, // NW
         };
 
         // Validate the new GridPosition(s):
@@ -566,6 +601,7 @@ public class Pathfinding : MonoBehaviour
         int neighbourPositionListCount = neighbourPositionList.Count;
         //
         // Non-Performant version:   foreach (GridPosition neighbourPosition in neighbourPositionList)
+        // Performant (For) version:
         //
         for (int i = 0; i < neighbourPositionListCount; i++ ) 
         {
@@ -583,7 +619,6 @@ public class Pathfinding : MonoBehaviour
         }//End for (int i = 0;...
         
         #endregion Check ALL POSSIBLE NEIGHBOURS - Accessable locations of the Game Board
-        
         
         // Return Neighbour List
         //
