@@ -26,6 +26,7 @@ public class Pathfinding : MonoBehaviour
     
     #region Constants
     
+    // Todo: To Move these Constants to:  a Scriptable Object for these Type of CONSTANTS (GridPosition, Game Grid Board's...etc)
     /// <summary>
     /// Math position of a Movement to another 'GridPosition':  Forwards
     /// ...(Cache: for Performance reasons)
@@ -48,29 +49,7 @@ public class Pathfinding : MonoBehaviour
     public static readonly GridPosition _A_LEFTWARDS_GRID_POSITION = new GridPosition(-1, 0);
 
     #endregion Constants
-    
-    
-    [Tooltip("Visuals of Grid System, for Visual Debugging in the Unity Editor")]
-    [SerializeField]
-    private Transform _gridDebugObjectPrefab;
 
-
-    /// <summary>
-    /// Number of Cells (horizontally), (of the Game Board).
-    /// </summary>
-    private int _width;
-    
-    /// <summary>
-    /// Number of Cells (vertically), (of the Game Board).
-    /// </summary>
-    private int _height;
-    
-    /// <summary>
-    /// Size of each Squared Cell (that compounds the Game Board).
-    /// </summary>
-    private float _cellSize;
-
-    
     #region COST Constants, for Computing G, H, F
 
     /// <summary>
@@ -99,7 +78,56 @@ public class Pathfinding : MonoBehaviour
     /// </summary>
     private GridSystem<PathNode> _gridSystem;
     
+    
+    [Tooltip("Visuals of Grid System, for Visual Debugging in the Unity Editor")]
+    [SerializeField]
+    private Transform _gridDebugObjectPrefab;
+
+
+    /// <summary>
+    /// Number of Cells (horizontally), (of the Game Board).
+    /// </summary>
+    private int _width;
+    
+    /// <summary>
+    /// Number of Cells (vertically), (of the Game Board).
+    /// </summary>
+    private int _height;
+    
+    /// <summary>
+    /// Size of each Squared Cell (that compounds the Game Board).
+    /// </summary>
+    private float _cellSize;
+
     #endregion GridSystem, Game Board
+    
+    
+    #region Obstacles for Pathfinding
+
+    [Tooltip("Obstacles Label-LayerMask for Pathfinding")]
+    [SerializeField]
+    private LayerMask _obstaclesLayerMask;
+    //
+    /// <summary>
+    /// Getter and Setter Property for Field: _obstaclesLayerMask
+    /// </summary>
+    public LayerMask ObstaclesLayerMask { get => _obstaclesLayerMask; private set => _obstaclesLayerMask = value; }
+
+    #region Raycast
+    
+    /// <summary>
+    /// Raycast Hit (past) Summary / info.
+    /// </summary>
+    private RaycastHit[] _raycastHitInfo;
+
+    [Tooltip("Raycast Vertical Offset Distance, from the Ground Level:  To shoot the RAYCAST from this level y=something almost zero,... so we do not need to activate:  In the Unity Editor, in the Settings -> Physics TAB ...-> the Option: 'Queries MAY HIT BACKFACES' = TRUE.")]
+    [SerializeField]
+    private float _raycastVerticalOffsetDistance = 0.2f;
+
+    #endregion Raycast
+
+    #endregion Obstacles for Pathfinding
+    
     
     #endregion Attributes
 
@@ -133,18 +161,14 @@ public class Pathfinding : MonoBehaviour
         Instance = this;
         
         #endregion Singleton Pattern's
+        
+        #region Utils
 
-
-        // Create the "GridSystem",  for (A.I.) A* Pathfinding:
-        // ...with  "Path Nodes"
+        // Raycast info:
         //
-        _gridSystem = new GridSystem<PathNode>(LevelGrid.WIDTH_OF_GAME_BOARD_GRID_SYSTEM, LevelGrid.HEIGHT_OF_GAME_BOARD_GRID_SYSTEM, LevelGrid.CELL_SIZE_OF_GAME_BOARD_GRID_SYSTEM,
-            (GridSystem<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition));
-
-
-        // Create the GameObject that will hold a Visual Representation of the Grid System. Calling the Constructor:
-        //
-        _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+        _raycastHitInfo = new RaycastHit[7];
+        
+        #endregion Utils
 
     }// End Awake
 
@@ -161,10 +185,101 @@ public class Pathfinding : MonoBehaviour
 
 
     #endregion Unity Methods
-    
+
 
     #region My Custom Methods
 
+    #region Setup, Initialization Methods
+
+    /// <summary>
+    /// Creates and Initializes the "Node System" (using the Class <code>PathNode</code>, a List of those... which is equivalent to a List of GridObject's), for A* Pathfinding.
+    /// </summary>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="cellSize"></param>
+    public void Setup(int width, int height, float cellSize)
+    {
+        // 0- Setup the Game Board (Grid) Dimensions:
+        //
+        _width = width;
+        _height = height;
+        _cellSize = cellSize;
+
+
+        // 1- Create the "GridSystem",  for (A.I.) A* Pathfinding:
+        // ...with  "Path Nodes"
+        //
+        _gridSystem = new GridSystem<PathNode>(_width, _height, _cellSize,
+            (GridSystem<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition));
+
+
+        // 3- (Debugging Purposes :) Create the GameObject that will hold a Visual Representation of the Grid System: for  'A* Pathfinding'. Calling the Constructor:
+        //
+        _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+
+        // Setup:  OBSTACLES  &  NON-WALKABLE NODES
+        // .. (for Pathfinding)
+        
+        // Auxiliary variables:
+        // GridPosition
+        //
+        GridPosition gridPosition = new GridPosition(0, 0);
+        //
+        // WorldPosition
+        //
+        Vector3 worldPositionAtTheFloorLevel;
+        //
+        // Raycast Offset Distance, from the Ground Level:  To shoot the RAYCAST from this level y=something,...
+        //.. so we do not need to activate  In the Unity Editor, in the Settings -> Physics TAB ...-> the Option: 'Queries MAY HIT BACKFACES' = TRUE.
+        //
+        // We use this:   _raycastVerticalOffsetDistance;
+        //
+        // Raycast Offset Distance:  the distance the Ray will Travel (from the ground Level, upwards)
+        //
+        float raycastTravelUpwardsDistance = UnitActionSystem.Instance.GetSelectedUnit().ShoulderHeightForUnitCharacter;
+
+        // Cycle through all possible GridPositions
+        //
+        for (int x = 0; x < _width; x++)
+        {
+            for (int z = 0; z < _height; z++)
+            {
+                // Set this  GridPosition
+                //
+                gridPosition.SetXZ(x, z);
+                
+                // Set this  worldPositionAtTheFloorLevel, using 'gridPosition'
+                //
+                worldPositionAtTheFloorLevel = LevelGrid.Instance.GetWorldPosition(gridPosition);
+                
+                
+                #region Raycast: Optimized Code - v-2.0
+
+                // Shoot a Raycast from BELOW the Floor-Ground Level (y=-raycastOffsetDistance) on THAT specific 'GridPosition'... UPWARDS (Vector3.up) 1 ONE Meter (mtr) to find the OBSTACLE.
+                // NOT NECESSARY, OPTIONAL:  NOTE:  IMPORTANT:  In the Unity Editor, in the Settings -> Physics TAB ...-> set the Option: 'Queries MAY HIT BACKFACES' = TRUE.
+                //
+                if ( Physics.RaycastNonAlloc(worldPositionAtTheFloorLevel + Vector3.down * _raycastVerticalOffsetDistance, Vector3.up, _raycastHitInfo, raycastTravelUpwardsDistance, _obstaclesLayerMask) > 0 )
+                {
+
+                    // This 'Grid Position'  is   blocked   by obstacle
+                    //
+                    GetNode(x, z).SetIsWalkable(false);
+
+                }//End if ( Physics.RaycastNonAlloc
+
+                #endregion Raycast: Optimized Code - v-2.0
+                
+            }//End for (int z = 0; z < _height; z++)
+            
+        }//End for (int x = 0; x < _width; x++)
+ 
+    }// End Setup
+    
+    
+
+    #endregion  Setup, Initialization Methods
+    
+    
     /// <summary>
     /// Todo: this Method.
     /// </summary>
@@ -362,7 +477,24 @@ public class Pathfinding : MonoBehaviour
                     
                 }//End if (closedList.Contains
 
-                
+
+                // 4.2- Check / Validate:
+                //   Is it Not WALKABLE ??   (an Obstacle !)
+                //   Do NOT Walk (in that Node):
+                //
+                if (!neighbourNode.IsWalkable())
+                {
+                    // Add to the "already visited & checked"  List:
+                    //
+                    closedList.Add(neighbourNode);
+
+                    // Skip this iteration, go and check: another neighbour
+                    //
+                    continue;
+
+                }//End if (!neighbourNode.IsWalkable
+
+
                 #region 4.2- Calculate the G, H, F COSTS of the NEIGHBOUR NODE:
                 
                 // 4.2- Calculate the G, H, F COSTS of the NEIGHBOUR NODE:

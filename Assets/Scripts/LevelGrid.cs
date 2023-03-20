@@ -22,9 +22,19 @@ public class LevelGrid : MonoBehaviour
     public static LevelGrid Instance { get; private set; }
     
     
-    [Tooltip("Visuals of Grid System, for Visual Debugging in the Unity Editor")]
+    #region GridSystem, Game Board
+    
+    [Tooltip("Number of Cells (in X-Coordinates, horizontally), (of the Game Board).")]
     [SerializeField]
-    private Transform _gridDebugObjectPrefab;
+    private int _width;
+    
+    [Tooltip("Number of Cells (in Z-Coordinates, vertically), (of the Game Board).")]
+    [SerializeField]
+    private int _height;
+    
+    [Tooltip("Size (in Meters, mts) of each Grid-Squared Cell (that compounds the Game Board).")]
+    [SerializeField]
+    private float _cellSize;
     
     
     /// <summary>
@@ -35,23 +45,13 @@ public class LevelGrid : MonoBehaviour
     /// Contains: GridObjects (the Logical Squares/Cells) + GridPositions (the Mathematical Positions and Data: (x, y, z))
     /// </summary>
     private GridSystem<GridObject> _gridSystem;
-
-    /// <summary>
-    /// Todo: Move these Constants to a Scriptable Object.
-    /// 
-    /// Number of Cells (horizontally), (that are about to be used to create the Game Board).
-    /// </summary>
-    public const int WIDTH_OF_GAME_BOARD_GRID_SYSTEM = 10;
     
-    /// <summary>
-    /// Number of Cells (vertically), (that are about to be used to create the Game Board).
-    /// </summary>
-    public const int HEIGHT_OF_GAME_BOARD_GRID_SYSTEM = 10;
+    
+    [Tooltip("For Debugging:  Visuals of Grid System, for Visual Debugging in the Unity Editor.")]
+    [SerializeField]
+    private Transform _gridDebugObjectPrefab;
 
-    /// <summary>
-    /// Size of each Squared Cell (that compounds the Game Board).
-    /// </summary>
-    public const float CELL_SIZE_OF_GAME_BOARD_GRID_SYSTEM = 2f;
+    #endregion GridSystem, Game Board
 
 
     #region Delegates - CallBacks - Listeners
@@ -81,7 +81,7 @@ public class LevelGrid : MonoBehaviour
         if (Instance != null)
         {
             
-            Debug.LogError("There's more than one 'UnitActionSystem'!. GameObject: ---> " + transform + "  - " + Instance);
+            Debug.LogError($"There's more than one 'UnitActionSystem'!.\n GameObject: ---> {transform} - {Instance}");
             //
             // Destroy, to be able to continue the Gameplay (i.e.: Recovery from the Error/Exception...)
             //
@@ -96,7 +96,7 @@ public class LevelGrid : MonoBehaviour
         
         // 2- Grid System Initialization
         //
-        _gridSystem = new GridSystem<GridObject>(WIDTH_OF_GAME_BOARD_GRID_SYSTEM, HEIGHT_OF_GAME_BOARD_GRID_SYSTEM, CELL_SIZE_OF_GAME_BOARD_GRID_SYSTEM, 
+        _gridSystem = new GridSystem<GridObject>(_width, _height, _cellSize, 
             (GridSystem<GridObject> g, GridPosition gridPosition ) => new GridObject(g, gridPosition) );
         //
         // Create the GameObject that will hold a Visual Representation of the Grid System. Calling the Constructor:
@@ -111,7 +111,16 @@ public class LevelGrid : MonoBehaviour
     /// <summary>
     /// Start is called before the first frame update
     /// </summary>
+    private void Start()
+    {
 
+        // Setup the rest of the "Level":  Game Board, a.k.a.: GRID
+        //
+        // 0- Pathfinding Node System
+        //
+        Pathfinding.Instance.Setup(_width, _height, _cellSize);
+
+    }// End Start
 
 
     /// <summary>
@@ -125,7 +134,7 @@ public class LevelGrid : MonoBehaviour
     #region My Custom Methods
 
     /// <summary>
-    /// Adds a Unit (to List<Unit> on GridObject Class) to a GridObject, on a certain Position / Location (GridPosition).
+    /// Adds a Unit (to <code> List of Unit </code> on GridObject Class) to a GridObject, on a certain Position or Location (GridPosition).
     /// </summary>
     /// <param name="gridPosition"></param>
     /// <param name="unit"></param>
@@ -136,7 +145,7 @@ public class LevelGrid : MonoBehaviour
     }
     
     /// <summary>
-    /// Get Unit from a Grid Position
+    /// Get Unit List (0, 1, 2 or more Units...), from a Grid Position
     /// </summary>
     /// <param name="gridPosition"></param>
     public List<Unit> GetListOfUnitsAtGridPosition(GridPosition gridPosition)

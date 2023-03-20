@@ -46,7 +46,7 @@ public class GridSystemVisual : MonoBehaviour
     /// </summary>
     private RaycastHit[] _raycastHitInfo;
     
-    #endregion
+    #endregion Raycast
 
     #endregion Obstacles for Shooting (Experimental)
     
@@ -132,7 +132,7 @@ public class GridSystemVisual : MonoBehaviour
         //
         _raycastHitInfo = new RaycastHit[7];
         
-        #endregion
+        #endregion Utils
 
         
     }// End Awake
@@ -399,7 +399,7 @@ public class GridSystemVisual : MonoBehaviour
                 //
                 float shoulderHeightForLineOfSight = UnitActionSystem.Instance.GetSelectedUnit().ShoulderHeightForUnitCharacter;
                 //
-                if (ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(gridPosition, testGridPosition, shoulderHeightForLineOfSight))
+                if (ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(gridPosition, testGridPosition, shoulderHeightForLineOfSight, _obstaclesLayerMask))
                 {
                     continue;
                 }
@@ -419,7 +419,7 @@ public class GridSystemVisual : MonoBehaviour
         ShowGridPositionList(gridPositionList, gridVisualColorType);
 
     }//End ShowGridPositionRange
-    
+
 
     /// <summary>
     /// Validates: Is the Path between two (2) 'GridPosition'(s)  Blocked by an Obstacle ? <br />
@@ -428,8 +428,9 @@ public class GridSystemVisual : MonoBehaviour
     /// <param name="fromGridPosition"></param>
     /// <param name="toTestGridPosition"></param>
     /// <param name="height"></param>
+    /// <param name="obstaclesLayerMask">The Layer Mask in the Unity Editor for: 3D Colliders that are 'Obstacles'.</param>
     /// <returns></returns>
-    public bool ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(GridPosition fromGridPosition, GridPosition toTestGridPosition, float height)
+    public bool ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(GridPosition fromGridPosition, GridPosition toTestGridPosition, float height, LayerMask obstaclesLayerMask)
     {
         // TODO:  Refactor and CLEAN this Code below, using Fields (Attributes) from a specific - Single Responsibility Class (that handles this kind of data, such as Unit for:  unitShoulderHeight, etc). According to the S.O.L.I.D. Principle.
         //
@@ -447,7 +448,7 @@ public class GridSystemVisual : MonoBehaviour
         #region Raycast: Original Code
         
         // if (Physics.Raycast(unitWorldPosition, aimDir, Vector3.Distance(unitWorldPosition, testWorldPosition),
-        //         _obstaclesLayerMask))
+        //         obstaclesLayerMask))
         // {
         //     // Line Of Sight   blocked   by obstacle
         //     //
@@ -460,7 +461,7 @@ public class GridSystemVisual : MonoBehaviour
         
         #region Raycast: Optimized Code - v-2.0
 
-        if ( Physics.RaycastNonAlloc(unitWorldPosition, aimDirectionNormalized, _raycastHitInfo, Vector3.Distance(unitWorldPositionAtTheFloorLevel, testWorldPositionAtTheFloorLevel), _obstaclesLayerMask) > 0 )
+        if ( Physics.RaycastNonAlloc(unitWorldPosition, aimDirectionNormalized, _raycastHitInfo, Vector3.Distance(unitWorldPositionAtTheFloorLevel, testWorldPositionAtTheFloorLevel), obstaclesLayerMask) > 0 )
         {
             // Line Of Sight   blocked   by obstacle
             //

@@ -572,7 +572,7 @@ public class ShootAction : BaseAction
                 //
                 float shoulderHeightForLineOfSight = _unit.ShoulderHeightForUnitCharacter;
                 //
-                if (GridSystemVisual.Instance.ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(unitGridPosition, testGridPosition, shoulderHeightForLineOfSight))
+                if (GridSystemVisual.Instance.ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(unitGridPosition, testGridPosition, shoulderHeightForLineOfSight, GridSystemVisual.Instance.ObstaclesLayerMask))
                 {
                     continue;
                 }

@@ -23,6 +23,13 @@ public class PathNode
     #region Pathfinding variables (for its computing)
 
     /// <summary>
+    /// Boolean Flag to check if this Grid Object and Position is not occupied by an non-removable Obstacle
+    ///...(i.e.: removable Obstacles can be: Destructible Walls, Boxes, etc...).
+    /// </summary>
+    private bool _isWalkable = true;
+
+    
+    /// <summary>
     /// <code>G</code> <br />
     /// 
     /// Walking "Cost" from the Start Node.
@@ -157,6 +164,26 @@ public class PathNode
     public GridPosition GetGridPosition()
     {
         return _gridPosition;
+    }
+    
+    /// <summary>
+    /// Gets the '_isWalkable' Boolean Flag:   to check if this Grid Object and Position is not occupied by an non-removable Obstacle
+    ///...(i.e.: removable Obstacles can be: Destructible Walls, Boxes, etc...).
+    /// </summary>
+    /// <returns></returns>
+    public bool IsWalkable()
+    {
+        return _isWalkable;
+    }
+    
+    /// <summary>
+    /// Sets the '_isWalkable' Boolean Flag:   to check if this Grid Object and Position is not occupied by an non-removable Obstacle
+    ///...(i.e.: removable Obstacles can be: Destructible Walls, Boxes, etc...).
+    /// </summary>
+    /// <param name="isWalkable"></param>
+    public void SetIsWalkable(bool isWalkable)
+    {
+        _isWalkable = isWalkable;
     }
     
     #endregion Getters and Setters
