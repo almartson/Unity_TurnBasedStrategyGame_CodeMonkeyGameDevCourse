@@ -45,6 +45,11 @@ public class PathfindingGridDebugObject : GridDebugObject
     private TextMeshPro _fCostText;
 
     
+    [Tooltip("Debug Visual Cue for representing the Walkable Nodes, for Debugging the Pathfinding Algorithm in this Game.")]
+    [SerializeField]
+    private SpriteRenderer _isWalkableSpriteRenderer;
+    
+
     #region Game Board - Node Cells
 
     
@@ -86,6 +91,12 @@ public class PathfindingGridDebugObject : GridDebugObject
         _gCostText.text = _pathNode.GetGCost().ToString();
         _hCostText.text = _pathNode.GetHCost().ToString();
         _fCostText.text = _pathNode.GetFCost().ToString();
+        
+        // Render also a Big SpriteRenderer Quad, to check if this is Walkable or Non-Walkable NodePath (i.e.: GridObject)
+        // Set the color:
+        //...GREEN => WALKABLE  or  RED => NON-WALKABLE  'NodePath'
+        //
+        _isWalkableSpriteRenderer.color = _pathNode.IsWalkable() ? Color.green : Color.red;
 
     }// End Update
 

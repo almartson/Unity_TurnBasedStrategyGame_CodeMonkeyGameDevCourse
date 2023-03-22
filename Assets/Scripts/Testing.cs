@@ -48,22 +48,29 @@ public class Testing : MonoBehaviour
             // Visual (Cue) Feedback:  Draw Lines on the ground
             //..representing the BEST PATH
             //
-            int gridPositionListCount = gridPositionList.Count;
-            //
-            for (int i = 0; i < gridPositionListCount - 1; i++)
+            if (gridPositionList != null)
             {
-                // Draw Lines
+
+                int gridPositionListCount = gridPositionList.Count;
                 //
-                Debug.DrawLine(
-                    LevelGrid.Instance.GetWorldPosition(gridPositionList[i]),
-                    LevelGrid.Instance.GetWorldPosition(gridPositionList[i + 1]),
-                    Color.white,
-                    10.0f
+                // Draw Lines on the ground
+                //
+                for (int i = 0; i < gridPositionListCount - 1; i++)
+                {
+                    // Draw Lines
+                    //
+                    Debug.DrawLine(
+                        LevelGrid.Instance.GetWorldPosition(gridPositionList[i]),
+                        LevelGrid.Instance.GetWorldPosition(gridPositionList[i + 1]),
+                        Color.white,
+                        10.0f
                     );
                 
-            }//End for
+                }//End for
+                
+            }//End if (gridPositionList != null)
             
-        }//End if
+        }//End if (Input.GetKeyDown(KeyCode.T))
         
     }//End Update
 

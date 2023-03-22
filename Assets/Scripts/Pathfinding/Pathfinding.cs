@@ -191,6 +191,7 @@ public class Pathfinding : MonoBehaviour
 
     #region Setup, Initialization Methods
 
+    
     /// <summary>
     /// Creates and Initializes the "Node System" (using the Class <code>PathNode</code>, a List of those... which is equivalent to a List of GridObject's), for A* Pathfinding.
     /// </summary>
@@ -215,11 +216,27 @@ public class Pathfinding : MonoBehaviour
 
         // 3- (Debugging Purposes :) Create the GameObject that will hold a Visual Representation of the Grid System: for  'A* Pathfinding'. Calling the Constructor:
         //
-        _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+        //_gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
 
-        // Setup:  OBSTACLES  &  NON-WALKABLE NODES
-        // .. (for Pathfinding)
         
+        #region Initialize:  Walkable NodePaths  (and Obstacles)
+        
+        // 4- Setup:  OBSTACLES  &  NON-WALKABLE NODES
+        // .. (for Pathfinding)
+        //
+        UpdateWalkableAndNonWalkableNodes();
+
+        #endregion Initialize:  Walkable NodePaths  (and Obstacles)
+        
+    }// End Setup
+    
+
+    /// <summary>
+    /// Setup:  OBSTACLES  and  NON-WALKABLE NODES  of  Type:<code>NodePath</code>
+    /// ... (for Pathfinding).
+    /// </summary>
+    private void UpdateWalkableAndNonWalkableNodes()
+    {
         // Auxiliary variables:
         // GridPosition
         //
@@ -247,34 +264,34 @@ public class Pathfinding : MonoBehaviour
                 // Set this  GridPosition
                 //
                 gridPosition.SetXZ(x, z);
-                
+
                 // Set this  worldPositionAtTheFloorLevel, using 'gridPosition'
                 //
                 worldPositionAtTheFloorLevel = LevelGrid.Instance.GetWorldPosition(gridPosition);
-                
-                
+
+
                 #region Raycast: Optimized Code - v-2.0
 
                 // Shoot a Raycast from BELOW the Floor-Ground Level (y=-raycastOffsetDistance) on THAT specific 'GridPosition'... UPWARDS (Vector3.up) 1 ONE Meter (mtr) to find the OBSTACLE.
                 // NOT NECESSARY, OPTIONAL:  NOTE:  IMPORTANT:  In the Unity Editor, in the Settings -> Physics TAB ...-> set the Option: 'Queries MAY HIT BACKFACES' = TRUE.
                 //
-                if ( Physics.RaycastNonAlloc(worldPositionAtTheFloorLevel + Vector3.down * _raycastVerticalOffsetDistance, Vector3.up, _raycastHitInfo, raycastTravelUpwardsDistance, _obstaclesLayerMask) > 0 )
+                if (Physics.RaycastNonAlloc(worldPositionAtTheFloorLevel + Vector3.down * _raycastVerticalOffsetDistance,
+                        Vector3.up, _raycastHitInfo, raycastTravelUpwardsDistance, _obstaclesLayerMask) > 0)
                 {
 
                     // This 'Grid Position'  is   blocked   by obstacle
                     //
                     GetNode(x, z).SetIsWalkable(false);
 
-                }//End if ( Physics.RaycastNonAlloc
+                } //End if ( Physics.RaycastNonAlloc
 
                 #endregion Raycast: Optimized Code - v-2.0
-                
-            }//End for (int z = 0; z < _height; z++)
-            
-        }//End for (int x = 0; x < _width; x++)
- 
-    }// End Setup
-    
+
+            } //End for (int z = 0; z < _height; z++)
+
+        } //End for (int x = 0; x < _width; x++)
+
+    }// End UpdateWalkableAndNonWalkableNodes
     
 
     #endregion  Setup, Initialization Methods
@@ -296,7 +313,8 @@ public class Pathfinding : MonoBehaviour
         pathNodeList = null;
         
         return null;
-    }
+
+    }// End FindPathAlsoReturnNodeList
     
     
     /// <summary>
