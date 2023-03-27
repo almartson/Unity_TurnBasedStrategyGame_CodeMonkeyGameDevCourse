@@ -315,16 +315,17 @@ public class Pathfinding : MonoBehaviour
         return null;
 
     }// End FindPathAlsoReturnNodeList
-    
-    
+
+
     /// <summary>
     /// Main Function for calculating the Best (optimal) Path.
     /// </summary>
     /// <param name="startGridPosition"></param>
     /// <param name="endGridPosition"></param>
+    /// <param name="pathLength">It is the F COST of the 'End Node' (a.k.a.: end/Destination: 'NodePath'): it is also the TOTAL COST OF THE PATH.</param>
     /// <param name="useTentativeFCostOrGCostAsCriteriaInTheEnd">* TRUE: Use 'F Cost' as a CRITERIA in the end...<br /> <br /> * FALSE: Use 'G Cost'. NOTE: CodeMonkey used it in the video.</param>
     /// <returns>The BEST PATH, as a List of 'GridPosition'(s)</returns>
-    public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition, bool useTentativeFCostOrGCostAsCriteriaInTheEnd = false)
+    public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition, out int pathLength, bool useTentativeFCostOrGCostAsCriteriaInTheEnd = false)
     {
         #region 0- Initialize Node(s), and Open and Closed Nodes (Lists)
 
@@ -466,6 +467,11 @@ public class Pathfinding : MonoBehaviour
             {
 
                 // Reached FINAL NODE
+                // Get the TOTAL COST (a.k.a.: F Cost) to this PATH
+                //
+                pathLength = endNode.GetFCost();
+                //
+                // Return the Path  (but reverse it... we want to start from START NODE to -> Ending Node)
                 //
                 return CalculatePath(endNode);
 
@@ -617,6 +623,9 @@ public class Pathfinding : MonoBehaviour
         
         // If it reached this point, then there is no possible Path... it is a NULL Path:
         // No Path found
+        // F Cost  (i.e.: Total Cost of the Path) = 0
+        //
+        pathLength = 0;
         //
         return null;
 
@@ -886,6 +895,58 @@ public class Pathfinding : MonoBehaviour
     #endregion PathFinding Mathematical Calculations:  G, H, F
 
 
+    #region Obstacles for Pathfinding
+
+    /// <summary>
+    /// Is it suitable for a Mouse Click (on the Player's part...) or for to be used a 'Destination' for the ENEMY A.I.??...
+    /// ...or NOT?
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns></returns>
+    public bool IsWalkableGridPosition(GridPosition gridPosition)
+    {
+        // Get the '_isWalkable' Boolean Flag  of the 'PathNode' related to the Input: gridPosition
+        //
+        return _gridSystem.GetGridObject(gridPosition).IsWalkable();
+
+    }// End IsWalkableGridPosition
+    
+    
+    /// <summary>
+    /// Is there a at least ONE (1) possible Path to get there?? <br /> <br />
+    /// ...from <code>startGridPosition</code> to <code>endGridPosition</code>
+    /// </summary>
+    /// <param name="startGridPosition"></param>
+    /// <param name="endGridPosition"></param>
+    /// <returns></returns>
+    public bool HasPath(GridPosition startGridPosition, GridPosition endGridPosition)
+    {
+        // Execute the Pathfinding algorithm, and see if it returns  NULL
+        //
+        return (FindPath(startGridPosition, endGridPosition, out int pathLength) != null);
+
+    }// End HasPath
+    
+    
+    /// <summary>
+    /// Gets the TOTAL COST OF THE PATH. <br /> <br />
+    /// It is: 'F Cost'  of 'endGridPosition'.
+    /// </summary>
+    /// <param name="startGridPosition"></param>
+    /// <param name="endGridPosition"></param>
+    /// <returns></returns>
+    public int GetPathLength(GridPosition startGridPosition, GridPosition endGridPosition)
+    {
+        // Execute the Pathfinding algorithm, and return  'pathLength'
+        //
+        FindPath(startGridPosition, endGridPosition, out int pathLength);
+        //
+        return pathLength;
+
+    }// End HasPath
+    
+    #endregion Obstacles for Pathfinding
+    
     #endregion My Custom Methods
 
 }// End Pathfinding

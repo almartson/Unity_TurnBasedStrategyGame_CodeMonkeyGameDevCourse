@@ -9,10 +9,16 @@ public class Testing : MonoBehaviour
     [SerializeField] private Unit _unit;
 
     
-    [Tooltip("* TRUE: Use 'F Cost' as a CRITERIA in the end...\n\n * FALSE: Use 'G Cost' (may be an error, giving unexpected results...). NOTE: COdeMonkey used it in the video, (although I think he made a mistake...).")]
-    [SerializeField]
-    private bool _useTentativeFCostOrGCostAsCriteriaInTheEnd = false;
+    
+    
+    #region Show the PATHFINDING ALGORITHM
 
+    // [Tooltip("* TRUE: Use 'F Cost' as a CRITERIA in the end...\n\n * FALSE: Use 'G Cost' (may be an error, giving unexpected results...). NOTE: COdeMonkey used it in the video, (although I think he made a mistake...).")]
+    // [SerializeField]
+    // private bool _useTentativeFCostOrGCostAsCriteriaInTheEnd = false;
+
+    #endregion Show the PATHFINDING ALGORITHM
+    
     
     #endregion Attributes
     
@@ -33,47 +39,57 @@ public class Testing : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
 
-            GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
             
-            // Call the PATHFINDING ALGORITHM
-            // 1- Initialize: Start Node
+
+            #region Show the PATHFINDING ALGORITHM
+
+            // // Show the PATHFINDING ALGORITHM
+            // //
+            // GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
             //
-            GridPosition startGridPosition = new GridPosition(0, 0);
+            // // Call the PATHFINDING ALGORITHM
+            // // 1- Initialize: Start Node
+            // //
+            // GridPosition startGridPosition = new GridPosition(0, 0);
+            // //
+            // // 2- Call the PATHFINDING ALGORITHM
+            // //
+            // List<GridPosition> gridPositionList = Pathfinding.Instance.FindPath(startGridPosition, mouseGridPosition, _useTentativeFCostOrGCostAsCriteriaInTheEnd);
             //
-            // 2- Call the PATHFINDING ALGORITHM
             //
-            List<GridPosition> gridPositionList = Pathfinding.Instance.FindPath(startGridPosition, mouseGridPosition, _useTentativeFCostOrGCostAsCriteriaInTheEnd);
+            // // Visual (Cue) Feedback:  Draw Lines on the ground
+            // //..representing the BEST PATH
+            // //
+            // if (gridPositionList != null)
+            // {
+            //
+            //     int gridPositionListCount = gridPositionList.Count;
+            //     //
+            //     // Draw Lines on the ground
+            //     //
+            //     for (int i = 0; i < gridPositionListCount - 1; i++)
+            //     {
+            //         // Draw Lines
+            //         //
+            //         Debug.DrawLine(
+            //             LevelGrid.Instance.GetWorldPosition(gridPositionList[i]),
+            //             LevelGrid.Instance.GetWorldPosition(gridPositionList[i + 1]),
+            //             Color.white,
+            //             10.0f
+            //         );
+            //     
+            //     }//End for
+            //     
+            // }//End if (gridPositionList != null)
+
+            #endregion Show the PATHFINDING ALGORITHM
 
 
-            // Visual (Cue) Feedback:  Draw Lines on the ground
-            //..representing the BEST PATH
-            //
-            if (gridPositionList != null)
-            {
-
-                int gridPositionListCount = gridPositionList.Count;
-                //
-                // Draw Lines on the ground
-                //
-                for (int i = 0; i < gridPositionListCount - 1; i++)
-                {
-                    // Draw Lines
-                    //
-                    Debug.DrawLine(
-                        LevelGrid.Instance.GetWorldPosition(gridPositionList[i]),
-                        LevelGrid.Instance.GetWorldPosition(gridPositionList[i + 1]),
-                        Color.white,
-                        10.0f
-                    );
-                
-                }//End for
-                
-            }//End if (gridPositionList != null)
-            
         }//End if (Input.GetKeyDown(KeyCode.T))
         
     }//End Update
 
+    
     
     // private void Update()
     // {

@@ -390,6 +390,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isEnemy: 0
   _shoulderHeightForUnitCharacter: 1.7
+  _ACTION_POINTS_PER_TURN_MAX: 2
   _actionPoints: 2
 --- !u!65 &1902843464558363180
 BoxCollider:
@@ -476,11 +477,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isActive: 0
-  _myActionPointCost: 2
+  _myActionPointCost: 1
   _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 10
   _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 1
   _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
-  _targetPosition: {x: 0, y: 0, z: 0}
+  _enemyAIActionDataList: []
+  _validActionGridPositionList: []
+  _positionList: []
+  _pathFindingDistanceMultiplier: 10
   _moveSpeed: 4
   _rotateSpeed: 10
   _stoppingDistance: 0.1
@@ -502,6 +506,8 @@ MonoBehaviour:
   _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 0
   _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 1
   _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
+  _enemyAIActionDataList: []
+  _validActionGridPositionList: []
   _spinVelocityAndDirectionInDegreesPerSecond: 360
   _rotationGoal: 360
 --- !u!114 &-63595787454068697
@@ -521,6 +527,8 @@ MonoBehaviour:
   _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
   _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 1
   _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
+  _enemyAIActionDataList: []
+  _validActionGridPositionList: []
   _maxShootDistance: 7
   _shootPowerDamageInHealthPoints: 20
   _rotateSpeed: 7

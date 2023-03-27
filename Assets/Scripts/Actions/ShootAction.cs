@@ -43,6 +43,22 @@ public class ShootAction : BaseAction
     [SerializeField]
     private int _maxShootDistance = 7;
 
+    
+    // This is in the Class:  'GridSystemVisual'
+    // #region Obstacles for Shooting (Experimental)
+    //
+    // [Tooltip("Obstacles Label-LayerMask in the AIM or 'Shooting Path'")]
+    // [SerializeField]
+    // private LayerMask _obstaclesLayerMask;
+    // //
+    // /// <summary>
+    // /// Getter and Setter Property for Field: _obstaclesLayerMask
+    // /// </summary>
+    // public LayerMask ObstaclesLayerMask { get => _obstaclesLayerMask; private set => _obstaclesLayerMask = value; }
+    //
+    // #endregion Obstacles for Shooting (Experimental)
+    
+
     #endregion Validations: of the Action
 
     
@@ -570,9 +586,9 @@ public class ShootAction : BaseAction
                 // Validate: Can NOT shoot behind WALLS or OBSTACLES
                 // TODO: put this Variable in a correct class, following the S.O.L.I.D. Principle:
                 //
-                float shoulderHeightForLineOfSight = _unit.ShoulderHeightForUnitCharacter;
+                // float shoulderHeightForLineOfSight = _unit.ShoulderHeightForUnitCharacter;
                 //
-                if (GridSystemVisual.Instance.ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(unitGridPosition, testGridPosition, shoulderHeightForLineOfSight, GridSystemVisual.Instance.ObstaclesLayerMask))
+                if (GridSystemVisual.Instance.ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(unitGridPosition, testGridPosition,  _unit.ShoulderHeightForUnitCharacter, GridSystemVisual.Instance.ObstaclesLayerMask))
                 {
                     continue;
                 }

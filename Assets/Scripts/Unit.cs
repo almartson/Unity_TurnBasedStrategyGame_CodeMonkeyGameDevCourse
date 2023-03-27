@@ -112,16 +112,18 @@ public class Unit : MonoBehaviour
     /// Note: Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. <br />
     /// Default value : 2
     /// </summary>
-    private const int _ACTION_POINTS_PER_TURN_MAX = 2;
+    [Tooltip("MAXIMUM Total amount of Points PER TURN (spendable); to be spent, each time this Character/Unit performs an Action. \n\nNote: Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. \n\nDefault value : 2")]
+    [SerializeField]
+    private int _ACTION_POINTS_PER_TURN_MAX = 2;
     
     /// <summary>
     /// Total amount of Points (spendable), to spend each time this Character/Unit performs an Action. <br />
     /// Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. <br />
     /// Default value : 2
     /// </summary>
-    [Tooltip("Total amount of Points (spendable), to spend each time this Character/Unit performs an Action. /n Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. /n Default value : 2")]
+    [Tooltip("Current amount of 'Points' (spendable) to execute any 'Actions'.\n These Points are to spend RIGHT NOW, currently in this TURN (and each time this Character/Unit performs an 'Action'). \n\nNote: Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. \n\nDefault value : 2")]
     [SerializeField]
-    private int _actionPoints = _ACTION_POINTS_PER_TURN_MAX;
+    private int _actionPoints = 2;
     
     
     #region Turn System - and its Events
@@ -163,6 +165,15 @@ public class Unit : MonoBehaviour
     
     private void Awake()
     {
+
+        #region Action Points Setup
+
+        // Set the Maximum VALUE of ACTION POINTS PER TURN:
+        //
+        _actionPoints = _ACTION_POINTS_PER_TURN_MAX;
+
+        #endregion Action Points Setup
+            
         #region Health
 
         // Get the Health System script
