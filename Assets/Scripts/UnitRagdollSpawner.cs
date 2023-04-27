@@ -113,8 +113,12 @@ public class UnitRagdollSpawner : MonoBehaviour
         //   1.2- Get the UnitRagdoll.cs Class Script from the 'ragdollTransform':
         //
         UnitRagdoll unitRagdoll = ragdollTransform.GetComponent<UnitRagdoll>();
+        //
+        // Cache the Animator, optimization:
+        //
+        UnitAnimator unitAnimator = gameObject.GetComponent<UnitAnimator>();
         
-        
+
         // 2- Call the UnitRagdoll.cs script's Setup()  function (to set the Transforms of each & every Bone...)
         //
         //   2.1- ORIGINAL, CODEMONKEYS':  Just in case the Bones REFERENCE here are NULL (i.e.: not set by the Designer)
@@ -129,9 +133,6 @@ public class UnitRagdollSpawner : MonoBehaviour
             // // Todo: remove the debug.log
             // //
             // Debug.Log("It is about to execute: SetupOptimized(...), Script: " + this.GetType().Name);
-            // Cache, optimization:
-            //
-            UnitAnimator unitAnimator = gameObject.GetComponent<UnitAnimator>();
             //
             // Setup:
             //
@@ -146,7 +147,7 @@ public class UnitRagdollSpawner : MonoBehaviour
             // //
             // Debug.Log("It is about to execute the NON-OPTIMIZED form of: Setup(...), Script: " + this.GetType().Name);
             //
-            unitRagdoll.Setup(_originalCharactersRootBone, gameObject.GetComponent<UnitAnimator>().MoveDirectionOfBulletProjectileThatJustHitMe);
+            unitRagdoll.Setup(_originalCharactersRootBone, unitAnimator.MoveDirectionOfBulletProjectileThatJustHitMe);
                 
         }//End if ((_originalCharacterBonesThatAreRagdollized == null)...
         

@@ -188,7 +188,7 @@ public class EnemyAI : MonoBehaviour
     /// </summary>
     private void SetStateTakingTurn()
     {
-        // Small DELAY, to make it look more raelistic:
+        // Small DELAY, to make it look more realistic:
         //
         _timer = _timeAmountBeforeTakingAnAction;
         
@@ -469,6 +469,7 @@ public class EnemyAI : MonoBehaviour
     /// Given an "Enemy Unit": <br />
     /// It Executes a particular ENEMY Unit  'ACTION'  (A.I.)
     /// </summary>
+    [Obsolete("This method is deprecated. Use: 'private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)' instead", true)]
     private bool DeprecatedTryTakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
     {
 
@@ -621,8 +622,10 @@ public class EnemyAI : MonoBehaviour
 
     /// <summary>
     /// (Deprecated, do not use - Original (non-performant) CodeMonkey's Implementation) <br /><br />
+    /// 
     /// Executes the (current FSM state)  A.I. 'ACTION':   for all "Units" in the ENEMY's TEAM.
     /// </summary>
+    [Obsolete("This method is deprecated (due to performance reasons). Use: 'private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)' instead", true)]
     private bool DeprecatedTryTakeEnemyAIAction(Action onEnemyAIActionComplete)
     {
         #region Original (non-performant) CodeMonkey's Implementation

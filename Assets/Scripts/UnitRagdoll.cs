@@ -1,6 +1,8 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
+
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -167,6 +169,7 @@ public class UnitRagdoll : MonoBehaviour
     /// Function to initiate a:  Copy all the ORIGINAL 3D CHARACTER'S (i.e.: Unit) Transform (of every Bone...) to the RAGDOLL Bones... so the Ragdoll will be spawned in the same Pose as the original Character / Unit (and not in T-POSE, as it is by default).
     /// </summary>
     /// <param name="originalCharactersRootBone"></param>
+    [Obsolete("This method is deprecated. Prefer to use: \n'public void SetupOptimized(Transform[] originalCharacterBonesThatAreRagdollized, Transform[] ragdollPrefabsCharacterBonesAreRagdollized, Transform originalCharactersRootBone, Vector3 bulletProjectileDirectionVector3, Vector3 pointPositionOfImpactVector3)' instead", false)]
     public void Setup(Transform originalCharactersRootBone, Vector3 applyExplosionForceToRagdollWhenSpawningThisIsTheDirectionOfTheBullet)
     {
         // Call the Recursive+Iterative Function that will COPY & PASTE all the Original Unit Skeleton Bone Transforms... to the RAGDOLL's:
@@ -205,10 +208,10 @@ public class UnitRagdoll : MonoBehaviour
 
     /// <summary>
     /// 'Iterative', Optimized version of 'MatchAllChildrenTransforms': A Function used to COPY all the ORIGINAL 3D CHARACTER'S (i.e.: Unit) Transform (of every Bone...) to the RAGDOLL Bones... so the Ragdoll will be spawned in the same Pose as the original Character / Unit (and not in T-POSE, as it is by default).<br />
-    /// We assume as a PRE-CONDITION:  Input parameters are correcly set before calling this Function.
+    /// We assume as a PRE-CONDITION:  Input parameters are correctly set before calling this Function.
     /// </summary>
-    /// <param name="originalBonesTransformList">(COPY FROM HERE) The ROOT of the ORIGINAL Skeleton (i.e: the Bone Hierachy). This is what we want to duplicate.</param>
-    /// <param name="cloneBonesTransformList">(PASTE HERE) The ROOT of the CLONE Skeleton (i.e: the Bone Hierachy). This is the 'new' Skeleton, we are creating...</param>
+    /// <param name="originalBonesTransformList">(COPY FROM HERE) The ROOT of the ORIGINAL Skeleton (i.e: the Bone Hierarchy). This is what we want to duplicate.</param>
+    /// <param name="cloneBonesTransformList">(PASTE HERE) The ROOT of the CLONE Skeleton (i.e: the Bone Hierarchy). This is the 'new' Skeleton, we are creating...</param>
     private void MatchAllChildrenTransformsOptimized(Transform[] originalBonesTransformList, Transform[] cloneBonesTransformList)
     {
         // Go through each Child Bone that is set as a part of the RAGDOLL, in the array[]:
@@ -233,10 +236,13 @@ public class UnitRagdoll : MonoBehaviour
 
     
     /// <summary>
+    /// (Deprecated, due to performance reasons) <br /> <br />
+    /// 
     /// 'Iterative + Recursive' Function to COPY all the ORIGINAL 3D CHARACTER'S (i.e.: Unit) Transform (of every Bone...) to the RAGDOLL Bones... so the Ragdoll will be spawned in the same Pose as the original Character / Unit (and not in T-POSE, as it is by default).
     /// </summary>
-    /// <param name="root">(COPY FROM HERE) The ROOT of the ORIGINAL Skeleton (i.e: the Bone Hierachy). This is what we want to duplicate.</param>
-    /// <param name="clone">(PASTE HERE) The ROOT of the CLONE Skeleton (i.e: the Bone Hierachy). This is the 'new' Skeleton, we are creating...</param>
+    /// <param name="root">(COPY FROM HERE) The ROOT of the ORIGINAL Skeleton (i.e: the Bone Hierarchy). This is what we want to duplicate.</param>
+    /// <param name="clone">(PASTE HERE) The ROOT of the CLONE Skeleton (i.e: the Bone Hierarchy). This is the 'new' Skeleton, we are creating...</param>
+    [Obsolete("This method is deprecated, due to performance reasons (it uses a Recursive Call, inside an Iterative Foreach...). \nPrefer to use: 'private void MatchAllChildrenTransformsOptimized(Transform[] originalBonesTransformList, Transform[] cloneBonesTransformList)' instead", true)]
     private void MatchAllChildrenTransforms(Transform root, Transform clone)
     {
         #region CodeMonkey's Implementation (using FOREACH)...non performant
@@ -314,8 +320,11 @@ public class UnitRagdoll : MonoBehaviour
         
     
     /// <summary>
+    /// (Deprecated for performance reasons:   a main 'Foreach' Iterative Loop + Recursive calls to itself...) <br /> <br />
+    /// 
     /// Recursive + Iterative function that applies a Force, (as some sort of explosion), to every Bone in the Ragdoll... so it looks like it has been shot by a Cannon (a Tank...).
     /// </summary>
+    [Obsolete("This method is deprecated. Use: 'ApplyExplosionToTargetRagdollOptimized (Transform[] ragdollBonesTransformList, float explosionForce, Vector3 explosionPosition, float explosionRange)' instead", true)]
     private void ApplyExplosionToTargetRagdoll(Transform root, float explosionForce, Vector3 explosionPosition, float explosionRange)
     {
         // 1- Ride through every Child Bone...

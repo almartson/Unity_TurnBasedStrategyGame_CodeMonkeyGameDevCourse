@@ -302,7 +302,7 @@ public class MoveAction : BaseAction
     /// </summary>
     /// <param name="newTargetPosition"></param>
     /// <param name="onMoveActionComplete"></param>
-    [Obsolete("This method is deprecated. Use: 'public void TakeAction(GridPosition gridPosition)' instead", true)]
+    [Obsolete("This method is deprecated (because of architectural reasons, the new version is a more decoupled and generic one: 'TakeAction' in a BaseAction.cs Class). Use: 'public void TakeAction(GridPosition gridPosition)' instead", true)]
     public void Move(Vector3 newTargetPosition, Action onMoveActionComplete)
     {
         // Get the List of: (x, y, z) WorldPosition  Coordinates
@@ -440,7 +440,7 @@ public class MoveAction : BaseAction
     {
         List<GridPosition> validGridPositionList = new List<GridPosition>();
         
-        // Get the Unit's GridPosition
+        // Get the Unit's GridPosition.
         //
         GridPosition unitGridPosition = _unit.GetGridPosition();
         

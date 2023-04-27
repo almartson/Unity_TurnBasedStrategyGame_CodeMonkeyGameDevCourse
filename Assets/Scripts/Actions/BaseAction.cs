@@ -401,6 +401,7 @@ public abstract class BaseAction : MonoBehaviour
     /// </summary>
     /// <returns>The DATA of the BEST possible A.I. ACTION (BaseAction):  "EnemyAIActionData"... <br />,
     /// ...based on the ACTION POINTS VALUE of each Action / Possibility</returns>
+    [Obsolete("This method is deprecated, due to performance reasons. Use: 'public EnemyAIActionData GetBestEnemyAIActionData()' instead", true)]
     public EnemyAIActionData DeprecatedGetBestEnemyAIActionData()
     {
 

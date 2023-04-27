@@ -1,6 +1,8 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -295,37 +297,293 @@ public class Pathfinding : MonoBehaviour
     
 
     #endregion  Setup, Initialization Methods
-    
-    
-    /// <summary>
-    /// Todo: this Method.
-    /// </summary>
-    /// <param name="endNode"></param>
-    /// <param name="pathNodeList"></param>
-    /// <returns></returns>
-    private List<GridPosition> FindPathAlsoReturnNodeList(PathNode endNode, out List<PathNode> pathNodeList)
-    {
 
-        // Todo:  This method.
-        
-        //...it will also return  "pathNodeList"
+
+    /// <summary>
+    /// (Optimized by AlMartson, v-2.0) <br /> <br />
+    ///
+    /// Main Function for calculating the Best (optimal) Path.
+    /// </summary>
+    /// <param name="startGridPosition"></param>
+    /// <param name="endGridPosition"></param>
+    /// <param name="pathLength">It is the F COST of the 'End Node' (a.k.a.: end/Destination: 'NodePath'): it is also the TOTAL COST OF THE PATH.</param>
+    /// <returns>The BEST PATH, as a List of 'GridPosition'(s)</returns>
+    public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition, out int pathLength)
+    {
+        #region 0- Initialize Node(s), and Open and Closed Nodes (Lists)
+
+        // PATHS
+        // List of PathNode(s):   Open to visit (yet)
         //
-        pathNodeList = null;
+        List<PathNode> openList = new List<PathNode>();
+        //
+        // List of PathNode(s):   Closed, they were already visited  (already computed / calculated there its G, H and F)
+        //
+        List<PathNode> closedList = new List<PathNode>();
+
+        // NODES
+        // Initial / Start NODE:
+        //
+        PathNode startNode = _gridSystem.GetGridObject(startGridPosition);
+        //
+        // End NODE:
+        //
+        PathNode endNode = _gridSystem.GetGridObject(endGridPosition);
+        //
+        // Add the "Start Node" to the List:
+        //
+        openList.Add(startNode);
         
+        // Initialize G, H, and F Costs
+        // Reset them
+        //..in all the PathNode(s)  (GridPositions)
+        // Lists Lenght
+        //
+        int gridSystemWidth = _gridSystem.GetWidth();
+        int gridSystemHeight = _gridSystem.GetHeight();
+        //
+        // Cycle - Loop through every 'GridPosition'
+        // Horizontal Values
+        //
+        for (int x = 0; x < gridSystemWidth; x++)
+        {
+            // Vertical / Forward  Values
+            // 
+            for (int z = 0; z < gridSystemHeight; z++)
+            {
+                // Get a   CURRENT   GridPosition  &   PathNode
+                // CURRENT   GridPosition
+                //
+                GridPosition gridPosition = new GridPosition(x, z);
+                //
+                // CURRENT   PathNode
+                //
+                PathNode pathNode = _gridSystem.GetGridObject(gridPosition);
+
+                
+                #region Initialize  (G, H, F)  Costs
+
+                // Initialize  (G, H, F)  Costs
+                // G Cost   ->   Infinite
+                // (Walking Cost from:  START -> to -> CURRENT Node)
+                //
+                pathNode.SetGCost( int.MaxValue );
+
+                // H Cost   ->   Zero
+                // ('Heuristic' Walking Cost from:  CURRENT Node -> to -> END Node ...
+                // ..assuming that THERE ARE NO WALLS or obstacles: Simplification / Idealization:
+                // * Let's assume it to be: the RAW linear-SHORTEST DISTANCE (in Squares / GridPositions)
+                // CURRENT Node -> to -> END Node):    Initialization = Zero
+                //
+                pathNode.SetHCost(0);
+
+                // F Cost   ->   Infinite   (Infinite + 0)
+                //
+                pathNode.CalculateFCost();
+                
+                // Reset / Initialize to NULL:
+                // The NODE Path   (_cameFromPathNode)
+                //
+                pathNode.ResetCameFromPathNode();
+
+                #endregion Initialize  (G, H, F)  Costs
+
+            }//End for (int z = 0; x < gridSystemHeight ... 
+        }//End for (int x = 0; x < gridSystemWidth ...
+        
+        #endregion 0- Initialize Node(s), and Open and Closed Nodes (Lists)
+
+        
+        #region 1- Start searching for a PATH
+
+        // 1- Start searching for a PATH
+        //   1.1- Set up the START Node:
+        
+        #region 1.1- Set up the START Node   /  Initialize  (G, H, F)  Costs
+        
+        //   1.1- Set up the START Node:
+        //     Calculate the COST
+        
+        // G Cost
+        //     (Walking Cost from:  START -> to -> CURRENT Node):  ZERO (initial Node)
+        //
+        startNode.SetGCost(0);
+
+        // H Cost
+        //     ('Heuristic' Walking Cost from:  CURRENT Node -> to -> END Node ...
+        // ..assuming that THERE ARE NO WALLS or obstacles: Simplification / Idealization:
+        // * Let's assume it to be: the RAW linear-SHORTEST DISTANCE (in Squares / GridPositions)
+        // CURRENT Node -> to -> END Node):    DISTANCE between 2 points
+        //
+        startNode.SetHCost(CalculateDistance(startGridPosition, endGridPosition));
+
+        // F Cost   ->   Infinite   (H Distance(ThisNode, EndNode) + 0)
+        //
+        startNode.CalculateFCost();
+
+        #endregion 1.1- Set up the START Node   /  Initialize  (G, H, F)  Costs
+        
+        #endregion 1- Start searching for a PATH
+        
+        
+        #region 2- Continue in a  CURRENT NODE  (searching for a PATH)
+
+        // 2- Continue in a  CURRENT NODE  (searching for a PATH)
+        // WHILE  (there are NODES yet to visit...)  DO
+        //
+        while (openList.Count > 0)
+        {
+
+            // 1- Get the "Next" NODE in the List that:
+            //     Has the LOWEST F-COST  in the group
+            // (...so we can prioritize... and end the Algorithm quickly).
+            //
+            PathNode currentNode = GetLowestFCostPathNode(openList);
+
+            
+            // 2- Validations:
+            //   .1- CURRENT Node   is our   FINAL Node?
+            //
+            if (currentNode == endNode)
+            {
+
+                // Reached FINAL NODE
+                // Get the TOTAL COST (a.k.a.: F Cost) to this PATH
+                //
+                pathLength = endNode.GetFCost();
+                //
+                // Return the Path  (but reverse it... we want to start from START NODE to -> Ending Node)
+                //
+                return CalculatePath(endNode);
+
+            }//End if (currentNode == endNode)
+
+
+            // 3- Update NODES LISTS:
+            //..we visited the  CURRENT NODE
+            //
+            openList.Remove(currentNode);
+            closedList.Add(currentNode);
+
+
+            #region 4- Search through all (Current Node's):  NEIGHBORS
+
+            // 4- Search through all (Current Node's):  NEIGHBORS
+            //
+            List<PathNode> neighbourList = GetNeighbourList(currentNode);
+            //
+            int neighbourListCount = neighbourList.Count;
+            //
+            // For - Loop  search  for... my:   NEIGHBORS
+            //
+            for (int i = 0; i < neighbourListCount; i++)
+            {
+
+                // Get the / a particular  neighbourNode  to work with:
+                //
+                PathNode neighbourNode = neighbourList[i];
+                
+                
+                // 4.1- Check / Validate:
+                //... Is this NEIGHBOUR Node in the 'Closed List' ???   (i.e.: It is already computed...)  ->  Skip it
+                //
+                if (closedList.Contains(neighbourNode))
+                {
+                    continue;
+                    
+                }//End if (closedList.Contains
+
+
+                // 4.2- Check / Validate:
+                //   Is it Not WALKABLE ??   (an Obstacle !)
+                //   Do NOT Walk (in that Node):
+                //
+                if (!neighbourNode.IsWalkable())
+                {
+                    // Add to the "already visited & checked"  List:
+                    //
+                    closedList.Add(neighbourNode);
+
+                    // Skip this iteration, go and check: another neighbour
+                    //
+                    continue;
+
+                }//End if (!neighbourNode.IsWalkable
+
+
+                #region 4.2- Calculate the G, H, F COSTS of the NEIGHBOUR NODE:
+                
+                // 4.2- Calculate the G, H, F COSTS of the NEIGHBOUR NODE:
+                //
+                int tentativeGCostOfNeighbour = currentNode.GetGCost() +
+                                                CalculateDistance(currentNode.GetGridPosition(), neighbourNode.GetGridPosition()); 
+                
+
+                // Based on "the smallest"   G COST  as Criteria:
+                //
+                if (tentativeGCostOfNeighbour < neighbourNode.GetGCost())
+                {
+
+                    // We found the BETTER PATH:
+                    //...to go FROM CURRENT NODE -> to -> NEIGHBOUR NODE
+                    //
+                    neighbourNode.SetCameFromPathNode(currentNode);
+                    //
+                    // Set G Cost
+                    //
+                    neighbourNode.SetGCost(tentativeGCostOfNeighbour);
+                    //
+                    // Set H Cost
+                    //
+                    neighbourNode.SetHCost( CalculateDistance(neighbourNode.GetGridPosition(), endGridPosition) );
+                    //
+                    // Calculate F Cost
+                    //
+                    neighbourNode.CalculateFCost();
+                    
+
+                    // Update the OPEN LIST
+                    // (because: we already visited this NEIGHBOUR NODE):
+                    //
+                    openList.Add(neighbourNode);
+
+                }//End if (tentativeGCostOfNeighbour < neighbourNode.GetGCost())
+
+                #endregion 4.2- Calculate the G, H, F COSTS of the NEIGHBOUR NODE:
+
+
+            }//End For loop (4- Search through all (Current Node's):  NEIGHBORS)
+            
+            #endregion 4- Search through all (Current Node's):  NEIGHBORS
+
+        }//End while (openList.Count > 0)
+        
+        
+        #endregion 2- Continue in a  CURRENT NODE  (searching for a PATH)
+        
+        // If it reached this point, then there is no possible Path... it is a NULL Path:
+        // No Path found
+        // F Cost  (i.e.: Total Cost of the Path) = 0
+        //
+        pathLength = 0;
+        //
         return null;
 
-    }// End FindPathAlsoReturnNodeList
+    }//End FindPath
 
-
+    
+    #region Deprecated - Obsolete Methods  (of this Class)
+    
     /// <summary>
-    /// Main Function for calculating the Best (optimal) Path.
+    /// (Deprecated for performance reasons)  Main Function for calculating the Best (optimal) Path.
     /// </summary>
     /// <param name="startGridPosition"></param>
     /// <param name="endGridPosition"></param>
     /// <param name="pathLength">It is the F COST of the 'End Node' (a.k.a.: end/Destination: 'NodePath'): it is also the TOTAL COST OF THE PATH.</param>
     /// <param name="useTentativeFCostOrGCostAsCriteriaInTheEnd">* TRUE: Use 'F Cost' as a CRITERIA in the end...<br /> <br /> * FALSE: Use 'G Cost'. NOTE: CodeMonkey used it in the video.</param>
     /// <returns>The BEST PATH, as a List of 'GridPosition'(s)</returns>
-    public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition, out int pathLength, bool useTentativeFCostOrGCostAsCriteriaInTheEnd = false)
+    [Obsolete("This method is deprecated. Use: 'FindPath(GridPosition startGridPosition, GridPosition endGridPosition, out int pathLength, bool useTentativeFCostOrGCostAsCriteriaInTheEnd = false)' instead", true)]
+    public List<GridPosition> DeprecatedFindPath(GridPosition startGridPosition, GridPosition endGridPosition, out int pathLength, bool useTentativeFCostOrGCostAsCriteriaInTheEnd = false)
     {
         #region 0- Initialize Node(s), and Open and Closed Nodes (Lists)
 
@@ -629,20 +887,20 @@ public class Pathfinding : MonoBehaviour
         //
         return null;
 
-    }//End FindPath
+    }// End DeprecatedFindPath
 
     
-    #region Search Nodes - Operations
-
-    
+        
     /// <summary>
-    /// Rebuilds the BEST PATH... <br /> <br />
+    /// (Deprecated for performance reasons)  Rebuilds the BEST PATH... <br /> <br />
+    /// 
     /// Calculated from a series of 'PathNode' that are linked through an internal Attribute (Field) of the PathNode Class:  '_cameFromPathNode'. <br /> <br />
     /// NOTE: The list is built in REVERSE ORDER (END NODE -> ... -> START NODE), then that is fixed inside this function, so we get a NORMAL List in the end (START NODE -> ... -> END NODE).
     /// </summary>
     /// <param name="endNode"></param>
     /// <returns></returns>
-    private List<GridPosition> CalculatePath(PathNode endNode)
+    [Obsolete("This method is deprecated. Use: 'CalculatePath(PathNode endNode)' instead", true)]
+    private List<GridPosition> DeprecatedCalculatePath(PathNode endNode)
     {
         // List to "almost" return:   Path Nodes, the BEST PATH, found by using PATHFINDING:
         //
@@ -706,6 +964,98 @@ public class Pathfinding : MonoBehaviour
             gridPositionList.Add(pathNode.GetGridPosition());
             
         }//End foreach (PathNode pathNode in pathNodeList)
+
+        #endregion 4- Cast the type List "PathNode"   to:  List "GridPosition"
+        
+
+        // Return the List of "GridPositions":   The BEST PATH.
+        //
+        return gridPositionList;
+        
+    }// End DeprecatedCalculatePath
+    
+    
+    #endregion Deprecated - Obsolete Methods  (of this Class)
+    
+    
+    #region Search Nodes - Operations
+
+    
+    /// <summary>
+    /// (Optimized by AlMartson, v-2.0)   Rebuilds the BEST PATH... <br /> <br />
+    /// 
+    /// Calculated from a series of 'PathNode' that are linked through an internal Attribute (Field) of the PathNode Class:  '_cameFromPathNode'. <br /> <br />
+    /// NOTE: The list is built in REVERSE ORDER (END NODE -> ... -> START NODE), then that is fixed inside this function, so we get a NORMAL List in the end (START NODE -> ... -> END NODE).
+    /// </summary>
+    /// <param name="endNode"></param>
+    /// <returns></returns>
+    private List<GridPosition> CalculatePath(PathNode endNode)
+    {
+        // List to "almost" return:   Path Nodes, the BEST PATH, found by using PATHFINDING:
+        //
+        List<PathNode> pathNodeList = new List<PathNode>();
+        
+        // 1- Add the "endNode"   (starting in REVERSE MODE: from the END ..-> to -> the Beginning)
+        //
+        pathNodeList.Add(endNode);
+        
+        // "Current Node":  Moving BACKWARDS  (END to -> START)  in the NODES:
+        //
+        PathNode currentNode = endNode;
+        
+        
+        #region 2- Rebuilding the Path of Nodes: Cycling BACKWARDS
+        
+        // Cycling BACKWARDS to rebuild the PATH of NODES... until the 'Start Node':
+        //
+        while ( currentNode.GetCameFromPathNode() != null )
+        {
+
+            // Means: There (still) are NODES on that PATH:
+            // Add the  CURRENT NODE  to the List
+            //
+            pathNodeList.Add( currentNode.GetCameFromPathNode() );
+            
+            // Update the (auxiliary variable of)  CURRENT NODE  -> to the -> NEXT
+            // (...rather: PREVIOUS, because we are going BACKWARDS, remember..?)
+            //
+            currentNode = currentNode.GetCameFromPathNode();
+
+        }//End while ( currentNode.GetCameFromPathNode() != null )
+        
+        #endregion 2- Rebuilding the Path of Nodes: Cycling BACKWARDS
+
+        
+        #region 3- Reverting the ORDER of the Nodes  (we got an INVERSE PATH)
+        
+        // 3.1- INVERT the ORDER of the List<>
+        //
+        pathNodeList.Reverse();
+
+        #endregion 3- Reverting the ORDER of the Nodes  (we got an INVERSE PATH)
+
+
+        #region 4- Cast / Convert   the type List "PathNode"   to:  List "GridPosition"
+        
+        // List to return finally:  initialize
+        //
+        List<GridPosition> gridPositionList = new List<GridPosition>();
+        
+
+        // 4- Cast the type List <"PathNode">   to:  List <"GridPosition">
+        // Length of the Node's List:
+        //
+        int pathNodeListLength = pathNodeList.Count;
+        //
+        for (int i = 0; i < pathNodeListLength; i++)
+        {
+
+            // Get the "GridPosition"  represented by that (..Path..) NODE:
+            //..build the List with all the GridPositions, in a correct (forward) order:
+            //
+            gridPositionList.Add(pathNodeList[i].GetGridPosition());
+            
+        }//End for
 
         #endregion 4- Cast the type List "PathNode"   to:  List "GridPosition"
         
@@ -943,7 +1293,7 @@ public class Pathfinding : MonoBehaviour
         //
         return pathLength;
 
-    }// End HasPath
+    }// End GetPathLength
     
     #endregion Obstacles for Pathfinding
     
