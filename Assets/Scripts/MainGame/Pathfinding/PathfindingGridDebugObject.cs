@@ -9,7 +9,6 @@ using UnityEngine;
 /// </summary>
 public class PathfindingGridDebugObject : GridDebugObject
 {
-
     #region Attributes
 
     /// <summary>

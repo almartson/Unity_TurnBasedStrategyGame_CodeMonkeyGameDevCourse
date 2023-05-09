@@ -13,6 +13,7 @@ using TMPro;
 /// Usage: 1) Select Text(s) in Hierarchy 2) Select: Tools > Text To TextMeshPro
 public class TextToTextMeshPro : Editor
 {
+    
     // public class TextMeshProSettings
     // {
     //     public bool Enabled;

@@ -9,7 +9,7 @@ using UnityEngine;
 /// ENEMIES' (NPC's) Artificial Intelligence (A.I.) MAIN BRAIN MANAGER. <br /> <br />
 /// Originally it is implementing a "Bad Practice" or "dirty" way of using a FINITE STATE MACHINE Pattern... because it is based on SWITCH - CASE _state....<br />
 /// It also uses a similar approach (using DELEGATES, Action Events...) as:  UnitActionSystem.cs   (see for more details). <br />
-/// TODO:   Change it later to the Jason Weimann's general solution: FSM using Delegates + Dictionaries (i.e: the "State" Pattern, see my example on GitHub:  https://github.com/almartson/AI_StateMachine_DronesDemo  ).
+/// TODO:   Change it later to the Jason Weimann's general solution: The 'State Machine Pattern' (FSM) using Delegates + Dictionaries (i.e: the "State" Pattern, see my example on GitHub:  https://github.com/almartson/AI_StateMachine_DronesDemo  ).
 /// </summary>
 public class EnemyAI : MonoBehaviour
 {
@@ -466,9 +466,12 @@ public class EnemyAI : MonoBehaviour
 
     /// <summary>
     /// (Deprecated because of performance issues - a "foreach" is inside)
-    /// Given an "Enemy Unit": <br />
+    /// Given an "Enemy Unit": <br /> 
     /// It Executes a particular ENEMY Unit  'ACTION'  (A.I.)
     /// </summary>
+    /// <param name="enemyUnit"></param>
+    /// <param name="onEnemyAIActionComplete"></param>
+    /// <returns></returns>
     [Obsolete("This method is deprecated. Use: 'private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)' instead", true)]
     private bool DeprecatedTryTakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
     {

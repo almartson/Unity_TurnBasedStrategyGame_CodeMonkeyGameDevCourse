@@ -6,7 +6,8 @@ using UnityEngine;
 /// </summary>
 public class GridDebugObject : MonoBehaviour
 {
-
+    #region Attributes
+    
     [SerializeField] private TextMeshPro _textMeshPro;
     
     /// <summary>
@@ -14,7 +15,8 @@ public class GridDebugObject : MonoBehaviour
     /// </summary>
     private object _gridObject;
 
-
+    #endregion Attributes
+    
     #region Unity Methods
 
     // private void Start()
@@ -39,6 +41,10 @@ public class GridDebugObject : MonoBehaviour
     
     #region Custom Methods
     
+    /// <summary>
+    /// Setter for <code>GridObject</code>
+    /// </summary>
+    /// <param name="gridObject"></param>
     public virtual void SetGridObject(object gridObject)
     {
         this._gridObject = gridObject;
