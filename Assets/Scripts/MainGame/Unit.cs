@@ -251,7 +251,6 @@ public class Unit : MonoBehaviour
         //
         if (newGridPosition != _gridPosition)
         {
-
             // Update also the CURRENT GridPosition ref here
             //
             GridPosition oldGridPosition = _gridPosition;

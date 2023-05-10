@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Testing : MonoBehaviour
@@ -10,13 +11,8 @@ public class Testing : MonoBehaviour
 
     
     
-    
     #region Show the PATHFINDING ALGORITHM
-
-    // [Tooltip("* TRUE: Use 'F Cost' as a CRITERIA in the end...\n\n * FALSE: Use 'G Cost' (may be an error, giving unexpected results...). NOTE: COdeMonkey used it in the video, (although I think he made a mistake...).")]
-    // [SerializeField]
-    // private bool _useTentativeFCostOrGCostAsCriteriaInTheEnd = false;
-
+    
     #endregion Show the PATHFINDING ALGORITHM
     
     
@@ -38,58 +34,20 @@ public class Testing : MonoBehaviour
         //
         if (Input.GetKeyDown(KeyCode.T))
         {
-
             
-
+            
             #region Show the PATHFINDING ALGORITHM
 
-            // // Show the PATHFINDING ALGORITHM
-            // //
-            // GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
-            //
-            // // Call the PATHFINDING ALGORITHM
-            // // 1- Initialize: Start Node
-            // //
-            // GridPosition startGridPosition = new GridPosition(0, 0);
-            // //
-            // // 2- Call the PATHFINDING ALGORITHM
-            // //
-            // List<GridPosition> gridPositionList = Pathfinding.Instance.FindPath(startGridPosition, mouseGridPosition, _useTentativeFCostOrGCostAsCriteriaInTheEnd);
-            //
-            //
-            // // Visual (Cue) Feedback:  Draw Lines on the ground
-            // //..representing the BEST PATH
-            // //
-            // if (gridPositionList != null)
-            // {
-            //
-            //     int gridPositionListCount = gridPositionList.Count;
-            //     //
-            //     // Draw Lines on the ground
-            //     //
-            //     for (int i = 0; i < gridPositionListCount - 1; i++)
-            //     {
-            //         // Draw Lines
-            //         //
-            //         Debug.DrawLine(
-            //             LevelGrid.Instance.GetWorldPosition(gridPositionList[i]),
-            //             LevelGrid.Instance.GetWorldPosition(gridPositionList[i + 1]),
-            //             Color.white,
-            //             10.0f
-            //         );
-            //     
-            //     }//End for
-            //     
-            // }//End if (gridPositionList != null)
+            ShowBestPathFromSelectedUnitToMousePosition();
 
             #endregion Show the PATHFINDING ALGORITHM
-
 
         }//End if (Input.GetKeyDown(KeyCode.T))
         
     }//End Update
 
     
+    #region Old Update Code Snippets
     
     // private void Update()
     // {
@@ -110,5 +68,74 @@ public class Testing : MonoBehaviour
     //     
     // }//End Update
     
+    #endregion Old Update Code Snippets
+
+    
+    #region My Custom Methods
+
+    #region Show the PATHFINDING ALGORITHM
+    
+    /// <summary>
+    /// Shows the 'Best Path' from the selected Unit, to the current Mouse Position (a GridPosition on the Map). 
+    /// </summary>
+    public void ShowBestPathFromSelectedUnitToMousePosition()
+    {
+        // Show the PATHFINDING ALGORITHM
+        //
+        GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
+        
+        // Call the PATHFINDING ALGORITHM
+        // 1- Initialize: Start Node
+        //
+        GridPosition startGridPosition;
+        //
+        if (TurnSystem.Instance.IsPlayerTurn)
+        {
+            startGridPosition = UnitActionSystem.Instance.GetSelectedUnit().GetGridPosition();
+        }
+        else
+        {
+            startGridPosition = UnitManager.Instance.GetEnemyUnitList().First().GetGridPosition();
+        }//
+        //
+        if ( startGridPosition == null )
+        {
+            startGridPosition = new GridPosition(0, 0);
+        }//
+        //
+        // 2- Call the PATHFINDING ALGORITHM
+        //
+        List<GridPosition> gridPositionList = Pathfinding.Instance.FindPath(startGridPosition, mouseGridPosition, out int pathLength);
+
+        // Visual (Cue) Feedback:  Draw Lines on the ground
+        //..representing the BEST PATH
+        //
+        if (gridPositionList != null)
+        {
+        
+            int gridPositionListCount = gridPositionList.Count;
+            //
+            // Draw Lines on the ground
+            //
+            for (int i = 0; i < gridPositionListCount - 1; i++)
+            {
+                // Draw Lines
+                //
+                Debug.DrawLine(
+                    LevelGrid.Instance.GetWorldPosition(gridPositionList[i]),
+                    LevelGrid.Instance.GetWorldPosition(gridPositionList[i + 1]),
+                    Color.white,
+                    10.0f
+                );
+            
+            }//End for
+            
+        }//End if (gridPositionList != null)
+
+    }//End ShowPathFromSelectedUnitToMousePosition
+                
+    #endregion Show the PATHFINDING ALGORITHM
+
+    #endregion My Custom Methods
     
 }
