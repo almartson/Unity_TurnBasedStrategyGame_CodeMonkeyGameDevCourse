@@ -20,7 +20,6 @@ public static class PromptOnExitAndLogEditorTime
     public static bool ExitGameDecision => _exitGameDecision;
     
     #endregion Attributes
-
     
     
     #region Methods
