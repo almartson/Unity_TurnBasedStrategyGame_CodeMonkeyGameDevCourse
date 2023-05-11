@@ -19,11 +19,18 @@ public class TurnSystem : MonoBehaviour
     private int _turnNumber = 1;
 
     /// <summary>
-    /// Determines whose is the current Turn? (Player's or Enemy's...)
+    /// (Readonly) Determines whose is the current Turn? (Player's or Enemy's...)
     /// </summary>
+    [Tooltip("(Readonly) Determines whose is the current Turn? (Player's or Enemy's...)")]
+    [SerializeField]
     private bool _isPlayerTurn = true;
 
+    
+    [Tooltip("Unit that is Playing now...")]
+    [SerializeField]
+    private Unit _unitThatIsPlayingNow;
 
+    
     #region Singleton Pattern's
     
     [Tooltip("Singleton Pattern's Main Key: Instance of this very Class")] 
@@ -132,6 +139,18 @@ public class TurnSystem : MonoBehaviour
         set => _isPlayerTurn = value;
     }
     
+    
+    /// <summary>
+    /// _unitThatIsPlayingNow Properties:  Getter and Setter. <br /> <br />
+    ///
+    /// Unit that is Playing now...
+    /// </summary>
+    public Unit UnitThatIsPlayingNow
+    {
+        get => _unitThatIsPlayingNow;
+        set => _unitThatIsPlayingNow = value;
+    }
+
     #endregion My Custom Methods
 
 }

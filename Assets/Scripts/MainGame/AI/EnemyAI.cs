@@ -144,7 +144,7 @@ public class EnemyAI : MonoBehaviour
                     
                     // (Try to...)  Take ACTION!
                     //
-                    if (TryTakeEnemyAIAction(SetStateTakingTurn))
+                    if (TryTakeEnemyAIAction(SetStateTakingTurnAndSetMarkUnitThatIsPlayingNow))
                     {
                         
                         // Set the NEXT STATE after this one:
@@ -184,9 +184,11 @@ public class EnemyAI : MonoBehaviour
     /// <summary>
     /// It clears the BUSY state and works as the delegate-callback function call to be used in 'TurnSystem_OnTurnChanged'
     /// This is a MUTEX LOCK that happens while this Class is Busy TAKING AN ACTION... it is for validation, because it can not take more actions while it is ALREADY working... <br />
-    /// So: it RESETS the STATE of the FSM back to:   State.TakingTurn
+    /// So: it RESETS the STATE of the FSM back to:   State.TakingTurn <br /> <br />
+    ///
+    /// Also: it marks in the TurnSystem.Instance.UnitThatPlaysNow()  the (Enemy A.I.) Unit that is Playing, taking the Turn. This is done for Debugging Purposes.
     /// </summary>
-    private void SetStateTakingTurn()
+    private void SetStateTakingTurnAndSetMarkUnitThatIsPlayingNow()
     {
         // Small DELAY, to make it look more realistic:
         //
@@ -195,6 +197,10 @@ public class EnemyAI : MonoBehaviour
         // Set the STATE:   Taking this TURN
         //
         _state = State.TakingTurn;
+        
+        // (Debug & Experimental) Also: it marks in the TurnSystem.Instance.UniThatPlaysNow()  the (Enemy A.I.) Unit that is Playing, taking the Turn. This is done for Debugging Purposes.
+        //
+        TurnSystem.Instance.UnitThatIsPlayingNow = _bestBaseAction.GetUnit();
 
     }// End SetStateTakingTurn
     
@@ -239,7 +245,7 @@ public class EnemyAI : MonoBehaviour
         //
         List<Unit> enemyUnitList = UnitManager.Instance.GetEnemyUnitList();
         //
-        // Lenght of th List
+        // Lenght of the List
         //
         int enemyUnitListLenght = enemyUnitList.Count;
 
@@ -278,8 +284,14 @@ public class EnemyAI : MonoBehaviour
     /// </summary>
     private bool TryTakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
     {
-
+        
         // GOAL: Get the BEST  ACTION   (as object)  possible to take:
+
+        // (Debug & Experimental) Also: it marks in the TurnSystem.Instance.UniThatPlaysNow()  the (Enemy A.I.) Unit that is Playing, taking the Turn. This is done for Debugging Purposes.
+        //
+        TurnSystem.Instance.UnitThatIsPlayingNow = enemyUnit;
+
+        
         // CALCULATIONS:
 
         // 0- Keeping track of the  BEST "Enemy A.I. ACTION"  (possible to choose:
@@ -404,10 +416,10 @@ public class EnemyAI : MonoBehaviour
         
         // Validate  ACTION != null  &&   Have enough (ACTION) POINTS    &&  ACTION is  MEANINGFULLY?
         //
-        if ( ((_bestEnemyAIActionData != null) && (_bestBaseAction != null))  &&  (enemyUnit.TrySpendActionPointsToTakeAction(_bestBaseAction)) 
+        if ( ((_bestEnemyAIActionData != null) && (_bestBaseAction != null))  &&  ( _bestEnemyAIActionData.actionValue > 0 && enemyUnit.TrySpendActionPointsToTakeAction(_bestBaseAction) ) )
             /* Rework this Next Guard, because some ACTIONS can have a VALUE=0 in THIS TURN... for the SAKE OF A MORE COMPLEX CHAINED-STRATEGY of 2, 3 OR MORE CONSECUTIVE STEPS-TURNS:  See below:
              
-             && (_bestEnemyAIActionData.actionValue > 0)*/ /* This means: Just TAKE ACTION when the ACTION is MEANINGFULLY... more that ZERO POINTS in VALUE / WORTH */ )
+             && (_bestEnemyAIActionData.actionValue > 0)*/ /* This means: Just TAKE ACTION when the ACTION is MEANINGFULLY... more that ZERO POINTS in VALUE / WORTH */
         {
 
             // .2.0- The actionPoints are Spent / used by now, already...

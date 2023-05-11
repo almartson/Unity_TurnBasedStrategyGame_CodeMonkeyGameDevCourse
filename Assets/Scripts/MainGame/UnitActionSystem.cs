@@ -378,6 +378,7 @@ public class UnitActionSystem : MonoBehaviour
     /// Selects / Sets an ACTION selected by clicking on the (related Action's...) GUI Button.
     /// </summary>
     /// <returns>True or False for the Success of the previous >Validations, before performing the 'TakeAction()' routine, called inside of this Method.</returns>
+    [Obsolete("This method is deprecated (because of architectural reasons, the new version is a more decoupled and generic one, handling mouse clicks on both the 3D Mesh of the Character and also on the GridPosition on the Floor where the character is stepping on (for both: the Enemies (A.I.) and the Player's Units): 'HandleSelectedAction()' in this: UnitActionSystem.cs Class). Use: 'private bool HandleSelectedAction()' instead", true)]
     private bool HandleSelectedActionCalculatingGridPositions()
     {
         // THERE ARE 2 (Architecture) OPTIONS to make an ACTION Selection:
@@ -692,6 +693,7 @@ public class UnitActionSystem : MonoBehaviour
     /// False   if the user clicked on an not permitted area,
     ///...or if in any case the Raycast is NOT successful in hitting an UNIT (i.e.: filtered by the LayerMask).
     /// </returns>
+    [Obsolete("This method is deprecated (because of architectural reasons, the new version is a more decoupled and generic one, handling mouse clicks on both the 3D Mesh of the Character and also on the GridPosition on the Floor where the character is stepping on (for both: the Enemies (A.I.) and the Player's Units), in this: UnitActionSystem.cs Class). Use: 'private bool TryGetClickedUnit(out Unit clickedUnit)' instead", true)]
     private bool TryHandleUnitSelection()
     {
       
@@ -778,7 +780,13 @@ public class UnitActionSystem : MonoBehaviour
         // Select a Default Action for the Character / Unit:  MOVE ACTION
         //
         SetSelectedAction( unit.GetAction<MoveAction>() );
-        
+
+
+        // (Debug & Experimental) Also: it marks in the  TurnSystem.Instance.UnitThatPlaysNow()  the (Enemy A.I.) Unit that is Playing, taking the Turn. This is done for Debugging Purposes.
+        //
+        TurnSystem.Instance.UnitThatIsPlayingNow = unit;
+
+
         // Fire the EVENT (Observer Pattern) from the PUBLISHER (i.e.: represented by this Class).
         // 1- Do a NULL check on the EventHandler:
         // 2- Trigger the Event..: OnSelectedUnitChanged()
@@ -795,7 +803,7 @@ public class UnitActionSystem : MonoBehaviour
         //
         OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
 
-    }
+    }// End SetSelectedUnit
 
     
     public Unit GetSelectedUnit()
@@ -906,8 +914,12 @@ public class UnitActionSystem : MonoBehaviour
                 
             }//End if ( friendlyUnitList.Count > 0 )
             
-        }//End if (_selectedUnit.GetHealthNormalized...
+        }//End if ( _selectedUnit.IsDead() )
 
+        // (Debug & Experimental) Also: it marks in the  TurnSystem.Instance.UnitThatPlaysNow()  the (Enemy A.I.) Unit that is Playing, taking the Turn. This is done for Debugging Purposes.
+        //
+        TurnSystem.Instance.UnitThatIsPlayingNow = _selectedUnit;
+        
     }// End TurnSystem_OnTurnChanged
 
     #endregion Listeners and Events:  ON TURN CHANGED
