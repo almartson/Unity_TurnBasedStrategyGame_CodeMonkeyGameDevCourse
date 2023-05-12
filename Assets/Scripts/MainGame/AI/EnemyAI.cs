@@ -144,7 +144,7 @@ public class EnemyAI : MonoBehaviour
                     
                     // (Try to...)  Take ACTION!
                     //
-                    if (TryTakeEnemyAIAction(SetStateTakingTurnAndSetMarkUnitThatIsPlayingNow))
+                    if ( TryToMakeAGeneralBestDecision(SetStateTakingTurnAndSetMarkUnitThatIsPlayingNow) )
                     {
                         
                         // Set the NEXT STATE after this one:
@@ -231,6 +231,112 @@ public class EnemyAI : MonoBehaviour
 
     #region A.I. "TakeAction"
     
+    
+    #region A.I.:  0- General Decision Making Routine
+    
+    /// <summary>
+    /// Handles the General reasoning for the "Enemy A.I.", to make a general decision about the course of actions to take: <br/> <br/>
+    ///
+    /// Executes the (current FSM state)  A.I. 'ACTION':   for all "Units" in the ENEMY's TEAM. <br/> <br/>
+    /// </summary>
+    private bool TryToMakeAGeneralBestDecision(Action onEnemyAIActionComplete)
+    {
+        
+        // (Try to...)  Decide on an  ACTION  to take  (if any Enemy NPC can take an Action, we would call it a success => return TRUE in the end of this Function):
+        //
+        if ( TryTakeEnemyAIAction(onEnemyAIActionComplete) )
+        {
+
+            // A simple ACTION was possible  (i.e.: according to the COdeMonkey's approach:
+            // ..One Step Forward - a MoveAction- plus: an "ShootAction" having a Player's Unit withing Shooting Range):
+            //
+            return true;
+        }
+        else
+        {
+            // No ENEMY (in the List<_enemyUnit>) could "Take A.I. Action"...  (of the original CodeMonkey's Algorithm)
+            // ...So:   Try the AlMartson's Algorithm:   A.I. Based on Moving: SEVERAL Steps forward.
+            //
+            if ( TryTakeMoreComplexEnemyAIAction(onEnemyAIActionComplete) )
+            {
+
+                // An ACTION was possible  (i.e.: according to the AlMartson's approach:
+                // ..A.I. Based on Moving: SEVERAL Steps forward.
+                //
+                return true;
+            }
+            else
+            {
+                // No ENEMY (in the List<_enemyUnit>) could "Take A.I. Action"...  (of ANY of the A.I.'s Algorithms)
+                // ...So:
+                //
+                return false;
+
+            }//End else of if (TryTakeMoreComplexEnemyAIAction...
+
+        }//End else of if (TryTakeEnemyAIAction...
+      
+    }// End TryToMakeAGeneralBestDecision
+
+    #endregion A.I.:  0- General Decision Making Routine
+    
+    
+    #region A.I. 2- A More Complex "TakeAction"  Algorithm (by AlMartson), that comes after trying the first (1-)
+    
+    /// <summary>
+    /// A more Complex A.I. Algorithm that: Executes the (current FSM state)  A.I. 'ACTION':   for all "Units" in the ENEMY's TEAM. <br/> <br/>
+    ///
+    /// It moves towards its Enemy (i.e.: the Player...)  as many Turns (Steps: MoveActions...) as it can.
+    /// </summary>
+    private bool TryTakeMoreComplexEnemyAIAction(Action onEnemyAIActionComplete)
+    {
+
+        //  NOTICE: Write my pseudo-code here:  translate it from "human language" into C# Language.
+        // ..
+        
+        // // Cycling through every ENEMY Unit..  ( Get Enemy Unit List )
+        // //
+        // List<Unit> enemyUnitList = UnitManager.Instance.GetEnemyUnitList();
+        // //
+        // // Lenght of the List
+        // //
+        // int enemyUnitListLenght = enemyUnitList.Count;
+        //
+        //
+        // // Cycling through every ENEMY Unit..
+        // //
+        // for (int i = 0; i < enemyUnitListLenght; i++)
+        // {
+        //
+        //     // Make the ENEMY UNIT take "ACTION"
+        //     //
+        //     if (TryTakeEnemyAIAction(enemyUnitList[i], onEnemyAIActionComplete))
+        //     {
+        //
+        //         // If the ACTION is Completed, for ANY ENEMY:  end this Loop
+        //         // ...(so, we will have to do another for the NEXT ENEMY later... and so on,... until all ENEMIES have been checked - tried to execute an "A.I. ACTION"):
+        //         //
+        //         return true;
+        //
+        //     }//if (TryTakeEnemyAIAction...
+        //
+        // }//End for
+        //
+        // // No success in "Taking A.I. ACTION"... for ANY Enemy Unit (in the whole ENEMY TEAM), at all:
+        // //
+        // return false;
+        
+        // Temporary, remove as soon as the above code is written and clean:
+        //
+        return false;
+
+    }// End TryTakeMoreComplexEnemyAIAction
+    
+    
+    #endregion A.I. 2- A More Complex "TakeAction"  Algorithm (by AlMartson), that comes after trying the first (1-)
+    
+    #region A.I. 1- Simple "TakeAction"  Algorithm (by the CodeMonkey)
+    
     /// <summary>
     /// Executes the (current FSM state)  A.I. 'ACTION':   for all "Units" in the ENEMY's TEAM. <br/> <br/>
     ///
@@ -276,8 +382,8 @@ public class EnemyAI : MonoBehaviour
         #endregion Optimized Code Version (v-2.0). AlMartson's Implementation
 
     }// End TryTakeEnemyAIAction
-
-
+    
+    
     /// <summary>
     /// Given an "Enemy Unit": <br />
     /// It Executes a particular ENEMY Unit  'ACTION'  (A.I.)
@@ -416,7 +522,7 @@ public class EnemyAI : MonoBehaviour
         
         // Validate  ACTION != null  &&   Have enough (ACTION) POINTS    &&  ACTION is  MEANINGFULLY?
         //
-        if ( ((_bestEnemyAIActionData != null) && (_bestBaseAction != null))  &&  ( _bestEnemyAIActionData.actionValue > 0 && enemyUnit.TrySpendActionPointsToTakeAction(_bestBaseAction) ) )
+        if ( ((_bestEnemyAIActionData != null) && (_bestBaseAction != null))  &&  ( (_bestEnemyAIActionData.actionValue > 0)  && enemyUnit.TrySpendActionPointsToTakeAction(_bestBaseAction) ) )
             /* Rework this Next Guard, because some ACTIONS can have a VALUE=0 in THIS TURN... for the SAKE OF A MORE COMPLEX CHAINED-STRATEGY of 2, 3 OR MORE CONSECUTIVE STEPS-TURNS:  See below:
              
              && (_bestEnemyAIActionData.actionValue > 0)*/ /* This means: Just TAKE ACTION when the ACTION is MEANINGFULLY... more that ZERO POINTS in VALUE / WORTH */
@@ -672,6 +778,8 @@ public class EnemyAI : MonoBehaviour
     
     #endregion (Deprecated) A.I. "TakeAction"
 
+    #endregion A.I. 1- Simple "TakeAction"  Algorithm (by the CodeMonkey)
+    
     #endregion A.I. "TakeAction"
 
     #endregion A.I. Finite State Machine
