@@ -255,7 +255,9 @@ public class EnemyAI : MonoBehaviour
         else
         {
             // No ENEMY (in the List<_enemyUnit>) could "Take A.I. Action"...  (of the original CodeMonkey's Algorithm)
-            // ...So:   Try the AlMartson's Algorithm:   A.I. Based on Moving: SEVERAL Steps forward.
+            // ...So:   Try the AlMartson's Algorithm:
+            //
+            // A.I. Based on Moving: SEVERAL Steps forward:
             //
             if ( TryTakeMoreComplexEnemyAIAction(onEnemyAIActionComplete) )
             {
@@ -267,7 +269,7 @@ public class EnemyAI : MonoBehaviour
             }
             else
             {
-                // No ENEMY (in the List<_enemyUnit>) could "Take A.I. Action"...  (of ANY of the A.I.'s Algorithms)
+                // No ENEMY (in the List<_enemyUnit>) could "Take A.I. Action"...  (of ANY of the A.I.'s Algorithms).
                 // ...So:
                 //
                 return false;
@@ -291,47 +293,184 @@ public class EnemyAI : MonoBehaviour
     private bool TryTakeMoreComplexEnemyAIAction(Action onEnemyAIActionComplete)
     {
 
-        //  NOTICE: Write my pseudo-code here:  translate it from "human language" into C# Language.
-        // ..
+        // 1- TODO:  Make a Function to:  Get List of Player's Units, Sorted by "Damage Taken".
+        // 1- [0].(2)   ->  Get List of Player's Units, Sorted by "Damage Taken".
+        // Temporary Stub Code:
+        //
+        List<Unit> targetUnitList = /* Temporary, change this Code by actual Player Units */
+            UnitManager.Instance.GetFriendlyUnitList();
+
+
+        // 2- Cycling through every ENEMY Unit..  ( Get Enemy Unit List )
+        //
+        List<Unit> enemyUnitList = UnitManager.Instance.GetEnemyUnitList();
+        //
+        // Lenght of the List
+        //
+        int enemyUnitListLenght = enemyUnitList.Count;
         
-        // // Cycling through every ENEMY Unit..  ( Get Enemy Unit List )
-        // //
-        // List<Unit> enemyUnitList = UnitManager.Instance.GetEnemyUnitList();
-        // //
-        // // Lenght of the List
-        // //
-        // int enemyUnitListLenght = enemyUnitList.Count;
-        //
-        //
-        // // Cycling through every ENEMY Unit..
-        // //
-        // for (int i = 0; i < enemyUnitListLenght; i++)
-        // {
-        //
-        //     // Make the ENEMY UNIT take "ACTION"
-        //     //
-        //     if (TryTakeEnemyAIAction(enemyUnitList[i], onEnemyAIActionComplete))
-        //     {
-        //
-        //         // If the ACTION is Completed, for ANY ENEMY:  end this Loop
-        //         // ...(so, we will have to do another for the NEXT ENEMY later... and so on,... until all ENEMIES have been checked - tried to execute an "A.I. ACTION"):
-        //         //
-        //         return true;
-        //
-        //     }//if (TryTakeEnemyAIAction...
-        //
-        // }//End for
-        //
-        // // No success in "Taking A.I. ACTION"... for ANY Enemy Unit (in the whole ENEMY TEAM), at all:
-        // //
-        // return false;
         
-        // Temporary, remove as soon as the above code is written and clean:
+        // Cycling through every ENEMY Unit..
+        //
+        for (int i = 0; i < enemyUnitListLenght; i++)
+        {
+
+            // Cache the   Enemy Unit
+            //
+            Unit enemyUnit = enemyUnitList[i];
+            //
+            // We want the ENEMY A.I. to execute a:  "MoveAction"  towards: (any) one of the Player Team's Unit
+            // Get ENEMY A.I.'s:   "MoveAction"
+            //
+            MoveAction enemyMoveAction = enemyUnit.GetAction<MoveAction>();
+
+            
+            // For this ( enemyMoveAction ) ACTION...  See:
+            // 1- Has it  enough  Action "POINTS"  (for a simple:  "MoveAction" )  ?
+            //
+            if ( enemyUnit.CanSpendActionPointsToTakeAction( enemyMoveAction ) )
+            {
+
+                // This ENEMY-NPC have enough "POINTS" to take THIS ACTION
+                
+                // Execute the  MOVE  ( MoveAction )
+                // ..partially towards the Target   (i.e.: NeverthelessMove as many GridPositions... as you can)
+                //
+                // Make the ENEMY UNIT take "ACTION"
+                //
+                if (TryTakeMoreComplexEnemyAIAction(enemyUnit, enemyMoveAction, targetUnitList, onEnemyAIActionComplete))
+                {
+        
+                    // If the ACTION is Completed, for ANY ENEMY:  end this Loop
+                    // ...(so, we will have to do another for the NEXT ENEMY later... and so on,... until all ENEMIES have been checked - tried to execute an "A.I. ACTION"):
+                    //
+                    return true;
+        
+                }//if (TryTakeEnemyAIAction...
+
+            }//End if ( enemyUnit.CanSpendActionPointsToTakeAction...
+            
+        }//End for
+                        
+        // No success in "Taking a More Complex Enemy A.I. ACTION"... for ANY Enemy Unit (in the whole ENEMY TEAM), at all:
         //
         return false;
 
     }// End TryTakeMoreComplexEnemyAIAction
     
+        
+    /// <summary>
+    /// Given an "Enemy Unit": <br />
+    /// It Executes a particular ENEMY Unit  'ACTION'  (A.I.) <br /><br />
+    /// ...But it is an AlMartson's Implementation for:  A "More" Complex A.I. ACTION, so the ENEMY A.I. is going to Move Towards the Target in multiple "Turns"... even if in some turns there is no gain, apparently (...it is a long-termn strategy).
+    /// </summary>
+    private bool TryTakeMoreComplexEnemyAIAction(Unit enemyUnit, MoveAction enemyUnitMoveAction, List<Unit> targetUnitList, Action onEnemyAIActionComplete)
+    {
+        
+        // GOAL: Get as CLOSE AS POSSIBLE to the Target.
+
+        // (Debug & Experimental) Also: it marks in the TurnSystem.Instance.UniThatPlaysNow()  the (Enemy A.I.) Unit that is Playing, taking the Turn. This is done for Debugging Purposes.
+        //
+        TurnSystem.Instance.UnitThatIsPlayingNow = enemyUnit;
+
+        
+        // CALCULATIONS:
+
+        // 0- Keeping track of the  BEST "Enemy A.I. ACTION"  (possible to choose:
+        //
+        //    0.1- Get a Sub-Set of that List<Unit> targetUnit:  Just the Closest one to this "ENEMY A.I.":
+        //
+        Unit closestTargetUnit = /* Temporary, change this Code*/ targetUnitList[0]; // GetTheClosestTargetUnit( enemyUnit, targetUnitList );
+        //
+        //    0.1- Get the "targetUnit"'s Position on Map  (i.e.:  GridPosition):
+        //
+        GridPosition targetGridPosition = /* Temporary, change this Code*/ targetUnitList[0].GetGridPosition(); // GetBestValidGridPositionOnPathfindingForMovingTowardsTarget(enemyUnit, closestTargetUnit);
+        //
+        //  IMPORTANT Final A.I. (Action-related) Data:
+        //
+        //    0.1- Position - DATA
+        //
+        _bestEnemyAIActionData = enemyUnitMoveAction.GetEnemyAIActionDataForMovingSimplyTowardsAGoal( targetGridPosition, 0);
+        //
+        //    0.2- ACTION  object
+        //
+        _bestBaseAction = enemyUnitMoveAction;
+        //
+        // DEBUG:   Reset the name of the _bestBaseActionName
+        //
+        _bestBaseActionName = _bestBaseAction.GetActionNameByStrippingClassName();;
+        
+        
+        /////////////////////
+        ///  INSERT CODE HERE for the NUmber of STEPS
+        /// //////////////////
+
+        #region Take the  BEST  "MoveAction"  Logic
+
+        // Take the calculated  "BEST ACTION"
+        
+        // Validate  ACTION != null  &&   Have enough (ACTION) POINTS    &&  ACTION is  MEANINGFULLY?
+        //
+        if ( ((_bestEnemyAIActionData != null) && (_bestBaseAction != null))  && enemyUnit.TrySpendActionPointsToTakeAction(_bestBaseAction) )
+        {
+
+            // .2.0- The actionPoints are Spent / used by now, already...
+                    
+            // .2- 'Take the Action'
+            //
+            // .2.1- Save the Valid GridPosition:
+            //
+            // .2.1.1- Save the original Mouse Position (just in case... as a backup)
+            //
+            enemyUnit.MousePosition.Set(_bestEnemyAIActionData.gridPosition.x, 0, _bestEnemyAIActionData.gridPosition.z);
+            //
+            // .2.1.1- In _selectedUnit, for later use in 'TakeAction()':
+            //
+            enemyUnit.SetFinalGridPositionOfNextPlayersAction(_bestEnemyAIActionData.gridPosition);
+            
+
+            // .3- Set this Class (SERVICE) Methods as: BUSY .. until it ends:  Set MUTEX ON
+            //
+            // SetBusy();  // This is not necessary here, because it happens in the Update() of this STATE MACHINE Script.
+            //
+            // .4- TakeAction() , A.I. ACTION
+            // ( ClearBusy():  tells the World that this ROUTINE JUST ENDED: ) -> Sets Mutex OFF (when TakeAction() Ends...)
+            //
+            _bestBaseAction.TakeAction(onEnemyAIActionComplete);
+
+
+            // Return the "Success" State of the 'Take Action' process:
+            //
+            return true;
+            
+        }//End if (bestEnemyAIActionData != null)...
+        else
+        {
+            // Did not pass the Validation:     TrySpendActionPointsToTakeAction(...)  or "_bestEnemyAIActionData"  was NULL   or  maybe even the ACTION CHOSEN wan not MEANINGFUL... more that ZERO POINTS in VALUE / WORTH:
+            //
+            // Could not TAKE the "BEST" ACTION
+            //
+            //     3.2.1- Save the "NULL":  Best ACTION NAME
+            //
+            _bestBaseActionName = $"Did not pass the Validation:     TryTakeMoreComplexEnemyAIAction(...)  or '_bestEnemyAIActionData'  was NULL. \n\n * Could not TAKE the 'BEST' 'MoveAction' towards the Target (in a Multi-Turn approach). It is RETURNING 'false' in CLASS:  {this.GetType().Name} \n * ... METHOD:  private bool (Unit enemyUnit, MoveAction enemyUnitMoveAction, List<Unit> targetUnitList, Action onEnemyAIActionComplete)";
+            
+            // Return the Success/Failure State of the 'Take Action' process:  false (failure)
+            //
+            return false;
+
+        }//End else of if (bestEnemyAIActionData != null)...
+        
+        #endregion Take the  BEST  "MoveAction"  Logic
+
+    }// End TryTakeMoreComplexEnemyAIAction(Unit enemyUnit, MoveAction enemyUnitMoveAction, List<Unit> targetUnitList, Action onEnemyAIActionComplete)
+    
+    
+    #region A.I. 2- Utils for - A More Complex "TakeAction"
+    
+    //private bool CanSpendActionPointsFor(Unit unit, )
+    
+    
+    #endregion A.I. 2- Utils for - A More Complex "TakeAction"
     
     #endregion A.I. 2- A More Complex "TakeAction"  Algorithm (by AlMartson), that comes after trying the first (1-)
     
@@ -382,7 +521,7 @@ public class EnemyAI : MonoBehaviour
         #endregion Optimized Code Version (v-2.0). AlMartson's Implementation
 
     }// End TryTakeEnemyAIAction
-    
+
     
     /// <summary>
     /// Given an "Enemy Unit": <br />
@@ -423,7 +562,7 @@ public class EnemyAI : MonoBehaviour
         // Lenght of the Array:
         //
         int baseActionListLenght = baseActionList.Length;
-            
+
         // Cycle through all ACTIONS
         //
         for (int i = 0; i < baseActionListLenght; i++)
