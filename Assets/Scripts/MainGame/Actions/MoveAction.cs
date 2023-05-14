@@ -578,6 +578,92 @@ public class MoveAction : BaseAction
 
     #region 2- More Complex A.I. Approach, By AlMartson
 
+    
+    /// <summary>
+    /// Given THIS concrete-particular <code>MoveAction : BaseAction</code> <br />
+    /// (Calculates and then...):  Gets the BEST possible DATA - "Grid Position(s)" to execute THIS "A.I. ACTION": a MoveAction towards the Goal ( = a "GridPosition")<br />
+    /// It uses Pathfinding to match 3 things, for each "GridPosition" <br />
+    ///
+    /// 1- Pathfinding's PATH towards a "Target" <br />
+    /// 2- **Smallest H (value of PathFinding for that "NODE")** (and on the GOAL:  H = 0) <br />
+    /// 3- ..It is **withing the Range** of the **VALID MOVES**   (i.e.: Valid  ***"GridPosition"***)  for that Unit, for ***MoveAction*** Enemy Action Data... <br />
+    /// 
+    /// THAT "A.I. ACTION" will be used to test it out in each "GridPosition", and we get the ASSOCIATED DATA TO TAKING THAT ACTION..., <br />
+    /// </summary>
+    /// <returns>The DATA of the BEST possible A.I. ACTION (BaseAction):  "EnemyAIActionData"... <br />,
+    /// ...based on the ACTION POINTS VALUE of each Action / Possibility</returns>
+    public EnemyAIActionData GetBestEnemyAIActionDataForMovingSimplyTowardsAGoal(GridPosition gridPosition)
+    {
+
+        // Make a List of DATA of: "ENEMY A.I. ACTION"(s):
+        //
+        _enemyAIActionDataList = new List<EnemyAIActionData>();
+        
+        // Cycle through all the "Valid"  GridPositions  for THIS selected (..each..) ACTION
+        // ..("BaseAction" is casted as a derived-child "ConcreteAction"... so for THAT ONE):
+        //
+        _validActionGridPositionList = GetValidActionGridPositionList();
+        //
+        // Lenght of the List:
+        //
+        int validActionGridPositionListLenght = _validActionGridPositionList.Count;
+        
+
+        #region (Generate the  DATA  for:   ENEMY "A.I. ACTION").  Performance-oriented AlMartson's Implementation
+
+        // Cycle through all the "Valid"  GridPositions  for THIS selected (..each..) ACTION
+        //
+        for (int i = 0; i < validActionGridPositionListLenght; i++)
+        {
+            // We want to:
+            // Generate the  DATA  for:   ENEMY "A.I. ACTION"
+            // ..for:
+            // 1- on this (each... Grid) POSITION ...
+            //
+            // GridPosition gridPosition = validActionGridPositionList[i];
+
+            // 2- THIS test  "ACTION"  (BaseAction casted-as a SPECIFIC ACTION)   (selected)
+            //
+            EnemyAIActionData enemyAIActionData = GetEnemyAIActionDataForMovingSimplyTowardsAGoal( _validActionGridPositionList[i], 0 );
+            //
+            // 3- Add the ACTION to the LIST
+            //
+            _enemyAIActionDataList.Add(enemyAIActionData);
+        
+        }//End for...  (Cycle through all the "Valid"  GridPositions  for THIS selected (..each..) ACTION)
+        
+        #endregion Performance-oriented AlMartson's Implementation
+
+        
+        // Final Step:
+        // Check to see if it found   ANY Possible "Grid Positions" (Positional DATA)... where to TAKE THIS Action:
+        //
+        if (_enemyAIActionDataList.Count > 0)
+        {
+            
+            // Final:
+            // SORT the possible DATA ACTIONS... to get the BEST of the BEST,.. 
+            //...to execute it FIRST!
+            // Sorted based on "ActionValue":
+            //
+            _enemyAIActionDataList.Sort((EnemyAIActionData a, EnemyAIActionData b) => b.actionValue - a.actionValue);
+
+            // Return THE BEST ONE:   i.e.: the one at Index: [0]
+            //
+            return _enemyAIActionDataList[0];
+
+        }
+        else
+        {
+            // There are  No possible ENEMY A.I. ACTIONS
+            //
+            return null;
+
+        }//End else of if (enemyAIActionList.Count > 0)
+
+    }// End GetBestEnemyAIActionData
+    
+    
     /// <summary>
     /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position". <br />
     /// For the "MoveAction":   The A.I. will just try to set standard values for allowing the Enemy A.I. to MOVE ("MoveAction") to a selected "GridPosition".  <br />
