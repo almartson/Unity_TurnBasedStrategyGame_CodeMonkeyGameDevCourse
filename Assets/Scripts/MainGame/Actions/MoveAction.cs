@@ -615,11 +615,16 @@ public class MoveAction : BaseAction
         //
         GridPosition pathGridPositionThatIsFurthestAway = pathGridPositionList[0];
         int indexOfPathGridPositionThatIsFurthestAway = 0;
-        
+        //
+        // We must start on the Pathfinding's GridPosition INDEX = 1, because ZERO (0) is where the "Unit" is (and it is NOT VALID, the VALIDATION would RETURN "FALSE"):
+        //
+        const int initialIndexOfPathGridPosition = 1;
+
+
         // Cycle through all the  "GridPosition"s  that are part of the "Path" (Pathfinding) for a "MoveAction",
         //..towards the destined "GridPosition".
         //
-        for (int i = 0; i < pathGridPositionListLength; i++)
+        for (int i = initialIndexOfPathGridPosition; i < pathGridPositionListLength; i++)
         {
 
             // We want to:
@@ -732,7 +737,7 @@ public class MoveAction : BaseAction
         //
         //    2.2- Execute the "Base Action" routine:
         //
-        EnemyAIActionData enemyAIActionData = base.GetEnemyAIActionData(gridPosition, 0);
+        EnemyAIActionData enemyAIActionData = base.GetEnemyAIActionData(gridPosition, initialAdditionalAIActionPointCostValueOfThisAction);
         
 
         // //////////////

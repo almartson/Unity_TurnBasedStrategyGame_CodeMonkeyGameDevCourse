@@ -121,13 +121,8 @@ public class Testing : MonoBehaviour
             {
                 // Draw Lines
                 //
-                Debug.DrawLine(
-                    LevelGrid.Instance.GetWorldPosition(gridPositionList[i]),
-                    LevelGrid.Instance.GetWorldPosition(gridPositionList[i + 1]),
-                    Color.white,
-                    10.0f
-                );
-            
+                Debug.DrawLine(LevelGrid.Instance.GetWorldPosition(gridPositionList[i]), LevelGrid.Instance.GetWorldPosition(gridPositionList[i + 1]), Color.white, 10.0f);
+
             }//End for
             
         }//End if (gridPositionList != null)

@@ -297,8 +297,7 @@ public class EnemyAI : MonoBehaviour
         // 1- [0].(2)   ->  Get List of Player's Units, Sorted by "Damage Taken".
         // Temporary Stub Code:
         //
-        List<Unit> targetUnitList = /* Temporary, change this Code by actual Player Units */
-            UnitManager.Instance.GetFriendlyUnitList();
+        List<Unit> targetUnitList = /* Temporary, change this Code by actual Player Units */  UnitManager.Instance.GetFriendlyUnitList();
 
 
         // 2- Cycling through every ENEMY Unit..  ( Get Enemy Unit List )
@@ -310,48 +309,59 @@ public class EnemyAI : MonoBehaviour
         int enemyUnitListLenght = enemyUnitList.Count;
         
         
-        // Cycling through every ENEMY Unit..
+        // Validate that there are, at least one (1):
         //
-        for (int i = 0; i < enemyUnitListLenght; i++)
+        // a) Target   to attack  (or "MoveAction"  towards to...)
+        // b) Enemy A.I. NPC      (who will execute these actions)
+        //
+        if ( ((targetUnitList.Count > 0) && (targetUnitList[0] != null)) && ((enemyUnitListLenght > 0) && (enemyUnitList[0] != null)) )
         {
 
-            // Cache the   Enemy Unit
+            // Cycling through every ENEMY Unit..
             //
-            Unit enemyUnit = enemyUnitList[i];
-            //
-            // We want the ENEMY A.I. to execute a:  "MoveAction"  towards: (any) one of the Player Team's Unit
-            // Get ENEMY A.I.'s:   "MoveAction"
-            //
-            MoveAction enemyMoveAction = enemyUnit.GetAction<MoveAction>();
-
-            
-            // For this ( enemyMoveAction ) ACTION...  See:
-            // 1- Has it  enough  Action "POINTS"  (for a simple:  "MoveAction" )  ?
-            //
-            if ( enemyUnit.CanSpendActionPointsToTakeAction( enemyMoveAction ) )
+            for (int i = 0; i < enemyUnitListLenght; i++)
             {
 
-                // This ENEMY-NPC have enough "POINTS" to take THIS ACTION
-                
-                // Execute the  MOVE  ( MoveAction )
-                // ..partially towards the Target   (i.e.: NeverthelessMove as many GridPositions... as you can)
+                // Cache the   Enemy Unit
                 //
-                // Make the ENEMY UNIT take "ACTION"
+                Unit enemyUnit = enemyUnitList[i];
                 //
-                if (TryTakeMoreComplexEnemyAIAction(enemyUnit, enemyMoveAction, targetUnitList, onEnemyAIActionComplete))
-                {
-        
-                    // If the ACTION is Completed, for ANY ENEMY:  end this Loop
-                    // ...(so, we will have to do another for the NEXT ENEMY later... and so on,... until all ENEMIES have been checked - tried to execute an "A.I. ACTION"):
-                    //
-                    return true;
-        
-                }//if (TryTakeEnemyAIAction...
+                // We want the ENEMY A.I. to execute a:  "MoveAction"  towards: (any) one of the Player Team's Unit
+                // Get ENEMY A.I.'s:   "MoveAction"
+                //
+                MoveAction enemyMoveAction = enemyUnit.GetAction<MoveAction>();
 
-            }//End if ( enemyUnit.CanSpendActionPointsToTakeAction...
             
-        }//End for
-                        
+                // For this ( enemyMoveAction ) ACTION...  See:
+                // 1- Has it  enough  Action "POINTS"  (for a simple:  "MoveAction" )  ?
+                //
+                if ( enemyUnit.CanSpendActionPointsToTakeAction( enemyMoveAction ) )
+                {
+
+                    // This ENEMY-NPC have enough "POINTS" to take THIS ACTION
+                
+                    // Execute the  MOVE  ( MoveAction )
+                    // ..partially towards the Target   (i.e.: NeverthelessMove as many GridPositions... as you can)
+                    //
+                    // Make the ENEMY UNIT take "ACTION"
+                    //
+                    if (TryTakeMoreComplexEnemyAIAction(enemyUnit, enemyMoveAction, targetUnitList, onEnemyAIActionComplete))
+                    {
+        
+                        // If the ACTION is Completed, for ANY ENEMY:  end this Loop
+                        // ...(so, we will have to do another for the NEXT ENEMY later... and so on,... until all ENEMIES have been checked - tried to execute an "A.I. ACTION"):
+                        //
+                        return true;
+        
+                    }//if (TryTakeEnemyAIAction...
+
+                }//End if ( enemyUnit.CanSpendActionPointsToTakeAction...
+            
+            }//End for
+
+        }// End if ( ((targetUnitList.Count > 0)...  Validations...
+
+
         // No success in "Taking a More Complex Enemy A.I. ACTION"... for ANY Enemy Unit (in the whole ENEMY TEAM), at all:
         //
         return false;
