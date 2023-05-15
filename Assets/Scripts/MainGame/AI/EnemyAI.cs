@@ -384,13 +384,13 @@ public class EnemyAI : MonoBehaviour
         //
         //    0.1- Get the "targetUnit"'s Position on Map  (i.e.:  GridPosition):
         //
-        GridPosition targetGridPosition = /* Temporary, change this Code*/ targetUnitList[0].GetGridPosition(); // GetBestValidGridPositionOnPathfindingForMovingTowardsTarget(enemyUnit, closestTargetUnit);
+        GridPosition targetGridPosition = /* Temporary, change this Code*/ closestTargetUnit.GetGridPosition(); // GetBestValidGridPositionOnPathfindingForMovingTowardsTarget(enemyUnit, closestTargetUnit);
         //
         //  IMPORTANT Final A.I. (Action-related) Data:
         //
         //    0.1- Position - DATA
         //
-        _bestEnemyAIActionData = enemyUnitMoveAction.GetEnemyAIActionDataForMovingSimplyTowardsAGoal( targetGridPosition, 0);
+        _bestEnemyAIActionData = enemyUnitMoveAction.GetBestEnemyAIActionDataForMovingSimplyTowardsAGoal( targetGridPosition );
         //
         //    0.2- ACTION  object
         //
@@ -402,8 +402,8 @@ public class EnemyAI : MonoBehaviour
         
         
         /////////////////////
-        ///  INSERT CODE HERE for the NUmber of STEPS
-        /// //////////////////
+        //  INSERT CODE HERE for the NUmber of TURNS to consider before making (choosing...) this  "DECISION".
+        /////////////////////
 
         #region Take the  BEST  "MoveAction"  Logic
 

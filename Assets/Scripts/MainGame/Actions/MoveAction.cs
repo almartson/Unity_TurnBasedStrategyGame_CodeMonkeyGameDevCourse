@@ -595,47 +595,90 @@ public class MoveAction : BaseAction
     public EnemyAIActionData GetBestEnemyAIActionDataForMovingSimplyTowardsAGoal(GridPosition gridPosition)
     {
 
-        // Make a List of DATA of: "ENEMY A.I. ACTION"(s):
+        // 0- Make a List of DATA of: "ENEMY A.I. ACTION"(s):
         //
         _enemyAIActionDataList = new List<EnemyAIActionData>();
         
-        // Cycle through all the "Valid"  GridPositions  for THIS selected (..each..) ACTION
-        // ..("BaseAction" is casted as a derived-child "ConcreteAction"... so for THAT ONE):
+
+        // 1- Get the -> GridPositions
+        //...to move to  (i.e.: target to move to, for each Frame):
         //
-        _validActionGridPositionList = GetValidActionGridPositionList();
+        //   Pathfinding Algorithm:
         //
-        // Lenght of the List:
+        List<GridPosition> pathGridPositionList = Pathfinding.Instance.FindPath( _unit.GetGridPosition(), gridPosition, out int pathLength);
         //
-        int validActionGridPositionListLenght = _validActionGridPositionList.Count;
+        // Lenght of the List
+        //
+        int pathGridPositionListLength = pathGridPositionList.Count;
+        //
+        // Cache variable for the Path's GridPositions:
+        //
+        GridPosition pathGridPositionThatIsFurthestAway = pathGridPositionList[0];
+        int indexOfPathGridPositionThatIsFurthestAway = 0;
         
-
-        #region (Generate the  DATA  for:   ENEMY "A.I. ACTION").  Performance-oriented AlMartson's Implementation
-
-        // Cycle through all the "Valid"  GridPositions  for THIS selected (..each..) ACTION
+        // Cycle through all the  "GridPosition"s  that are part of the "Path" (Pathfinding) for a "MoveAction",
+        //..towards the destined "GridPosition".
         //
-        for (int i = 0; i < validActionGridPositionListLenght; i++)
+        for (int i = 0; i < pathGridPositionListLength; i++)
         {
-            // We want to:
-            // Generate the  DATA  for:   ENEMY "A.I. ACTION"
-            // ..for:
-            // 1- on this (each... Grid) POSITION ...
-            //
-            // GridPosition gridPosition = validActionGridPositionList[i];
 
-            // 2- THIS test  "ACTION"  (BaseAction casted-as a SPECIFIC ACTION)   (selected)
+            // We want to:
+            // Validate each "GridPosition" that:
             //
-            EnemyAIActionData enemyAIActionData = GetEnemyAIActionDataForMovingSimplyTowardsAGoal( _validActionGridPositionList[i], 0 );
+            // 1- Is inside the "Pathfinding.Instance.FindPath(...)" returned List
+            // 2- ..It is **within the Range** of the **VALID MOVES**   (i.e.: Valid  ***"GridPosition"***)  for that Unit, for ***MoveAction*** Enemy Action Data...
+            // 3- Has the **Smallest H (value of PathFinding for that "NODE")** (and on the GOAL:  H = 0)
+            //..OPTIONAL condition, to use instead of (3):  Has it a BIGGER INDEX value in the List<GridPosition> pathGridPositionList ??
+            
+            // Solution:
+            
+            // 1- Is inside the "Pathfinding.Instance.FindPath(...)" returned List:  ( pathGridPositionList[i] )
+
+            // 2- Is it  "Within the Range" of the **VALID MOVES**?
             //
-            // 3- Add the ACTION to the LIST
-            //
-            _enemyAIActionDataList.Add(enemyAIActionData);
-        
-        }//End for...  (Cycle through all the "Valid"  GridPositions  for THIS selected (..each..) ACTION)
-        
-        #endregion Performance-oriented AlMartson's Implementation
+            if ( IsValidActionGridPosition( pathGridPositionList[i] ))
+            {
+
+                // 3- Has it a BIGGER INDEX value in the List<GridPosition> pathGridPositionList ??
+                // ..(i.e.,translation to plain english:  it is further away... nearest to its "Destination").
+                // Save the "GridPosition" with the SMALLEST "H":
+                //
+                // Save the  GridPosition
+                //
+                pathGridPositionThatIsFurthestAway = pathGridPositionList[i];
+                
+                // Save the Index in the List<GridPosition>
+                //
+                indexOfPathGridPositionThatIsFurthestAway = i;
+
+            }//End if ( IsValidActionGridPosition( pathGridPositionList[i] ))
+            else
+            {
+                // End the For-Loop, and get out of this block.
+                //
+                break;
+
+            }//End else of if ( IsValidActionGridPosition( pathGridPositionList[i] ))
+  
+        }//End for
+
+        #region Generate the  DATA  for:   ENEMY "A.I. MoveAction".
+    
+
+        // 2- Get the  DATA  for that "MoveAction"
+        //
+        EnemyAIActionData enemyAIActionData = GetEnemyAIActionDataForMovingSimplyTowardsAGoal( pathGridPositionThatIsFurthestAway, indexOfPathGridPositionThatIsFurthestAway );
+
+        // 3- Add the ACTION to the LIST
+        //
+        _enemyAIActionDataList.Add(enemyAIActionData);
+
+
+        #endregion Generate the  DATA  for:   ENEMY "A.I. MoveAction".
 
         
         // Final Step:
+        // NOTE:  This is a copy of the structure of the other A.I. Algorithms created by the CodeMonkey... it could be deleted and refactored to just simply "return enemyAIActionData"... but I am leaving it here like this because the Algoritm might evolve in Complexity in the Future, so this approach (cosidering multiple options, and the "Best Solution") could be useful...
         // Check to see if it found   ANY Possible "Grid Positions" (Positional DATA)... where to TAKE THIS Action:
         //
         if (_enemyAIActionDataList.Count > 0)
@@ -661,7 +704,7 @@ public class MoveAction : BaseAction
 
         }//End else of if (enemyAIActionList.Count > 0)
 
-    }// End GetBestEnemyAIActionData
+    }// End GetBestEnemyAIActionDataForMovingSimplyTowardsAGoal
     
     
     /// <summary>
@@ -677,9 +720,9 @@ public class MoveAction : BaseAction
 
         // Process:
         //
-        // 1- There are no "Shootable Targets" from the destined "GridPosition", but, to keep this version of the Algorithm consistent: we will assign a value of = 1.
+        // 1- There are no "Shootable Targets" from the destined "GridPosition", but, to keep this version of the Algorithm consistent: we will assign a value of = 0.
         //
-        int targetCountAtPosition = 1;
+        int targetCountAtPosition = 0;
         //
         // Save the 'targetCountAtPosition'  as the 'Cost Multiplier' of this  "A.I. ACTION":
         //
