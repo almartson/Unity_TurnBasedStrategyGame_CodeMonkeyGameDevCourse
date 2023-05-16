@@ -656,6 +656,20 @@ public class MoveAction : BaseAction
                 //
                 indexOfPathGridPositionThatIsFurthestAway = i;
 
+                
+                #region Generate the  DATA  for:   ENEMY "A.I. MoveAction".
+                
+                // 2- Get the  DATA  for that "MoveAction"
+                //
+                EnemyAIActionData enemyAIActionData = GetEnemyAIActionDataForMovingSimplyTowardsAGoal( pathGridPositionThatIsFurthestAway, indexOfPathGridPositionThatIsFurthestAway );
+
+                // 3- Add the ACTION to the LIST
+                //
+                _enemyAIActionDataList.Add(enemyAIActionData);
+
+
+                #endregion Generate the  DATA  for:   ENEMY "A.I. MoveAction".
+                
             }//End if ( IsValidActionGridPosition( pathGridPositionList[i] ))
             else
             {
@@ -667,23 +681,9 @@ public class MoveAction : BaseAction
   
         }//End for
 
-        #region Generate the  DATA  for:   ENEMY "A.I. MoveAction".
-    
-
-        // 2- Get the  DATA  for that "MoveAction"
-        //
-        EnemyAIActionData enemyAIActionData = GetEnemyAIActionDataForMovingSimplyTowardsAGoal( pathGridPositionThatIsFurthestAway, indexOfPathGridPositionThatIsFurthestAway );
-
-        // 3- Add the ACTION to the LIST
-        //
-        _enemyAIActionDataList.Add(enemyAIActionData);
-
-
-        #endregion Generate the  DATA  for:   ENEMY "A.I. MoveAction".
-
         
         // Final Step:
-        // NOTE:  This is a copy of the structure of the other A.I. Algorithms created by the CodeMonkey... it could be deleted and refactored to just simply "return enemyAIActionData"... but I am leaving it here like this because the Algoritm might evolve in Complexity in the Future, so this approach (cosidering multiple options, and the "Best Solution") could be useful...
+        // NOTE:  This is a copy of the structure of the other A.I. Algorithms created by the CodeMonkey... it could be deleted and refactored to just simply "return enemyAIActionData"... but I am leaving it here like this because the Algoritm might evolve in Complexity in the Future, so this approach (considering multiple options, and the "Best Solution") could be useful...
         // Check to see if it found   ANY Possible "Grid Positions" (Positional DATA)... where to TAKE THIS Action:
         //
         if (_enemyAIActionDataList.Count > 0)
@@ -696,10 +696,19 @@ public class MoveAction : BaseAction
             //
             _enemyAIActionDataList.Sort((EnemyAIActionData a, EnemyAIActionData b) => b.actionValue - a.actionValue);
 
-            // Return THE BEST ONE:   i.e.: the one at Index: [0]
-            //
-            return _enemyAIActionDataList[0];
 
+            // Return THE BEST ONE  (only if the ActionValue is "Positive" > 0):   i.e.: the one at Index: [0]
+            //
+            if ( _enemyAIActionDataList[0].actionValue > 0 )
+            {
+                return _enemyAIActionDataList[0];
+            }
+            else
+            {
+                // There are  No possible ENEMY A.I. ACTIONS
+                //
+                return null;
+            }
         }
         else
         {
@@ -724,16 +733,70 @@ public class MoveAction : BaseAction
         // We want the Player not to move "RANDOMLY", but TOWARDS the weakest Unit-Player of the "Player team" (to attack it and Win in a easier way...):
 
         // Process:
+        // 0- Verify that the "Unit" has enough "ActionPoints" to spend in another "MoveAction" + "ShootAction":
         //
-        // 1- There are no "Shootable Targets" from the destined "GridPosition", but, to keep this version of the Algorithm consistent: we will assign a value of = 0.
+        //    0.2- Get the "Action  Components"  (Scripts):
         //
-        int targetCountAtPosition = 0;
+        ShootAction shootAction = _unit.GetAction<ShootAction>();
+        MoveAction moveAction = _unit.GetAction<MoveAction>();
         //
-        // Save the 'targetCountAtPosition'  as the 'Cost Multiplier' of this  "A.I. ACTION":
+        //    0.1- Verify that the ENEMY A.I. (Unit) is going to be in front of its enemies in the Next Turn, been able to shoot them (or to receive Shots from them):
         //
-        _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction = targetCountAtPosition;
+        //        0.1.1- TRY to FIND HOW MANY "SHOOTABLE" "Targets" ("UNIT-PLAYERS) are there, from that POSITION  (GridPosition):
+        //        NOTE: The more Targets, the more dangerous it gets if the Unit does not have the necessary ActionPoints... to fight them  (so... it means NEGATIVE POINTS, instead of "positive" or advantage):
+        //
+        int targetCountAtPosition = shootAction.GetTargetCountAtPosition(gridPosition);
+        
+        // Value (Worth) of that  GridPosition
+        //
+        int worthOfThatPosition = targetCountAtPosition;
+        
+        // if there are Enemies around the Corner, calculate my ActionPoints:
+        //
+        if ( targetCountAtPosition > 0 )
+        {
 
-        // 2- Use that number (from (1)) to calculate the  "WORTHINESS" of this ACTION (i.e.: the ACTION COST-VALUE):   MULTIPLY IT..!
+            // There are Enemies around the Corner, calculate my ActionPoints.
+            
+            //    0.3- Check How many  "ActionPoints"  does the Enemy A.I. have?
+            //    0.4- Make a set of Tests:
+            //        0.4.1- One (last) MoveAction
+            //        0.4.2- One        ShootAction
+            //    0.5- Chain together the two Actions:
+            //
+            BaseAction[] baseActionArray = { moveAction, shootAction };
+            //
+            // 0.3- Check How many  "ActionPoints"  does the Enemy A.I. have?
+            //
+            if ( _unit.CanSpendActionPointsToTakeAChainOfActions(baseActionArray) )
+            {
+                // It can "Take the Actions"... and then Fight!
+                // Give the POSSIBLE DECISION (i.e.: the Selected  "GridPosition")  a +Value
+                //
+                // Not necessary, this value is 0 or a Positive Number:   // worthOfThatPosition = targetCountAtPosition;
+            }
+            else
+            {
+                // It can NOT "Take the Actions"... and then Fight!
+                // Most probably he/she is going to get nailed up  by the other Player
+                //
+                worthOfThatPosition = (-1) * worthOfThatPosition;
+
+            }//End else of  if ( _unit.CanSpendActionPointsToTakeAChainOfActions(baseActionArray) )
+        }//End if ( targetCountAtPosition > 0 )
+        else
+        {
+            // There are NO Enemies around the Corner, no need to calculate anything else  (targetCountAtPosition = 0).
+            
+        }//End else of  if ( targetCountAtPosition > 0 )
+        
+        // Final Steps:
+        
+        // 1- Save the 'targetCountAtPosition'  (i.e.: "worthOfThatPosition")  as the 'Cost Multiplier' of this  "A.I. ACTION":
+        //
+        _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction = worthOfThatPosition;
+
+        // 2- Use that number (from (1)) to calculate the Final  "WORTHINESS" of this ACTION (i.e.: the ACTION COST-VALUE):   MULTIPLY IT..!
         //
         //    2.2- Execute the "Base Action" routine:
         //

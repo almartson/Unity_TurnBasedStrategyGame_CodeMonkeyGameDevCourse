@@ -408,7 +408,7 @@ public class EnemyAI : MonoBehaviour
         //
         // DEBUG:   Reset the name of the _bestBaseActionName
         //
-        _bestBaseActionName = _bestBaseAction.GetActionNameByStrippingClassName();;
+        _bestBaseActionName = $"{_bestBaseAction.GetActionNameByStrippingClassName()} (More Complex Enemy AI Action)";
         
         
         /////////////////////
@@ -421,10 +421,10 @@ public class EnemyAI : MonoBehaviour
         
         // Validate  ACTION != null  &&   Have enough (ACTION) POINTS    &&  ACTION is  MEANINGFULLY?
         //
-        if ( ((_bestEnemyAIActionData != null) && (_bestBaseAction != null))  && enemyUnit.TrySpendActionPointsToTakeAction(_bestBaseAction) )
+        if ( ((_bestEnemyAIActionData != null) && (_bestBaseAction != null))  &&  (_bestEnemyAIActionData.actionValue > 0)  && enemyUnit.TrySpendActionPointsToTakeAction(_bestBaseAction) )
         {
 
-            // .2.0- The actionPoints are Spent / used by now, already...
+            // .2.0- The actionPoints are Spent / used by now, already..
                     
             // .2- 'Take the Action'
             //
