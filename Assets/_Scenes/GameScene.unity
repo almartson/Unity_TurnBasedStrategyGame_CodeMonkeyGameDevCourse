@@ -3526,6 +3526,11 @@ PrefabInstance:
       propertyPath: _isEnemy
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8129631732136637595, guid: c961faa8a25a713809c580894c97983e,
+        type: 3}
+      propertyPath: _ACTION_POINTS_PER_TURN_MAX
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c961faa8a25a713809c580894c97983e, type: 3}
 --- !u!1001 &899727426
@@ -3747,7 +3752,7 @@ PrefabInstance:
     - target: {fileID: 6297334026975807286, guid: e33704893089a7f5dbe6efcbce3306d4,
         type: 3}
       propertyPath: _ACTION_POINTS_PER_TURN_MAX
-      value: 10
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6297334026975807288, guid: e33704893089a7f5dbe6efcbce3306d4,
         type: 3}
@@ -4756,6 +4761,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _isEnemy
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8129631732136637595, guid: c961faa8a25a713809c580894c97983e,
+        type: 3}
+      propertyPath: _ACTION_POINTS_PER_TURN_MAX
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c961faa8a25a713809c580894c97983e, type: 3}
@@ -6714,7 +6724,7 @@ PrefabInstance:
     - target: {fileID: 6297334026975807286, guid: e33704893089a7f5dbe6efcbce3306d4,
         type: 3}
       propertyPath: _ACTION_POINTS_PER_TURN_MAX
-      value: 10
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6297334026975807288, guid: e33704893089a7f5dbe6efcbce3306d4,
         type: 3}
