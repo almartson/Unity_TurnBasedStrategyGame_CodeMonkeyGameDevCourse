@@ -102,6 +102,40 @@ public class MoveAction : BaseAction
     // [Tooltip("(DEFAULT VALUE of...) Cost \"PER UNIT\" of this ACTION, for any ENEMY A.I., in terms of (CURRENCY = ) 'Action Points'\n...this value should be summed to any other values, to represent the TOTAL \"WORTH\" of Taking This ACTION  (vs.  \"Not Taking It\").")]
     // [SerializeField]
     // protected int _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION = 10;
+    
+    
+    #region ENEMY A.I. related - Pathfinding DISTANCE to all its Enemies
+    
+    // [Space(10)]         // 10 pixels of spacing here.
+    [Header("ENEMY A.I. related - Pathfinding DISTANCE to all its Enemies")]
+
+    [Tooltip("(When using the 'MORE COMPLEX A.I. ALGORITHM APPROACH'):  Pathfinding DISTANCE to all its chosen Enemy, to Hunt / Chase (until the A.I. Algorithm chooses to change the Goal...) - A.I. related. \n\n * NOTES:\n\n 0- Way of use:\n   .1- =  Array of 'GridPosition's that compose the Pathfinding output. \n\n 1- READ THE chosen FOE to chase, by using the other FIELD (see below) called: '_foeTargetOrGoalChosenToChase'. \n\n 2- This list should be refreshed, recalculated each Turn, when the 'MORE COMPLEX - when far away - Algorithm is used for a 'MoveAction''.")]
+    [SerializeField]
+    private List<GridPosition> _myEnemyBestPathGridPositionList;
+    //
+    /// <summary>
+    /// Property Accessor for Field:  _myEnemyBestPathGridPositionList
+    /// </summary>
+    public List<GridPosition> MyEnemyBestPathGridPositionList
+    {
+        get => _myEnemyBestPathGridPositionList;
+        private set => _myEnemyBestPathGridPositionList = value;
+    }
+    
+    [Tooltip("Enemy Chosen as Target or Goal, if this ENEMY A.I. enter in 'Aggro Mode' or HUnt / Chaser Mode. Use it with the Field List<GridPosition> above: _myEnemyBestPathGridPositionList.")]
+    [SerializeField]
+    private Unit _foeTargetOrGoalChosenToChase;
+    //
+    /// <summary>
+    /// Property Accessor for Field:  _foeTargetOrGoalChosenToChase
+    /// </summary>
+    public Unit FoeTargetOrGoalChosenToChase
+    {
+        get => _foeTargetOrGoalChosenToChase;
+        private set => _foeTargetOrGoalChosenToChase = value;
+    }
+
+    #endregion ENEMY A.I. related - Pathfinding DISTANCE to all its Enemies
 
     #endregion A.I. - AI
     
@@ -592,7 +626,7 @@ public class MoveAction : BaseAction
     /// </summary>
     /// <returns>The DATA of the BEST possible A.I. ACTION (BaseAction):  "EnemyAIActionData"... <br />,
     /// ...based on the ACTION POINTS VALUE of each Action / Possibility</returns>
-    public EnemyAIActionData GetBestEnemyAIActionDataForMovingSimplyTowardsAGoal(GridPosition gridPosition)
+    public EnemyAIActionData GetBestEnemyAIActionDataForMovingSimplyTowardsAGoal()
     {
 
         // 0- Make a List of DATA of: "ENEMY A.I. ACTION"(s):
@@ -605,15 +639,21 @@ public class MoveAction : BaseAction
         //
         //   Pathfinding Algorithm:
         //
-        List<GridPosition> pathGridPositionList = Pathfinding.Instance.FindPath( _unit.GetGridPosition(), gridPosition, out int pathLength);
+        // NOT NECESSARY ANYMORE, AS IT IS CALCULATED BEFORE this Method call:   List<GridPosition> pathGridPositionList = Pathfinding.Instance.FindPath( _unit.GetGridPosition(), gridPosition, out int pathLength);
+        //
+        //    0.1- Get the "targetUnit"'s Position on Map  (i.e.:  GridPosition):
+        //   --->   enemyUnitMoveAction.FoeTargetOrGoalChosenToChase.GetGridPosition();
+        //
+        //   NOTE:   --->   enemyUnitMoveAction.MyEnemyBestPathGridPositionList;
+        //   Is the Pathfinding output   for that BEST FOE (the Chosen ONE)
         //
         // Lenght of the List
         //
-        int pathGridPositionListLength = pathGridPositionList.Count;
+        int pathGridPositionListLength = _myEnemyBestPathGridPositionList.Count;
         //
         // Cache variable for the Path's GridPositions:
         //
-        GridPosition pathGridPositionThatIsFurthestAway = pathGridPositionList[0];
+        GridPosition pathGridPositionThatIsFurthestAway = _myEnemyBestPathGridPositionList[0];
         int indexOfPathGridPositionThatIsFurthestAway = 0;
         //
         // We must start on the Pathfinding's GridPosition INDEX = 1, because ZERO (0) is where the "Unit" is (and it is NOT VALID, the VALIDATION would RETURN "FALSE"):
@@ -641,7 +681,7 @@ public class MoveAction : BaseAction
 
             // 2- Is it  "Within the Range" of the **VALID MOVES**?
             //
-            if ( IsValidActionGridPosition( pathGridPositionList[i] ))
+            if ( IsValidActionGridPosition( _myEnemyBestPathGridPositionList[i] ))
             {
 
                 // 3- Has it a BIGGER INDEX value in the List<GridPosition> pathGridPositionList ??
@@ -650,7 +690,7 @@ public class MoveAction : BaseAction
                 //
                 // Save the  GridPosition
                 //
-                pathGridPositionThatIsFurthestAway = pathGridPositionList[i];
+                pathGridPositionThatIsFurthestAway = _myEnemyBestPathGridPositionList[i];
                 
                 // Save the Index in the List<GridPosition>
                 //
@@ -899,6 +939,102 @@ public class MoveAction : BaseAction
 
     }// End CalculateWorthOfTakingAMoveActionToPosition
 
+
+    /// <summary>
+    /// This function creates a series of sorted list, and in the end decides which FOE (of his): is Worth Chasing / Hunting. <br /> <br />
+    /// 
+    /// 1- A sorted List of:  Its Enemies, sorted by:   'Damage Taken' <br /> <br />
+    /// 2- A List of:         Its Enemies, based on the Position INDEX of the list above :   'How near they are to me (i.e.: THIS 'Unit'), so it is an Array of Int <br /> <br />
+    ///
+    /// In the end, this Fcuntion will update these 2 Fields:  _foeTargetOrGoalChosenToChase   and  _myEnemyBestPathGridPositionList
+    /// </summary>
+    /// <returns>TRUE if the Algorithm succeeded, <br /> FALSE if the Algorithm failed.</returns>
+    public bool ForEnemyAICalculateTheBestFoeToHuntAndUpdatesVariableFields(int numberOfGridPositionsIamWillingToMoveTowardsTheTarget)
+    {
+
+        // Create:
+        //  1- A sorted List of:  Its Enemies, sorted by:   'Damage Taken'
+        //    .1- Get a Full List, not sorted:
+        //
+        List<Unit> targetUnitListSortedByDamageTaken = UnitManager.Instance.GetFriendlyUnitList();
+        //
+        //    .2- Sort the List by:   Damage Taken
+        //
+        targetUnitListSortedByDamageTaken.Sort((x, y) => x.GetDamageTakenOfHealthPercent().CompareTo(y.GetDamageTakenOfHealthPercent()));
+
+        //  2- Get a List of:         Its Enemies, based on the Position INDEX of the list above :   'How near they are to me (i.e.: THIS 'Unit'), so it is an Array of Int
+        //
+        int targetUnitListSortedByDamageTakenCount = targetUnitListSortedByDamageTaken.Count;
+        //
+        // Lists to get, as Output:
+        // 1-
+        int[] proximityOfMyEnemies = new int[targetUnitListSortedByDamageTakenCount];
+        //
+        // 2-
+        //
+        List<List<GridPosition>> pathGridPositionListOfListOfTargetsSortedByDamageTaken = new List<List<GridPosition>>();
+            
+        for (int i = 0; i < targetUnitListSortedByDamageTakenCount; i++)
+        {
+            
+            // 1- Get the Path-found:
+            //
+            pathGridPositionListOfListOfTargetsSortedByDamageTaken.Add( Pathfinding.Instance.FindPath( _unit.GetGridPosition(), targetUnitListSortedByDamageTaken[i].GetGridPosition(), out int pathLength) );
+            
+
+            // 2- Get the Number of Steps or  GridPosition(s)
+            //
+            if ( ( pathGridPositionListOfListOfTargetsSortedByDamageTaken[i] != null ) && pathGridPositionListOfListOfTargetsSortedByDamageTaken[i].Count > 0 )
+            {
+                
+                // 2- Get the Number of Steps or  GridPosition(s)
+                //
+                proximityOfMyEnemies[i] = pathGridPositionListOfListOfTargetsSortedByDamageTaken[i].Count;
+
+            }
+            else
+            {
+                // 2- Set the Number of Steps or  GridPosition(s) as a Negative Number, which means 'INVALID'.
+                //
+                proximityOfMyEnemies[i] = -1;
+            }
+
+        }//End for
+
+        // Final:
+        // Get the BEST DECISION:   Choose the "CLOSEST" and "Weakest"   Foes, to Chase to:
+        //
+        for (int i = 0; i < targetUnitListSortedByDamageTakenCount; i++)
+        {
+
+            // 1- Validate the "PROXIMITY" of the foe Unit:
+            // 2- Choose this ITEM: only if it  complies with the Constraint:  "numberOfGridPositionsIamWillingToMoveTowardsTheTarget"  
+            //
+            if ((proximityOfMyEnemies[i] > 0) &&
+                (proximityOfMyEnemies[i] <= numberOfGridPositionsIamWillingToMoveTowardsTheTarget))
+            {
+
+                // 2- Get the Closest Foe:  Select it!
+                //
+                _foeTargetOrGoalChosenToChase = targetUnitListSortedByDamageTaken[i];
+                //
+                // 3- Get the PATH found:
+                //
+                _myEnemyBestPathGridPositionList = pathGridPositionListOfListOfTargetsSortedByDamageTaken[i];
+
+                // This means the Algorithm SUCCEEDED:
+                //
+                return true;
+
+            } //End if (proximityOfMyEnemies[i] > 0)
+
+        }//End for
+
+        // This means the Algorithm did NOT SUCCEED:
+        //
+        return false;
+
+    }// End ForEnemyAICalculateTheBestFoeToHuntAndUpdatesVariableFields
     
     #endregion A.I. - utils
     

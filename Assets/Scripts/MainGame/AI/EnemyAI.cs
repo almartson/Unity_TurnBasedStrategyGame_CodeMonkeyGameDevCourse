@@ -31,9 +31,34 @@ public class EnemyAI : MonoBehaviour
     private State _state;
 
     #endregion A.I. Finite State Machine
+    
+    
+    #region A.I. - More Complex A.I. Decisions
+    
+    // [Space(5)] // 5 pixels of spacing here.
+    [Header("A.I. - More Complex A.I. Decisions")]
 
+    [Tooltip("(CONSTANT VALUE FOR A GAME:) Maximum number of 'GridPosition's  ( STEPS ) allowed for executing only 'MoveActions'; that are allowed to a 'Hunter' or any 'Enemy A.I.' that wants to chase after another (that means, its _aggroStat value is high).\n\n * NOTE: \n 1- This a TOTAL value, a normalizer value, to be used in calculations as a BASE to the others. \n 2- Recommended value: around 40.... \n 3- Maximum value: 100.")]
+    [SerializeField]
+    [Range(0, 100)]
+    private int _MAXIMUM_GRID_POSITIONS_IN_TOTAL_ALLOWED_TO_ANY_AGGRO_AI_CHASER = 44;
+    // //
+    // /// <summary>
+    // /// Property Accessor for Field:  _MAXIMUM_GRID_POSITIONS_IN_TOTAL_ALLOWED_TO_ANY_AGGRO_AI_CHASER
+    // /// </summary>
+    // public int MaximumGridPositionsInTotalAllowedToAnyAggroAIChaser
+    // {
+    //     get => _MAXIMUM_GRID_POSITIONS_IN_TOTAL_ALLOWED_TO_ANY_AGGRO_AI_CHASER;
+    //     private set => _MAXIMUM_GRID_POSITIONS_IN_TOTAL_ALLOWED_TO_ANY_AGGRO_AI_CHASER = value;
+    // }
+    
+    #endregion A.I. - More Complex A.I. Decisions
+    
     
     #region Timer: Semi-realistic "time delay" in-between FSM States
+    
+    // [Space(5)] // 5 pixels of spacing here.
+    [Header("Timer: Semi-realistic 'time delay' in-between FSM States")]
     
     /// <summary>
     /// Total Timer Time, from this number the Timer will start decreasing... until it reaches to Zero.
@@ -54,9 +79,11 @@ public class EnemyAI : MonoBehaviour
 
     #endregion Timer: Semi-realistic "time delay" in-between FSM States
 
-    
     #region A.I. DEBUG
-    
+
+    // [Space(5)] // 5 pixels of spacing here.
+    [Header("A.I. DEBUG")]
+
     [Tooltip("Keeping track of the  BEST 'Enemy A.I. ACTION' (that's possible to choose):  Positional DATA.")]
     [SerializeField]
     private EnemyAIActionData _bestEnemyAIActionData;
@@ -73,8 +100,7 @@ public class EnemyAI : MonoBehaviour
     [Tooltip("In the end of the BEST ENEMY A.I. ACTION: \nIf there WAS a PREVIOUS 'BEST'  'Action' \n\n * TEST: \n\n2- 'Test' to see:  What ACTION is the BEST ?? \n\n * The results of the intermediate TEST is saved here\n\n * In the END: this the 'SECOND TO BEST'  ACTION chosen, generally.")]
     [SerializeField]
     private EnemyAIActionData _testEnemyAIActionData;
-
-
+    
     #endregion A.I. DEBUG
     
     #endregion Attributes
@@ -297,8 +323,8 @@ public class EnemyAI : MonoBehaviour
         // 1- [0].(2)   ->  Get List of Player's Units, Sorted by "Damage Taken".
         // Temporary Stub Code:
         //
-        List<Unit> targetUnitList = /* Temporary, change this Code by actual Player Units */  UnitManager.Instance.GetFriendlyUnitList();
-
+        List<Unit> targetUnitList = UnitManager.Instance.GetFriendlyUnitList();
+        
 
         // 2- Cycling through every ENEMY Unit..  ( Get Enemy Unit List )
         //
@@ -331,11 +357,23 @@ public class EnemyAI : MonoBehaviour
                 //
                 MoveAction enemyMoveAction = enemyUnit.GetAction<MoveAction>();
 
+                
+                // NUMBER OF STEPS (GridPositions... in MoveAction) the A.I. will take...
+                //
+                // RE-Calculate the 'MaximumGridPositionsIAmWillingToTakeTowardsAChosenGoal'  for each  ENEMY A.I.
+                //
+                enemyUnit.MaximumGridPositionsIAmWillingToTakeTowardsAChosenGoal = Mathf.RoundToInt(enemyUnit.AggroStat * _MAXIMUM_GRID_POSITIONS_IN_TOTAL_ALLOWED_TO_ANY_AGGRO_AI_CHASER);
+
+                // RE-Calculate the BEST TARGET to try and Chase (MoveActions)   --->  enemyUnitMoveAction.FoeTargetOrGoalChosenToChase
+                //
+                bool existsABestTargetToChaseForThisEnemyAI = enemyMoveAction.ForEnemyAICalculateTheBestFoeToHuntAndUpdatesVariableFields( enemyUnit.MaximumGridPositionsIAmWillingToTakeTowardsAChosenGoal );
+                
             
                 // For this ( enemyMoveAction ) ACTION...  See:
-                // 1- Has it  enough  Action "POINTS"  (for a simple:  "MoveAction" )  ?
+                // 1- There is a FOE (i.e. Human Player - Unit)  that is within reach (number of steps the A.I. is willing to take).
+                // 2- Has it  enough  Action "POINTS"  (for a simple:  "MoveAction" )  ?
                 //
-                if ( enemyUnit.CanSpendActionPointsToTakeAction( enemyMoveAction ) )
+                if ( existsABestTargetToChaseForThisEnemyAI  &&  enemyUnit.CanSpendActionPointsToTakeAction( enemyMoveAction ) )
                 {
 
                     // This ENEMY-NPC have enough "POINTS" to take THIS ACTION
@@ -345,7 +383,7 @@ public class EnemyAI : MonoBehaviour
                     //
                     // Make the ENEMY UNIT take "ACTION"
                     //
-                    if (TryTakeMoreComplexEnemyAIAction(enemyUnit, enemyMoveAction, targetUnitList, onEnemyAIActionComplete))
+                    if (TryTakeMoreComplexEnemyAIAction(enemyUnit, enemyMoveAction, onEnemyAIActionComplete))
                     {
         
                         // If the ACTION is Completed, for ANY ENEMY:  end this Loop
@@ -372,9 +410,11 @@ public class EnemyAI : MonoBehaviour
     /// <summary>
     /// Given an "Enemy Unit": <br />
     /// It Executes a particular ENEMY Unit  'ACTION'  (A.I.) <br /><br />
-    /// ...But it is an AlMartson's Implementation for:  A "More" Complex A.I. ACTION, so the ENEMY A.I. is going to Move Towards the Target in multiple "Turns"... even if in some turns there is no gain, apparently (...it is a long-termn strategy).
+    /// ...But it is an AlMartson's Implementation for:  A "More" Complex A.I. ACTION, so the ENEMY A.I. is going to Move Towards the Target in multiple "Turns"... even if in some turns there is no gain, apparently (...it is a long-term strategy). <br /><br />
+    ///
+    /// NOTE:  The NUMBER OF STEPS the "enemyUnit" is willing to take are already validated:  if the code gets to this point, it means that it is OK.
     /// </summary>
-    private bool TryTakeMoreComplexEnemyAIAction(Unit enemyUnit, MoveAction enemyUnitMoveAction, List<Unit> targetUnitList, Action onEnemyAIActionComplete)
+    private bool TryTakeMoreComplexEnemyAIAction(Unit enemyUnit, MoveAction enemyUnitMoveAction, Action onEnemyAIActionComplete)
     {
         
         // GOAL: Get as CLOSE AS POSSIBLE to the Target.
@@ -388,19 +428,24 @@ public class EnemyAI : MonoBehaviour
 
         // 0- Keeping track of the  BEST "Enemy A.I. ACTION"  (possible to choose:
         //
+
         //    0.1- Get a Sub-Set of that List<Unit> targetUnit:  Just the Closest one to this "ENEMY A.I.":
+        //   --->  enemyUnitMoveAction.FoeTargetOrGoalChosenToChase;
         //
-        Unit closestTargetUnit = /* Temporary, change this Code*/ targetUnitList[0]; // GetTheClosestTargetUnit( enemyUnit, targetUnitList );
+        // Unit bestTargetUnit = enemyUnitMoveAction.FoeTargetOrGoalChosenToChase;
         //
         //    0.1- Get the "targetUnit"'s Position on Map  (i.e.:  GridPosition):
+        //   --->   enemyUnitMoveAction.FoeTargetOrGoalChosenToChase.GetGridPosition();
         //
-        GridPosition targetGridPosition = /* Temporary, change this Code*/ closestTargetUnit.GetGridPosition(); // GetBestValidGridPositionOnPathfindingForMovingTowardsTarget(enemyUnit, closestTargetUnit);
+        //   NOTE:   --->   enemyUnitMoveAction.MyEnemyBestPathGridPositionList;
+        //   Is the Pathfinding output   for that BEST FOE (the Chosen ONE)
+        
         //
         //  IMPORTANT Final A.I. (Action-related) Data:
         //
         //    0.1- Position - DATA
         //
-        _bestEnemyAIActionData = enemyUnitMoveAction.GetBestEnemyAIActionDataForMovingSimplyTowardsAGoal( targetGridPosition );
+        _bestEnemyAIActionData = enemyUnitMoveAction.GetBestEnemyAIActionDataForMovingSimplyTowardsAGoal();
         //
         //    0.2- ACTION  object
         //
@@ -410,10 +455,6 @@ public class EnemyAI : MonoBehaviour
         //
         _bestBaseActionName = $"{_bestBaseAction.GetActionNameByStrippingClassName()} (More Complex Enemy AI Action)";
         
-        
-        /////////////////////
-        //  INSERT CODE HERE for the NUmber of TURNS to consider before making (choosing...) this  "DECISION".
-        /////////////////////
 
         #region Take the  BEST  "MoveAction"  Logic
 

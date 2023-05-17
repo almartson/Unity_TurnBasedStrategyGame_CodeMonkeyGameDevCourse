@@ -185,7 +185,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3902643}
-  m_LocalRotation: {x: 0.3006394, y: -0.000000016410377, z: 0.000000005172915, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: 0.000000016410377, z: -0.000000005172915, w: 0.9537379}
   m_LocalPosition: {x: 0, y: 7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1811,7 +1811,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.3006394, y: -0.000000016410377, z: 0.000000005172915, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: 0.000000016410377, z: -0.000000005172915, w: 0.9537379}
   m_LocalPosition: {x: 0, y: 7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4764,6 +4764,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8129631732136637595, guid: c961faa8a25a713809c580894c97983e,
         type: 3}
+      propertyPath: _aggroStat
+      value: 0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 8129631732136637595, guid: c961faa8a25a713809c580894c97983e,
+        type: 3}
       propertyPath: _ACTION_POINTS_PER_TURN_MAX
       value: 4
       objectReference: {fileID: 0}
@@ -6686,6 +6691,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2915487911728953171, guid: 0a763d65d588926178517840cb2ab41c,
+        type: 3}
+      propertyPath: _MAXIMUM_GRID_POSITIONS_IN_TOTAL_ALLOWED_TO_ANY_AGGRO_AI_CHASER
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 2915487911728953180, guid: 0a763d65d588926178517840cb2ab41c,
         type: 3}

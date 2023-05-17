@@ -12,13 +12,56 @@ public class Unit : MonoBehaviour
 {
     #region Attributes
 
-    #region  Enemy - Player - Friendnemy - etc
+    #region Enemy - Player - Friendnemy - etc
 
+    // [Space(10)]         // 10 pixels of spacing here.
+    [Header("Enemy - Player - Friendnemy - etc")]
+    
     [Tooltip("Is this Character / Unit a Player on my Side or an Enemy?")]
     [SerializeField]
     private bool _isEnemy = false;
 
     #endregion Enemy - Player - Friendnemy - etc
+ 
+
+    #region A.I. - More Complex A.I. Decisions
+    
+    [Space(5)] // 5 pixels of spacing here.
+    [Header("A.I. - More Complex A.I. Decisions")]
+
+    [Tooltip("'Aggressiveness' variable for the 'Enemy A.I. ACTIONs' and some (Player and A.I. attacks):  Higher values would provoke the 'Unit' to become aggressive towards the other Team Player's characters (Units).\n\n * NOTE: \n\n 1- This value is normalized, in a base to 1.0f. \n\n 2- 1.0f is: A Total value, equals 100%... for 'Aggressiveness' + 'Defensiveness' (Player Stats). \n\n 3- Defensiveness = [1.0 - Aggro], in a base to 1.0f.")]
+    [SerializeField]
+    [Range(0.0f, 1.0f)]
+    private float _aggroStat = 0.5f;
+    //
+    /// <summary>
+    /// Property Accessor for Field:  _aggroStat
+    /// </summary>
+    public float AggroStat
+    {
+        get => _aggroStat;
+        private set => _aggroStat = value;
+    }
+    
+    /// <summary>
+    /// Total value, equals 100%... for 'Aggressiveness' + 'Defensiveness' (Player Stats)..\n\n * NOTE: Defensiveness = [this value - Aggro], in a base to 1.0f.
+    /// </summary>
+    private const float _TOTAL_STAT = 1.0f;
+    
+    [Tooltip("(DEBUG READONLY VALUE:) Maximum number of 'GridPosition's  ( STEPS ) that this particular A.I. is willing to take towards its selected Goal... (executing only 'MoveActions'); this is a value used when executing a 'More Complex A.I. Algorithm', for Characters with HIGH values of AGGRO, that are allowed to a 'Hunter' or any 'Enemy A.I.' that wants to chase after another (that means, its _aggroStat value is high).\n\n * NOTE: \n 1- This value will change after this Unit gets to its 'Target' and Kills it (or Dies). \n 2- Calculation:  _aggroStat * (EnemyAI._MAXIMUM_GRID_POSITIONS_IN_TOTAL_ALLOWED_TO_ANY_AGGRO_AI_CHASER).  \n\n Usual values: around 25 when it is Aggro'ing (Hunting).... \n 3- Maximum (usual) value: 100.")]
+    [SerializeField]
+    private int _maximumGridPositionsThisAIisWillingToTakeTowardsAChosenGoal = 0;
+    //
+    /// <summary>
+    /// Property Accessor for Field:  _maximumGridPositionsIAmWillingToTakeTowardsAChosenGoal
+    /// </summary>
+    public int MaximumGridPositionsIAmWillingToTakeTowardsAChosenGoal
+    {
+        get => _maximumGridPositionsThisAIisWillingToTakeTowardsAChosenGoal;
+        set => _maximumGridPositionsThisAIisWillingToTakeTowardsAChosenGoal = value;
+    }
+    
+    #endregion A.I. - More Complex A.I. Decisions
     
     #region Grid System
     
@@ -39,6 +82,9 @@ public class Unit : MonoBehaviour
 
     
     #region 3D Mesh Proportions and Characteristics
+    
+    [Space(5)] // 5 pixels of spacing here.
+    [Header("3D Mesh Proportions and Characteristics")]
     
     [Tooltip("(Set by the Designer...): Height of this Character-Unit's Shoulder, in Game World Coordinates")]
     [SerializeField]
@@ -106,6 +152,9 @@ public class Unit : MonoBehaviour
 
 
     #region POINTS  - for every Action
+    
+    [Space(5)]             // 5 pixels of spacing here.
+    [Header("POINTS  - for every Action")]
     
     /// <summary>
     /// MAXIMUM Total amount of Points PER TURN (spendable); to be spent, each time this Character/Unit performs an Action. <br /> <br />
@@ -192,7 +241,7 @@ public class Unit : MonoBehaviour
         _baseActionArray = GetComponents<BaseAction>();
         
         #endregion Actions setup
-        
+
     }//End Awake()
 
     
