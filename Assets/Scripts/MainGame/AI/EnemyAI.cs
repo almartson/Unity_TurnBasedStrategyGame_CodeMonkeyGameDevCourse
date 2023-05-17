@@ -357,33 +357,34 @@ public class EnemyAI : MonoBehaviour
                 //
                 MoveAction enemyMoveAction = enemyUnit.GetAction<MoveAction>();
 
-                
-                // NUMBER OF STEPS (GridPositions... in MoveAction) the A.I. will take...
-                //
-                // RE-Calculate the 'MaximumGridPositionsIAmWillingToTakeTowardsAChosenGoal'  for each  ENEMY A.I.
-                //
-                enemyUnit.MaximumGridPositionsIAmWillingToTakeTowardsAChosenGoal = Mathf.RoundToInt(enemyUnit.AggroStat * _MAXIMUM_GRID_POSITIONS_IN_TOTAL_ALLOWED_TO_ANY_AGGRO_AI_CHASER);
-
-                // RE-Calculate the BEST TARGET to try and Chase (MoveActions)   --->  enemyUnitMoveAction.FoeTargetOrGoalChosenToChase
-                //
-                bool existsABestTargetToChaseForThisEnemyAI = enemyMoveAction.ForEnemyAICalculateTheBestFoeToHuntAndUpdatesVariableFields( enemyUnit.MaximumGridPositionsIAmWillingToTakeTowardsAChosenGoal );
-                
             
                 // For this ( enemyMoveAction ) ACTION...  See:
-                // 1- There is a FOE (i.e. Human Player - Unit)  that is within reach (number of steps the A.I. is willing to take).
-                // 2- Has it  enough  Action "POINTS"  (for a simple:  "MoveAction" )  ?
+                // 1- Has it  enough  Action "POINTS"  (for a simple:  "MoveAction" )  ?
                 //
-                if ( existsABestTargetToChaseForThisEnemyAI  &&  enemyUnit.CanSpendActionPointsToTakeAction( enemyMoveAction ) )
+                if ( enemyUnit.CanSpendActionPointsToTakeAction( enemyMoveAction ) )
                 {
 
                     // This ENEMY-NPC have enough "POINTS" to take THIS ACTION
-                
+                    
+                    // NUMBER OF STEPS (GridPositions... in MoveAction) the A.I. will take...
+                    //
+                    // RE-Calculate the 'MaximumGridPositionsIAmWillingToTakeTowardsAChosenGoal'  for each  ENEMY A.I.
+                    //
+                    enemyUnit.MaximumGridPositionsIAmWillingToTakeTowardsAChosenGoal = Mathf.RoundToInt(enemyUnit.AggroStat * _MAXIMUM_GRID_POSITIONS_IN_TOTAL_ALLOWED_TO_ANY_AGGRO_AI_CHASER);
+
+                    // RE-Calculate the BEST TARGET to try and Chase (MoveActions)   --->  enemyUnitMoveAction.FoeTargetOrGoalChosenToChase
+                    //
+                    bool existsABestTargetToChaseForThisEnemyAI = enemyMoveAction.ForEnemyAICalculateTheBestFoeToHuntAndUpdatesVariableFields( enemyUnit.MaximumGridPositionsIAmWillingToTakeTowardsAChosenGoal );
+
+                    
                     // Execute the  MOVE  ( MoveAction )
                     // ..partially towards the Target   (i.e.: NeverthelessMove as many GridPositions... as you can)
+                    //  ONLY IF:
+                    // 1- There is a FOE (i.e. Human Player - Unit)  that is within reach (number of steps the A.I. is willing to take). ??  ( existsABestTargetToChaseForThisEnemyAI )
                     //
                     // Make the ENEMY UNIT take "ACTION"
                     //
-                    if (TryTakeMoreComplexEnemyAIAction(enemyUnit, enemyMoveAction, onEnemyAIActionComplete))
+                    if ( existsABestTargetToChaseForThisEnemyAI  &&  TryTakeMoreComplexEnemyAIAction(enemyUnit, enemyMoveAction, onEnemyAIActionComplete))
                     {
         
                         // If the ACTION is Completed, for ANY ENEMY:  end this Loop
