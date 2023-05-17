@@ -970,7 +970,7 @@ public class MoveAction : BaseAction
         // 1-
         int[] proximityOfMyEnemies = new int[targetUnitListSortedByDamageTakenCount];
         //
-        // 2-
+        // 2- List of PATH ( GridPosition ) that belong to a List of FOE Units: 
         //
         List<List<GridPosition>> pathGridPositionListOfListOfTargetsSortedByDamageTaken = new List<List<GridPosition>>();
             
@@ -991,6 +991,30 @@ public class MoveAction : BaseAction
                 //
                 proximityOfMyEnemies[i] = pathGridPositionListOfListOfTargetsSortedByDamageTaken[i].Count;
 
+                
+                // Final:
+                // Get the BEST DECISION:   Choose the "CLOSEST" and "Weakest"   Foes, to Chase to:
+                //
+                // 1- Validate the "PROXIMITY" of the foe Unit:
+                // 2- Choose this ITEM: only if it  complies with the Constraint:  "numberOfGridPositionsIamWillingToMoveTowardsTheTarget"  
+                //
+                if ((proximityOfMyEnemies[i] > 0) &&
+                    (proximityOfMyEnemies[i] <= numberOfGridPositionsIamWillingToMoveTowardsTheTarget))
+                {
+
+                    // 2- Get the Closest Foe:  Select it!
+                    //
+                    _foeTargetOrGoalChosenToChase = targetUnitListSortedByDamageTaken[i];
+                    //
+                    // 3- Get the PATH found:
+                    //
+                    _myEnemyBestPathGridPositionList = pathGridPositionListOfListOfTargetsSortedByDamageTaken[i];
+
+                    // This means the Algorithm SUCCEEDED:
+                    //
+                    return true;
+
+                } //End if (proximityOfMyEnemies[i] > 0)
             }
             else
             {
@@ -1001,34 +1025,6 @@ public class MoveAction : BaseAction
 
         }//End for
 
-        // Final:
-        // Get the BEST DECISION:   Choose the "CLOSEST" and "Weakest"   Foes, to Chase to:
-        //
-        for (int i = 0; i < targetUnitListSortedByDamageTakenCount; i++)
-        {
-
-            // 1- Validate the "PROXIMITY" of the foe Unit:
-            // 2- Choose this ITEM: only if it  complies with the Constraint:  "numberOfGridPositionsIamWillingToMoveTowardsTheTarget"  
-            //
-            if ((proximityOfMyEnemies[i] > 0) &&
-                (proximityOfMyEnemies[i] <= numberOfGridPositionsIamWillingToMoveTowardsTheTarget))
-            {
-
-                // 2- Get the Closest Foe:  Select it!
-                //
-                _foeTargetOrGoalChosenToChase = targetUnitListSortedByDamageTaken[i];
-                //
-                // 3- Get the PATH found:
-                //
-                _myEnemyBestPathGridPositionList = pathGridPositionListOfListOfTargetsSortedByDamageTaken[i];
-
-                // This means the Algorithm SUCCEEDED:
-                //
-                return true;
-
-            } //End if (proximityOfMyEnemies[i] > 0)
-
-        }//End for
 
         // This means the Algorithm did NOT SUCCEED:
         //
