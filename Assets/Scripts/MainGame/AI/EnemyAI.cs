@@ -318,10 +318,9 @@ public class EnemyAI : MonoBehaviour
     /// </summary>
     private bool TryTakeMoreComplexEnemyAIAction(Action onEnemyAIActionComplete)
     {
-
-        // 1- TODO:  Make a Function to:  Get List of Player's Units, Sorted by "Damage Taken".
-        // 1- [0].(2)   ->  Get List of Player's Units, Sorted by "Damage Taken".
-        // Temporary Stub Code:
+        
+        // 1- Get List of Player's Units, Sorted by "Damage Taken".
+        // Validate that there are  FOES left to chase:
         //
         List<Unit> targetUnitList = UnitManager.Instance.GetFriendlyUnitList();
         
