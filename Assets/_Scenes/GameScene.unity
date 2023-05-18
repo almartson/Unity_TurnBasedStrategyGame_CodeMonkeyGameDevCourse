@@ -3528,6 +3528,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8129631732136637595, guid: c961faa8a25a713809c580894c97983e,
         type: 3}
+      propertyPath: _aggroStat
+      value: 0.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 8129631732136637595, guid: c961faa8a25a713809c580894c97983e,
+        type: 3}
       propertyPath: _ACTION_POINTS_PER_TURN_MAX
       value: 4
       objectReference: {fileID: 0}

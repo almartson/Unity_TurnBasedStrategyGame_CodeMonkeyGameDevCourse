@@ -939,6 +939,38 @@ public class MoveAction : BaseAction
 
     }// End CalculateWorthOfTakingAMoveActionToPosition
 
+    
+    /// <summary>
+    /// This Function will update the (PATH) PATHFINDING towards this ENEMY A.I.' "Target"..., i.e.: this Field:  <code>List (GridPosition)  _myEnemyBestPathGridPositionList </code> <br />
+    /// 
+    /// ...( related to an already calculated: <code> Unit _foeTargetOrGoalChosenToChase </code>)
+    /// </summary>
+    /// <returns>* TRUE if the Algorithm succeeded in List (GridPosition)  _myEnemyBestPathGridPositionList,... <br /> * FALSE if the Algorithm failed.</returns>
+    public bool ForEnemyAIUpdateVariableFieldOfTheBestPathToToHuntFoe()
+    {
+        
+        // 1- Get the Path-found:   ((PATH) PATHFINDING towards this ENEMY A.I.' "Target")
+        //
+        _myEnemyBestPathGridPositionList = Pathfinding.Instance.FindPath(_unit.GetGridPosition(),
+            _foeTargetOrGoalChosenToChase.GetGridPosition(), out int pathLength);
+        
+
+        // 2- Get the Number of Steps or  GridPosition(s)
+        //
+        if ((_myEnemyBestPathGridPositionList != null) && (_myEnemyBestPathGridPositionList.Count > 0))
+        {
+
+            // This means the Algorithm SUCCEEDED:
+            //
+            return true;
+        }
+
+        // This means the Algorithm did NOT SUCCEED:
+        //
+        return false;
+
+    }// End ForEnemyAIUpdateVariableFieldOfTheBestPathToToHuntFoe
+    
 
     /// <summary>
     /// This function creates a series of sorted list, and in the end decides which FOE (of his): is Worth Chasing / Hunting. <br /> <br />
@@ -946,7 +978,7 @@ public class MoveAction : BaseAction
     /// 1- A sorted List of:  Its Enemies, sorted by:   'Damage Taken' <br /> <br />
     /// 2- A List of:         Its Enemies, based on the Position INDEX of the list above :   'How near they are to me (i.e.: THIS 'Unit'), so it is an Array of Int <br /> <br />
     ///
-    /// In the end, this Fcuntion will update these 2 Fields:  _foeTargetOrGoalChosenToChase   and  _myEnemyBestPathGridPositionList
+    /// In the end, this Function will update these 2 Fields:  _foeTargetOrGoalChosenToChase   and  _myEnemyBestPathGridPositionList
     /// </summary>
     /// <returns>TRUE if the Algorithm succeeded, <br /> FALSE if the Algorithm failed.</returns>
     public bool ForEnemyAICalculateTheBestFoeToHuntAndUpdatesVariableFields(int numberOfGridPositionsIamWillingToMoveTowardsTheTarget)
