@@ -44,4 +44,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d484ae1de382be9bc6f543d0d40fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _MAXIMUM_GRID_POSITIONS_IN_TOTAL_ALLOWED_TO_ANY_AGGRO_AI_CHASER: 26
+  _randomPossibilityOfChasingTheTargetInThisTurn: 0
+  _currentsAIsTurnNumber: 0
   _timeAmountBeforeTakingAnAction: 0.22
+  _bestEnemyAIActionData:
+    gridPosition:
+      x: 0
+      z: 0
+    actionValue: 0
+  _bestBaseAction: {fileID: 0}
+  _bestBaseActionName: 
+  _testEnemyAIActionData:
+    gridPosition:
+      x: 0
+      z: 0
+    actionValue: 0

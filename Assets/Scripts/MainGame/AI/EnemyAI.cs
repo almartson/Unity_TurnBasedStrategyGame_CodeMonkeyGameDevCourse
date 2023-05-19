@@ -44,7 +44,7 @@ public class EnemyAI : MonoBehaviour
     private int _MAXIMUM_GRID_POSITIONS_IN_TOTAL_ALLOWED_TO_ANY_AGGRO_AI_CHASER = 44;
 
     
-    [Tooltip("(READONLY Debug value [0.0f, 1.0f] :)  Possibility for the current ENEMY A.I. UNIT, (that is playing right now...), to try and 'Go for the Kill' (trying to Chase A CHOSEN TARGET, a Human Player Unit).")]
+    [Tooltip("(READONLY Debug value [0.0f, 1.0f] :)  This number adds some 'RANDOMNESS' to the possibility for the current ENEMY A.I. UNIT, (that is playing right now...), to try and 'Go for the Kill' (trying to Chase A CHOSEN TARGET, a Human Player Unit).\n\n It is the equivalent to the 'randomness of life' circumstances (every day anything is Possible). It could transform a 'Hunter' into a 'Defensive' or tranquil character, at least in one Turn, 2 or more.")]
     [SerializeField]
     private float _randomPossibilityOfChasingTheTargetInThisTurn = 0.0f;
     //
@@ -340,11 +340,6 @@ public class EnemyAI : MonoBehaviour
     /// </summary>
     private bool TryTakeMoreComplexEnemyAIAction(Action onEnemyAIActionComplete)
     {
-        // Return value of this function:
-        //
-        bool resultOfThisMethod = false;
-
-        
         // 1- Get List of Player's Units, Sorted by "Damage Taken".
         // Validate that there are  FOES left to chase:
         //
@@ -368,7 +363,7 @@ public class EnemyAI : MonoBehaviour
         if ( ((targetUnitList.Count > 0) && (targetUnitList[0] != null)) && ((enemyUnitListLenght > 0) && (enemyUnitList[0] != null)) )
         {
 
-            // Cycling through every ENEMY Unit..
+            // Cycling through every ENEMY Unit...
             //
             for (int i = 0; i < enemyUnitListLenght; i++)
             {
@@ -438,43 +433,25 @@ public class EnemyAI : MonoBehaviour
                             _currentsAIsTurnNumber++;
                             
                         }//End if( randomPossibilityOfChasingTheT...
-                        else
-                        {
-                            // // No success in "Taking a More Complex Enemy A.I. ACTION"... for ANY Enemy Unit (in the whole ENEMY TEAM), at all:
-                            // //
-                            resultOfThisMethod = false;
-                            return false;
-
-                        }//End else of  if( randomPossibilityOfChasingTheT...
 
                     }//End if ( enemyMoveAction.FoeTargetOrGoalChosenToChase == null )
                     else
                     {
-                        // There IS a previous  GOAL:   A Target
+                        // There IS a previous  GOAL:   A Target  ( existsABestTargetToChaseForThisEnemyAI )
                         // Solution here:  Just  (Try to...)  UPDATE the  PATH variable, the   List<GridPosition>
                         //   .1- If the TURN NUMBER is DIFFERENT..:   UPDATE
                         //   .2- ELSE: if it is the SAME TURN:  SKIP  (use old "PATH FINDING" Results).
                         //
                         if ( _currentsAIsTurnNumber == 0 )
                         {
+
+                            // Update the PATHFINDING (PATH) to 'Target'
+                            //
+                            existsABestTargetToChaseForThisEnemyAI = enemyMoveAction.ForEnemyAIUpdateVariableFieldOfTheBestPathToToHuntFoe();
                             
-                            if ( ! enemyMoveAction.ForEnemyAIUpdateVariableFieldOfTheBestPathToToHuntFoe() )
-                            {
-                                
-                                // It could NOT Update the PATH (Pathfinding)... there was a Glitch:  The Target Could be in an inaccessible Location... (or death already, or in whatever Exceptional State...)
-                                
-
-                                // Mark that it is a NEW A.I. TURN ITERATION:
-                                //
-                                _currentsAIsTurnNumber++;
-
-
-                                // // No success in "Taking a More Complex Enemy A.I. ACTION"... for ANY Enemy Unit (in the whole ENEMY TEAM), at all:
-                                // //
-                                resultOfThisMethod = false;
-                                return false;
-
-                            }//End if ( ! enemyMoveAction.ForEnemyAIUpdateVariableFieldOfTheBestPathToToHuntFoe() )
+                            // Mark that it is a NEW A.I. TURN ITERATION:
+                            //
+                            _currentsAIsTurnNumber++;
 
                         }//End if ( ! enemyMoveAction.ForEnemyAIUpdateVariableFieldOfTheBestPathToToHuntFoe() )  
 
@@ -489,17 +466,15 @@ public class EnemyAI : MonoBehaviour
                     //
                     if ( existsABestTargetToChaseForThisEnemyAI  &&  TryTakeMoreComplexEnemyAIAction(enemyUnit, enemyMoveAction, onEnemyAIActionComplete))
                     {
-        
+                        
+                        // Mark that it is a NEW A.I. TURN ITERATION:
+                        //
+                        _currentsAIsTurnNumber++;
+
                         // If the ACTION is Completed, for ANY ENEMY:  end this Loop
                         // ...(so, we will have to do another for the NEXT ENEMY later... and so on,... until all ENEMIES have been checked - tried to execute an "A.I. ACTION"):
                         //
-                        resultOfThisMethod = true;
                         return true;
-
-
-                        // // Mark that it is a NEW A.I. TURN ITERATION:
-                        // //
-                        // _currentsAIsTurnNumber++;
 
                     }//if (TryTakeEnemyAIAction...
 
@@ -512,7 +487,7 @@ public class EnemyAI : MonoBehaviour
 
         // Any Success in "Taking a More Complex Enemy A.I. ACTION"... for ANY Enemy Unit (in the whole ENEMY TEAM), at all??
         //
-        return resultOfThisMethod;
+        return false;
 
     }// End TryTakeMoreComplexEnemyAIAction
     
