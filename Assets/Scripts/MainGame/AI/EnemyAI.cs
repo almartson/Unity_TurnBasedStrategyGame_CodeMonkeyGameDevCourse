@@ -602,10 +602,6 @@ public class EnemyAI : MonoBehaviour
     
     
     #region A.I. 2- Utils for - A More Complex "TakeAction"
-    
-    //private bool CanSpendActionPointsFor(Unit unit, )
-    
-    
     #endregion A.I. 2- Utils for - A More Complex "TakeAction"
     
     #endregion A.I. 2- A More Complex "TakeAction"  Algorithm (by AlMartson), that comes after trying the first (1-)
