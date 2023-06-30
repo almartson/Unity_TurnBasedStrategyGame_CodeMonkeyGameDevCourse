@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// Main Player's 3D Character Class' Logic.<br />
+/// Main LOGIC for: Player's and EnemyAI's.<br />
 /// It handles all the base 'Unit' Character's functionality
 /// (Unit: it is a Prefab that is spawned in the Scene, (representing the Player's team players...)<br />
 ///..and it contains several scripts related to ACTIONS the player <br />
@@ -113,6 +113,8 @@ public abstract class Unit : MonoBehaviour
     [Tooltip("Health System, for managing any Player's 'Health Points' (i.e.: your current 'health')")]
     protected HealthSystem _healthSystem;
 
+    #endregion Health System
+
 
     #region Enemy A.I. (related... helpers): Event Delegates - CallBacks
     
@@ -137,11 +139,7 @@ public abstract class Unit : MonoBehaviour
     #endregion Death: Event Delegates - CallBacks
     
     #endregion Enemy A.I. (related... helpers): Event Delegates - CallBacks
-    
-    
-    #endregion Health System
-    
-    
+
     #region ACTIONS
 
     #region Action's List
@@ -675,8 +673,7 @@ public abstract class Unit : MonoBehaviour
         return _healthSystem.IsDead();
 
     }// End IsDead
-
-
+    
     #endregion Getter and Setter for Health and Damage
 
     #endregion  Health System - Damage

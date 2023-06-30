@@ -7,10 +7,10 @@ using UnityEngine;
 ///..and it contains several scripts related to ACTIONS the player <br />
 ///..can execute in order to play in each turn, such as: MoveAction, ShootAction, SpinAction, etc.).
 /// </summary>
-public class UnitAI : Unit
+public class UnitEnemy : Unit
 {
     #region Attributes
-    
+
     #region A.I. - More Complex A.I. Decisions
     
     // 5 pixels of spacing here, in the Unity Inspector:
@@ -56,14 +56,18 @@ public class UnitAI : Unit
     
     #region Unity Methods
     
-    // protected override void Awake()
-    // {
-    //     // Execute the "Awake" of the (Abstract and Implemented here)
-    //     // ..Parent of this class:
-    //     //
-    //     base.Awake();
-    //     
-    // }//End Awake()
+    protected override void Awake()
+    {
+        // Execute the "Awake" of the (Abstract and Implemented here)
+        // ..Parent of this class:
+        //
+        base.Awake();
+        
+        // Set the case that this is an ENEMY
+        //
+        _isEnemy = true;
+
+    }//End Awake()
 
     // Start is called before the first frame update
     // protected override void Start()
