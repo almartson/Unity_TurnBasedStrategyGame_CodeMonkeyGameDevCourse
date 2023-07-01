@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa3bdd8c06d8cece9fed24f90a4ce1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unit: {fileID: 6297334026975807286}
+  _unit: {fileID: 0}
 --- !u!1 &4957300837209045836
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +343,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297334026975807289}
-  - component: {fileID: 6297334026975807286}
+  - component: {fileID: 3147743383319964240}
   - component: {fileID: 1902843464558363180}
   - component: {fileID: 2074268398416870624}
   - component: {fileID: -475992067659144793}
@@ -376,7 +376,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6297334026975807286
+--- !u!114 &3147743383319964240
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -385,10 +385,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6297334026975807288}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea93d9e2811325545958887771f0378c, type: 3}
+  m_Script: {fileID: 11500000, guid: 11d8b1e2b18a40d787b081db6ea3ff0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _isEnemy: 0
+  _aggroStat: 0.5
+  _maximumGridPositionsThisAIisWillingToTakeTowardsAChosenGoal: 0
   _shoulderHeightForUnitCharacter: 1.7
   _ACTION_POINTS_PER_TURN_MAX: 2
   _actionPoints: 2
@@ -489,6 +491,8 @@ MonoBehaviour:
   _rotateSpeed: 10
   _stoppingDistance: 0.1
   _maxMoveDistance: 4
+  _myEnemyBestPathGridPositionList: []
+  _foeTargetOrGoalChosenToChase: {fileID: 0}
 --- !u!114 &-9015054238785770785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,7 +635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionPointsText: {fileID: 123257808786796715}
-  _unit: {fileID: 6297334026975807286}
+  _unit: {fileID: 3147743383319964240}
   _healthBarImage: {fileID: 1860498596838130348}
   _healthSystem: {fileID: 3129350450898799712}
 --- !u!114 &1117241326885456832
