@@ -38,7 +38,7 @@ public class UnitEnemy : Unit
     
     [Tooltip("(DEBUG READONLY VALUE:) Maximum number of 'GridPosition's  ( STEPS ) that this particular A.I. is willing to take towards its selected Goal... (executing only 'MoveActions'); this is a value used when executing a 'More Complex A.I. Algorithm', for Characters with HIGH values of AGGRO, that are allowed to a 'Hunter' or any 'Enemy A.I.' that wants to chase after another (that means, its _aggroStat value is high).\n\n * NOTE: \n 1- This value will change after this Unit gets to its 'Target' and Kills it (or Dies). \n 2- Calculation:  _aggroStat * (EnemyAI._MAXIMUM_GRID_POSITIONS_IN_TOTAL_ALLOWED_TO_ANY_AGGRO_AI_CHASER) * (EnemyAI._randomPossibilityOfChasingTheTargetInThisTurn).  \n\n Usual values: around 25 when it is Aggro'ing (Hunting).... \n 3- Maximum (usual) value: 100.")]
     [SerializeField]
-    private int _maximumGridPositionsThisAIisWillingToTakeTowardsAChosenGoal = 0;
+    private int _maximumGridPositionsThisAIisWillingToTakeTowardsAChosenGoal = 25;
     //
     /// <summary>
     /// Property Accessor for Field:  _maximumGridPositionsIAmWillingToTakeTowardsAChosenGoal
