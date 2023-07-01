@@ -402,6 +402,52 @@ public abstract class Unit : MonoBehaviour
     #region POINTS  - for every Action
 
     /// <summary>
+    /// Checks if this Unit / Character is able to spend ActionPoints on a series of consecutive  SELECTED  Actions.
+    /// </summary>
+    /// <param name="baseActionsArray"></param>
+    /// <returns></returns>
+    public bool CanSpendActionPointsToTakeAChainOfActions(BaseAction[] baseActionsArray)
+    {
+        // Array Lenght
+        //
+        int baseActionsArrayLength = baseActionsArray.Length;
+
+        // Auxiliary variable to save a copy of the  ActionPoints
+        //
+        int actionPoints = _actionPoints;
+        
+        // Loop through all the Actions in the List (Array):
+        //
+        for (int i = 0; i < baseActionsArrayLength; i++)
+        {
+
+            // Cache of an Item
+            //
+            BaseAction baseAction = baseActionsArray[i];
+            
+            // Use (Experimentally)  the  ActionPoints
+            //
+            actionPoints -= baseAction.GetActionPointsCost(); 
+
+
+            // Validate that the ActionPoints  are > 0
+            //
+            if ( actionPoints <= 0 )
+            {
+
+                return false;
+            }
+
+        }//End for
+
+        // If it could endure all the tests, then it is TRUE: it can Spend the ActionPoints
+        //
+        return true;
+
+    }//End CanSpendActionPointsToTakeAChainOfActions
+
+    
+    /// <summary>
     /// Tries to: Execute the GENERAL process of SPENDING the <code>actionPoints</code> by <code>the amount INPUT PARAMETER</code> on this ACTION.
     /// If this Unit does NOT have the necessary actionPoints to pay for this Action, nothing else is done, and a <code>false</code> bool is returned.
     /// </summary>

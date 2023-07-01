@@ -891,7 +891,7 @@ public class UnitActionSystem : MonoBehaviour
 
             // 2- Get the Player's Team Units / Characters
             //
-            List<Unit> friendlyUnitList = UnitManager.Instance.GetFriendlyUnitList();
+            List<UnitPlayer> friendlyUnitList = UnitManager.Instance.GetFriendlyUnitList();
             
             // 3- Find the next available "Unit" / Character.
             // If none is available, if all are dead, then it’s game over.

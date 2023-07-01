@@ -29,12 +29,12 @@ public class UnitManager : MonoBehaviour
     /// <summary>
     /// List of all 'Friendly' CHARACTERS (i.e.: THE PLAYER'S TEAM... of type: 'Unit')
     /// </summary>
-    private List<Unit> _getFriendlyUnitList;
+    private List<UnitPlayer> _getFriendlyUnitList;
     
     /// <summary>
     /// List of all 'Enemy' CHARACTERS (i.e.: THE ENEMY'S TEAM... of type: 'Unit')
     /// </summary>
-    private List<Unit> _enemyUnitList;
+    private List<UnitEnemy> _enemyUnitList;
 
 
 
@@ -75,8 +75,8 @@ public class UnitManager : MonoBehaviour
         #region Unit Lists - Initializations
 
         _getUnitList = new List<Unit>();
-        _getFriendlyUnitList = new List<Unit>();
-        _enemyUnitList = new List<Unit>();
+        _getFriendlyUnitList = new List<UnitPlayer>();
+        _enemyUnitList = new List<UnitEnemy>();
 
         #endregion Unit Lists - Initializations
         
@@ -148,7 +148,7 @@ public class UnitManager : MonoBehaviour
             {
                 // Add the new (Spawned) Unit to the "ENEMY List"
                 //
-                _enemyUnitList.Add(unit);
+                _enemyUnitList.Add((UnitEnemy) unit);
             
             }//End if (unit.IsEnemy...
             else
@@ -156,7 +156,7 @@ public class UnitManager : MonoBehaviour
                 // "Friendly"
                 // Add:
                 //
-                _getFriendlyUnitList.Add(unit);
+                _getFriendlyUnitList.Add((UnitPlayer) unit);
             
             }//End else of if (unit.IsEnemy...
             
@@ -195,7 +195,7 @@ public class UnitManager : MonoBehaviour
             {
                 // Remove the new (Spawned) from:  Unit to the "ENEMY List"
                 //
-                _enemyUnitList.Remove(unit);
+                _enemyUnitList.Remove((UnitEnemy) unit);
             
             }//End if (unit.IsEnemy...
             else
@@ -203,7 +203,7 @@ public class UnitManager : MonoBehaviour
                 // "Friendly"
                 // Remove:
                 //
-                _getFriendlyUnitList.Remove(unit);
+                _getFriendlyUnitList.Remove((UnitPlayer) unit);
             
             }//End else of if (unit.IsEnemy...
             
@@ -219,9 +219,9 @@ public class UnitManager : MonoBehaviour
 
     public List<Unit> GetUnitList() => _getUnitList;
 
-    public List<Unit> GetFriendlyUnitList() => _getFriendlyUnitList;
+    public List<UnitPlayer> GetFriendlyUnitList() => _getFriendlyUnitList;
 
-    public List<Unit> GetEnemyUnitList() => _enemyUnitList;
+    public List<UnitEnemy> GetEnemyUnitList() => _enemyUnitList;
 
     #endregion Getters and Setters (Properties)
 

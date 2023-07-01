@@ -343,12 +343,12 @@ public class EnemyAI : MonoBehaviour
         // 1- Get List of Player's Units, Sorted by "Damage Taken".
         // Validate that there are  FOES left to chase:
         //
-        List<Unit> targetUnitList = UnitManager.Instance.GetFriendlyUnitList();
+        List<UnitPlayer> targetUnitList = UnitManager.Instance.GetFriendlyUnitList();
         
 
         // 2- Cycling through every ENEMY Unit..  ( Get Enemy Unit List )
         //
-        List<Unit> enemyUnitList = UnitManager.Instance.GetEnemyUnitList();
+        List<UnitEnemy> enemyUnitList = UnitManager.Instance.GetEnemyUnitList();
         //
         // Lenght of the List
         //
@@ -374,7 +374,7 @@ public class EnemyAI : MonoBehaviour
                 
                 // Cache the   Enemy Unit
                 //
-                Unit enemyUnit = enemyUnitList[i];
+                UnitEnemy enemyUnit = enemyUnitList[i];
                 //
                 // We want the ENEMY A.I. to execute a:  "MoveAction"  towards: (any) one of the Player Team's Unit
                 // Get ENEMY A.I.'s:   "MoveAction"
@@ -499,7 +499,7 @@ public class EnemyAI : MonoBehaviour
     ///
     /// NOTE:  The NUMBER OF STEPS the "enemyUnit" is willing to take are already validated:  if the code gets to this point, it means that it is OK.
     /// </summary>
-    private bool TryTakeMoreComplexEnemyAIAction(Unit enemyUnit, MoveAction enemyUnitMoveAction, Action onEnemyAIActionComplete)
+    private bool TryTakeMoreComplexEnemyAIAction(UnitEnemy enemyUnit, MoveAction enemyUnitMoveAction, Action onEnemyAIActionComplete)
     {
         
         // GOAL: Get as CLOSE AS POSSIBLE to the Target.
@@ -620,7 +620,7 @@ public class EnemyAI : MonoBehaviour
 
         // Cycling through every ENEMY Unit..  ( Get Enemy Unit List )
         //
-        List<Unit> enemyUnitList = UnitManager.Instance.GetEnemyUnitList();
+        List<UnitEnemy> enemyUnitList = UnitManager.Instance.GetEnemyUnitList();
         //
         // Lenght of the List
         //
@@ -659,7 +659,7 @@ public class EnemyAI : MonoBehaviour
     /// Given an "Enemy Unit": <br />
     /// It Executes a particular ENEMY Unit  'ACTION'  (A.I.)
     /// </summary>
-    private bool TryTakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
+    private bool TryTakeEnemyAIAction(UnitEnemy enemyUnit, Action onEnemyAIActionComplete)
     {
         
         // GOAL: Get the BEST  ACTION   (as object)  possible to take:
@@ -862,7 +862,7 @@ public class EnemyAI : MonoBehaviour
     /// <param name="onEnemyAIActionComplete"></param>
     /// <returns></returns>
     [Obsolete("This method is deprecated. Use: 'private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)' instead", true)]
-    private bool DeprecatedTryTakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
+    private bool DeprecatedTryTakeEnemyAIAction(UnitEnemy enemyUnit, Action onEnemyAIActionComplete)
     {
 
         // GOAL: Get the BEST  ACTION   (as object)  possible to take:
@@ -1024,7 +1024,7 @@ public class EnemyAI : MonoBehaviour
 
         // Cycling through every ENEMY Unit..
         //
-        foreach (Unit enemyUnit in UnitManager.Instance.GetEnemyUnitList())
+        foreach (UnitEnemy enemyUnit in UnitManager.Instance.GetEnemyUnitList())
         {
             // Make the ENEMY UNIT take "ACTION"
             //
