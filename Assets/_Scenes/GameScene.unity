@@ -1466,6 +1466,11 @@ PrefabInstance:
       propertyPath: _aggroStat
       value: 0.88
       objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: fc8ce0b089e4877faa531e1132f43017,
+        type: 3}
+      propertyPath: _maximumGridPositionsThisAIisWillingToTakeTowardsAChosenGoal
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc8ce0b089e4877faa531e1132f43017, type: 3}
 --- !u!1001 &317192475
@@ -4264,6 +4269,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: fc8ce0b089e4877faa531e1132f43017,
+        type: 3}
+      propertyPath: _aggroStat
+      value: 0.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: fc8ce0b089e4877faa531e1132f43017,
+        type: 3}
+      propertyPath: _maximumGridPositionsThisAIisWillingToTakeTowardsAChosenGoal
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc8ce0b089e4877faa531e1132f43017, type: 3}
