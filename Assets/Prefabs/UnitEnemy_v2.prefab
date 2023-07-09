@@ -487,7 +487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d5ba2f51967919f7b67551648db8476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ragdollPrefab: {fileID: 6297334026975807289, guid: 42b1c03e4b2d847b9afac5c99fafe7a5,
+  _ragdollPrefab: {fileID: 4998818018336852574, guid: 7ac8f47f1a68238568c60ebdba861fa2,
     type: 3}
   _originalCharactersRootBone: {fileID: 4071295034049033778}
   _originalCharacterBonesThatAreRagdollized:
