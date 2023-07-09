@@ -1468,6 +1468,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: fc8ce0b089e4877faa531e1132f43017,
         type: 3}
+      propertyPath: _actionPoints
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: fc8ce0b089e4877faa531e1132f43017,
+        type: 3}
+      propertyPath: _ACTION_POINTS_PER_TURN_MAX
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: fc8ce0b089e4877faa531e1132f43017,
+        type: 3}
       propertyPath: _maximumGridPositionsThisAIisWillingToTakeTowardsAChosenGoal
       value: 0
       objectReference: {fileID: 0}
@@ -4274,6 +4284,16 @@ PrefabInstance:
         type: 3}
       propertyPath: _aggroStat
       value: 0.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: fc8ce0b089e4877faa531e1132f43017,
+        type: 3}
+      propertyPath: _actionPoints
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: fc8ce0b089e4877faa531e1132f43017,
+        type: 3}
+      propertyPath: _ACTION_POINTS_PER_TURN_MAX
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: fc8ce0b089e4877faa531e1132f43017,
         type: 3}
