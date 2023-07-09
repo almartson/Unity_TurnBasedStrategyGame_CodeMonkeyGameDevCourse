@@ -2,73 +2,35 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// Main Player's 3D Character Class' Logic.<br />
+/// Main LOGIC for: Player's and EnemyAI's.<br />
 /// It handles all the base 'Unit' Character's functionality
 /// (Unit: it is a Prefab that is spawned in the Scene, (representing the Player's team players...)<br />
 ///..and it contains several scripts related to ACTIONS the player <br />
 ///..can execute in order to play in each turn, such as: MoveAction, ShootAction, SpinAction, etc.).
 /// </summary>
-public class Unit : MonoBehaviour
+public abstract class Unit : MonoBehaviour
 {
     #region Attributes
 
     #region Enemy - Player - Friendnemy - etc
 
-    // [Space(10)]         // 10 pixels of spacing here.
+    // 10 pixels of spacing here, in the Unity Inspector:
+    // [Space(10)]
     [Header("Enemy - Player - Friendnemy - etc")]
     
     [Tooltip("Is this Character / Unit a Player on my Side or an Enemy?")]
     [SerializeField]
-    private bool _isEnemy = false;
+    protected bool _isEnemy = false;
 
     #endregion Enemy - Player - Friendnemy - etc
- 
-
-    #region A.I. - More Complex A.I. Decisions
     
-    [Space(5)] // 5 pixels of spacing here.
-    [Header("A.I. - More Complex A.I. Decisions")]
-
-    [Tooltip("'Aggressiveness' variable for the 'Enemy A.I. ACTIONs' and some (Player and A.I. attacks):  Higher values would provoke the 'Unit' to become aggressive towards the other Team Player's characters (Units).\n\n * NOTE: \n\n 1- This value is normalized, in a base to 1.0f. \n\n 2- 1.0f is: A Total value, equals 100%... for 'Aggressiveness' + 'Defensiveness' (Player Stats). \n\n 3- Defensiveness = [1.0 - Aggro], in a base to 1.0f.")]
-    [SerializeField]
-    [Range(0.0f, 1.0f)]
-    private float _aggroStat = 0.5f;
-    //
-    /// <summary>
-    /// Property Accessor for Field:  _aggroStat
-    /// </summary>
-    public float AggroStat
-    {
-        get => _aggroStat;
-        private set => _aggroStat = value;
-    }
-    
-    /// <summary>
-    /// Total value, equals 100%... for 'Aggressiveness' + 'Defensiveness' (Player Stats)..\n\n * NOTE: Defensiveness = [this value - Aggro], in a base to 1.0f.
-    /// </summary>
-    private const float _TOTAL_STAT = 1.0f;
-    
-    [Tooltip("(DEBUG READONLY VALUE:) Maximum number of 'GridPosition's  ( STEPS ) that this particular A.I. is willing to take towards its selected Goal... (executing only 'MoveActions'); this is a value used when executing a 'More Complex A.I. Algorithm', for Characters with HIGH values of AGGRO, that are allowed to a 'Hunter' or any 'Enemy A.I.' that wants to chase after another (that means, its _aggroStat value is high).\n\n * NOTE: \n 1- This value will change after this Unit gets to its 'Target' and Kills it (or Dies). \n 2- Calculation:  _aggroStat * (EnemyAI._MAXIMUM_GRID_POSITIONS_IN_TOTAL_ALLOWED_TO_ANY_AGGRO_AI_CHASER) * (EnemyAI._randomPossibilityOfChasingTheTargetInThisTurn).  \n\n Usual values: around 25 when it is Aggro'ing (Hunting).... \n 3- Maximum (usual) value: 100.")]
-    [SerializeField]
-    private int _maximumGridPositionsThisAIisWillingToTakeTowardsAChosenGoal = 0;
-    //
-    /// <summary>
-    /// Property Accessor for Field:  _maximumGridPositionsIAmWillingToTakeTowardsAChosenGoal
-    /// </summary>
-    public int MaximumGridPositionsIAmWillingToTakeTowardsAChosenGoal
-    {
-        get => _maximumGridPositionsThisAIisWillingToTakeTowardsAChosenGoal;
-        set => _maximumGridPositionsThisAIisWillingToTakeTowardsAChosenGoal = value;
-    }
-    
-    #endregion A.I. - More Complex A.I. Decisions
     
     #region Grid System
     
     /// <summary>
     /// Keeping track of the CURRENT GridPosition of this Unit.
     /// </summary>
-    private GridPosition _gridPosition;
+    protected GridPosition _gridPosition;
     
     /// <summary>
     /// It happens to be updated and Valid just after the User Clicked on an ACTION, associated with a GRID POSITION.
@@ -76,20 +38,21 @@ public class Unit : MonoBehaviour
     /// This Position comes from a Conversion of the MousePointer Coordinates into: a valid GridPosition.
     /// This is already Validated.
     /// </summary>
-    private GridPosition _finalGridPositionOfNextAction;
+    protected GridPosition _finalGridPositionOfNextAction;
 
     #endregion Grid System
 
     
     #region 3D Mesh Proportions and Characteristics
     
-    [Space(5)] // 5 pixels of spacing here.
+    // 5 pixels of spacing here.
+    [Space(5)]
     [Header("3D Mesh Proportions and Characteristics")]
     
     [Tooltip("(Set by the Designer...): Height of this Character-Unit's Shoulder, in Game World Coordinates")]
     [SerializeField]
     [Range(0.0f, 5.0f)]
-    private float _shoulderHeightForUnitCharacter = 1.7f;
+    protected float _shoulderHeightForUnitCharacter = 1.7f;
     //
     /// <summary>
     /// Property Accessor for Field:  _shoulderHeightForUnitCharacter
@@ -108,7 +71,9 @@ public class Unit : MonoBehaviour
     /// Health System, for managing any Player's 'Health Points' (i.e.: your current 'health')
     /// </summary>
     [Tooltip("Health System, for managing any Player's 'Health Points' (i.e.: your current 'health')")]
-    private HealthSystem _healthSystem;
+    protected HealthSystem _healthSystem;
+
+    #endregion Health System
 
 
     #region Enemy A.I. (related... helpers): Event Delegates - CallBacks
@@ -134,11 +99,7 @@ public class Unit : MonoBehaviour
     #endregion Death: Event Delegates - CallBacks
     
     #endregion Enemy A.I. (related... helpers): Event Delegates - CallBacks
-    
-    
-    #endregion Health System
-    
-    
+
     #region ACTIONS
 
     #region Action's List
@@ -146,7 +107,7 @@ public class Unit : MonoBehaviour
     /// <summary>
     /// LIST of ALL ACTIONS that can be performed (by this type of Unit / Character of the game). 
     /// </summary>
-    private BaseAction[] _baseActionArray;
+    protected BaseAction[] _baseActionArray;
 
     #endregion Action's List
 
@@ -163,7 +124,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     [Tooltip("MAXIMUM Total amount of Points PER TURN (spendable); to be spent, each time this Character/Unit performs an Action. \n\nNote: Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. \n\nDefault value : 2")]
     [SerializeField]
-    private int _ACTION_POINTS_PER_TURN_MAX = 2;
+    protected int _ACTION_POINTS_PER_TURN_MAX = 2;
     
     /// <summary>
     /// Total amount of Points (spendable), to spend each time this Character/Unit performs an Action. <br />
@@ -172,7 +133,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     [Tooltip("Current amount of 'Points' (spendable) to execute any 'Actions'.\n These Points are to spend RIGHT NOW, currently in this TURN (and each time this Character/Unit performs an 'Action'). \n\nNote: Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. \n\nDefault value : 2")]
     [SerializeField]
-    private int _actionPoints = 2;
+    protected int _actionPoints = 2;
     
     
     #region Turn System - and its Events
@@ -197,7 +158,7 @@ public class Unit : MonoBehaviour
     /// Last Valid Action's: Mouse Position
     /// (it is validated inside the Grid, see trace for:  MousePosition)
     /// </summary>
-    private Vector3 _mousePosition = Vector3.zero;
+    protected Vector3 _mousePosition = Vector3.zero;
     /// <summary>
     /// Property Accessor to Private Field:
     /// Public Getter and Setter for _mousePosition
@@ -212,7 +173,7 @@ public class Unit : MonoBehaviour
     
     #region Unity Methods
     
-    private void Awake()
+    protected virtual void Awake()
     {
 
         #region Action Points Setup
@@ -246,7 +207,7 @@ public class Unit : MonoBehaviour
 
     
     // Start is called before the first frame update
-    private void Start()
+    protected virtual void Start()
     {
         // Setting the Unit on the LevelGrid (Script) Object, on THIS GridPosition...
         //
@@ -290,7 +251,7 @@ public class Unit : MonoBehaviour
     
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         // Setting the Unit on the LevelGrid (Script) Object, on THIS GridPosition...
         //
@@ -444,8 +405,8 @@ public class Unit : MonoBehaviour
         return true;
 
     }//End CanSpendActionPointsToTakeAChainOfActions
-    
 
+    
     /// <summary>
     /// Tries to: Execute the GENERAL process of SPENDING the <code>actionPoints</code> by <code>the amount INPUT PARAMETER</code> on this ACTION.
     /// If this Unit does NOT have the necessary actionPoints to pay for this Action, nothing else is done, and a <code>false</code> bool is returned.
@@ -498,7 +459,7 @@ public class Unit : MonoBehaviour
     /// Executes the process of SPENDING the <code>actionPoints</code> by <code>the amount INPUT PARAMETER</code> on this ACTION.
     /// </summary>
     /// <param name="amount">Cost - this is going to be spent</param>
-    private void SpendActionPoints(int amount)
+    protected void SpendActionPoints(int amount)
     {
         _actionPoints -= amount;
 
@@ -588,7 +549,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
+    protected void TurnSystem_OnTurnChanged(object sender, EventArgs e)
     {
         // Only work when the Player's or Enemy's Turn ENDS:
         //
@@ -718,8 +679,7 @@ public class Unit : MonoBehaviour
         return _healthSystem.IsDead();
 
     }// End IsDead
-
-
+    
     #endregion Getter and Setter for Health and Damage
 
     #endregion  Health System - Damage

@@ -122,7 +122,7 @@ public class MoveAction : BaseAction
         private set => _myEnemyBestPathGridPositionList = value;
     }
     
-    [Tooltip("Enemy Chosen as Target or Goal, if this ENEMY A.I. enter in 'Aggro Mode' or HUnt / Chaser Mode. Use it with the Field List<GridPosition> above: _myEnemyBestPathGridPositionList.")]
+    [Tooltip("Unit (i.e.: one Human Player Unit, if the EnemyAI is playing...): Chosen as Target or Goal, if this ENEMY A.I. enters in 'Aggro Mode' or Hunt / Chaser Mode. Use it with the Field List<GridPosition> above: _myEnemyBestPathGridPositionList.")]
     [SerializeField]
     private Unit _foeTargetOrGoalChosenToChase;
     //
@@ -988,7 +988,7 @@ public class MoveAction : BaseAction
         //  1- A sorted List of:  Its Enemies, sorted by:   'Damage Taken'
         //    .1- Get a Full List, not sorted:
         //
-        List<Unit> targetUnitListSortedByDamageTaken = UnitManager.Instance.GetFriendlyUnitList();
+        List<UnitPlayer> targetUnitListSortedByDamageTaken = UnitManager.Instance.GetFriendlyUnitList();
         //
         //    .2- Sort the List by:   Damage Taken
         //
