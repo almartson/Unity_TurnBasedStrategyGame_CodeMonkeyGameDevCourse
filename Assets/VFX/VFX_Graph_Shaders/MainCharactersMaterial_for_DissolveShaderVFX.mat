@@ -62,12 +62,12 @@ Material:
     - _Blend: 0
     - _CastShadows: 1
     - _Cull: 2
-    - _DissolveAmount: 0.1
+    - _DissolveAmount: 0
     - _DissolveScale: 40
-    - _DissolveWidth: 0.02
+    - _DissolveWidth: 0.2
     - _DstBlend: 0
     - _Metallic: 0
-    - _NormalsStrength: 0.5
+    - _NormalsStrength: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
