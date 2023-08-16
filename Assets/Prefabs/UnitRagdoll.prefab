@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6297334026975807289}
   - component: {fileID: 6145339458760262751}
-  - component: {fileID: 9173497260813812126}
+  - component: {fileID: 8500296630377933705}
   m_Layer: 7
   m_Name: UnitRagdoll
   m_TagString: Untagged
@@ -96,7 +96,7 @@ MonoBehaviour:
   _explosionRange: 10
   _realisticExplosionPhysics: 1
   _explosionOffsetInHorizontalAxisPositioningProportionalToExplosionRange: 0.077
---- !u!114 &9173497260813812126
+--- !u!114 &8500296630377933705
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,13 +105,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6297334026975807288}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 647b2081958d68bc78707073b0012765, type: 3}
+  m_Script: {fileID: 11500000, guid: bf57d76524d58b0029b9e9684b40b93c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _skinnedMeshRenderer: {fileID: 6236878121081643677}
   _cachedSkinnedMeshRendererMaterials: []
-  _dissolveChangeRate: 0.0125
-  _refreshRateDeltaTime: 0.025
+  _dissolveChangeRate: 0.0111
+  _refreshRateDeltaTime: 0.0123
 --- !u!1001 &6297334025778817227
 PrefabInstance:
   m_ObjectHideFlags: 0

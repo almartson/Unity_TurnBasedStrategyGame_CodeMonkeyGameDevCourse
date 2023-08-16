@@ -7,29 +7,29 @@ using System.Collections;
 using UnityEngine;
 
 
-public class DissolvingControllerTest : MonoBehaviour
+public  abstract class BaseDissolvingController : MonoBehaviour
 {
 
     #region Attributes
 
     [Tooltip("SkinnedMeshRenderer, To get the materials from it.")]
     [SerializeField]
-    private SkinnedMeshRenderer _skinnedMeshRenderer;
+    protected SkinnedMeshRenderer _skinnedMeshRenderer;
     
     [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the Character.")]
     [SerializeField]
-    private Material[] _cachedSkinnedMeshRendererMaterials;
+    protected Material[] _cachedSkinnedMeshRendererMaterials;
 
     
     #region Dissolve VFX's: Value and Time Rates
     
     [Tooltip("Rate of change per frame of the Dissolving effect.")]
     [SerializeField]
-    private float _dissolveChangeRate = 0.0125f;
+    protected float _dissolveChangeRate = 0.0111f;   // 0.0125f;
 
     [Tooltip("Time to 'yield return WaitForSeconds(this time var...)' between any change in Dissolve in this VFX's Coroutine")]
     [SerializeField]
-    private float _refreshRateDeltaTime = 0.025f;
+    protected float _refreshRateDeltaTime = 0.0123f;    // 0.025f;
 
     #endregion Dissolve VFX's: Value and Time Rates
 
@@ -41,46 +41,32 @@ public class DissolvingControllerTest : MonoBehaviour
     /// <summary>
     /// Awake is called before the Start calls round
     /// </summary>
-
-
-
-    /// <summary>
-    /// Start is called before the first frame update
-    /// </summary>
-    private void Start()
+    protected virtual void Awake()
     {
+        // Add the reference to SkinnedMeshRenderer to get the Materials from it.
+        //
         if (_skinnedMeshRenderer != null)
         {
             _cachedSkinnedMeshRendererMaterials = _skinnedMeshRenderer.materials;
         }
         
-    }// End Start()
+    }// End Awake()
+
+
+    /// <summary>
+    /// Start is called before the first frame update
+    /// </summary>
+    // protected virtual void Start()
+    // {
+    // }// End Start()
 
 
     /// <summary>
     /// Update is called once per frame
     /// </summary>
-    private void Update()
-    {
-        // Check to see if the user presses the SPACEBAR Button,
-        //..if so, then enable the VFX.
-        //
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // Start the VFX as a Coroutine
-            //
-            StartCoroutine(DoStartVFX());
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            // Restore the original state of the character
-            //
-            TryUndoVFX();
-        }
-        
-    }// End Update()
-
+    
+    
+    
     #endregion Unity Methods
     
 
@@ -92,7 +78,7 @@ public class DissolvingControllerTest : MonoBehaviour
     /// It works as a Coroutine.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator DoStartVFX()
+    protected virtual IEnumerator DoStartVFX()
     {
 
         // Null check validation
@@ -129,14 +115,14 @@ public class DissolvingControllerTest : MonoBehaviour
             
         }//End if (_cachedSkinnedMeshRendererMaterials.Length > 0)
         
-}// End DoStartVFX()
+    }// End DoStartVFX()
 
 
     /// <summary>
     /// Restore the 3D Mesh (VFX) to it's Initial state.
     /// </summary>
     /// <returns></returns>
-    public bool TryUndoVFX()
+    protected virtual bool TryUndoVFX()
     {
         // Success in this method
         //
@@ -177,3 +163,4 @@ public class DissolvingControllerTest : MonoBehaviour
     #endregion My Custom Methods
 
 }
+
