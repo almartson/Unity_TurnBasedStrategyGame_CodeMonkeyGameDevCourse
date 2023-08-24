@@ -97,7 +97,10 @@ VisualEffect:
         m_Name: Transform_scale
         m_Overridden: 1
     m_Vector4f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 1.4575983, y: 0.27348694, z: 0, w: 0}
+        m_Name: Color
+        m_Overridden: 1
     m_Uint:
       m_Array: []
     m_Int:
@@ -268,6 +271,7 @@ MonoBehaviour:
   _cachedSkinnedMeshRendererMaterials: []
   _dissolveChangeRate: 0.0111
   _refreshRateDeltaTime: 0.0123
+  _VFXGraph: {fileID: 5907763526225516163}
 --- !u!1001 &6297334025778817227
 PrefabInstance:
   m_ObjectHideFlags: 0

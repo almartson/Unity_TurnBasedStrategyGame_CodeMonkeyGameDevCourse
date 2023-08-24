@@ -1,11 +1,9 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
-
-using System;
 using System.Collections;
 using UnityEngine;
-
+using UnityEngine.VFX;
 
 public  abstract class BaseDissolvingController : MonoBehaviour
 {
@@ -21,7 +19,7 @@ public  abstract class BaseDissolvingController : MonoBehaviour
     protected Material[] _cachedSkinnedMeshRendererMaterials;
 
     
-    #region Dissolve VFX's: Value and Time Rates
+    #region VFX Shader: Dissolve VFX's: Value and Time Rates
     
     [Tooltip("Rate of change per frame of the Dissolving effect.")]
     [SerializeField]
@@ -31,8 +29,19 @@ public  abstract class BaseDissolvingController : MonoBehaviour
     [SerializeField]
     protected float _refreshRateDeltaTime = 0.0123f;    // 0.025f;
 
-    #endregion Dissolve VFX's: Value and Time Rates
+    #endregion VFX Shader: Dissolve VFX's: Value and Time Rates
 
+    
+    #region VFX Graph (particles effect)
+
+    [Tooltip("VFX Graph component reference.")]
+    [SerializeField]
+    protected VisualEffect _VFXGraph;
+
+
+    #endregion VFX Graph (particles effect)
+    
+    
     #endregion Attributes
 
 
@@ -80,8 +89,16 @@ public  abstract class BaseDissolvingController : MonoBehaviour
     /// <returns></returns>
     protected virtual IEnumerator DoStartVFX()
     {
-
-        // Null check validation
+        // Null check validations:
+        
+        // 1- VFX Graph (particles) effect:
+        //
+        if (_VFXGraph != null)
+        {
+            _VFXGraph.Play();
+        }
+        
+        // 2- VFX Shader effect:
         //
         if ((_cachedSkinnedMeshRendererMaterials.Length > 0) && (_cachedSkinnedMeshRendererMaterials[0] != null))
         {
