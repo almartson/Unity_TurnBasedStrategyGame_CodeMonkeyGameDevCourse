@@ -1,82 +1,230 @@
 fileFormatVersion: 2
 guid: 48088ee6f92dc994699461d5704d507b
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: Armature
-    100002: Foot.L
-    100004: Foot.L_end
-    100006: Foot.R
-    100008: Foot.R_end
-    100010: Hand.L
-    100012: Hand.L_end
-    100014: Hand.R
-    100016: Hand.R_end
-    100018: Head
-    100020: Head_end
-    100022: IKLegPole.L
-    100024: IKLegPole.L_end
-    100026: IKLegPole.R
-    100028: IKLegPole.R_end
-    100030: IKTarget.L
-    100032: IKTarget.L_end
-    100034: IKTarget.R
-    100036: IKTarget.R_end
-    100038: LowerArm.L
-    100040: LowerArm.R
-    100042: LowerLeg.L
-    100044: LowerLeg.R
-    100046: mesh18
-    100048: //RootNode
-    100050: Root
-    100052: Shoulder.L
-    100054: Shoulder.R
-    100056: Spine_1
-    100058: Spine_2
-    100060: UpperArm.L
-    100062: UpperArm.R
-    100064: UpperLeg.L
-    100066: UpperLeg.R
-    400000: Armature
-    400002: Foot.L
-    400004: Foot.L_end
-    400006: Foot.R
-    400008: Foot.R_end
-    400010: Hand.L
-    400012: Hand.L_end
-    400014: Hand.R
-    400016: Hand.R_end
-    400018: Head
-    400020: Head_end
-    400022: IKLegPole.L
-    400024: IKLegPole.L_end
-    400026: IKLegPole.R
-    400028: IKLegPole.R_end
-    400030: IKTarget.L
-    400032: IKTarget.L_end
-    400034: IKTarget.R
-    400036: IKTarget.R_end
-    400038: LowerArm.L
-    400040: LowerArm.R
-    400042: LowerLeg.L
-    400044: LowerLeg.R
-    400046: mesh18
-    400048: //RootNode
-    400050: Root
-    400052: Shoulder.L
-    400054: Shoulder.R
-    400056: Spine_1
-    400058: Spine_2
-    400060: UpperArm.L
-    400062: UpperArm.R
-    400064: UpperLeg.L
-    400066: UpperLeg.R
-    2100000: nr2_tex01.png
-    2100002: nr2_tex02.png
-    2100004: nr2_eye.png
-    4300000: mesh18
-    9500000: //RootNode
-    13700000: mesh18
+  serializedVersion: 21300
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Armature
+  - first:
+      1: 100002
+    second: Foot.L
+  - first:
+      1: 100004
+    second: Foot.L_end
+  - first:
+      1: 100006
+    second: Foot.R
+  - first:
+      1: 100008
+    second: Foot.R_end
+  - first:
+      1: 100010
+    second: Hand.L
+  - first:
+      1: 100012
+    second: Hand.L_end
+  - first:
+      1: 100014
+    second: Hand.R
+  - first:
+      1: 100016
+    second: Hand.R_end
+  - first:
+      1: 100018
+    second: Head
+  - first:
+      1: 100020
+    second: Head_end
+  - first:
+      1: 100022
+    second: IKLegPole.L
+  - first:
+      1: 100024
+    second: IKLegPole.L_end
+  - first:
+      1: 100026
+    second: IKLegPole.R
+  - first:
+      1: 100028
+    second: IKLegPole.R_end
+  - first:
+      1: 100030
+    second: IKTarget.L
+  - first:
+      1: 100032
+    second: IKTarget.L_end
+  - first:
+      1: 100034
+    second: IKTarget.R
+  - first:
+      1: 100036
+    second: IKTarget.R_end
+  - first:
+      1: 100038
+    second: LowerArm.L
+  - first:
+      1: 100040
+    second: LowerArm.R
+  - first:
+      1: 100042
+    second: LowerLeg.L
+  - first:
+      1: 100044
+    second: LowerLeg.R
+  - first:
+      1: 100046
+    second: mesh18
+  - first:
+      1: 100048
+    second: //RootNode
+  - first:
+      1: 100050
+    second: Root
+  - first:
+      1: 100052
+    second: Shoulder.L
+  - first:
+      1: 100054
+    second: Shoulder.R
+  - first:
+      1: 100056
+    second: Spine_1
+  - first:
+      1: 100058
+    second: Spine_2
+  - first:
+      1: 100060
+    second: UpperArm.L
+  - first:
+      1: 100062
+    second: UpperArm.R
+  - first:
+      1: 100064
+    second: UpperLeg.L
+  - first:
+      1: 100066
+    second: UpperLeg.R
+  - first:
+      4: 400000
+    second: Armature
+  - first:
+      4: 400002
+    second: Foot.L
+  - first:
+      4: 400004
+    second: Foot.L_end
+  - first:
+      4: 400006
+    second: Foot.R
+  - first:
+      4: 400008
+    second: Foot.R_end
+  - first:
+      4: 400010
+    second: Hand.L
+  - first:
+      4: 400012
+    second: Hand.L_end
+  - first:
+      4: 400014
+    second: Hand.R
+  - first:
+      4: 400016
+    second: Hand.R_end
+  - first:
+      4: 400018
+    second: Head
+  - first:
+      4: 400020
+    second: Head_end
+  - first:
+      4: 400022
+    second: IKLegPole.L
+  - first:
+      4: 400024
+    second: IKLegPole.L_end
+  - first:
+      4: 400026
+    second: IKLegPole.R
+  - first:
+      4: 400028
+    second: IKLegPole.R_end
+  - first:
+      4: 400030
+    second: IKTarget.L
+  - first:
+      4: 400032
+    second: IKTarget.L_end
+  - first:
+      4: 400034
+    second: IKTarget.R
+  - first:
+      4: 400036
+    second: IKTarget.R_end
+  - first:
+      4: 400038
+    second: LowerArm.L
+  - first:
+      4: 400040
+    second: LowerArm.R
+  - first:
+      4: 400042
+    second: LowerLeg.L
+  - first:
+      4: 400044
+    second: LowerLeg.R
+  - first:
+      4: 400046
+    second: mesh18
+  - first:
+      4: 400048
+    second: //RootNode
+  - first:
+      4: 400050
+    second: Root
+  - first:
+      4: 400052
+    second: Shoulder.L
+  - first:
+      4: 400054
+    second: Shoulder.R
+  - first:
+      4: 400056
+    second: Spine_1
+  - first:
+      4: 400058
+    second: Spine_2
+  - first:
+      4: 400060
+    second: UpperArm.L
+  - first:
+      4: 400062
+    second: UpperArm.R
+  - first:
+      4: 400064
+    second: UpperLeg.L
+  - first:
+      4: 400066
+    second: UpperLeg.R
+  - first:
+      21: 2100000
+    second: nr2_tex01.png
+  - first:
+      21: 2100002
+    second: nr2_tex02.png
+  - first:
+      21: 2100004
+    second: nr2_eye.png
+  - first:
+      43: 4300000
+    second: mesh18
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: mesh18
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -94,7 +242,7 @@ ModelImporter:
       name: nr2_tex02.png
     second: {fileID: 2100000, guid: 883ee38d4574fa446adb53dee940ccd8, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -103,6 +251,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -112,7 +261,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -127,25 +276,34 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 0
     importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -154,10 +312,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 0
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -167,13 +325,18 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 3
   humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
