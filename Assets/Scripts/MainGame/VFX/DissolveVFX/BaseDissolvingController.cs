@@ -9,15 +9,41 @@ public  abstract class BaseDissolvingController : MonoBehaviour
 {
 
     #region Attributes
+    
+    #region Materials
 
+    #region Materials Case Scenario  1-: SkinnedMeshRenderer's Materials
+    
     [Tooltip("SkinnedMeshRenderer, To get the materials from it.")]
     [SerializeField]
     protected SkinnedMeshRenderer _skinnedMeshRenderer;
     
-    [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the Character.")]
+    [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the '3D Character'.")]
     [SerializeField]
-    protected Material[] _cachedSkinnedMeshRendererMaterials;
+    protected Material[] _arrayOfCachedSkinnedMeshRendererMaterials;
+    
+    #endregion Materials Case Scenario  1-: SkinnedMeshRenderer's Materials
 
+    
+    #region Materials Case Scenario  2-: Mesh Renderer's Materials
+    
+    [Tooltip("MeshRenderer, To get the materials from it.")]
+    [SerializeField]
+    protected MeshRenderer _meshRenderer;
+    
+    [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the '3D Mesh'.")]
+    [SerializeField]
+    protected Material[] _arrayOfCachedMeshRendererMaterials;
+
+    #endregion Materials Case Scenario  2-: Mesh Renderer's Materials
+
+    
+    [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the '3D Mesh'.")]
+    [SerializeField]
+    protected Material[] _arrayOfCachedMaterials;
+    
+    #endregion Materials
+    
     
     #region VFX Shader: Dissolve VFX's: Value and Time Rates
     
@@ -52,13 +78,42 @@ public  abstract class BaseDissolvingController : MonoBehaviour
     /// </summary>
     protected virtual void Awake()
     {
-        // Add the reference to SkinnedMeshRenderer to get the Materials from it.
+        #region Materials List
+        
+        // 1- 3D  Characters:
+        // Add the reference to 'SkinnedMeshRenderer' to get the Materials from it.
         //
         if (_skinnedMeshRenderer != null)
         {
-            _cachedSkinnedMeshRendererMaterials = _skinnedMeshRenderer.materials;
+            _arrayOfCachedSkinnedMeshRendererMaterials = _skinnedMeshRenderer.materials;
         }
-        
+        //
+        // 2- 3D (Static, Not Rigged)  Meshes:
+        // Add the reference to 'MeshRenderer' to get the Materials from it.
+        //
+        if (_meshRenderer != null)
+        {
+            _arrayOfCachedMeshRendererMaterials = _meshRenderer.materials;
+        }
+        //
+        // 3- Grab all Materials into one Array []
+        // 3.1 - Length, auxiliary variables
+        //
+        int lengthOfArrayOfCachedSkinnedMeshRendererMaterials = _arrayOfCachedSkinnedMeshRendererMaterials.Length;
+        int lengthOfArrayOfCachedMeshRendererMaterials = _arrayOfCachedMeshRendererMaterials.Length;
+        //
+        // 3.2- Fill in the Array:
+        //   3.2.1 - Create Array:
+        //
+        _arrayOfCachedMaterials = new Material [ lengthOfArrayOfCachedSkinnedMeshRendererMaterials + lengthOfArrayOfCachedMeshRendererMaterials ];
+        //
+        //   3.2.2 - Fill in the Array
+        //
+        _arrayOfCachedSkinnedMeshRendererMaterials.CopyTo(_arrayOfCachedMaterials, 0);
+        _arrayOfCachedMeshRendererMaterials.CopyTo(_arrayOfCachedMaterials, lengthOfArrayOfCachedMeshRendererMaterials);
+
+        #endregion Materials List
+
     }// End Awake()
 
 
@@ -100,13 +155,13 @@ public  abstract class BaseDissolvingController : MonoBehaviour
         
         // 2- VFX Shader effect:
         //
-        if ((_cachedSkinnedMeshRendererMaterials.Length > 0) && (_cachedSkinnedMeshRendererMaterials[0] != null))
+        if ((_arrayOfCachedMaterials.Length > 0) && (_arrayOfCachedMaterials[0] != null))
         {
             // newDissolveAmount variable, to change the "Dissolve Amount" parameter
             //
             float newDissolveAmount = 0;
             
-            while (_cachedSkinnedMeshRendererMaterials[0].GetFloat("_DissolveAmount") < 1)
+            while (_arrayOfCachedMaterials[0].GetFloat("_DissolveAmount") < 1)
             {
                 
                 // Decrease the "Dissolve Amount" parameter:
@@ -115,11 +170,11 @@ public  abstract class BaseDissolvingController : MonoBehaviour
 
                 // Assign the new "Dissolve Amount" value:
                 //
-                for (int i = 0; i < _cachedSkinnedMeshRendererMaterials.Length; i++)
+                for (int i = 0; i < _arrayOfCachedMaterials.Length; i++)
                 {
                     // Set the new value of "_DissolveAmount" in the Shader
                     //
-                    _cachedSkinnedMeshRendererMaterials[i].SetFloat("_DissolveAmount", newDissolveAmount);
+                    _arrayOfCachedMaterials[i].SetFloat("_DissolveAmount", newDissolveAmount);
                     
                     
                     // Return of this Coroutine
@@ -147,7 +202,7 @@ public  abstract class BaseDissolvingController : MonoBehaviour
         
         // Null check validation
         //
-        if ((_cachedSkinnedMeshRendererMaterials.Length > 0) && (_cachedSkinnedMeshRendererMaterials[0] != null))
+        if ((_arrayOfCachedMaterials.Length > 0) && (_arrayOfCachedMaterials[0] != null))
         {
             // newDissolveAmount variable, to change the "Dissolve Amount" parameter
             //
@@ -156,12 +211,12 @@ public  abstract class BaseDissolvingController : MonoBehaviour
 
             // Assign the new "Dissolve Amount" value:
             //
-            for (int i = 0; i < _cachedSkinnedMeshRendererMaterials.Length; i++)
+            for (int i = 0; i < _arrayOfCachedMaterials.Length; i++)
             {
                 
                 // Set the new value of "_DissolveAmount" in the Shader
                 //
-                _cachedSkinnedMeshRendererMaterials[i].SetFloat("_DissolveAmount", newDissolveAmount);
+                _arrayOfCachedMaterials[i].SetFloat("_DissolveAmount", newDissolveAmount);
                 
             }//End for
             
