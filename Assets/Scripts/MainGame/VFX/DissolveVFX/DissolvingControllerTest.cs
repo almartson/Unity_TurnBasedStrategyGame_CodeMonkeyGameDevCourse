@@ -46,6 +46,10 @@ public class DissolvingControllerTest : BaseDissolvingController
         //
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            // Restore the original state of the character
+            //
+            TryUndoVFX();
+            
             // Start the VFX as a Coroutine
             //
             StartCoroutine(DoStartVFX());
