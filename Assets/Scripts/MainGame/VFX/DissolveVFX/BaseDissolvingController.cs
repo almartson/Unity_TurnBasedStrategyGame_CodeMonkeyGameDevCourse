@@ -38,7 +38,7 @@ public  abstract class BaseDissolvingController : MonoBehaviour
     #endregion Materials Case Scenario  2-: Mesh Renderer's Materials
 
     
-    [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the '3D Mesh'.")]
+    [Tooltip("[ReadOnly for Debug] Array of ALL Materials that will be 'VFX Dissolve'd' :) (that belong to the '3D Mesh').")]
     [SerializeField]
     protected Material[] _arrayOfCachedMaterials;
     
@@ -110,7 +110,7 @@ public  abstract class BaseDissolvingController : MonoBehaviour
         //   3.2.2 - Fill in the Array
         //
         _arrayOfCachedSkinnedMeshRendererMaterials.CopyTo(_arrayOfCachedMaterials, 0);
-        _arrayOfCachedMeshRendererMaterials.CopyTo(_arrayOfCachedMaterials, lengthOfArrayOfCachedMeshRendererMaterials);
+        _arrayOfCachedMeshRendererMaterials.CopyTo(_arrayOfCachedMaterials, lengthOfArrayOfCachedSkinnedMeshRendererMaterials);
 
         #endregion Materials List
 
