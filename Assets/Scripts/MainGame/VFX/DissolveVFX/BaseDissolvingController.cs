@@ -148,7 +148,7 @@ public  abstract class BaseDissolvingController : MonoBehaviour
         
         // 1- VFX Graph (particles) effect:
         //
-        if (_VFXGraph != null)
+        if ( (_VFXGraph != null) && (_VFXGraph.enabled) )
         {
             _VFXGraph.Play();
         }
