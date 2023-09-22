@@ -200,7 +200,23 @@ public  abstract class BaseDissolvingController : MonoBehaviour
         //
         bool successInThisMethod = true;
         
-        // Null check validation
+        // Null check validations:
+        
+        // 1- VFX Graph (particles) effect:
+        //
+        if ( (_VFXGraph != null) && (_VFXGraph.enabled) )
+        {
+            _VFXGraph.Stop();
+        }
+        
+        // 2- VFX Shader effect:
+        //   2.1- Stop Coroutine
+        //
+        // This does not work: StopCoroutine("DoStartVFX");
+        //
+        StopAllCoroutines();
+        
+        // Validate and reassign to zero the Shader's "Dissolve Amount" value
         //
         if ((_arrayOfCachedMaterials.Length > 0) && (_arrayOfCachedMaterials[0] != null))
         {
