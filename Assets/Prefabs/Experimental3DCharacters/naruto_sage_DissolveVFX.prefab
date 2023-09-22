@@ -1266,6 +1266,18 @@ VisualEffect:
       - m_Value: 0.2
         m_Name: Delay
         m_Overridden: 1
+      - m_Value: 0.05
+        m_Name: MinimumSizeBrightParticles
+        m_Overridden: 1
+      - m_Value: 0.1
+        m_Name: MaximumSizeBrightParticles
+        m_Overridden: 1
+      - m_Value: 0.1
+        m_Name: MinimumSizeDarkParticles
+        m_Overridden: 1
+      - m_Value: 0.4
+        m_Name: MaximumSizeDarkParticles
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
