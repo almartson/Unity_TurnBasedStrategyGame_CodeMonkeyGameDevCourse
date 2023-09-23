@@ -5,69 +5,78 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public  abstract class BaseDissolvingController : MonoBehaviour
+public abstract class BaseDissolvingController : MonoBehaviour
 {
 
     #region Attributes
-    
+
     #region Materials
 
     #region Materials Case Scenario  1-: SkinnedMeshRenderer's Materials
-    
-    [Tooltip("SkinnedMeshRenderer, To get the materials from it.")]
-    [SerializeField]
+
+    [Tooltip("SkinnedMeshRenderer, To get the materials from it.")] [SerializeField]
     protected SkinnedMeshRenderer _skinnedMeshRenderer;
-    
-    [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the '3D Character'.")]
-    [SerializeField]
+
+    [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the '3D Character'.")] [SerializeField]
     protected Material[] _arrayOfCachedSkinnedMeshRendererMaterials;
-    
+
     #endregion Materials Case Scenario  1-: SkinnedMeshRenderer's Materials
 
-    
+
     #region Materials Case Scenario  2-: Mesh Renderer's Materials
-    
-    [Tooltip("MeshRenderer, To get the materials from it.")]
-    [SerializeField]
+
+    [Tooltip("MeshRenderer, To get the materials from it.")] [SerializeField]
     protected MeshRenderer _meshRenderer;
-    
-    [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the '3D Mesh'.")]
-    [SerializeField]
+
+    [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the '3D Mesh'.")] [SerializeField]
     protected Material[] _arrayOfCachedMeshRendererMaterials;
 
     #endregion Materials Case Scenario  2-: Mesh Renderer's Materials
 
-    
-    [Tooltip("[ReadOnly for Debug] Array of ALL Materials that will be 'VFX Dissolve'd' :) (that belong to the '3D Mesh').")]
+
+    [Tooltip(
+        "[ReadOnly for Debug] Array of ALL Materials that will be 'VFX Dissolve'd' :) (that belong to the '3D Mesh').")]
     [SerializeField]
     protected Material[] _arrayOfCachedMaterials;
-    
-    #endregion Materials
-    
-    
-    #region VFX Shader: Dissolve VFX's: Value and Time Rates
-    
-    [Tooltip("Rate of change per frame of the Dissolving effect.")]
-    [SerializeField]
-    protected float _dissolveChangeRate = 0.0111f;   // 0.0125f;
 
-    [Tooltip("Time to 'yield return WaitForSeconds(this time var...)' between any change in Dissolve in this VFX's Coroutine")]
+    #endregion Materials
+
+
+    #region VFX Shader: Dissolve VFX's: Value and Time Rates
+
+    // Option 1:  Calculate everything based on TOTAL TIME for the VFX.
+
+    [Tooltip("RECOMMENDED, NON ZERO: Let it be zero (0.0f) if you don't want to use it!")] [SerializeField]
+    protected float _useTotalDissolveTime = 1.5f; // 1.5f
+
+
+    // Option 2:  Specify every value here for the VFX.
+
+    [Tooltip("Rate of change per frame of the Dissolving effect.")] [SerializeField]
+    protected float _dissolveChangeRate = 0.0111f; // 0.0125f;
+
+    [Tooltip(
+        "Time to 'yield return WaitForSeconds(this time var...)' between any change in Dissolve in this VFX's Coroutine")]
     [SerializeField]
-    protected float _refreshRateDeltaTime = 0.0123f;    // 0.025f;
+    protected float _refreshRateDeltaTime = 0.0123f; // 0.025f;
+
+    /// <summary>
+    /// Cache of:  Variable that represents the Amount of "Erosion" (i.e.: Dissolution...) on the Material shown.
+    /// </summary>
+    private static readonly int _DissolveAmount = Shader.PropertyToID("_DissolveAmount");
 
     #endregion VFX Shader: Dissolve VFX's: Value and Time Rates
 
-    
+
     #region VFX Graph (particles effect)
 
-    [Tooltip("VFX Graph component reference.")]
-    [SerializeField]
+    [Tooltip("VFX Graph component reference.")] [SerializeField]
     protected VisualEffect _VFXGraph;
 
 
     #endregion VFX Graph (particles effect)
-    
-    
+
+
     #endregion Attributes
 
 
@@ -79,7 +88,7 @@ public  abstract class BaseDissolvingController : MonoBehaviour
     protected virtual void Awake()
     {
         #region Materials List
-        
+
         // 1- 3D  Characters:
         // Add the reference to 'SkinnedMeshRenderer' to get the Materials from it.
         //
@@ -87,6 +96,7 @@ public  abstract class BaseDissolvingController : MonoBehaviour
         {
             _arrayOfCachedSkinnedMeshRendererMaterials = _skinnedMeshRenderer.materials;
         }
+
         //
         // 2- 3D (Static, Not Rigged)  Meshes:
         // Add the reference to 'MeshRenderer' to get the Materials from it.
@@ -95,6 +105,7 @@ public  abstract class BaseDissolvingController : MonoBehaviour
         {
             _arrayOfCachedMeshRendererMaterials = _meshRenderer.materials;
         }
+
         //
         // 3- Grab all Materials into one Array []
         // 3.1 - Length, auxiliary variables
@@ -105,16 +116,32 @@ public  abstract class BaseDissolvingController : MonoBehaviour
         // 3.2- Fill in the Array:
         //   3.2.1 - Create Array:
         //
-        _arrayOfCachedMaterials = new Material [ lengthOfArrayOfCachedSkinnedMeshRendererMaterials + lengthOfArrayOfCachedMeshRendererMaterials ];
+        _arrayOfCachedMaterials = new Material [lengthOfArrayOfCachedSkinnedMeshRendererMaterials +
+                                                lengthOfArrayOfCachedMeshRendererMaterials];
         //
         //   3.2.2 - Fill in the Array
         //
         _arrayOfCachedSkinnedMeshRendererMaterials.CopyTo(_arrayOfCachedMaterials, 0);
-        _arrayOfCachedMeshRendererMaterials.CopyTo(_arrayOfCachedMaterials, lengthOfArrayOfCachedSkinnedMeshRendererMaterials);
+        _arrayOfCachedMeshRendererMaterials.CopyTo(_arrayOfCachedMaterials,
+            lengthOfArrayOfCachedSkinnedMeshRendererMaterials);
 
         #endregion Materials List
 
-    }// End Awake()
+
+        #region VFX Shader: Dissolve VFX's: Value and Time Rates
+
+        #region Option 1:  Calculate everything based on TOTAL TIME for the VFX.
+
+        CalculateDissolveChangeRateAndTimeBetweenVFXChanges();
+
+        #endregion Option 1:  Calculate everything based on TOTAL TIME for the VFX.
+
+        #endregion VFX Shader: Dissolve VFX's: Value and Time Rates
+
+    }
+
+
+    // End Awake()
 
 
     /// <summary>
@@ -128,11 +155,11 @@ public  abstract class BaseDissolvingController : MonoBehaviour
     /// <summary>
     /// Update is called once per frame
     /// </summary>
-    
-    
-    
+
+
+
     #endregion Unity Methods
-    
+
 
     #region My Custom Methods
 
@@ -145,26 +172,28 @@ public  abstract class BaseDissolvingController : MonoBehaviour
     protected virtual IEnumerator DoStartVFX()
     {
         // Null check validations:
-        
+
         // 1- VFX Graph (particles) effect:
         //
-        if ( (_VFXGraph != null) && (_VFXGraph.enabled) )
+        if ((_VFXGraph != null) && (_VFXGraph.enabled))
         {
             _VFXGraph.Play();
         }
-        
+
         // 2- VFX Shader effect:
         //
         if ((_arrayOfCachedMaterials.Length > 0) && (_arrayOfCachedMaterials[0] != null))
         {
             // newDissolveAmount variable, to change the "Dissolve Amount" parameter
             //
-            float newDissolveAmount = 0;
-            
-            while (_arrayOfCachedMaterials[0].GetFloat("_DissolveAmount") < 1)
+            float newDissolveAmount = 0.0f;
+
+            while (_arrayOfCachedMaterials[0].GetFloat(_DissolveAmount) < 1)
             {
-                
-                // Decrease the "Dissolve Amount" parameter:
+
+                // Increase the "Dissolve Amount" parameter:
+                //
+                CalculateDissolveChangeRateAndTimeBetweenVFXChanges();
                 //
                 newDissolveAmount += _dissolveChangeRate;
 
@@ -174,20 +203,20 @@ public  abstract class BaseDissolvingController : MonoBehaviour
                 {
                     // Set the new value of "_DissolveAmount" in the Shader
                     //
-                    _arrayOfCachedMaterials[i].SetFloat("_DissolveAmount", newDissolveAmount);
-                    
-                    
+                    _arrayOfCachedMaterials[i].SetFloat(_DissolveAmount, newDissolveAmount);
+
+
                     // Return of this Coroutine
                     //
                     yield return new WaitForSeconds(_refreshRateDeltaTime);
 
-                }//End for
+                } //End for
 
-            }//End while (_cachedSkinnedMeshRendererMaterials[0].GetFloat("") < 1)
-            
-        }//End if (_cachedSkinnedMeshRendererMaterials.Length > 0)
-        
-    }// End DoStartVFX()
+            } //End while (_cachedSkinnedMeshRendererMaterials[0].GetFloat("") < 1)
+
+        } //End if (_cachedSkinnedMeshRendererMaterials.Length > 0)
+
+    } // End DoStartVFX()
 
 
     /// <summary>
@@ -199,23 +228,23 @@ public  abstract class BaseDissolvingController : MonoBehaviour
         // Success in this method
         //
         bool successInThisMethod = true;
-        
+
         // Null check validations:
-        
+
         // 1- VFX Graph (particles) effect:
         //
-        if ( (_VFXGraph != null) && (_VFXGraph.enabled) )
+        if ((_VFXGraph != null) && (_VFXGraph.enabled))
         {
             _VFXGraph.Stop();
         }
-        
+
         // 2- VFX Shader effect:
         //   2.1- Stop Coroutine
         //
         // This does not work: StopCoroutine("DoStartVFX");
         //
         StopAllCoroutines();
-        
+
         // Validate and reassign to zero the Shader's "Dissolve Amount" value
         //
         if ((_arrayOfCachedMaterials.Length > 0) && (_arrayOfCachedMaterials[0] != null))
@@ -223,20 +252,20 @@ public  abstract class BaseDissolvingController : MonoBehaviour
             // newDissolveAmount variable, to change the "Dissolve Amount" parameter
             //
             float newDissolveAmount = 0.0f;
-            
+
 
             // Assign the new "Dissolve Amount" value:
             //
             for (int i = 0; i < _arrayOfCachedMaterials.Length; i++)
             {
-                
+
                 // Set the new value of "_DissolveAmount" in the Shader
                 //
-                _arrayOfCachedMaterials[i].SetFloat("_DissolveAmount", newDissolveAmount);
-                
-            }//End for
-            
-        }//End if (_cachedSkinnedMeshRendererMaterials.Length > 0)
+                _arrayOfCachedMaterials[i].SetFloat(_DissolveAmount, newDissolveAmount);
+
+            } //End for
+
+        } //End if (_cachedSkinnedMeshRendererMaterials.Length > 0)
         else
         {
             successInThisMethod = false;
@@ -244,9 +273,35 @@ public  abstract class BaseDissolvingController : MonoBehaviour
 
         return successInThisMethod;
 
-    }// End UndoVFX()
+    } // End UndoVFX()
 
 
+    #region Misc Methods
+    
+    /// <summary>
+    /// Option 1:  Calculate everything based on TOTAL TIME ( _useTotalDissolveTime ) for the VFX.
+    /// </summary>
+    private void CalculateDissolveChangeRateAndTimeBetweenVFXChanges()
+    {
+        // Option 1:  Calculate everything based on TOTAL TIME for the VFX.
+        //
+        if (_useTotalDissolveTime > 0.0f)
+        {
+            
+            // Fix Time between VFX small Changes:
+            //
+            _refreshRateDeltaTime = Time.deltaTime;
+                
+            // [ DissolveAmountThisFrame = ?? = 
+            // = ( timeDeltaTimeOfDissolve * (1.0)TotalDissolveAmount ) / MY TotalDissolveTime ]
+
+            _dissolveChangeRate = _refreshRateDeltaTime / _useTotalDissolveTime;
+            
+        } // End Option 1:  Calculate everything based on TOTAL TIME for the VFX.
+    }// End CalculateDissolveChangeRate
+
+    
+    #endregion Misc Methods
 
     #endregion My Custom Methods
 

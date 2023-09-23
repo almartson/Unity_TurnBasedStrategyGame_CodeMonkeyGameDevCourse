@@ -73,6 +73,7 @@ MonoBehaviour:
   _meshRenderer: {fileID: 0}
   _arrayOfCachedMeshRendererMaterials: []
   _arrayOfCachedMaterials: []
+  _useTotalDissolveTime: 1.111
   _dissolveChangeRate: 0.0111
   _refreshRateDeltaTime: 0.0123
   _VFXGraph: {fileID: 3973634388329371214}
@@ -1260,7 +1261,7 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 2.5
+      - m_Value: 3
         m_Name: Duration
         m_Overridden: 1
       - m_Value: 0.2
