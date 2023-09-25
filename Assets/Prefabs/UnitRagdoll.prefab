@@ -252,6 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf57d76524d58b0029b9e9684b40b93c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isRunningVFXCoroutine: 0
   _skinnedMeshRenderer: {fileID: 6236878121081643677}
   _arrayOfCachedSkinnedMeshRendererMaterials: []
   _meshRenderer: {fileID: 0}
@@ -261,12 +262,15 @@ MonoBehaviour:
   _dissolveChangeRate: 0.0111
   _refreshRateDeltaTime: 0.0123
   _VFXGraph: {fileID: 5907763526225516163}
-  _arrayOfGameObjectsToDetachFromParentVFXsGameObjectBeforeVFXStarts: []
-  _arrayOfCollidersToDisableBeforeVFXStarts: []
+  _detachGameObjectsFromParentVFXsGameObjectAfterVFXEnds: 1
   _arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds:
   - {fileID: 6296133655544192527}
+  _disableCollidersToDisableAfterVFXEnds: 1
   _arrayOfCollidersToDisableAfterVFXEnds:
   - {fileID: 6305337325864585707}
+  _disableThisScript: 1
+  _disableParentGameObjectAndEveryBehaviourToo: 1
+  _destroyParentGameObjectAndEverything: 1
 --- !u!1001 &6297334025778817227
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -110,6 +110,10 @@ public class UnitRagdollSpawner : MonoBehaviour
         //
         Transform ragdollTransform = Instantiate(_ragdollPrefab, gameObjectTransform.position, gameObjectTransform.rotation);
         
+        //   1.1.1- Set the sibling index of the instantiated (Ragdoll) GameObject to:  the previous "Unit"'s GameObject:
+        //
+        ragdollTransform.SetSiblingIndex( gameObjectTransform.GetSiblingIndex() + 1 );
+        
         //   1.2- Get the UnitRagdoll.cs Class Script from the 'ragdollTransform':
         //
         UnitRagdoll unitRagdoll = ragdollTransform.GetComponent<UnitRagdoll>();

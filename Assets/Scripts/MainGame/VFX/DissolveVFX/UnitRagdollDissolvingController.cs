@@ -28,14 +28,44 @@ public class UnitRagdollDissolvingController : BaseDissolvingController
     
     #region After the VFX ends
     
+    [Space()]   [Header("After the VFX ends")]
+    [Space(10)]
+    [Header("DETACH GameObjects...")]
+
+    [Tooltip("[After the VFX ends] Do you need to DETACH an Array of GameObjects (from the Main Parent)? \n(and left on the Scene, untouched) from its Parent GameObject (i.e.: the one which will be 'Dissolved' with the VFX).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [SerializeField]
+    private bool _detachGameObjectsFromParentVFXsGameObjectAfterVFXEnds = false;
+    
     [Tooltip("[After the VFX ends] Array of GameObjects that will be detached (and left on the Scene, untouched) from its Parent GameObject (i.e.: the one which will be 'Dissolved' with the VFX).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
     [SerializeField]
     private GameObject[] _arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds;
+    
+    [Space(10)]
+    [Header("DISABLE 3D Colliders...")]
 
+    [Tooltip("[After the VFX ends] Do you need to DISABLE an Array of 3D Colliders? \n(...right after the VFX ends; so it won't affect them and the Physics will get disabled on them).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [SerializeField]
+    private bool _disableCollidersToDisableAfterVFXEnds = false;
+    
     [Tooltip("[After the VFX ends] Array of 3D Colliders that will be 'Disabled' right after the VFX ends; so it won't affect them and the Physics will get disabled on them.\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
     [SerializeField]
     private Collider[] _arrayOfCollidersToDisableAfterVFXEnds;
+    
+    [Space(10)]
+    [Header("DISABLE / DESTROY THIS SCRIPT or others...")]
 
+    [Tooltip("[After the VFX ends] Do you want to DISABLE THIS SCRIPT at the end of the VFX (and not Destroy all these GameObjects)?")]
+    [SerializeField]
+    private bool _disableThisScript = false;
+    
+    [Tooltip("[After the VFX ends] Do you want to DISABLE ITS PARENT GAME OBJECT (thus, this will Disable all Components - Colliders, etc - including their Update() Loops)?")]
+    [SerializeField]
+    private bool _disableParentGameObjectAndEveryBehaviourToo = false;
+    
+    [Tooltip("[After the VFX ends] Do you want to DESTROY THE GAMEOBJECT where THIS SCRIPT resides..? at the end of the VFX?")]
+    [SerializeField]
+    private bool _destroyParentGameObjectAndEverything = false;
+    
     #endregion After the VFX ends
     
     #endregion Detachment from the VFX
@@ -126,20 +156,41 @@ public class UnitRagdollDissolvingController : BaseDissolvingController
         {
             
             #region After the VFX ends
-            
-            // Disable Colliders after VFX Ends
+
+            // 1- Disable Colliders   (after VFX Ends)
             //
-            DisableColliders(_arrayOfCollidersToDisableAfterVFXEnds);
+            if (_disableCollidersToDisableAfterVFXEnds)
+            {
+                DisableColliders(_arrayOfCollidersToDisableAfterVFXEnds);
+            }
             
-            // Detach GameObjects from their Parents:
+            // 2- Detach GameObjects from their Parents:
             //
-            DetachAllGameObjectsFromTheirParents(_arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds);
+            if (_detachGameObjectsFromParentVFXsGameObjectAfterVFXEnds)
+            {
+                DetachAllGameObjectsFromTheirParents(_arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds);
+            }
             
-            // Disable the Ragdolls (i.e.: the Character's) main Parent GameObject
+            // 3- Disable this Script, or not.
             //
+            this.enabled = (! _disableThisScript);
             
-            // Destroy it (the Ragdolls (i.e.: the Character's)... even this script...)
+            
+            // 4- Disable Main (Parent) GameObject, or not.
+            // NOTE:
+            // 1- The Main (Parent) GameObject:  is the GameObject this Script is attached to.
             //
+            gameObject.SetActive(! _disableParentGameObjectAndEveryBehaviourToo);
+            
+            
+            // 5- Destroy it (the Ragdolls (i.e.: the Character's)... even this script...)
+            //
+            if (_destroyParentGameObjectAndEverything)
+            {
+                // 2.2- Destroy this GameObject  (where this Script is attached to...):
+                //
+                Destroy(gameObject);
+            }
             
             #endregion After the VFX ends
             
@@ -193,9 +244,17 @@ public class UnitRagdollDissolvingController : BaseDissolvingController
             for (int i = 0; i < arrayLength; i++)
             {
 
+                // Get the current sibling index of the Main Parent GameObject  (it is: where this Script is attached...)
+                //
+                int mainParentSiblingIndex = gameObject.transform.GetSiblingIndex();
+                
                 // Detaches the transform from its parent.
                 //
                 arrayOfGameObjectsToDetachFromParent[i].transform.parent = null;
+                
+                // Set the sibling index to the desired position in the scene hierarchy
+                //
+                arrayOfGameObjectsToDetachFromParent[i].transform.SetSiblingIndex(mainParentSiblingIndex + 1);
 
             }//End for
             
