@@ -10,14 +10,25 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
     #region Attributes
 
+    #region VFX Coroutine Management
+    
+    [Tooltip("[Readonly for Debug] Is the VFX (shader) Coroutine running now?")]
+    [SerializeField]
+    protected bool _isRunningVFXCoroutine = false;
+    
+    #endregion VFX Coroutine Management
+    
+    
     #region Materials
 
     #region Materials Case Scenario  1-: SkinnedMeshRenderer's Materials
 
-    [Tooltip("SkinnedMeshRenderer, To get the materials from it.")] [SerializeField]
+    [Tooltip("SkinnedMeshRenderer, To get the materials from it.")]
+    [SerializeField]
     protected SkinnedMeshRenderer _skinnedMeshRenderer;
 
-    [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the '3D Character'.")] [SerializeField]
+    [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the '3D Character'.")]
+    [SerializeField]
     protected Material[] _arrayOfCachedSkinnedMeshRendererMaterials;
 
     #endregion Materials Case Scenario  1-: SkinnedMeshRenderer's Materials
@@ -28,14 +39,14 @@ public abstract class BaseDissolvingController : MonoBehaviour
     [Tooltip("MeshRenderer, To get the materials from it.")] [SerializeField]
     protected MeshRenderer _meshRenderer;
 
-    [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the '3D Mesh'.")] [SerializeField]
+    [Tooltip("[ReadOnly for Debug] Array of Materials that belong to the '3D Mesh'.")]
+    [SerializeField]
     protected Material[] _arrayOfCachedMeshRendererMaterials;
 
     #endregion Materials Case Scenario  2-: Mesh Renderer's Materials
 
 
-    [Tooltip(
-        "[ReadOnly for Debug] Array of ALL Materials that will be 'VFX Dissolve'd' :) (that belong to the '3D Mesh').")]
+    [Tooltip("[ReadOnly for Debug] Array of ALL Materials that will be 'VFX Dissolve'd' :) (that belong to the '3D Mesh').")]
     [SerializeField]
     protected Material[] _arrayOfCachedMaterials;
 
@@ -46,17 +57,18 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
     // Option 1:  Calculate everything based on TOTAL TIME for the VFX.
 
-    [Tooltip("RECOMMENDED, NON ZERO: Let it be zero (0.0f) if you don't want to use it!")] [SerializeField]
+    [Tooltip("RECOMMENDED, NON ZERO: Let it be zero (0.0f) if you don't want to use it!")]
+    [SerializeField]
     protected float _useTotalDissolveTime = 1.5f; // 1.5f
 
 
     // Option 2:  Specify every value here for the VFX.
 
-    [Tooltip("Rate of change per frame of the Dissolving effect.")] [SerializeField]
+    [Tooltip("Rate of change per frame of the Dissolving effect.")]
+    [SerializeField]
     protected float _dissolveChangeRate = 0.0111f; // 0.0125f;
 
-    [Tooltip(
-        "Time to 'yield return WaitForSeconds(this time var...)' between any change in Dissolve in this VFX's Coroutine")]
+    [Tooltip("Time to 'yield return WaitForSeconds(this time var...)' between any change in Dissolve in this VFX's Coroutine")]
     [SerializeField]
     protected float _refreshRateDeltaTime = 0.0123f; // 0.025f;
 
@@ -70,7 +82,8 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
     #region VFX Graph (particles effect)
 
-    [Tooltip("VFX Graph component reference.")] [SerializeField]
+    [Tooltip("VFX Graph component reference.")]
+    [SerializeField]
     protected VisualEffect _VFXGraph;
 
 
@@ -122,14 +135,17 @@ public abstract class BaseDissolvingController : MonoBehaviour
         //   3.2.2 - Fill in the Array
         //
         _arrayOfCachedSkinnedMeshRendererMaterials.CopyTo(_arrayOfCachedMaterials, 0);
-        _arrayOfCachedMeshRendererMaterials.CopyTo(_arrayOfCachedMaterials,
-            lengthOfArrayOfCachedSkinnedMeshRendererMaterials);
+        _arrayOfCachedMeshRendererMaterials.CopyTo(_arrayOfCachedMaterials, lengthOfArrayOfCachedSkinnedMeshRendererMaterials);
 
         #endregion Materials List
 
 
         #region VFX Shader: Dissolve VFX's: Value and Time Rates
 
+        // Initialize Boolean Flag for the VFX (Shader Effect's) Coroutine:
+        //
+        _isRunningVFXCoroutine = false;
+        
         #region Option 1:  Calculate everything based on TOTAL TIME for the VFX.
 
         CalculateDissolveChangeRateAndTimeBetweenVFXChanges();
@@ -171,6 +187,12 @@ public abstract class BaseDissolvingController : MonoBehaviour
     /// <returns></returns>
     protected virtual IEnumerator DoStartVFX()
     {
+        
+        // Mark that the Coroutine Started:
+        //
+        _isRunningVFXCoroutine = true;
+
+        
         // Null check validations:
 
         // 1- VFX Graph (particles) effect:
@@ -216,6 +238,11 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
         } //End if (_cachedSkinnedMeshRendererMaterials.Length > 0)
 
+        
+        // Mark that the Coroutine Ended:
+        //
+        _isRunningVFXCoroutine = false;
+        
     } // End DoStartVFX()
 
 

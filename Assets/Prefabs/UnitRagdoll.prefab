@@ -261,6 +261,12 @@ MonoBehaviour:
   _dissolveChangeRate: 0.0111
   _refreshRateDeltaTime: 0.0123
   _VFXGraph: {fileID: 5907763526225516163}
+  _arrayOfGameObjectsToDetachFromParentVFXsGameObjectBeforeVFXStarts: []
+  _arrayOfCollidersToDisableBeforeVFXStarts: []
+  _arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds:
+  - {fileID: 6296133655544192527}
+  _arrayOfCollidersToDisableAfterVFXEnds:
+  - {fileID: 6305337325864585707}
 --- !u!1001 &6297334025778817227
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1632,9 +1638,21 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 25af05085d2957e42ac6b80b69ddd26a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c25ac4fdc903e7d49a7520930673ecd6, type: 3}
+--- !u!1 &6296133655544192527 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1341255972871256, guid: c25ac4fdc903e7d49a7520930673ecd6,
+    type: 3}
+  m_PrefabInstance: {fileID: 6297334027561402967}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6301931343807222075 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4620998167008108, guid: c25ac4fdc903e7d49a7520930673ecd6,
+    type: 3}
+  m_PrefabInstance: {fileID: 6297334027561402967}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &6305337325864585707 stripped
+MeshCollider:
+  m_CorrespondingSourceObject: {fileID: 64617245995469756, guid: c25ac4fdc903e7d49a7520930673ecd6,
     type: 3}
   m_PrefabInstance: {fileID: 6297334027561402967}
   m_PrefabAsset: {fileID: 0}
