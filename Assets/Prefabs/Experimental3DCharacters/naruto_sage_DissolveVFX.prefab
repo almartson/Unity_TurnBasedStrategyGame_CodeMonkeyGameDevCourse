@@ -68,6 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647b2081958d68bc78707073b0012765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isRunningVFXCoroutine: 0
   _skinnedMeshRenderer: {fileID: 1939905342953228144}
   _arrayOfCachedSkinnedMeshRendererMaterials: []
   _meshRenderer: {fileID: 0}
