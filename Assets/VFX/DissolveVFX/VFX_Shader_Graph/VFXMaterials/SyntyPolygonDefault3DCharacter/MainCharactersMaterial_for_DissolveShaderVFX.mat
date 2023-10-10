@@ -40,6 +40,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: 86cb957541c7c8542a6306ffb82e6833, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NoiseTexture:
+        m_Texture: {fileID: 2800000, guid: d8f87917c2c5f3dcda325e24ad9c5971, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise_Texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Normals:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -63,8 +71,8 @@ Material:
     - _CastShadows: 1
     - _Cull: 2
     - _DissolveAmount: 0.33
-    - _DissolveScale: 40
-    - _DissolveWidth: 0.07
+    - _DissolveScale: 1
+    - _DissolveWidth: 0.03
     - _DstBlend: 0
     - _Metallic: 0
     - _NormalsStrength: 0
