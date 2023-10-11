@@ -1188,7 +1188,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614611}
   m_ExposedName: MeshToMaterialize
   m_Exposed: 1
-  m_Order: 2
+  m_Order: 4
   m_Category: 
   m_Min:
     m_Type:
@@ -1338,7 +1338,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614615}
   m_ExposedName: MeshSize
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 6
   m_Category: 
   m_Min:
     m_Type:
@@ -1590,7 +1590,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614622}
   m_ExposedName: MeshRotation
   m_Exposed: 1
-  m_Order: 4
+  m_Order: 8
   m_Category: 
   m_Min:
     m_Type:
@@ -2169,7 +2169,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614639}
   m_ExposedName: MeshInitialPositionBeforeLevitating
   m_Exposed: 1
-  m_Order: 5
+  m_Order: 10
   m_Category: 
   m_Min:
     m_Type:
@@ -2679,7 +2679,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614654}
   m_ExposedName: MeshYFinalPositionToLevitateTo
   m_Exposed: 1
-  m_Order: 7
+  m_Order: 14
   m_Category: 
   m_Min:
     m_Type:
@@ -2923,7 +2923,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614661}
   m_ExposedName: MeshRotationOverLife
   m_Exposed: 1
-  m_Order: 9
+  m_Order: 18
   m_Category: 
   m_Min:
     m_Type:
@@ -3400,7 +3400,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614675}
   m_ExposedName: InitialMeshColor
   m_Exposed: 1
-  m_Order: 6
+  m_Order: 12
   m_Category: 
   m_Min:
     m_Type:
@@ -5719,7 +5719,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614843}
   m_ExposedName: LifeTimeOfMaterializePhase
   m_Exposed: 1
-  m_Order: 1
+  m_Order: 2
   m_Category: 
   m_Min:
     m_Type:
@@ -5799,7 +5799,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614845}
   m_ExposedName: LifeTimeOfAlreadyMaterializedSecondPhase
   m_Exposed: 1
-  m_Order: 8
+  m_Order: 16
   m_Category: 
   m_Min:
     m_Type:
@@ -5879,7 +5879,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614847}
   m_ExposedName: BaseColor
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 1
   m_Category: Final PBR Shader Parameters
   m_Min:
     m_Type:
@@ -6095,7 +6095,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614853}
   m_ExposedName: Albedo
   m_Exposed: 1
-  m_Order: 1
+  m_Order: 3
   m_Category: Final PBR Shader Parameters
   m_Min:
     m_Type:
@@ -6175,7 +6175,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614855}
   m_ExposedName: NormalMap
   m_Exposed: 1
-  m_Order: 2
+  m_Order: 5
   m_Category: Final PBR Shader Parameters
   m_Min:
     m_Type:
@@ -6255,7 +6255,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614857}
   m_ExposedName: NormalsStrength
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 7
   m_Category: Final PBR Shader Parameters
   m_Min:
     m_Type:
@@ -6337,7 +6337,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614859}
   m_ExposedName: Smoothness
   m_Exposed: 1
-  m_Order: 4
+  m_Order: 9
   m_Category: Final PBR Shader Parameters
   m_Min:
     m_Type:
@@ -6419,7 +6419,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614861}
   m_ExposedName: Metallic
   m_Exposed: 1
-  m_Order: 5
+  m_Order: 11
   m_Category: Final PBR Shader Parameters
   m_Min:
     m_Type:
@@ -6501,7 +6501,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614863}
   m_ExposedName: EmissionMap
   m_Exposed: 1
-  m_Order: 6
+  m_Order: 13
   m_Category: Final PBR Shader Parameters
   m_Min:
     m_Type:
@@ -6581,7 +6581,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614865}
   m_ExposedName: EmissionColor
   m_Exposed: 1
-  m_Order: 7
+  m_Order: 15
   m_Category: Final PBR Shader Parameters
   m_Min:
     m_Type:
@@ -6797,7 +6797,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614871}
   m_ExposedName: FresnelColor
   m_Exposed: 1
-  m_Order: 8
+  m_Order: 17
   m_Category: Final PBR Shader Parameters
   m_Min:
     m_Type:
@@ -7013,7 +7013,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614877}
   m_ExposedName: FresnelPower
   m_Exposed: 1
-  m_Order: 9
+  m_Order: 19
   m_Category: Final PBR Shader Parameters
   m_Min:
     m_Type:
@@ -7749,7 +7749,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614901}
   m_ExposedName: MultiplySizeOverLifeTime
   m_Exposed: 1
-  m_Order: 10
+  m_Order: 20
   m_Category: Final PBR Shader Parameters
   m_Min:
     m_Type:
