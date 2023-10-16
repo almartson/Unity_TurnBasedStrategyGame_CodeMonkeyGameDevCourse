@@ -84,7 +84,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
     // Option 1:  Calculate everything based on TOTAL TIME for the VFX.
 
-    [Header("Option 1:  Calculate everything based on TOTAL TIME for the VFX.")]
+    [Header("Option 1:  Calculate everything based on TOTAL TIME for the VFX. ZERO (0) means 'false', so it would NOT be used.")]
     
     [Tooltip("RECOMMENDED, NON ZERO: Let it be zero (0.0f) if you don't want to use it!")]
     [SerializeField]
@@ -102,7 +102,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
     [Tooltip("Time to 'yield return WaitForSeconds(this time var...)' between any change in Dissolve in this VFX's Coroutine")]
     [SerializeField]
-    protected float _refreshRateDeltaTime = 0.0123f; // 0.025f;
+    protected float _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame = 0.0123f; // 0.025f;
 
     
     /// <summary>
@@ -127,15 +127,36 @@ public abstract class BaseDissolvingController : MonoBehaviour
     #region Detachment from the VFX
     
     #region Before the VFX starts
-    //
-    // [Tooltip("[Before the VFX starts] Array of GameObjects that will be detached (and left on the Scene, untouched) from its Parent GameObject (i.e.: the one which will be 'Dissolved' with the VFX).\n\n Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
-    // [SerializeField]
-    // private GameObject[] _arrayOfGameObjectsToDetachFromParentVFXsGameObjectBeforeVFXStarts;
-    //
-    // [Tooltip("[Before the VFX starts] Array of 3D Colliders that will be 'Disabled' just before the VFX starts; so it won't affect them and the Physics will get disabled on them.\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
-    // [SerializeField]
-    // private Collider[] _arrayOfCollidersToDisableBeforeVFXStarts;
-    //
+    
+    [Space()]   [Header("Before the VFX starts")]
+    [Space(10)]
+    [Header("DETACH GameObjects...")]
+    
+    [Tooltip("[Before the VFX starts] Do you need to DETACH an Array of GameObjects (from the Main Parent)? \n(and left on the Scene, untouched) from its Parent GameObject (i.e.: the one which will be 'Dissolved' with the VFX).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [SerializeField]
+    protected bool _detachGameObjectsFromParentVFXsGameObjectBeforeVFXStarts = false;
+
+    [Tooltip("[Before the VFX starts] Array of GameObjects that will be detached (and left on the Scene, untouched) from its Parent GameObject (i.e.: the one which will be 'Dissolved' with the VFX).\n\n Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [SerializeField]
+    protected GameObject[] _arrayOfGameObjectsToDetachFromParentVFXsGameObjectBeforeVFXStarts;
+    
+    
+    [Space(10)]
+    [Header("DISABLE 3D Colliders...")]
+
+    [Tooltip("[Before the VFX starts] Do you need to DISABLE an Array of 3D Colliders? \n(...right after the VFX ends; so it won't affect them and the Physics will get disabled on them).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [SerializeField]
+    protected bool _disableCollidersToDisableBeforeVFXStarts = false;
+
+    [Tooltip("[Before the VFX starts] Array of 3D Colliders that will be 'Disabled' just before the VFX starts; so it won't affect them and the Physics will get disabled on them.\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [SerializeField]
+    protected Collider[] _arrayOfCollidersToDisableBeforeVFXStarts;
+    
+    /// <summary>
+    /// (For Validations. Initialize as: FALSE) Boolean Flag to mark the fact that this set of actions have been already executed, so they don't get executed more than once by mistake.
+    /// </summary>
+    protected bool _hasFinishedExecutionOfActionsBeforeVFXStarts = false;
+    
     #endregion Before the VFX starts
     
     
@@ -178,6 +199,12 @@ public abstract class BaseDissolvingController : MonoBehaviour
     [Tooltip("[After the VFX ends] Do you want to DESTROY THE GAMEOBJECT where THIS SCRIPT resides..? at the end of the VFX?")]
     [SerializeField]
     protected bool _destroyParentGameObjectAndEverything = false;
+    
+    
+    /// <summary>
+    /// (For Validations. Initialize as: FALSE) Boolean Flag to mark the fact that this set of actions have been already executed, so they don't get executed more than once by mistake.
+    /// </summary>
+    protected bool _hasFinishedExecutionOfActionsAfterVFXEnds = false;
     
     #endregion After the VFX ends
     
@@ -242,11 +269,11 @@ public abstract class BaseDissolvingController : MonoBehaviour
         //
         _isRunningShaderEffectFromVFXCoroutine = false;
         
-        #region Option 1:  Calculate everything based on TOTAL TIME for the VFX.
+        #region Option 1 and Option 2:  Calculate everything based on TOTAL TIME for the VFX.
 
         CalculateDissolveChangeRateAndTimeBetweenVFXChanges();
 
-        #endregion Option 1:  Calculate everything based on TOTAL TIME for the VFX.
+        #endregion Option 1 and Option 2:  Calculate everything based on TOTAL TIME for the VFX.
 
         #endregion VFX Shader: Dissolve VFX's: Value and Time Rates
 
@@ -277,14 +304,22 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
 
     /// <summary>
-    /// Starts the whole VFX.
+    /// Starts the whole VFX. <br /> <br />
     /// It works as a Coroutine.
     /// </summary>
     /// <returns></returns>
     protected virtual IEnumerator DoStartVFX()
     {
         
-        // Mark that the Coroutine Started:
+        // 0- ACTIONS TO execute:  Before VFX Starts
+        //
+        if (!_hasFinishedExecutionOfActionsBeforeVFXStarts)
+        {
+            DoExecuteOtherActionsBeforeShadersVFXStarts();
+        }
+        
+        
+        // 0.2- Mark that the Coroutine Started:
         //
         _isRunningShaderEffectFromVFXCoroutine = true;
 
@@ -325,10 +360,25 @@ public abstract class BaseDissolvingController : MonoBehaviour
                     _arrayOfCachedMaterials[i].SetFloat(_DissolveAmount, _dissolveAmount);
 
 
-                    // Return of this Coroutine
+                    // (YIELD / PAUSE for a time)...  Return of this Coroutine
                     //
-                    yield return new WaitForSeconds(_refreshRateDeltaTime);
+                    if (_useTotalDissolveTime > 0.0f)
+                    {
+                        
+                        // Debug.Log( $"yield return null", this);
+                            
+                        // Pause this Coroutine's execution, until the next Frame:
+                        //
+                        yield return null;
+                    }
+                    else
+                    {
+                        // Pause this Coroutine's execution, until this number of seconds has passed:  _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame
+                        //
+                        yield return new WaitForSeconds(_yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame);
 
+                    }// End (YIELD / PAUSE for a time)...  Return of this Coroutine
+                    
                 } //End for
 
             } //End while (_cachedSkinnedMeshRendererMaterials[0].GetFloat("") < 1)
@@ -358,6 +408,12 @@ public abstract class BaseDissolvingController : MonoBehaviour
         //
         bool successInThisMethod = true;
 
+        // Restore all Boolean Flags
+        //
+        _hasFinishedExecutionOfActionsBeforeVFXStarts = false;
+        _hasFinishedExecutionOfActionsAfterVFXEnds = false;
+        _isRunningShaderEffectFromVFXCoroutine = false;
+        
         // Null check validations:
 
         // 1- VFX Graph (particles) effect:
@@ -409,7 +465,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
     #region Misc Methods
     
     /// <summary>
-    /// Option 1:  Calculate everything based on TOTAL TIME ( _useTotalDissolveTime ) for the VFX.
+    /// Option 1 or Option 2:  Calculate everything based on TOTAL TIME ( _useTotalDissolveTime ) for the VFX.
     /// </summary>
     private void CalculateDissolveChangeRateAndTimeBetweenVFXChanges()
     {
@@ -420,14 +476,17 @@ public abstract class BaseDissolvingController : MonoBehaviour
             
             // Fix Time between VFX small Changes:
             //
-            _refreshRateDeltaTime = Time.deltaTime;
+            _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame = Time.deltaTime;
                 
             // [ DissolveAmountThisFrame = ?? = 
             // = ( timeDeltaTimeOfDissolve * (1.0)TotalDissolveAmount ) / MY TotalDissolveTime ]
 
-            _dissolveChangeRate = _refreshRateDeltaTime / _useTotalDissolveTime;
+            _dissolveChangeRate = _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame / _useTotalDissolveTime;
             
         } // End Option 1:  Calculate everything based on TOTAL TIME for the VFX.
+        
+        // NOTE:  Option 2 is happening with no further Calculations, just by using the initial values from the Inspector.
+        
     }// End CalculateDissolveChangeRate
 
     
@@ -436,6 +495,48 @@ public abstract class BaseDissolvingController : MonoBehaviour
     
       
     #region Dissolve VFX: Suplementary Actions
+
+
+    #region Before the VFX starts
+    
+    /// <summary>
+    /// Execute other action just: "Before" the VFX (Dissolve effect (VFX's Shader)) STARTS. <br />
+    /// <br />
+    /// Notice: <br />
+    /// 1- This is a VIRTUAL Method, so it can be rewritten in Children Classes (by using the KEYWORD "override" and you may use the Method:  "base.DoExecuteOtherActionsBeforeShadersVFXStarts()" in its first line in children classes to also execute its base behaviour from its definition in this class). <br />
+    /// </summary>
+    protected virtual void DoExecuteOtherActionsBeforeShadersVFXStarts()
+    {
+        
+        // Execute Other actions BEFORE our Shaders Effect (VFX's) Starts:
+        //
+        if (!_hasFinishedExecutionOfActionsBeforeVFXStarts)
+        {
+ 
+            // 1- Disable Colliders
+            //
+            if (_disableCollidersToDisableBeforeVFXStarts)
+            {
+                DisableColliders(_arrayOfCollidersToDisableBeforeVFXStarts);
+            }
+            
+            // 2- Detach GameObjects from their Parents:
+            //
+            if (_detachGameObjectsFromParentVFXsGameObjectBeforeVFXStarts)
+            {
+                DetachAllGameObjectsFromTheirParents(_arrayOfGameObjectsToDetachFromParentVFXsGameObjectBeforeVFXStarts);
+            }
+            
+            // Mark the Boolean Flag as:  "Actions Completed"
+            //
+            _hasFinishedExecutionOfActionsBeforeVFXStarts = true;
+
+        }//End if 
+
+    }// End DoExecuteOtherActionsBeforeShadersVFXStarts
+
+    #endregion Before the VFX starts
+
 
     #region After the VFX ends
     
@@ -450,11 +551,9 @@ public abstract class BaseDissolvingController : MonoBehaviour
         
         // Execute Other actions when our Shaders Effect (VFX's) Ends:
         //
-        if (!_isRunningShaderEffectFromVFXCoroutine)
+        if (!_isRunningShaderEffectFromVFXCoroutine & !_hasFinishedExecutionOfActionsAfterVFXEnds)
         {
-            
-            #region After the VFX ends
-
+ 
             // 1- Disable Colliders   (after VFX Ends)
             //
             if (_disableCollidersToDisableAfterVFXEnds)
@@ -490,8 +589,10 @@ public abstract class BaseDissolvingController : MonoBehaviour
                 Destroy(gameObject);
             }
             
-            #endregion After the VFX ends
-            
+            // Mark the Boolean Flag as:  "Actions Completed"
+            //
+            _hasFinishedExecutionOfActionsAfterVFXEnds = true;
+
         }//End if (!_isRunningVFXCoroutine)
 
     }// End DoExecuteOtherActionsAfterShadersVFXEnds
@@ -507,7 +608,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
     private void DisableColliders(Collider[] arrayOfColliders)
     {
         
-        if ( (arrayOfColliders != null) && (arrayOfColliders[0] != null) )
+        if ( (arrayOfColliders != null) && ((arrayOfColliders.Length > 0) && (arrayOfColliders[0] != null)) )
         {
             
             // Length of the array
@@ -532,7 +633,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
     private void DetachAllGameObjectsFromTheirParents(GameObject[] arrayOfGameObjectsToDetachFromParent)
     {
         
-        if ( (arrayOfGameObjectsToDetachFromParent != null) && (arrayOfGameObjectsToDetachFromParent[0] != null) )
+        if ( (arrayOfGameObjectsToDetachFromParent != null) && ((arrayOfGameObjectsToDetachFromParent.Length > 0) && (arrayOfGameObjectsToDetachFromParent[0] != null)) )
         {
             
             // Length of the array

@@ -36,19 +36,6 @@ public class UnitRagdollDissolvingController : BaseDissolvingController
         if (TryUndoVFX())
         {
 
-            // #region Before the VFX starts
-            //
-            // // Disable Colliders before VFX Starts
-            // //
-            // DisableColliders(_arrayOfCollidersToDisableBeforeVFXStarts);
-            //
-            // // Detach GameObjects from their Parents:
-            // //
-            // DetachAllGameObjectsFromTheirParents(_arrayOfGameObjectsToDetachFromParentVFXsGameObjectBeforeVFXStarts);
-            //
-            // #endregion Before the VFX starts
-            
-            
             // 2- Execute the VFX:
             //
             // Start the VFX as a Coroutine
