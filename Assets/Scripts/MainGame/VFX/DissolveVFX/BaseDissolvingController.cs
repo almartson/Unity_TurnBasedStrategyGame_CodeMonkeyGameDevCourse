@@ -375,7 +375,25 @@ public abstract class BaseDissolvingController : MonoBehaviour
                     {
                         // Pause this Coroutine's execution, until this number of seconds has passed:  _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame
                         //
-                        yield return new WaitForSeconds(_yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame);
+                        // Original unoptimized Code:  yield return new WaitForSeconds(_yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame);
+                        
+                        /* Optimized version of Coroutines:
+                          * From Bunny83 (Unity Game Dev): https://forum.unity.com/threads/when-we-need-new-instance-of-intrinsic-yieldinstruction.1014100/#post-6575215
+                          * 
+                          * The usage is pretty straight forward. Place the assembly in your project and you should be able to use
+                        Code (CSharp):
+                        1. yield return WaitForSecondsSingleton.Get(5f);
+                        
+                        instead of
+                        Code (CSharp):
+                        1. yield return new WaitForSeconds(5f);
+                        
+                        Keep in mind that you must not cache the return value of the Get method as it returns the one single static instance every time. So other calls to Get will modify the internal wait time. Just use the static Get method whenever you want to wait for a certain amount of seconds without any garbage allocations.
+                        */
+                        yield return WaitForSecondsSingleton.Get(_yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame);
+                        
+                        Debug.Log( $"yield return WaitForSecondsSingleton.Get(_yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame) | _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame = {_yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame}", this);
+
 
                     }// End (YIELD / PAUSE for a time)...  Return of this Coroutine
                     
@@ -486,6 +504,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
         } // End Option 1:  Calculate everything based on TOTAL TIME for the VFX.
         
         // NOTE:  Option 2 is happening with no further Calculations, just by using the initial values from the Inspector.
+        // So it complies with the condition:   if (_useTotalDissolveTime <= 0.0f)
         
     }// End CalculateDissolveChangeRate
 
