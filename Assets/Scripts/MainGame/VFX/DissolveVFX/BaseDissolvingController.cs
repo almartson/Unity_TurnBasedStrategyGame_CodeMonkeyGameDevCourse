@@ -111,7 +111,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
     private static readonly int _DissolveAmount = Shader.PropertyToID("_DissolveAmount");
 
     [Space(10)]
-    [Header("Current 'Dissolve Value' for the Shader (VFX):")]
+    [Header("[Readonly for Debugging] Current 'Dissolve Value' for the Shader (VFX):")]
 
     [Tooltip("[Readonly for Debugging purposes] Cache of:  Variable that represents the Amount of 'Erosion' (i.e.: Dissolution...) on the Material shown.")]
     [SerializeField]
@@ -142,15 +142,24 @@ public abstract class BaseDissolvingController : MonoBehaviour
     
     
     [Space(10)]
-    [Header("DISABLE 3D Colliders...")]
+    [Header("[ENABLE / DISABLE] 3D PHYSICS...")]
 
-    [Tooltip("[Before the VFX starts] Do you need to DISABLE an Array of 3D Colliders? \n(...right after the VFX ends; so it won't affect them and the Physics will get disabled on them).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [Tooltip("[Before the VFX starts] Do you need to CHANGE the STATE (i.e.: ENABLED -> TO -> DISABLED) of an Array of 3D Colliders AND Rigidbodies? \n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
     [SerializeField]
-    protected bool _disableCollidersToDisableBeforeVFXStarts = false;
+    protected bool _changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts = false;
 
-    [Tooltip("[Before the VFX starts] Array of 3D Colliders that will be 'Disabled' just before the VFX starts; so it won't affect them and the Physics will get disabled on them.\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [Tooltip("[Before the VFX starts] State (ENABLE or DISABLE) to leave these Components with (Array of 3D Colliders AND Rigidbodies). \n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [SerializeField]
+    protected bool _enableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts = false;
+    
+    
+    [Tooltip("[Before the VFX starts] Array of 3D 'Colliders' that will be 'Disabled' just before the VFX starts; so it won't affect them and the Physics will get disabled on them.\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
     [SerializeField]
     protected Collider[] _arrayOfCollidersToDisableBeforeVFXStarts;
+    
+    [Tooltip("[Before the VFX starts] Array of 3D 'Rigidbodies' that will be 'Disabled' just before the VFX starts; so it won't affect them and the Physics will get disabled on them.\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [SerializeField]
+    protected Rigidbody[] _arrayOfRigidbodiesToDisableBeforeVFXStarts;
     
     /// <summary>
     /// (For Validations. Initialize as: FALSE) Boolean Flag to mark the fact that this set of actions have been already executed, so they don't get executed more than once by mistake.
@@ -175,15 +184,25 @@ public abstract class BaseDissolvingController : MonoBehaviour
     protected GameObject[] _arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds;
     
     [Space(10)]
-    [Header("DISABLE 3D Colliders...")]
+    [Header("[ENABLE / DISABLE] 3D PHYSICS...")]
 
-    [Tooltip("[After the VFX ends] Do you need to DISABLE an Array of 3D Colliders? \n(...right after the VFX ends; so it won't affect them and the Physics will get disabled on them).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [Tooltip("[After the VFX ends] Do you need to CHANGE the STATE (i.e.: ENABLED -> TO -> DISABLED) of an Array of 3D Colliders AND Rigidbodies? \n(...right after the VFX ends; so it won't affect them and the Physics will get disabled on them).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
     [SerializeField]
-    protected bool _disableCollidersToDisableAfterVFXEnds = false;
+    protected bool _changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds = false;
+
+    [Tooltip("[After the VFX ends] State (ENABLE or DISABLE) to leave these Components with (Array of 3D Colliders AND Rigidbodies). \n(...right after the VFX ends; so it won't affect them and the Physics will get disabled on them).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [SerializeField]
+    protected bool _enableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds = false;
+
     
     [Tooltip("[After the VFX ends] Array of 3D Colliders that will be 'Disabled' right after the VFX ends; so it won't affect them and the Physics will get disabled on them.\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
     [SerializeField]
     protected Collider[] _arrayOfCollidersToDisableAfterVFXEnds;
+    
+    [Tooltip("[After the VFX ends] Array of 3D 'Rigidbodies' that will be 'Disabled' right after the VFX ends; so it won't affect them and the Physics will get disabled on them.\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [SerializeField]
+    protected Rigidbody[] _arrayOfRigidbodiesToDisableAfterVFXEnds;
+
     
     [Space(10)]
     [Header("DISABLE / DESTROY THIS SCRIPT or others...")]
@@ -392,7 +411,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
                         */
                         yield return WaitForSecondsSingleton.Get(_yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame);
                         
-                        Debug.Log( $"yield return WaitForSecondsSingleton.Get(_yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame) | _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame = {_yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame}", this);
+                        //Debug.Log( $"yield return WaitForSecondsSingleton.Get(_yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame) | _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame = {_yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame}", this);
 
 
                     }// End (YIELD / PAUSE for a time)...  Return of this Coroutine
@@ -532,11 +551,13 @@ public abstract class BaseDissolvingController : MonoBehaviour
         if (!_hasFinishedExecutionOfActionsBeforeVFXStarts)
         {
  
-            // 1- Disable Colliders
+            // 1- Disable Colliders and 3D Rigidbodies   (Before VFX Starts)
             //
-            if (_disableCollidersToDisableBeforeVFXStarts)
+            if (_changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts)
             {
-                DisableColliders(_arrayOfCollidersToDisableBeforeVFXStarts);
+
+                EnableOrDisableCollidersAndRigidbodies(_enableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts, _arrayOfCollidersToDisableBeforeVFXStarts, _enableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts, _arrayOfRigidbodiesToDisableBeforeVFXStarts);
+                
             }
             
             // 2- Detach GameObjects from their Parents:
@@ -573,11 +594,12 @@ public abstract class BaseDissolvingController : MonoBehaviour
         if (!_isRunningShaderEffectFromVFXCoroutine & !_hasFinishedExecutionOfActionsAfterVFXEnds)
         {
  
-            // 1- Disable Colliders   (after VFX Ends)
+            // 1- Disable Colliders and 3D Rigidbodies    (after VFX Ends)
             //
-            if (_disableCollidersToDisableAfterVFXEnds)
+            if (_changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds)
             {
-                DisableColliders(_arrayOfCollidersToDisableAfterVFXEnds);
+                
+                EnableOrDisableCollidersAndRigidbodies(_enableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds, _arrayOfCollidersToDisableAfterVFXEnds, _enableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds, _arrayOfRigidbodiesToDisableAfterVFXEnds);
             }
             
             // 2- Detach GameObjects from their Parents:
@@ -622,12 +644,14 @@ public abstract class BaseDissolvingController : MonoBehaviour
     #region Detachment from the VFX
 
     /// <summary>
-    /// Disables all (3D) Colliders that are given as input.
+    /// Disables all (3D) Colliders and Rigidbodies, that are given as input.
     /// </summary>
-    private void DisableColliders(Collider[] arrayOfColliders)
+    private void EnableOrDisableCollidersAndRigidbodies(bool flagEnabledOrDisabledForColliders, Collider[] arrayOfColliders, bool flagEnabledOrDisabledForRigidbodies, Rigidbody[] arrayOfRigidbodies)
     {
         
-        if ( (arrayOfColliders != null) && ((arrayOfColliders.Length > 0) && (arrayOfColliders[0] != null)) )
+        // 1 of 2:  Colliders
+        //
+        if ((arrayOfColliders != null) && ((arrayOfColliders.Length > 0) && (arrayOfColliders[0] != null)) )
         {
             
             // Length of the array
@@ -638,13 +662,51 @@ public abstract class BaseDissolvingController : MonoBehaviour
             {
                 // Disable the Collider:
                 //
-                arrayOfColliders[i].enabled = false;
+                arrayOfColliders[i].enabled = flagEnabledOrDisabledForColliders;
 
             }//End for
             
         }//End if ( arrayOfColliders != null )
+     
+          
+        // 2 of 2:  3D Rigidbodies
+        //
+        if ( (arrayOfRigidbodies != null) && ((arrayOfRigidbodies.Length > 0) && (arrayOfRigidbodies[0] != null)) )
+        {
+            
+            // Length of the array
+            //
+            int arrayLength = arrayOfRigidbodies.Length;
         
-    }// End DisableColliders
+            for (int i = 0; i < arrayLength; i++)
+            {
+                
+                // Disable the Physics calculations related to the 3D Rigidbody:
+                //
+                EnableOrDisableRigidBody3DPhysics(flagEnabledOrDisabledForRigidbodies, arrayOfRigidbodies[i]);
+                
+            }//End for
+            
+        }//End if ( arrayOfRigidbodies != null )
+  
+    }// End DisableOrEnableCollidersAndRigidbodies
+
+    
+    /// <summary>
+    /// Disables the given Rigidbodies's Physics.
+    /// </summary>
+    /// <param name="flagEnabledOrDisabled"></param>
+    /// <param name="myRigidbody"></param>
+    private void EnableOrDisableRigidBody3DPhysics(bool flagEnabledOrDisabled, Rigidbody myRigidbody)
+    {
+        // Disable the Physics calculations related to the 3D Rigidbody:
+        //
+        myRigidbody.isKinematic = !flagEnabledOrDisabled;
+        myRigidbody.detectCollisions = flagEnabledOrDisabled;
+        myRigidbody.useGravity = flagEnabledOrDisabled;
+
+    }// End EnableOrDisableRigidBody3DPhysics
+    
     
     /// <summary>
     /// Detaches (from Parent): all GameObjects that are given as input.
