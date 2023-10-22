@@ -1,6 +1,8 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
+
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -183,6 +185,11 @@ public abstract class BaseDissolvingController : MonoBehaviour
     [SerializeField]
     protected GameObject[] _arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds;
     
+    [Tooltip("[After the VFX ends] Time Delay (in seconds) to wait ('After the VFX ends') to: Start this Action / behaviour")]
+    [Range(0.0f, 183.33f)]
+    [SerializeField]
+    protected float _timeDelayToDetachFromParentVFXsGameObjectAfterVFXEnds = 0.0f;
+    
     [Space(10)]
     [Header("[ENABLE / DISABLE] 3D PHYSICS...")]
 
@@ -202,11 +209,21 @@ public abstract class BaseDissolvingController : MonoBehaviour
     [Tooltip("[After the VFX ends] Array of 3D 'Rigidbodies' that will be 'Disabled' right after the VFX ends; so it won't affect them and the Physics will get disabled on them.\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
     [SerializeField]
     protected Rigidbody[] _arrayOfRigidbodiesToDisableAfterVFXEnds;
+    
+    [Tooltip("[After the VFX ends] Time Delay (in seconds) to wait ('After the VFX ends') to: Start this Action / behaviour")]
+    [Range(0.0f, 183.33f)]
+    [SerializeField]
+    protected float _timeDelayToEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds = 0.0f;
 
     
     [Space(10)]
     [Header("DISABLE / DESTROY THIS SCRIPT or others...")]
 
+    
+    [Tooltip("[After the VFX ends, READONLY] Largest Time Delay (in seconds) to wait ('After the VFX ends') to: Start this Action / behaviour. THIS WILL BE USED FOR THE LAST FINAL ACTIONS, SEE BELOW:")]
+    [SerializeField]
+    protected float _largestTimeDelayInSeconds = 0.0f;
+    
     [Tooltip("[After the VFX ends] Do you want to DISABLE THIS SCRIPT at the end of the VFX (and not Destroy all these GameObjects)?")]
     [SerializeField]
     protected bool _disableThisScript = false;
@@ -588,56 +605,165 @@ public abstract class BaseDissolvingController : MonoBehaviour
     /// </summary>
     protected virtual void DoExecuteOtherActionsAfterShadersVFXEnds()
     {
-        
-        // Execute Other actions when our Shaders Effect (VFX's) Ends:
+        // IMPORTANT NOTICE:
         //
-        if (!_isRunningShaderEffectFromVFXCoroutine & !_hasFinishedExecutionOfActionsAfterVFXEnds)
+        // * The FINAL ACTIONS of this group:   should be executed only after the largest Coroutine of the group has ended already (to avoid Bugs related to Coroutines and Destroyed / null / Disabled GameObjects / Scripts):
+
+        _largestTimeDelayInSeconds = Mathf.Max(_timeDelayToEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds, _timeDelayToDetachFromParentVFXsGameObjectAfterVFXEnds); 
+        
+        // Determine what the Delegate or CallBack function will be (to be executed after the Coroutines end...), if there's a Delay:
+        // (NOTICE:  Add all representation of Coroutines here):
+        //
+        System.Action onCompletionForEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds = StartFinalActionsToDisableOrDestroyThisScriptAndParentGameObject;
+        //
+        System.Action onCompletionToDetachFromParentVFXsGameObjectAfterVFXEnds = StartFinalActionsToDisableOrDestroyThisScriptAndParentGameObject;
+        
+        
+        // Final Validation:   Based on its Boolean Flag of execution (for each case): 
+        //
+        bool isThisScriptExecutingFinalActionsAsACoroutine = false;
+        bool isUsingCoroutineForEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds = false;
+        bool isUsingCoroutineToDetachFromParentVFXsGameObjectAfterVFXEnds = false;
+
+
+        if (_largestTimeDelayInSeconds > 0.0f)
         {
- 
-            // 1- Disable Colliders and 3D Rigidbodies    (after VFX Ends)
+
+            // 1- Coroutine #1
             //
-            if (_changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds)
+            if ( _changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds && (_timeDelayToEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds > 0.0f ) )
             {
-                
-                EnableOrDisableCollidersAndRigidbodies(_enableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds, _arrayOfCollidersToDisableAfterVFXEnds, _enableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds, _arrayOfRigidbodiesToDisableAfterVFXEnds);
+                isThisScriptExecutingFinalActionsAsACoroutine = true;
+                isUsingCoroutineForEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds = true;
             }
-            
-            // 2- Detach GameObjects from their Parents:
             //
-            if (_detachGameObjectsFromParentVFXsGameObjectAfterVFXEnds)
+            // 2- Coroutine #2
+            //
+            if ( _detachGameObjectsFromParentVFXsGameObjectAfterVFXEnds && (_timeDelayToDetachFromParentVFXsGameObjectAfterVFXEnds > 0.0f ) )
             {
-                DetachAllGameObjectsFromTheirParents(_arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds);
+                isThisScriptExecutingFinalActionsAsACoroutine = true;
+                isUsingCoroutineToDetachFromParentVFXsGameObjectAfterVFXEnds = true;
             }
-            
-            // 3- Disable this Script, or not.
             //
-            this.enabled = (! _disableThisScript);
+            //... NOTE  WARNING:   Add more: "else if()"  here... if you added more CUSTOM ACTIONS above using a TIME DELAY (COROUTINE)  
+            //...
+            // else
+            // {
+            //     // No Coroutines used:    mark as normal:
+            //     //
+            //     isThisScriptExecutingFinalActionsAsACoroutine = false;
+            // }
             
             
-            // 4- Disable Main (Parent) GameObject, or not.
-            // NOTE:
-            // 1- The Main (Parent) GameObject:  is the GameObject this Script is attached to.
+            // Final Validation of "The NOT-Largest Coroutines":   (we must set their "onCompletion..." CallBack as NULL)
+            // OPTION #2:   Only set the LAST FINAL ACTION with a DELAY Equal to the LARGEST COROUTINE (no matter if it is ENABLED OR NOT for this VFX):   <-- Using this one.
             //
-            gameObject.SetActive(! _disableParentGameObjectAndEveryBehaviourToo);
-            
-            
-            // 5- Destroy it (the Ragdolls (i.e.: the Character's)... even this script...)
             //
-            if (_destroyParentGameObjectAndEverything)
+            if ( isUsingCoroutineForEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds && isUsingCoroutineToDetachFromParentVFXsGameObjectAfterVFXEnds )
             {
-                // 2.2- Destroy this GameObject  (where this Script is attached to...):
+
+                // Compare against ALL OTHER COROUTINES (only another, the second one), and decide and fix the "onCompletion" s:
                 //
-                Destroy(gameObject);
-            }
-            
-            // Mark the Boolean Flag as:  "Actions Completed"
+                if (_timeDelayToEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds > _timeDelayToDetachFromParentVFXsGameObjectAfterVFXEnds)
+                {
+                    // First Coroutine is Larger
+                    // Fix onCompletion of the second(s):  to NULL
+                    //
+                    onCompletionToDetachFromParentVFXsGameObjectAfterVFXEnds = null;
+                }
+                else
+                {
+                    // Second Coroutine is Larger
+                    // Fix onCompletion of the First (or "previous" coroutine):  to NULL
+                    //
+                    onCompletionForEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds = null;
+                }
+            }//End if ( ( isUsingCoroutineForEnableOrDisableCollidersAndRigidbodiesPhy...
+         
+        }//End if (_largestTimeDelayInSeconds > 0.0f)
+
+        
+        // Coroutines Executions:
+        //
+        if (isThisScriptExecutingFinalActionsAsACoroutine)
+        {
+            // Execute Other actions when our Shaders Effect (VFX's) Ends:
             //
-            _hasFinishedExecutionOfActionsAfterVFXEnds = true;
+            if (!_isRunningShaderEffectFromVFXCoroutine & !_hasFinishedExecutionOfActionsAfterVFXEnds)
+            {
 
-        }//End if (!_isRunningVFXCoroutine)
+                // 1- Disable Colliders and 3D Rigidbodies    (after VFX Ends)
+                //
+                if (_changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds)
+                {
 
+                    if (_timeDelayToEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds > 0.0f)
+                    {
+
+                        // Coroutine Implementation
+                        //
+                        StartCoroutine(EnableOrDisableCollidersAndRigidbodies(
+                            _enableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds,
+                            _arrayOfCollidersToDisableAfterVFXEnds,
+                            _enableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds,
+                            _arrayOfRigidbodiesToDisableAfterVFXEnds,
+                            _timeDelayToEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds, onCompletionForEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds));
+
+                    } //End if (_timeDelayTo...
+                    else
+                    {
+                        // OR:  Basic Implementation
+                        //
+                        EnableOrDisableCollidersAndRigidbodies(
+                            _enableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds,
+                            _arrayOfCollidersToDisableAfterVFXEnds,
+                            _enableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds,
+                            _arrayOfRigidbodiesToDisableAfterVFXEnds);
+
+                    } //End else
+                } //End:  1- Disable Colliders and 3D Rigidbodies    (after VFX Ends)
+
+
+                // 2- Detach GameObjects from their Parents:
+                //
+                if (_detachGameObjectsFromParentVFXsGameObjectAfterVFXEnds)
+                {
+
+                    if (_timeDelayToDetachFromParentVFXsGameObjectAfterVFXEnds > 0.0f)
+                    {
+
+                        // Coroutine Implementation
+                        //
+                        StartCoroutine(DetachAllGameObjectsFromTheirParents(
+                            _arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds,
+                            _timeDelayToDetachFromParentVFXsGameObjectAfterVFXEnds, onCompletionToDetachFromParentVFXsGameObjectAfterVFXEnds));
+
+                    } //End if (_timeDelay...
+                    else
+                    {
+                        // OR:  Basic Implementation
+                        //
+                        DetachAllGameObjectsFromTheirParents(
+                            _arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds);
+
+                    } //End else
+
+                } //End:  2- Detach GameObjects from their Parents:
+
+            }//End if (!_isRunningShaderEffectFromVFXCoroutine & !_hasFinishedExecutionOfActionsAfterVFXEnds)
+        }
+        else
+        {
+            // No Coroutines were used,  normal execution of "FINAL ACTIONS" within this Time-Frame:
+            //
+            FinalActionsToDisableOrDestroyThisScriptAndParentGameObject();
+            
+        }//End if ( largestTimeDelayInSeconds > 0.0f )
+        
     }// End DoExecuteOtherActionsAfterShadersVFXEnds
 
+    
+    
     #endregion After the VFX ends
     
     
@@ -690,6 +816,34 @@ public abstract class BaseDissolvingController : MonoBehaviour
         }//End if ( arrayOfRigidbodies != null )
   
     }// End DisableOrEnableCollidersAndRigidbodies
+    
+    
+    /// <summary>
+    /// [Coroutine Implementation with a Delay] <br /> <br />
+    /// Disables all (3D) Colliders and Rigidbodies, that are given as input.
+    /// </summary>
+    private IEnumerator EnableOrDisableCollidersAndRigidbodies(bool flagEnabledOrDisabledForColliders, Collider[] arrayOfColliders, bool flagEnabledOrDisabledForRigidbodies, Rigidbody[] arrayOfRigidbodies, float timeDelayInSeconds, System.Action onCompletion)
+    {
+        
+        // 1- Time Delay:
+        //
+        yield return WaitForSecondsSingleton.Get(timeDelayInSeconds);
+        
+        // 2- Execute the ACTION
+        //
+        EnableOrDisableCollidersAndRigidbodies(flagEnabledOrDisabledForColliders, arrayOfColliders,
+            flagEnabledOrDisabledForRigidbodies, arrayOfRigidbodies);
+        
+
+        // 3- Call the callback method when the Coroutine ends
+        //
+        if (onCompletion != null)
+        {
+            onCompletion();
+        }
+
+    }// End DisableOrEnableCollidersAndRigidbodies
+
 
     
     /// <summary>
@@ -742,6 +896,74 @@ public abstract class BaseDissolvingController : MonoBehaviour
         
     }// End DetachAllGameObjectsFromTheirParents
     
+    
+    /// <summary>
+    /// [Coroutine Implementation: Execute after a set Time Delay, in Seconds] <br /> <br />
+    /// Detaches (from Parent): all GameObjects that are given as input.
+    /// </summary>
+    private IEnumerator DetachAllGameObjectsFromTheirParents(GameObject[] arrayOfGameObjectsToDetachFromParent, float timeDelayInSeconds, System.Action onCompletion)
+    {
+        
+        // 1- Coroutine Delay
+        //
+        yield return WaitForSecondsSingleton.Get(timeDelayInSeconds);
+
+        // 2- Execute the Behaviour:
+        //
+        DetachAllGameObjectsFromTheirParents(arrayOfGameObjectsToDetachFromParent);
+        
+        
+        // 3- Call the callback method when the Coroutine ends
+        //
+        if (onCompletion != null)
+        {
+            onCompletion();
+        }
+
+    }// End DetachAllGameObjectsFromTheirParents
+
+    
+    /// <summary>
+    /// Final Actions after:  VFX ENDS + ALL COROUTINES end + everything ends.
+    /// </summary>
+    private void StartFinalActionsToDisableOrDestroyThisScriptAndParentGameObject()
+    {
+        FinalActionsToDisableOrDestroyThisScriptAndParentGameObject();
+
+    }// End FinalActionsToDisableOrDestroyThisScriptAndPArentGameObject
+
+
+    private void FinalActionsToDisableOrDestroyThisScriptAndParentGameObject()
+    {
+        
+        // 3- Disable this Script, or not.
+        //
+        this.enabled = (! _disableThisScript);
+            
+
+        // 4- Disable Main (Parent) GameObject, or not.
+        // NOTE:
+        // 1- The Main (Parent) GameObject:  is the GameObject this Script is attached to.
+        //
+        gameObject.SetActive(! _disableParentGameObjectAndEveryBehaviourToo);
+            
+            
+        // 5- Destroy it (the Ragdolls (i.e.: the Character's)... even this script...)
+        //
+        if (_destroyParentGameObjectAndEverything)
+        {
+            // 2.2- Destroy this GameObject  (where this Script is attached to...):
+            //
+            Destroy(gameObject);
+        }
+            
+        // Mark the Boolean Flag as:  "Actions Completed"
+        //
+        _hasFinishedExecutionOfActionsAfterVFXEnds = true;
+
+    }// End FinalActionsToDisableOrDestroyThisScriptAndPArentGameObject
+
+
     #endregion Detachment from the VFX
     #endregion Dissolve VFX: Suplementary Actions
     

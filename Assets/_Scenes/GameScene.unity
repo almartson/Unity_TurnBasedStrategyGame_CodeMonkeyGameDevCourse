@@ -185,7 +185,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3902643}
-  m_LocalRotation: {x: 0.3006394, y: 0.000000016410377, z: -0.000000005172915, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: -0.000000016410377, z: 0.000000005172915, w: 0.9537379}
   m_LocalPosition: {x: 0, y: 7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1900,7 +1900,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.3006394, y: 0.000000016410377, z: -0.000000005172915, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: -0.000000016410377, z: 0.000000005172915, w: 0.9537379}
   m_LocalPosition: {x: 0, y: 7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6990,8 +6990,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8500296630377933705, guid: 42b1c03e4b2d847b9afac5c99fafe7a5,
         type: 3}
+      propertyPath: _detachGameObjectsFromParentVFXsGameObjectAfterVFXEnds
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500296630377933705, guid: 42b1c03e4b2d847b9afac5c99fafe7a5,
+        type: 3}
+      propertyPath: _timeDelayToDetachFromParentVFXsGameObjectAfterVFXEnds
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500296630377933705, guid: 42b1c03e4b2d847b9afac5c99fafe7a5,
+        type: 3}
+      propertyPath: _detachGameObjectsFromParentVFXsGameObjectBeforeVFXStarts
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500296630377933705, guid: 42b1c03e4b2d847b9afac5c99fafe7a5,
+        type: 3}
       propertyPath: _enableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500296630377933705, guid: 42b1c03e4b2d847b9afac5c99fafe7a5,
+        type: 3}
+      propertyPath: _enableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500296630377933705, guid: 42b1c03e4b2d847b9afac5c99fafe7a5,
+        type: 3}
+      propertyPath: _changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500296630377933705, guid: 42b1c03e4b2d847b9afac5c99fafe7a5,
+        type: 3}
+      propertyPath: _timeDelayToEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8500296630377933705, guid: 42b1c03e4b2d847b9afac5c99fafe7a5,
         type: 3}
