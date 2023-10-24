@@ -28,6 +28,71 @@ public abstract class BaseDissolvingController : MonoBehaviour
     [Space()]
     [Header("VFX Shader Graph")]
 
+    /// <summary>
+    /// Direction of the Shader VFX  (it's Value may INCREASE or DECREASE): <br /><br />
+    /// * TRUE:   NORMAL DIRECTION:  0.0f -> 1.0f <br /><br />
+    /// * FALSE:  REVERSE DIRECTION:  1.0f -> 0.0f <br /><br />
+    /// </summary>
+    [Tooltip("Direction of the Shader VFX's value (INCREASE or DECREASE): \n\n* TRUE:  NORMAL DIRECTION:  0.0f -> 1.0f \n\n* FALSE:  REVERSE DIRECTION:  1.0f -> 0.0f")]
+    [SerializeField]
+    protected bool _normalDirectionForShaderValueIncrease = true;
+
+    [Tooltip("[READONLY, for DEBUG PURPOSES] Sign of the 'INCREASE' in the VFX Shader's Value (+1  or -1).")]
+    [SerializeField]
+    protected int _shaderVFXDirectionIncrease = 1;
+
+    
+    [Space(10)]
+    [Header("[Readonly for Debugging] Current 'Dissolve Value' for the Shader (VFX):")]
+
+    [Tooltip("[Readonly for Debugging purposes] Cache of:  Variable that represents the Amount of 'Erosion' (i.e.: Dissolution...) on the Material shown.")]
+    [SerializeField]
+    protected float _dissolveAmount = 0.0f;
+    
+    [Tooltip("Starting / INITIAL Value for the VFX's Shader Effect (i.e.: '_dissolveAmount').")]
+    [SerializeField]
+    protected float _dissolveAmountInitialization = 0.0f;
+    
+    [Tooltip("Limit that the VFX's Shader Effect (i.e.: '_dissolveAmount') must try to get in to.")]
+    [SerializeField]
+    protected float _dissolveAmountLimit = 1.0f;
+    
+    #region VFX Shader: Dissolve VFX's: Value and Time Rates
+    
+    [Space()]   [Header("VFX Shader: Dissolve VFX's: Value and Time Rates")]
+    [Space(10)]
+
+    // Option 1:  Calculate everything based on TOTAL TIME for the VFX.
+
+    [Header("Option 1:  Calculate everything based on TOTAL TIME for the VFX. ZERO (0) means 'false', so it would NOT be used.")]
+    
+    [Tooltip("RECOMMENDED, NON ZERO: Let it be zero (0.0f) if you don't want to use it!")]
+    [SerializeField]
+    protected float _useTotalDissolveTime = 1.5f; // 1.5f
+
+
+    // Option 2:  Specify every value here for the VFX (and let '_useTotalDissolveTime' = 0).
+
+    [Space()]
+    [Header("Option 2:  Specify every value here for the VFX (and let '_useTotalDissolveTime' = 0).")]
+
+    [Tooltip("Rate of change per frame of the Dissolving effect.")]
+    [SerializeField]
+    protected float _dissolveChangeRate = 0.0111f; // 0.0125f;
+
+    [Tooltip("Time to 'yield return WaitForSeconds(this time var...)' between any change in Dissolve in this VFX's Coroutine")]
+    [SerializeField]
+    protected float _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame = 0.0123f; // 0.025f;
+
+    
+    /// <summary>
+    /// Cache of:  Variable that represents the Amount of "Erosion" (i.e.: Dissolution...) on the Material shown.
+    /// </summary>
+    private static readonly int _DissolveAmount = Shader.PropertyToID("_DissolveAmount");
+    
+    #endregion VFX Shader: Dissolve VFX's: Value and Time Rates
+    
+    
     [Space(10)]
     [Header("VFX Shader Graph: Coroutine Management:")]
 
@@ -76,49 +141,6 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
     #endregion Materials
 
-
-    #region VFX Shader: Dissolve VFX's: Value and Time Rates
-    
-    [Space()]   [Header("VFX Shader: Dissolve VFX's: Value and Time Rates")]
-    [Space(10)]
-
-    // Option 1:  Calculate everything based on TOTAL TIME for the VFX.
-
-    [Header("Option 1:  Calculate everything based on TOTAL TIME for the VFX. ZERO (0) means 'false', so it would NOT be used.")]
-    
-    [Tooltip("RECOMMENDED, NON ZERO: Let it be zero (0.0f) if you don't want to use it!")]
-    [SerializeField]
-    protected float _useTotalDissolveTime = 1.5f; // 1.5f
-
-
-    // Option 2:  Specify every value here for the VFX (and let '_useTotalDissolveTime' = 0).
-
-    [Space()]
-    [Header("Option 2:  Specify every value here for the VFX (and let '_useTotalDissolveTime' = 0).")]
-
-    [Tooltip("Rate of change per frame of the Dissolving effect.")]
-    [SerializeField]
-    protected float _dissolveChangeRate = 0.0111f; // 0.0125f;
-
-    [Tooltip("Time to 'yield return WaitForSeconds(this time var...)' between any change in Dissolve in this VFX's Coroutine")]
-    [SerializeField]
-    protected float _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame = 0.0123f; // 0.025f;
-
-    
-    /// <summary>
-    /// Cache of:  Variable that represents the Amount of "Erosion" (i.e.: Dissolution...) on the Material shown.
-    /// </summary>
-    private static readonly int _DissolveAmount = Shader.PropertyToID("_DissolveAmount");
-
-    [Space(10)]
-    [Header("[Readonly for Debugging] Current 'Dissolve Value' for the Shader (VFX):")]
-
-    [Tooltip("[Readonly for Debugging purposes] Cache of:  Variable that represents the Amount of 'Erosion' (i.e.: Dissolution...) on the Material shown.")]
-    [SerializeField]
-    protected float _dissolveAmount = 0.0f;
-    
-    #endregion VFX Shader: Dissolve VFX's: Value and Time Rates
-    
     #endregion VFX Shader Graph
 
         
@@ -339,10 +361,13 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
     /// <summary>
     /// Starts the whole VFX. <br /> <br />
-    /// It works as a Coroutine.
+    /// It works as a Coroutine. <br /> <br />
+    /// The Shader Effect treated here can be one of tow options: <br /> <br />
+    /// 1- From:   Zero (0.0f) -> to -> One  (1.0f):  NORMAL DIRECTION = true <br />
+    /// 2- From:   One  (1.0f) -> to -> Zero (0.0f).  NORMAL DIRECTION = false; it is a REVERSE. <br />
     /// </summary>
     /// <returns></returns>
-    protected virtual IEnumerator DoStartVFX()
+    protected virtual IEnumerator DoStartVFX(bool normalDirectionForShaderValueIncrease)
     {
         
         // 0- ACTIONS TO execute:  Before VFX Starts
@@ -374,16 +399,19 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
             // Initialize the 'DissolveAmount' variable, to change the "Dissolve Amount" parameter
             //
-            _dissolveAmount = _arrayOfCachedMaterials[0].GetFloat(_DissolveAmount);
+            // _dissolveAmount = _arrayOfCachedMaterials[0].GetFloat(_DissolveAmount);
+            //
+            _dissolveAmount = InitializeVFXsShaderValue( normalDirectionForShaderValueIncrease, _arrayOfCachedMaterials[0].GetFloat(_DissolveAmount) );
 
-            while (_arrayOfCachedMaterials[0].GetFloat(_DissolveAmount) < 1)
+
+            while ( CheckShaderValueCondition(_dissolveAmount, _dissolveAmountLimit, normalDirectionForShaderValueIncrease) )
             {
 
                 // Increase the "Dissolve Amount" parameter:
                 //
                 CalculateDissolveChangeRateAndTimeBetweenVFXChanges();
                 //
-                _dissolveAmount += _dissolveChangeRate;
+                _dissolveAmount += (_dissolveChangeRate * _shaderVFXDirectionIncrease);
 
                 // Assign the new "Dissolve Amount" value:
                 //
@@ -451,6 +479,29 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
 
     /// <summary>
+    /// Checks to see if the Shader's conditions are already met (so we would stop a Coroutine or Method Loop). <br /><br />
+    /// For example:   if ( _dissolveAmount < 1 ) ...
+    /// </summary>
+    /// <param name="shaderValue"></param>
+    /// <param name="currentValue"></param>
+    /// <param name="limitValue"></param>
+    /// <param name="normalDirectionForShaderValueIncrease"></param>
+    protected virtual bool CheckShaderValueCondition(float currentValue, float limitValue, bool normalDirectionForShaderValueIncrease)
+    {
+        
+        if ( normalDirectionForShaderValueIncrease )
+        {
+            return (currentValue <= limitValue);
+        }
+        else
+        {
+            return (currentValue >= limitValue);
+        }
+
+    }// End CheckShaderValueCondition
+    
+
+    /// <summary>
     /// Restore the 3D Mesh (VFX) to it's Initial state.
     /// </summary>
     /// <returns></returns>
@@ -489,7 +540,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
             // 'DissolveAmount' variable, to change the "Dissolve Amount" parameter
             //
-            _dissolveAmount = 0.0f;
+            _dissolveAmount = _dissolveAmountInitialization;
 
 
             // Assign the new "Dissolve Amount" value:
@@ -516,11 +567,43 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
     #region Misc Methods
     
+        
+    /// <summary>
+    /// Initializes the Shader's Value + the '_dissolveChangeRate' sign <br /><br />
+    /// +  for NORMAL DIRECTION / INCREASE Shader's VFX value) <br /><br />
+    /// -  for INVERSE DIRECTION / DECREASE Shader's VFX value) <br /><br />
+    /// </summary>
+    /// <param name="normalDirectionForShaderValueIncrease"></param>
+    /// <param name="currentVFXShaderValue"></param>
+    /// <returns></returns>
+    protected virtual float InitializeVFXsShaderValue(bool normalDirectionForShaderValueIncrease, float currentVFXShaderValue)
+    {
+
+        // Step 0:    Calculate the sign of the INCREASE / DECREASE of the Shader Effect:
+        //
+        if (normalDirectionForShaderValueIncrease)
+        {
+            _shaderVFXDirectionIncrease = (+1);
+        }
+        else
+        {
+            _shaderVFXDirectionIncrease = (-1);
+
+        }// if (normalDirectionForShader)
+        
+        // Return the Shader Value:
+        //
+        return currentVFXShaderValue;
+
+    }// End InitializeVFXsShaderValue
+
+    
     /// <summary>
     /// Option 1 or Option 2:  Calculate everything based on TOTAL TIME ( _useTotalDissolveTime ) for the VFX.
     /// </summary>
     protected virtual void CalculateDissolveChangeRateAndTimeBetweenVFXChanges()
     {
+
         // Option 1:  Calculate everything based on TOTAL TIME for the VFX.
         //
         if (_useTotalDissolveTime > 0.0f)

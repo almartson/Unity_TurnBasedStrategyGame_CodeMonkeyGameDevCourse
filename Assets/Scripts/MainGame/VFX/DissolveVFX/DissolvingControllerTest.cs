@@ -52,15 +52,17 @@ public class DissolvingControllerTest : BaseDissolvingController
             
             // Start the VFX as a Coroutine
             //
-            StartCoroutine(DoStartVFX());
-        }
+            StartCoroutine(DoStartVFX( _normalDirectionForShaderValueIncrease ));
+
+        }//End if (Input.GetKeyDown...
         
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
             // Restore the original state of the character
             //
             TryUndoVFX();
-        }
+
+        }//End if (Input.GetKeyDown..
         
     }// End Update()
 

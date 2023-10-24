@@ -31,8 +31,6 @@ public class UnitRagdollDissolvingController : BaseDissolvingController
     {
         // base.Start();
         
-        // Reset the VFX's (Dissolve) Values:
-        //
         if (TryUndoVFX())
         {
 
@@ -40,7 +38,7 @@ public class UnitRagdollDissolvingController : BaseDissolvingController
             //
             // Start the VFX as a Coroutine
             //
-            StartCoroutine(DoStartVFX());
+            StartCoroutine(DoStartVFX( _normalDirectionForShaderValueIncrease ));
 
         }//End if (TryUndoVFX())
 
