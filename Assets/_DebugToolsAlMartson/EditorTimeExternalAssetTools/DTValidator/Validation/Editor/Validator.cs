@@ -205,8 +205,13 @@ namespace DTValidator {
 					if (recursive) {
 						GameObject memberObjectAsGameObject = memberObject as GameObject;
 						if (memberObjectAsGameObject != null) {
-							PrefabType prefabType = PrefabUtility.GetPrefabType(memberObjectAsGameObject);
-							if (prefabType == PrefabType.Prefab) {
+							// AlMartson:  Improvement over this code
+							// PrefabType prefabType = PrefabUtility.GetPrefabType(memberObjectAsGameObject);
+							// if (prefabType == PrefabType.Prefab) {
+							// NEW CODE:
+							//
+							PrefabAssetType prefabType = PrefabUtility.GetPrefabAssetType(memberObjectAsGameObject);
+							if (prefabType != PrefabAssetType.NotAPrefab) {
 								// switch context to the prefab we just recursed to
 								object newContextObject = memberObjectAsGameObject;
 
