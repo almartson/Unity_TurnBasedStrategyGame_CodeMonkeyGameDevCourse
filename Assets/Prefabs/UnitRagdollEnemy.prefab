@@ -117,5 +117,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8500296630377933705, guid: 42b1c03e4b2d847b9afac5c99fafe7a5,
+        type: 3}
+      propertyPath: _enableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42b1c03e4b2d847b9afac5c99fafe7a5, type: 3}

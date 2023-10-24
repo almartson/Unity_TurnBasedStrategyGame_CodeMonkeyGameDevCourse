@@ -1,0 +1,273 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1567085051540746396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1567085051540746369}
+  - component: {fileID: 1567085051540746398}
+  - component: {fileID: 1567085051540746399}
+  m_Layer: 0
+  m_Name: MaterializeObjectVFXGraph
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1567085051540746369
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567085051540746396}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4, y: 0, z: 6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!2083052967 &1567085051540746398
+VisualEffect:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567085051540746396}
+  m_Enabled: 1
+  m_Asset: {fileID: 8926484042661614526, guid: 5f583f80aa9f5a7f1b6dcd15367ca4fa, type: 3}
+  m_InitialEventName: OnPlay
+  m_InitialEventNameOverriden: 0
+  m_StartSeed: 0
+  m_ResetSeedOnPlay: 1
+  m_ResourceVersion: 1
+  m_PropertySheet:
+    m_Float:
+      m_Array:
+      - m_Value: 1
+        m_Name: MeshSize
+        m_Overridden: 1
+      - m_Value: 0.5
+        m_Name: MeshYFinalPositionToLevitateTo
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: MesRotationOverLife
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: Delay
+        m_Overridden: 1
+      - m_Value: 8
+        m_Name: LifeTimeOfMaterializePhase
+        m_Overridden: 1
+      - m_Value: 7.7
+        m_Name: LifeTimeOfAlreadyMaterializedSecondPhase
+        m_Overridden: 1
+      - m_Value: 0.888
+        m_Name: MeshRotationOverLife
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: NormalsStrength
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: Smoothness
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: Metallic
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: FresnelPower
+        m_Overridden: 1
+    m_Vector2f:
+      m_Array:
+      - m_Value: {x: 1, y: 1}
+        m_Name: NoiseTextureTiling
+        m_Overridden: 1
+      - m_Value: {x: 0.333, y: 0.333}
+        m_Name: NoiseTextureOffset
+        m_Overridden: 1
+    m_Vector3f:
+      m_Array:
+      - m_Value: {x: 0, y: 0, z: 0}
+        m_Name: MeshRotation
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 0, z: 0}
+        m_Name: MeshInitialPositionBeforeLevitating
+        m_Overridden: 1
+    m_Vector4f:
+      m_Array:
+      - m_Value: {x: 11.07959, y: 11.07959, z: 0.095103785, w: 1}
+        m_Name: InitialMeshColor
+        m_Overridden: 1
+      - m_Value: {x: 1, y: 1, z: 1, w: 1}
+        m_Name: BaseColor
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 0, z: 0, w: 1}
+        m_Name: EmissionColor
+        m_Overridden: 1
+      - m_Value: {x: 1, y: 1, z: 1, w: 1}
+        m_Name: FresnelColor
+        m_Overridden: 1
+    m_Uint:
+      m_Array: []
+    m_Int:
+      m_Array: []
+    m_Matrix4x4f:
+      m_Array: []
+    m_AnimationCurve:
+      m_Array:
+      - m_Value:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1.0510559
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.123949766
+            value: 0.9776356
+            inSlope: -1.1200687
+            outSlope: -1.1200687
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.36593747
+            value: 1.028665
+            inSlope: -0.26725
+            outSlope: -0.26725
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.44157022
+            value: 0.9848504
+            inSlope: -1.0666769
+            outSlope: -1.0666769
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.51745844
+            value: 0.9568225
+            inSlope: 0.019925717
+            outSlope: 0.019925717
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.64099157
+            value: 0.9958286
+            inSlope: 0.43937796
+            outSlope: 0.43937796
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.7733258
+            value: 1.0004512
+            inSlope: -0.6320998
+            outSlope: -0.6320998
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.8504246
+            value: 0.9760111
+            inSlope: 0.20741998
+            outSlope: 0.20741998
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1.000587
+            value: 1.0026336
+            inSlope: 0.004365354
+            outSlope: 0.004365354
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        m_Name: MultiplySizeOverLifeTime
+        m_Overridden: 1
+    m_Gradient:
+      m_Array: []
+    m_NamedObject:
+      m_Array:
+      - m_Value: {fileID: 4300000, guid: 48088ee6f92dc994699461d5704d507b, type: 3}
+        m_Name: MeshToMaterialize
+        m_Overridden: 1
+      - m_Value: {fileID: 2800000, guid: 1f30581e6d08c984cbbe91664f591843, type: 3}
+        m_Name: Albedo
+        m_Overridden: 1
+      - m_Value: {fileID: 0}
+        m_Name: NormalMap
+        m_Overridden: 1
+      - m_Value: {fileID: 0}
+        m_Name: EmissionMap
+        m_Overridden: 1
+      - m_Value: {fileID: 2800000, guid: f0e710100ff31c7769e7c6219cdf5952, type: 3}
+        m_Name: NoiseTextureMap
+        m_Overridden: 1
+    m_Bool:
+      m_Array: []
+--- !u!73398921 &1567085051540746399
+VFXRenderer:
+  serializedVersion: 1
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567085051540746396}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0

@@ -275,12 +275,15 @@ MonoBehaviour:
   _detachGameObjectsFromParentVFXsGameObjectAfterVFXEnds: 0
   _arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds:
   - {fileID: 6296133655544192527}
+  _timeDelayToDetachFromParentVFXsGameObjectAfterVFXEnds: 0
   _changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds: 1
   _enableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds: 0
   _arrayOfCollidersToDisableAfterVFXEnds:
   - {fileID: 6305337325864585707}
   _arrayOfRigidbodiesToDisableAfterVFXEnds:
   - {fileID: 7643430893810282419}
+  _timeDelayToEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds: 2.22
+  _largestTimeDelayInSeconds: 0
   _disableThisScript: 1
   _disableParentGameObjectAndEveryBehaviourToo: 1
   _destroyParentGameObjectAndEverything: 1
