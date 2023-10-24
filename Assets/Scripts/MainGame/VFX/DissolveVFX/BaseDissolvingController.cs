@@ -1,8 +1,6 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
-
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -444,11 +442,14 @@ public abstract class BaseDissolvingController : MonoBehaviour
         //
         _isRunningShaderEffectFromVFXCoroutine = false;
         
+        Debug.Log( $"Before:  DoExecuteOtherActionsAfterShadersVFXEnds() | in: this Object:{this.gameObject.name}", this);
         
         // Execute some one-time (rather one-frame) actions just when the Dissolve effect (VFX's Shader) ENDS.
         //
         DoExecuteOtherActionsAfterShadersVFXEnds();
         
+        Debug.Log( $"After:  DoExecuteOtherActionsAfterShadersVFXEnds() | in: this Object:{this.gameObject.name}", this);
+
     } // End DoStartVFX()
 
 
@@ -521,7 +522,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
     /// <summary>
     /// Option 1 or Option 2:  Calculate everything based on TOTAL TIME ( _useTotalDissolveTime ) for the VFX.
     /// </summary>
-    private void CalculateDissolveChangeRateAndTimeBetweenVFXChanges()
+    protected virtual void CalculateDissolveChangeRateAndTimeBetweenVFXChanges()
     {
         // Option 1:  Calculate everything based on TOTAL TIME for the VFX.
         //
@@ -679,6 +680,10 @@ public abstract class BaseDissolvingController : MonoBehaviour
                     onCompletionForEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds = null;
                 }
             }//End if ( ( isUsingCoroutineForEnableOrDisableCollidersAndRigidbodiesPhy...
+            // else
+            // {
+            //     // This case is NOT IMPORTANT, because all "onCompletion..." delegates are set, so if we are using any Coroutine (the Buggy case could be using: only one Coroutine...):   then the Last (Final) Actions will be performed as the Delegate, in the end. So it would always work fine.
+            // }
          
         }//End if (_largestTimeDelayInSeconds > 0.0f)
 
@@ -754,15 +759,17 @@ public abstract class BaseDissolvingController : MonoBehaviour
         }
         else
         {
+            Debug.Log( $"Before:  FinalActionsToDisableOrDestroyThisScriptAndParentGameObject() as NOT-COROUTINE | in: this Object:{this.gameObject.name}", this);
+            
             // No Coroutines were used,  normal execution of "FINAL ACTIONS" within this Time-Frame:
             //
             FinalActionsToDisableOrDestroyThisScriptAndParentGameObject();
             
+            Debug.Log( $"After:  FinalActionsToDisableOrDestroyThisScriptAndParentGameObject() as NOT-COROUTINE | in: this Object:{this.gameObject.name}", this);
+            
         }//End if ( largestTimeDelayInSeconds > 0.0f )
         
     }// End DoExecuteOtherActionsAfterShadersVFXEnds
-
-    
     
     #endregion After the VFX ends
     
@@ -772,7 +779,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
     /// <summary>
     /// Disables all (3D) Colliders and Rigidbodies, that are given as input.
     /// </summary>
-    private void EnableOrDisableCollidersAndRigidbodies(bool flagEnabledOrDisabledForColliders, Collider[] arrayOfColliders, bool flagEnabledOrDisabledForRigidbodies, Rigidbody[] arrayOfRigidbodies)
+    protected virtual void EnableOrDisableCollidersAndRigidbodies(bool flagEnabledOrDisabledForColliders, Collider[] arrayOfColliders, bool flagEnabledOrDisabledForRigidbodies, Rigidbody[] arrayOfRigidbodies)
     {
         
         // 1 of 2:  Colliders
@@ -822,7 +829,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
     /// [Coroutine Implementation with a Delay] <br /> <br />
     /// Disables all (3D) Colliders and Rigidbodies, that are given as input.
     /// </summary>
-    private IEnumerator EnableOrDisableCollidersAndRigidbodies(bool flagEnabledOrDisabledForColliders, Collider[] arrayOfColliders, bool flagEnabledOrDisabledForRigidbodies, Rigidbody[] arrayOfRigidbodies, float timeDelayInSeconds, System.Action onCompletion)
+    protected virtual IEnumerator EnableOrDisableCollidersAndRigidbodies(bool flagEnabledOrDisabledForColliders, Collider[] arrayOfColliders, bool flagEnabledOrDisabledForRigidbodies, Rigidbody[] arrayOfRigidbodies, float timeDelayInSeconds, System.Action onCompletion)
     {
         
         // 1- Time Delay:
@@ -851,7 +858,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
     /// </summary>
     /// <param name="flagEnabledOrDisabled"></param>
     /// <param name="myRigidbody"></param>
-    private void EnableOrDisableRigidBody3DPhysics(bool flagEnabledOrDisabled, Rigidbody myRigidbody)
+    protected virtual void EnableOrDisableRigidBody3DPhysics(bool flagEnabledOrDisabled, Rigidbody myRigidbody)
     {
         // Disable the Physics calculations related to the 3D Rigidbody:
         //
@@ -865,7 +872,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
     /// <summary>
     /// Detaches (from Parent): all GameObjects that are given as input.
     /// </summary>
-    private void DetachAllGameObjectsFromTheirParents(GameObject[] arrayOfGameObjectsToDetachFromParent)
+    protected virtual void DetachAllGameObjectsFromTheirParents(GameObject[] arrayOfGameObjectsToDetachFromParent)
     {
         
         if ( (arrayOfGameObjectsToDetachFromParent != null) && ((arrayOfGameObjectsToDetachFromParent.Length > 0) && (arrayOfGameObjectsToDetachFromParent[0] != null)) )
@@ -901,7 +908,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
     /// [Coroutine Implementation: Execute after a set Time Delay, in Seconds] <br /> <br />
     /// Detaches (from Parent): all GameObjects that are given as input.
     /// </summary>
-    private IEnumerator DetachAllGameObjectsFromTheirParents(GameObject[] arrayOfGameObjectsToDetachFromParent, float timeDelayInSeconds, System.Action onCompletion)
+    protected virtual IEnumerator DetachAllGameObjectsFromTheirParents(GameObject[] arrayOfGameObjectsToDetachFromParent, float timeDelayInSeconds, System.Action onCompletion)
     {
         
         // 1- Coroutine Delay
@@ -926,14 +933,18 @@ public abstract class BaseDissolvingController : MonoBehaviour
     /// <summary>
     /// Final Actions after:  VFX ENDS + ALL COROUTINES end + everything ends.
     /// </summary>
-    private void StartFinalActionsToDisableOrDestroyThisScriptAndParentGameObject()
+    protected virtual void StartFinalActionsToDisableOrDestroyThisScriptAndParentGameObject()
     {
+        Debug.Log( $"Beginning:  StartFinalActionsToDisableOrDestroyThisScriptAndParentGameObject() | in: this Object:{this.gameObject.name}", this);
+        
         FinalActionsToDisableOrDestroyThisScriptAndParentGameObject();
 
+        Debug.Log( $"Ending:  StartFinalActionsToDisableOrDestroyThisScriptAndParentGameObject() | in: this Object:{this.gameObject.name}", this);
+        
     }// End FinalActionsToDisableOrDestroyThisScriptAndPArentGameObject
 
 
-    private void FinalActionsToDisableOrDestroyThisScriptAndParentGameObject()
+    protected virtual void FinalActionsToDisableOrDestroyThisScriptAndParentGameObject()
     {
         
         // 3- Disable this Script, or not.
