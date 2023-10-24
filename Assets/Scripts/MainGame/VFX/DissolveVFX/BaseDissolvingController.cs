@@ -399,7 +399,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
                     if (_useTotalDissolveTime > 0.0f)
                     {
                         
-                        // Debug.Log( $"yield return null", this);
+                        //Debug.Log( $"yield return null", this);
                             
                         // Pause this Coroutine's execution, until the next Frame:
                         //
@@ -442,14 +442,11 @@ public abstract class BaseDissolvingController : MonoBehaviour
         //
         _isRunningShaderEffectFromVFXCoroutine = false;
         
-        Debug.Log( $"Before:  DoExecuteOtherActionsAfterShadersVFXEnds() | in: this Object:{this.gameObject.name}", this);
         
         // Execute some one-time (rather one-frame) actions just when the Dissolve effect (VFX's Shader) ENDS.
         //
         DoExecuteOtherActionsAfterShadersVFXEnds();
         
-        Debug.Log( $"After:  DoExecuteOtherActionsAfterShadersVFXEnds() | in: this Object:{this.gameObject.name}", this);
-
     } // End DoStartVFX()
 
 
@@ -759,14 +756,10 @@ public abstract class BaseDissolvingController : MonoBehaviour
         }
         else
         {
-            Debug.Log( $"Before:  FinalActionsToDisableOrDestroyThisScriptAndParentGameObject() as NOT-COROUTINE | in: this Object:{this.gameObject.name}", this);
-            
             // No Coroutines were used,  normal execution of "FINAL ACTIONS" within this Time-Frame:
             //
             FinalActionsToDisableOrDestroyThisScriptAndParentGameObject();
-            
-            Debug.Log( $"After:  FinalActionsToDisableOrDestroyThisScriptAndParentGameObject() as NOT-COROUTINE | in: this Object:{this.gameObject.name}", this);
-            
+
         }//End if ( largestTimeDelayInSeconds > 0.0f )
         
     }// End DoExecuteOtherActionsAfterShadersVFXEnds
@@ -935,11 +928,11 @@ public abstract class BaseDissolvingController : MonoBehaviour
     /// </summary>
     protected virtual void StartFinalActionsToDisableOrDestroyThisScriptAndParentGameObject()
     {
-        Debug.Log( $"Beginning:  StartFinalActionsToDisableOrDestroyThisScriptAndParentGameObject() | in: this Object:{this.gameObject.name}", this);
+        //Debug.Log( $"Beginning:  StartFinalActionsToDisableOrDestroyThisScriptAndParentGameObject() | in: this Object:{this.gameObject.name}", this);
         
         FinalActionsToDisableOrDestroyThisScriptAndParentGameObject();
 
-        Debug.Log( $"Ending:  StartFinalActionsToDisableOrDestroyThisScriptAndParentGameObject() | in: this Object:{this.gameObject.name}", this);
+        //Debug.Log( $"Ending:  StartFinalActionsToDisableOrDestroyThisScriptAndParentGameObject() | in: this Object:{this.gameObject.name}", this);
         
     }// End FinalActionsToDisableOrDestroyThisScriptAndPArentGameObject
 
