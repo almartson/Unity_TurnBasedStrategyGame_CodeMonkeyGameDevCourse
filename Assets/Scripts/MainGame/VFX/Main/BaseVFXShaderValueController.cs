@@ -5,7 +5,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public abstract class BaseDissolvingController : MonoBehaviour
+public abstract class BaseVFXShaderValueController : MonoBehaviour
 {
 
     #region Attributes
@@ -377,19 +377,6 @@ public abstract class BaseDissolvingController : MonoBehaviour
             DoExecuteOtherActionsBeforeShadersVFXStarts();
         }
         
-        // 0.1- VFX's Values "Initialization":
-        //
-        // INITIALIZE HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-        //
-        /*
-         * Que al poner el BOOL REVERSE o NORMAL:  SE BASE EN:
-                                    1. [ ] MINVALUE y MAX VALUE
-                                        1. [ ] CUando cambie el BOOLEAN: NORMAL LO ARREGLE ALL TO:
-                                            1. [ ] -> MIN TO MAx
-                                        2. [ ] cuANDO LO PONGA EN **REVERSE**, lo ponga ALL in:
-                                        3. [ ] MAX to -> MIN
-         */
-         
         
         // 0.2- Mark that the Coroutine Started:
         //
