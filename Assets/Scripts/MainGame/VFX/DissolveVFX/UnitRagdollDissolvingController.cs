@@ -38,7 +38,7 @@ public class UnitRagdollDissolvingController : BaseDissolvingController
             //
             // Start the VFX as a Coroutine
             //
-            StartCoroutine(DoStartVFX( _normalDirectionForShaderValueIncrease ));
+            StartCoroutine(DoStartVFX());
 
         }//End if (TryUndoVFX())
 

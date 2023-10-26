@@ -39,58 +39,82 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
     [Tooltip("[READONLY, for DEBUG PURPOSES] Sign of the 'INCREASE' in the VFX Shader's Value (+1  or -1).")]
     [SerializeField]
-    protected int _shaderVFXDirectionIncrease = 1;
+    protected sbyte _shaderVFXDirectionIncrease = 1;
 
+    [Tooltip("Initializes MIN, MAX and 'Current' Shader Values by itself (NOTE: it uses 0.0f and 1.0f as MIN and MAX DEFAULTS!).")]
+    [SerializeField]
+    protected bool _smartAutomaticShaderValuesInitialization = true;
+
+    
+    [Tooltip("Starting / INITIAL Value for the VFX's Shader Effect we want to INCREASE / DECREASE over time (e.g.: '_dissolveAmount').")]
+    [SerializeField]
+    protected float _shaderVFXMainValueInitialization = 0.0f;
+    
+    [Tooltip("MINIMUM Limit that the VFX's Shader Effect we want to INCREASE / DECREASE over time (e.g.: '_dissolveAmount') must try to get in to.")]
+    [SerializeField]
+    protected float _minimumShaderVFXMainValueLimit = 0.0f;
+    
+    [Tooltip("MAXIMUM Limit that the VFX's Shader Effect we want to INCREASE / DECREASE over time (e.g.: '_dissolveAmount') must try to get in to.")]
+    [SerializeField]
+    protected float _maximumShaderVFXMainValueLimit = 1.0f;
+    
+    
+    /// <summary>
+    /// (DEFAULT) MINIMUM Limit that the VFX's Shader Effect we want to INCREASE / DECREASE over time (e.g.: '_dissolveAmount') must try to get in to.
+    /// </summary>
+    protected const float _MINIMUM_DEFAULT_SHADER_VFX_MAIN_VALUE_LIMIT = 0.0f;
+    
+    /// <summary>
+    /// (DEFAULT) MAXIMUM Limit that the VFX's Shader Effect we want to INCREASE / DECREASE over time (e.g.: '_dissolveAmount') must try to get in to.
+    /// </summary>
+    protected const float _MAXIMUM_DEFAULT_SHADER_VFX_MAIN_VALUE_LIMIT = 1.0f;
+    
     
     [Space(10)]
-    [Header("[Readonly for Debugging] Current 'Dissolve Value' for the Shader (VFX):")]
+    [Header("[Readonly for Debugging] Current 'Main Value' to play with the Shader (VFX):")]
 
-    [Tooltip("[Readonly for Debugging purposes] Cache of:  Variable that represents the Amount of 'Erosion' (i.e.: Dissolution...) on the Material shown.")]
+    [Tooltip("[READONLY for Debugging purposes] Cache of:  Current 'Main Value' (VARIABLE) to play with the Shader (VFX)")]
     [SerializeField]
-    protected float _dissolveAmount = 0.0f;
+    protected float _shaderVFXMainValue = 0.0f;
     
-    [Tooltip("Starting / INITIAL Value for the VFX's Shader Effect (i.e.: '_dissolveAmount').")]
-    [SerializeField]
-    protected float _dissolveAmountInitialization = 0.0f;
+
+    #region VFX Shader: 'Main Value' (VARIABLE): Value and Time Rates
     
-    [Tooltip("Limit that the VFX's Shader Effect (i.e.: '_dissolveAmount') must try to get in to.")]
-    [SerializeField]
-    protected float _dissolveAmountLimit = 1.0f;
-    
-    #region VFX Shader: Dissolve VFX's: Value and Time Rates
-    
-    [Space()]   [Header("VFX Shader: Dissolve VFX's: Value and Time Rates")]
+    [Space()]   [Header("VFX Shader: 'Main Value' (VARIABLE): Value and Time Rates")]
     [Space(10)]
 
     // Option 1:  Calculate everything based on TOTAL TIME for the VFX.
 
     [Header("Option 1:  Calculate everything based on TOTAL TIME for the VFX. ZERO (0) means 'false', so it would NOT be used.")]
     
-    [Tooltip("RECOMMENDED, NON ZERO: Let it be zero (0.0f) if you don't want to use it!")]
+    [Tooltip("RECOMMENDED, NON ZERO: Let it be zero (0.0f) if you don't want to use it! \nCalculate everything based on TOTAL TIME for the SHADER's VFX.")]
     [SerializeField]
-    protected float _useTotalDissolveTime = 1.5f; // 1.5f
+    protected float _useTotalTime = 1.5f; // 1.5f
 
 
-    // Option 2:  Specify every value here for the VFX (and let '_useTotalDissolveTime' = 0).
+    // Option 2:  Specify every value here for the VFX (and let '_useTotalTime' = 0).
 
     [Space()]
-    [Header("Option 2:  Specify every value here for the VFX (and let '_useTotalDissolveTime' = 0).")]
+    [Header("Option 2:  Specify every value here for the VFX (and let '_useTotalTime' = 0).")]
 
-    [Tooltip("Rate of change per frame of the Dissolving effect.")]
+    [Tooltip("'Rate of change per frame' of the Shader Effect.")]
     [SerializeField]
-    protected float _dissolveChangeRate = 0.0111f; // 0.0125f;
+    protected float _shaderVFXMainValueChangeRate = 0.0111f; // 0.0125f;
 
-    [Tooltip("Time to 'yield return WaitForSeconds(this time var...)' between any change in Dissolve in this VFX's Coroutine")]
+    [Tooltip("Time to ('wait'):  'yield return WaitForSeconds(this time var...)' between any changes/updates in the SHADER's Effect in this VFX's Coroutine")]
     [SerializeField]
     protected float _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame = 0.0123f; // 0.025f;
 
-    
+
+    [Tooltip("Time to ('wait'):  'yield return WaitForSeconds(this time var...)' between any changes/updates in the SHADER's Effect in this VFX's Coroutine")]
+    protected const string _SHADER_VFX_MAIN_VALUE_PROPERTY_NAME_IN_SHADER = ""; // "_DissolveAmount";
+
     /// <summary>
     /// Cache of:  Variable that represents the Amount of "Erosion" (i.e.: Dissolution...) on the Material shown.
     /// </summary>
-    private static readonly int _DissolveAmount = Shader.PropertyToID("_DissolveAmount");
+    private static readonly int _ShaderVFXMainPropertyToPlayWith = Shader.PropertyToID($"{_SHADER_VFX_MAIN_VALUE_PROPERTY_NAME_IN_SHADER}");
     
-    #endregion VFX Shader: Dissolve VFX's: Value and Time Rates
+    #endregion VFX Shader: 'Main Value' (VARIABLE): Value and Time Rates
     
     
     [Space(10)]
@@ -135,7 +159,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     #endregion Materials Case Scenario  2-: Mesh Renderer's Materials
 
 
-    [Tooltip("[ReadOnly for Debug] Array of ALL Materials that will be 'VFX Dissolve'd' :) (that belong to the '3D Mesh').")]
+    [Tooltip("[ReadOnly for Debug] Array of ALL Materials that will be processed by the VFX :) (that belong to the '3D Mesh').")]
     [SerializeField]
     protected Material[] _arrayOfCachedMaterials;
 
@@ -144,7 +168,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     #endregion VFX Shader Graph
 
         
-    #region Dissolve VFX: Suplementary Actions
+    #region Shader and VFX: Suplementary Actions
     
     #region Detachment from the VFX
     
@@ -154,11 +178,11 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     [Space(10)]
     [Header("DETACH GameObjects...")]
     
-    [Tooltip("[Before the VFX starts] Do you need to DETACH an Array of GameObjects (from the Main Parent)? \n(and left on the Scene, untouched) from its Parent GameObject (i.e.: the one which will be 'Dissolved' with the VFX).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [Tooltip("[Before the VFX starts] Do you need to DETACH an Array of GameObjects (from the Main Parent)? \n(and left on the Scene, untouched) from its Parent GameObject (i.e.: the one which will be 'processed' by the VFX).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
     [SerializeField]
     protected bool _detachGameObjectsFromParentVFXsGameObjectBeforeVFXStarts = false;
 
-    [Tooltip("[Before the VFX starts] Array of GameObjects that will be detached (and left on the Scene, untouched) from its Parent GameObject (i.e.: the one which will be 'Dissolved' with the VFX).\n\n Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [Tooltip("[Before the VFX starts] Array of GameObjects that will be detached (and left on the Scene, untouched) from its Parent GameObject (i.e.: the one which will be 'processed' by the VFX).\n\n Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
     [SerializeField]
     protected GameObject[] _arrayOfGameObjectsToDetachFromParentVFXsGameObjectBeforeVFXStarts;
     
@@ -197,11 +221,11 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     [Space(10)]
     [Header("DETACH GameObjects...")]
 
-    [Tooltip("[After the VFX ends] Do you need to DETACH an Array of GameObjects (from the Main Parent)? \n(and left on the Scene, untouched) from its Parent GameObject (i.e.: the one which will be 'Dissolved' with the VFX).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [Tooltip("[After the VFX ends] Do you need to DETACH an Array of GameObjects (from the Main Parent)? \n(and left on the Scene, untouched) from its Parent GameObject (i.e.: the one which will be 'processed' by the VFX).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
     [SerializeField]
     protected bool _detachGameObjectsFromParentVFXsGameObjectAfterVFXEnds = false;
     
-    [Tooltip("[After the VFX ends] Array of GameObjects that will be detached (and left on the Scene, untouched) from its Parent GameObject (i.e.: the one which will be 'Dissolved' with the VFX).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
+    [Tooltip("[After the VFX ends] Array of GameObjects that will be detached (and left on the Scene, untouched) from its Parent GameObject (i.e.: the one which will be 'processed' by the VFX).\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats, etc..")]
     [SerializeField]
     protected GameObject[] _arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds;
     
@@ -266,7 +290,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     
     #endregion Detachment from the VFX
 
-    #endregion Dissolve VFX: Suplementary Actions
+    #endregion Shader and VFX: Suplementary Actions
 
 
     #endregion Attributes
@@ -319,7 +343,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         #endregion Materials List
 
 
-        #region VFX Shader: Dissolve VFX's: Value and Time Rates
+        #region VFX Shader's: 'Main Value': Amount  and  Time Rates
 
         // Initialize Boolean Flag for the VFX (Shader Effect's) Coroutine:
         //
@@ -327,16 +351,13 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         
         #region Option 1 and Option 2:  Calculate everything based on TOTAL TIME for the VFX.
 
-        CalculateDissolveChangeRateAndTimeBetweenVFXChanges();
+        CalculateShaderVFXMainValueChangeRateAndTimeBetweenVFXUpdates();
 
         #endregion Option 1 and Option 2:  Calculate everything based on TOTAL TIME for the VFX.
 
-        #endregion VFX Shader: Dissolve VFX's: Value and Time Rates
+        #endregion VFX Shader's: 'Main Value': Amount  and  Time Rates
 
-    }
-
-
-    // End Awake()
+    }// End Awake()
 
 
     /// <summary>
@@ -362,12 +383,12 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     /// <summary>
     /// Starts the whole VFX. <br /> <br />
     /// It works as a Coroutine. <br /> <br />
-    /// The Shader Effect treated here can be one of tow options: <br /> <br />
+    /// The Shader Effect treated here can be one of two options: <br /> <br />
     /// 1- From:   Zero (0.0f) -> to -> One  (1.0f):  NORMAL DIRECTION = true <br />
     /// 2- From:   One  (1.0f) -> to -> Zero (0.0f).  NORMAL DIRECTION = false; it is a REVERSE. <br />
     /// </summary>
     /// <returns></returns>
-    protected virtual IEnumerator DoStartVFX(bool normalDirectionForShaderValueIncrease)
+    protected virtual IEnumerator DoStartVFX()
     {
         
         // 0- ACTIONS TO execute:  Before VFX Starts
@@ -377,6 +398,10 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
             DoExecuteOtherActionsBeforeShadersVFXStarts();
         }
         
+        // 0.1- VFX's Values "Initialization":
+        //
+        InitializeVFXsShaderParameters();
+
         
         // 0.2- Mark that the Coroutine Started:
         //
@@ -397,34 +422,31 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         if ((_arrayOfCachedMaterials.Length > 0) && (_arrayOfCachedMaterials[0] != null))
         {
 
-            // Initialize the 'DissolveAmount' variable, to change the "Dissolve Amount" parameter
+            // Initialize the '_shaderVFXMainValue' variable, to change the "Shader's ID_Property" parameter
             //
-            // _dissolveAmount = _arrayOfCachedMaterials[0].GetFloat(_DissolveAmount);
-            //
-            _dissolveAmount = InitializeVFXsShaderValue( normalDirectionForShaderValueIncrease, _arrayOfCachedMaterials[0].GetFloat(_DissolveAmount) );
+            _shaderVFXMainValue = _arrayOfCachedMaterials[0].GetFloat(_ShaderVFXMainPropertyToPlayWith);
 
-
-            while ( CheckShaderValueCondition(_dissolveAmount, _dissolveAmountLimit, normalDirectionForShaderValueIncrease) )
+            while ( CheckShaderValueCondition() )
             {
 
-                // Increase the "Dissolve Amount" parameter:
+                // Increase the '_shaderVFXMainValue' parameter:
                 //
-                CalculateDissolveChangeRateAndTimeBetweenVFXChanges();
+                CalculateShaderVFXMainValueChangeRateAndTimeBetweenVFXUpdates();
                 //
-                _dissolveAmount += (_dissolveChangeRate * _shaderVFXDirectionIncrease);
+                _shaderVFXMainValue += (_shaderVFXMainValueChangeRate * _shaderVFXDirectionIncrease);
 
-                // Assign the new "Dissolve Amount" value:
+                // Assign the new '_shaderVFXMainValue' value:
                 //
                 for (int i = 0; i < _arrayOfCachedMaterials.Length; i++)
                 {
-                    // Set the new value of "_DissolveAmount" in the Shader
+                    // Set the new value of '_shaderVFXMainValue' in the Shader
                     //
-                    _arrayOfCachedMaterials[i].SetFloat(_DissolveAmount, _dissolveAmount);
+                    _arrayOfCachedMaterials[i].SetFloat(_ShaderVFXMainPropertyToPlayWith, _shaderVFXMainValue);
 
 
                     // (YIELD / PAUSE for a time)...  Return of this Coroutine
                     //
-                    if (_useTotalDissolveTime > 0.0f)
+                    if (_useTotalTime > 0.0f)
                     {
                         
                         //Debug.Log( $"yield return null", this);
@@ -471,7 +493,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         _isRunningShaderEffectFromVFXCoroutine = false;
         
         
-        // Execute some one-time (rather one-frame) actions just when the Dissolve effect (VFX's Shader) ENDS.
+        // Execute some one-time (rather one-frame) actions just when the Effect (VFX Shader's) ENDS.
         //
         DoExecuteOtherActionsAfterShadersVFXEnds();
         
@@ -480,22 +502,20 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
     /// <summary>
     /// Checks to see if the Shader's conditions are already met (so we would stop a Coroutine or Method Loop). <br /><br />
-    /// For example:   if ( _dissolveAmount < 1 ) ...
+    /// For example:   <code>if ( _shaderPropertyValue is less than 1.0f )...</code>
     /// </summary>
-    /// <param name="shaderValue"></param>
-    /// <param name="currentValue"></param>
-    /// <param name="limitValue"></param>
-    /// <param name="normalDirectionForShaderValueIncrease"></param>
-    protected virtual bool CheckShaderValueCondition(float currentValue, float limitValue, bool normalDirectionForShaderValueIncrease)
+    /// <returns></returns>
+    protected virtual bool CheckShaderValueCondition()   // (float currentValue, float minLimitValue, float maxLimitValue, bool normalDirectionForShaderValueIncrease)
     {
-        
-        if ( normalDirectionForShaderValueIncrease )
+        // Check that the current Shader value is within the established:  Limits
+        //
+        if ( _normalDirectionForShaderValueIncrease )
         {
-            return (currentValue <= limitValue);
+            return (_shaderVFXMainValue < _maximumShaderVFXMainValueLimit);
         }
         else
         {
-            return (currentValue >= limitValue);
+            return (_shaderVFXMainValue > _minimumShaderVFXMainValueLimit);
         }
 
     }// End CheckShaderValueCondition
@@ -517,6 +537,11 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         _hasFinishedExecutionOfActionsAfterVFXEnds = false;
         _isRunningShaderEffectFromVFXCoroutine = false;
         
+        // 0.1- VFX's Values "Initialization":
+        //
+        InitializeVFXsShaderParameters();
+
+        
         // Null check validations:
 
         // 1- VFX Graph (particles) effect:
@@ -533,24 +558,24 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         //
         StopAllCoroutines();
 
-        // Validate and reassign to zero the Shader's "Dissolve Amount" value
+        // Validate and reassign to zero the Shader's  "Main Variable":
         //
         if ((_arrayOfCachedMaterials.Length > 0) && (_arrayOfCachedMaterials[0] != null))
         {
 
-            // 'DissolveAmount' variable, to change the "Dissolve Amount" parameter
+            // Re-Initialize the Shader's  cached "Main Variable":
             //
-            _dissolveAmount = _dissolveAmountInitialization;
+            _shaderVFXMainValue = _shaderVFXMainValueInitialization;
 
 
-            // Assign the new "Dissolve Amount" value:
+            // Assign that  cached "Main Variable"  to the Shader Property  (in each Material):
             //
             for (int i = 0; i < _arrayOfCachedMaterials.Length; i++)
             {
 
-                // Set the new value of "_DissolveAmount" in the Shader
+                // Set the (cached "Main Variable")  Value in the Shader
                 //
-                _arrayOfCachedMaterials[i].SetFloat(_DissolveAmount, _dissolveAmount);
+                _arrayOfCachedMaterials[i].SetFloat(_ShaderVFXMainPropertyToPlayWith, _shaderVFXMainValue);
 
             } //End for
 
@@ -562,81 +587,170 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
         return successInThisMethod;
 
-    } // End UndoVFX()
+    }// End TryUndoVFX()
 
 
     #region Misc Methods
     
-        
     /// <summary>
-    /// Initializes the Shader's Value + the '_dissolveChangeRate' sign <br /><br />
-    /// +  for NORMAL DIRECTION / INCREASE Shader's VFX value) <br /><br />
-    /// -  for INVERSE DIRECTION / DECREASE Shader's VFX value) <br /><br />
+    /// Initializes the Shader's Values to work with, such as: <br />
+    /// 1- DIRECTION (the sign: (+1) or (-1) will determine a SHADERS VALUE that INCREASES or DECREASES over time) <br />
+    /// 2- MINIMUM and MAXIMUM Values for the Shader Value (generally MIN. = 0.0f  and  MAX.= 1.0f) <br /><br />
     /// </summary>
-    /// <param name="normalDirectionForShaderValueIncrease"></param>
-    /// <param name="currentVFXShaderValue"></param>
     /// <returns></returns>
-    protected virtual float InitializeVFXsShaderValue(bool normalDirectionForShaderValueIncrease, float currentVFXShaderValue)
+    protected virtual void InitializeVFXsShaderParameters()
     {
 
         // Step 0:    Calculate the sign of the INCREASE / DECREASE of the Shader Effect:
         //
-        if (normalDirectionForShaderValueIncrease)
+        InitializeVFXsShaderValueDirection();
+        
+        // Step 1:    Set the MINIMUM and MAXIMUM Values for the Shader Value (generally MIN. = 0.0f  and  MAX.= 1.0f):
+        //
+        InitializeVFXsShaderMinMaxAndInitValues();
+        
+    }// End InitializeVFXsShaderValueDirection
+    
+        
+    /// <summary>
+    /// Initializes the Shader's Value DIRECTION: the sign: (+1) or (-1) will determine a SHADERS VALUE that INCREASES or DECREASES over time: <br /><br />
+    /// +  for NORMAL DIRECTION / INCREASE Shader's VFX value):  from MIN to MAX value. <br /><br />
+    /// -  for INVERSE DIRECTION / DECREASE Shader's VFX value):  from MIN to MAX value. <br /><br />
+    /// </summary>
+    /// <returns></returns>
+    protected virtual void InitializeVFXsShaderValueDirection()
+    {
+
+        // Step 0:    Calculate the sign of the INCREASE / DECREASE of the Shader Effect:
+        //
+        if (_normalDirectionForShaderValueIncrease)
         {
-            _shaderVFXDirectionIncrease = (+1);
+            _shaderVFXDirectionIncrease = 1;
         }
         else
         {
-            _shaderVFXDirectionIncrease = (-1);
+            _shaderVFXDirectionIncrease = -1;
 
-        }// if (normalDirectionForShader)
-        
-        // Return the Shader Value:
-        //
-        return currentVFXShaderValue;
+        }// if (normalDirectionForShaderValueIncrease)
 
-    }// End InitializeVFXsShaderValue
-
+    }// End InitializeVFXsShaderValueDirection
+    
     
     /// <summary>
-    /// Option 1 or Option 2:  Calculate everything based on TOTAL TIME ( _useTotalDissolveTime ) for the VFX.
+    /// Initializes the Shader's Values to work with, such as: <br />
+    /// 1- MINIMUM and MAXIMUM Values for the Shader Value (generally MIN. = 0.0f  and  MAX.= 1.0f) <br /><br />
+    /// 2- INITIAL value and CURRENT value. <br /><br />
+    /// NOTE: If the optional boolean flag is set '_smartAutomaticShaderValuesInitialization' = TRUE, then it will do an automatic Initialization the its corresponding MIN or MAX Initial Value.
     /// </summary>
-    protected virtual void CalculateDissolveChangeRateAndTimeBetweenVFXChanges()
+    /// <returns></returns>
+    protected virtual void InitializeVFXsShaderMinMaxAndInitValues()
+    {
+
+        #region LEGEND:   Values considered here
+
+        // _shaderVFXMainValue = 1;
+        // _shaderVFXMainValueInitialization = 1;
+        // _minimumShaderVFXMainValueLimit = 1;
+        // _maximumShaderVFXMainValueLimit = 1;
+
+        #endregion LEGEND:   Values considered here
+        
+
+        // Validation and Correction:
+        //
+        // 1- LIMITS:   MIN  &  MAX
+        //
+        if (_minimumShaderVFXMainValueLimit >= _maximumShaderVFXMainValueLimit)
+        {
+
+            // Set  MIN and MAX:  to default values
+            //
+            _minimumShaderVFXMainValueLimit = _MINIMUM_DEFAULT_SHADER_VFX_MAIN_VALUE_LIMIT;
+            _maximumShaderVFXMainValueLimit = _MAXIMUM_DEFAULT_SHADER_VFX_MAIN_VALUE_LIMIT;
+
+        }//End if (_minimumShaderVFXMainValueLimit >= _maximumShaderVFXMainValueLimit)
+        
+        
+        // 2-  INITIAL Values:   _shaderVFXMainValueInitialization  and  _shaderVFXMainValue
+        //     (NOTE: if '_smartAutomaticShaderValuesInitialization = TRUE', then:  System will Initialize itself, auto-magically :)
+        //
+        if ( (_smartAutomaticShaderValuesInitialization)
+             || (_shaderVFXMainValueInitialization > _maximumShaderVFXMainValueLimit) || (_shaderVFXMainValue > _maximumShaderVFXMainValueLimit) 
+             || (_shaderVFXMainValueInitialization < _minimumShaderVFXMainValueLimit) || (_shaderVFXMainValue < _minimumShaderVFXMainValueLimit) )
+        {
+
+            // NORMAL: ++ INCREASING value
+            //
+            if (_normalDirectionForShaderValueIncrease)
+            {
+
+                // Wrong values (over the MAX)  or (below the MIN)
+                // Correct, set to MINIMUM:
+                //
+                _shaderVFXMainValueInitialization = _shaderVFXMainValue = _minimumShaderVFXMainValueLimit;
+            }
+            else
+            {
+                // REVERSE: -- DECREASING value
+                
+                // Wrong values (over the MAX)  or (below the MIN)
+                // Correct, set to MAXIMUM:
+                //
+                _shaderVFXMainValueInitialization = _shaderVFXMainValue = _maximumShaderVFXMainValueLimit;
+
+            }//End else of if (_normalDirectionForShaderValueIncrease)
+
+
+        }//End if ( (_smartAutomaticShaderValuesInitialization)...
+        // else
+        // {
+        //     // Everything is CORRECT!
+        // }//End else of if ( (_smartAutomaticShaderValuesInitialization)...
+
+    }// End InitializeVFXsShaderMinMaxAndInitValues
+
+    
+    // During:   LOOP TIME  (Calculations):
+    
+    /// <summary>
+    /// Option 1 or Option 2:  Calculate everything based on TOTAL TIME ( _useTotalTime ) for the VFX.
+    /// </summary>
+    protected virtual void CalculateShaderVFXMainValueChangeRateAndTimeBetweenVFXUpdates()
     {
 
         // Option 1:  Calculate everything based on TOTAL TIME for the VFX.
         //
-        if (_useTotalDissolveTime > 0.0f)
+        if (_useTotalTime > 0.0f)
         {
             
             // Fix Time between VFX small Changes:
             //
             _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame = Time.deltaTime;
                 
-            // [ DissolveAmountThisFrame = ?? = 
-            // = ( timeDeltaTimeOfDissolve * (1.0)TotalDissolveAmount ) / MY TotalDissolveTime ]
+            // [ _shaderVFXMainValue UPDATE only in This Frame = ?? = 
+            // = ( timeDeltaTimeOfUpdate * (1.0)Total_shaderVFXMainValue ) / MY Total_shaderVFXMainValue_Time ]
 
-            _dissolveChangeRate = _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame / _useTotalDissolveTime;
+            _shaderVFXMainValueChangeRate = _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame / _useTotalTime;
             
         } // End Option 1:  Calculate everything based on TOTAL TIME for the VFX.
         
         // NOTE:  Option 2 is happening with no further Calculations, just by using the initial values from the Inspector.
-        // So it complies with the condition:   if (_useTotalDissolveTime <= 0.0f)
+        // So it complies with the condition:   if (_useTotalTime <= 0.0f)
         
-    }// End CalculateDissolveChangeRate
+    }// End CalculateShaderVFXMainValueChangeRateAndTimeBetweenVFXUpdates
 
     
     #endregion Misc Methods
 
     
       
-    #region Dissolve VFX: Suplementary Actions
+    #region Shader and VFX: Suplementary Actions
 
 
     #region Before the VFX starts
     
     /// <summary>
-    /// Execute other action just: "Before" the VFX (Dissolve effect (VFX's Shader)) STARTS. <br />
+    /// Execute other action just: "Before" the VFX (Shader Effect) STARTS. <br />
     /// <br />
     /// Notice: <br />
     /// 1- This is a VIRTUAL Method, so it can be rewritten in Children Classes (by using the KEYWORD "override" and you may use the Method:  "base.DoExecuteOtherActionsBeforeShadersVFXStarts()" in its first line in children classes to also execute its base behaviour from its definition in this class). <br />
@@ -679,7 +793,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     #region After the VFX ends
     
     /// <summary>
-    /// Execute other action just when the Dissolve effect (VFX's Shader) ENDS. <br />
+    /// Execute other action just when the Shader Effect ENDS. <br />
     /// <br />
     /// Notice: <br />
     /// 1- This is a VIRTUAL Method, so it can be rewritten in Children Classes (by using the KEYWORD "override" and you may use the Method:  "base.DoExecuteOtherActionsAfterShadersVFXEnds()" in its first line in children classes to also execute its base behaviour from its definition in this class). <br />
@@ -1052,7 +1166,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
 
     #endregion Detachment from the VFX
-    #endregion Dissolve VFX: Suplementary Actions
+    #endregion Shader and VFX: Suplementary Actions
     
     
     #endregion My Custom Methods

@@ -39,24 +39,45 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
     [Tooltip("[READONLY, for DEBUG PURPOSES] Sign of the 'INCREASE' in the VFX Shader's Value (+1  or -1).")]
     [SerializeField]
-    protected int _shaderVFXDirectionIncrease = 1;
+    protected sbyte _shaderVFXDirectionIncrease = 1;
 
-    
-    [Space(10)]
-    [Header("[Readonly for Debugging] Current 'Dissolve Value' for the Shader (VFX):")]
-
-    [Tooltip("[Readonly for Debugging purposes] Cache of:  Variable that represents the Amount of 'Erosion' (i.e.: Dissolution...) on the Material shown.")]
+    [Tooltip("Initializes MIN, MAX and 'Current' Shader Values by itself (NOTE: it uses 0.0f and 1.0f as MIN and MAX DEFAULTS!).")]
     [SerializeField]
-    protected float _dissolveAmount = 0.0f;
+    protected bool _smartAutomaticShaderValuesInitialization = true;
+
     
     [Tooltip("Starting / INITIAL Value for the VFX's Shader Effect (i.e.: '_dissolveAmount').")]
     [SerializeField]
     protected float _dissolveAmountInitialization = 0.0f;
     
-    [Tooltip("Limit that the VFX's Shader Effect (i.e.: '_dissolveAmount') must try to get in to.")]
+    [Tooltip("MINIMUM Limit that the VFX's Shader Effect (i.e.: '_dissolveAmount') must try to get in to.")]
     [SerializeField]
-    protected float _dissolveAmountLimit = 1.0f;
+    protected float _minimumDissolveAmountLimit = 0.0f;
     
+    [Tooltip("MAXIMUM Limit that the VFX's Shader Effect (i.e.: '_dissolveAmount') must try to get in to.")]
+    [SerializeField]
+    protected float _maximumDissolveAmountLimit = 1.0f;
+    
+    
+    /// <summary>
+    /// (DEFAULT) MINIMUM Limit that the VFX's Shader Effect (i.e.: '_dissolveAmount') must try to get in to.
+    /// </summary>
+    protected const float _MINIMUM_DEFAULT_SHADER_VALUE_LIMIT = 0.0f;
+    
+    /// <summary>
+    /// (DEFAULT) MAXIMUM Limit that the VFX's Shader Effect (i.e.: '_dissolveAmount') must try to get in to.
+    /// </summary>
+    protected const float _MAXIMUM_DEFAULT_SHADER_VALUE_LIMIT = 1.0f;
+    
+    
+    [Space(10)]
+    [Header("[Readonly for Debugging] Current 'Dissolve Value' for the Shader (VFX):")]
+
+    [Tooltip("[READONLY for Debugging purposes] Cache of:  Variable that represents the Amount of 'Erosion' (i.e.: Dissolution...) on the Material shown.")]
+    [SerializeField]
+    protected float _dissolveAmount = 0.0f;
+    
+
     #region VFX Shader: Dissolve VFX's: Value and Time Rates
     
     [Space()]   [Header("VFX Shader: Dissolve VFX's: Value and Time Rates")]
@@ -333,10 +354,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
         #endregion VFX Shader: Dissolve VFX's: Value and Time Rates
 
-    }
-
-
-    // End Awake()
+    }// End Awake()
 
 
     /// <summary>
@@ -367,7 +385,7 @@ public abstract class BaseDissolvingController : MonoBehaviour
     /// 2- From:   One  (1.0f) -> to -> Zero (0.0f).  NORMAL DIRECTION = false; it is a REVERSE. <br />
     /// </summary>
     /// <returns></returns>
-    protected virtual IEnumerator DoStartVFX(bool normalDirectionForShaderValueIncrease)
+    protected virtual IEnumerator DoStartVFX()
     {
         
         // 0- ACTIONS TO execute:  Before VFX Starts
@@ -379,17 +397,8 @@ public abstract class BaseDissolvingController : MonoBehaviour
         
         // 0.1- VFX's Values "Initialization":
         //
-        // INITIALIZE HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-        //
-        /*
-         * Que al poner el BOOL REVERSE o NORMAL:  SE BASE EN:
-                                    1. [ ] MINVALUE y MAX VALUE
-                                        1. [ ] CUando cambie el BOOLEAN: NORMAL LO ARREGLE ALL TO:
-                                            1. [ ] -> MIN TO MAx
-                                        2. [ ] cuANDO LO PONGA EN **REVERSE**, lo ponga ALL in:
-                                        3. [ ] MAX to -> MIN
-         */
-         
+        InitializeVFXsShaderParameters();
+
         
         // 0.2- Mark that the Coroutine Started:
         //
@@ -412,12 +421,9 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
             // Initialize the 'DissolveAmount' variable, to change the "Dissolve Amount" parameter
             //
-            // _dissolveAmount = _arrayOfCachedMaterials[0].GetFloat(_DissolveAmount);
-            //
-            _dissolveAmount = InitializeVFXsShaderValue( normalDirectionForShaderValueIncrease, _arrayOfCachedMaterials[0].GetFloat(_DissolveAmount) );
+            _dissolveAmount = _arrayOfCachedMaterials[0].GetFloat(_DissolveAmount);
 
-
-            while ( CheckShaderValueCondition(_dissolveAmount, _dissolveAmountLimit, normalDirectionForShaderValueIncrease) )
+            while ( CheckShaderValueCondition() )
             {
 
                 // Increase the "Dissolve Amount" parameter:
@@ -495,20 +501,18 @@ public abstract class BaseDissolvingController : MonoBehaviour
     /// Checks to see if the Shader's conditions are already met (so we would stop a Coroutine or Method Loop). <br /><br />
     /// For example:   if ( _dissolveAmount < 1 ) ...
     /// </summary>
-    /// <param name="shaderValue"></param>
-    /// <param name="currentValue"></param>
-    /// <param name="limitValue"></param>
-    /// <param name="normalDirectionForShaderValueIncrease"></param>
-    protected virtual bool CheckShaderValueCondition(float currentValue, float limitValue, bool normalDirectionForShaderValueIncrease)
+    /// <returns></returns>
+    protected virtual bool CheckShaderValueCondition()   // (float currentValue, float minLimitValue, float maxLimitValue, bool normalDirectionForShaderValueIncrease)
     {
-        
-        if ( normalDirectionForShaderValueIncrease )
+        // Check that the current Shader value is within the established:  Limits
+        //
+        if ( _normalDirectionForShaderValueIncrease )
         {
-            return (currentValue <= limitValue);
+            return (_dissolveAmount < _maximumDissolveAmountLimit);
         }
         else
         {
-            return (currentValue >= limitValue);
+            return (_dissolveAmount > _minimumDissolveAmountLimit);
         }
 
     }// End CheckShaderValueCondition
@@ -529,6 +533,11 @@ public abstract class BaseDissolvingController : MonoBehaviour
         _hasFinishedExecutionOfActionsBeforeVFXStarts = false;
         _hasFinishedExecutionOfActionsAfterVFXEnds = false;
         _isRunningShaderEffectFromVFXCoroutine = false;
+        
+        // 0.1- VFX's Values "Initialization":
+        //
+        InitializeVFXsShaderParameters();
+
         
         // Null check validations:
 
@@ -580,36 +589,126 @@ public abstract class BaseDissolvingController : MonoBehaviour
 
     #region Misc Methods
     
-        
     /// <summary>
-    /// Initializes the Shader's Value + the '_dissolveChangeRate' sign <br /><br />
-    /// +  for NORMAL DIRECTION / INCREASE Shader's VFX value) <br /><br />
-    /// -  for INVERSE DIRECTION / DECREASE Shader's VFX value) <br /><br />
+    /// Initializes the Shader's Values to work with, such as: <br />
+    /// 1- DIRECTION (the sign: (+1) or (-1) will determine a SHADERS VALUE that INCREASES or DECREASES over time) <br />
+    /// 2- MINIMUM and MAXIMUM Values for the Shader Value (generally MIN. = 0.0f  and  MAX.= 1.0f) <br /><br />
     /// </summary>
-    /// <param name="normalDirectionForShaderValueIncrease"></param>
-    /// <param name="currentVFXShaderValue"></param>
     /// <returns></returns>
-    protected virtual float InitializeVFXsShaderValue(bool normalDirectionForShaderValueIncrease, float currentVFXShaderValue)
+    protected virtual void InitializeVFXsShaderParameters()
     {
 
         // Step 0:    Calculate the sign of the INCREASE / DECREASE of the Shader Effect:
         //
-        if (normalDirectionForShaderValueIncrease)
+        InitializeVFXsShaderValueDirection();
+        
+        // Step 1:    Set the MINIMUM and MAXIMUM Values for the Shader Value (generally MIN. = 0.0f  and  MAX.= 1.0f):
+        //
+        InitializeVFXsShaderMinMaxAndInitValues();
+        
+    }// End InitializeVFXsShaderValueDirection
+    
+        
+    /// <summary>
+    /// Initializes the Shader's Value DIRECTION: the sign: (+1) or (-1) will determine a SHADERS VALUE that INCREASES or DECREASES over time: <br /><br />
+    /// +  for NORMAL DIRECTION / INCREASE Shader's VFX value):  from MIN to MAX value. <br /><br />
+    /// -  for INVERSE DIRECTION / DECREASE Shader's VFX value):  from MIN to MAX value. <br /><br />
+    /// </summary>
+    /// <returns></returns>
+    protected virtual void InitializeVFXsShaderValueDirection()
+    {
+
+        // Step 0:    Calculate the sign of the INCREASE / DECREASE of the Shader Effect:
+        //
+        if (_normalDirectionForShaderValueIncrease)
         {
-            _shaderVFXDirectionIncrease = (+1);
+            _shaderVFXDirectionIncrease = 1;
         }
         else
         {
-            _shaderVFXDirectionIncrease = (-1);
+            _shaderVFXDirectionIncrease = -1;
 
-        }// if (normalDirectionForShader)
+        }// if (normalDirectionForShaderValueIncrease)
+
+    }// End InitializeVFXsShaderValueDirection
+    
+    
+    /// <summary>
+    /// Initializes the Shader's Values to work with, such as: <br />
+    /// 1- MINIMUM and MAXIMUM Values for the Shader Value (generally MIN. = 0.0f  and  MAX.= 1.0f) <br /><br />
+    /// 2- INITIAL value and CURRENT value. <br /><br />
+    /// NOTE: If the optional boolean flag is set '_smartAutomaticShaderValuesInitialization' = TRUE, then it will do an automatic Initialization the its corresponding MIN or MAX Initial Value.
+    /// </summary>
+    /// <returns></returns>
+    protected virtual void InitializeVFXsShaderMinMaxAndInitValues()
+    {
+
+        #region LEGEND:   Values considered here
+
+        // _dissolveAmount = 1;
+        // _dissolveAmountInitialization = 1;
+        // _maximumDissolveAmountLimit = 1;
+        // _minimumDissolveAmountLimit = 1;
+        // //_DissolveAmount = 1; // This is the SHADER'S ID_PROPERTY, don't care about this one.
+
+        #endregion LEGEND:   Values considered here
         
-        // Return the Shader Value:
+
+        // Validation and Correction:
         //
-        return currentVFXShaderValue;
+        // 1- LIMITS:   MIN  &  MAX
+        //
+        if (_minimumDissolveAmountLimit >= _maximumDissolveAmountLimit)
+        {
 
-    }// End InitializeVFXsShaderValue
+            // Set  MIN and MAX:  to default values
+            //
+            _minimumDissolveAmountLimit = _MINIMUM_DEFAULT_SHADER_VALUE_LIMIT;
+            _maximumDissolveAmountLimit = _MAXIMUM_DEFAULT_SHADER_VALUE_LIMIT;
 
+        }//End if (! (_minimumDissolveAmountLimit < _maximumDissolveAmountLimit))
+        
+        
+        // 2-  INITIAL Values:   _dissolveAmountInitialization  and  _dissolveAmount
+        //     (NOTE: if '_smartAutomaticShaderValuesInitialization = TRUE', then:  System will Initialize itself, auto-magically :)
+        //
+        if ( (_smartAutomaticShaderValuesInitialization)
+             || (_dissolveAmountInitialization > _maximumDissolveAmountLimit) || (_dissolveAmount > _maximumDissolveAmountLimit) 
+             || (_dissolveAmountInitialization < _minimumDissolveAmountLimit) || (_dissolveAmount < _minimumDissolveAmountLimit) )
+        {
+
+            // NORMAL: ++ INCREASING value
+            //
+            if (_normalDirectionForShaderValueIncrease)
+            {
+
+                // Wrong values (over the MAX)  or (below the MIN)
+                // Correct, set to MINIMUM:
+                //
+                _dissolveAmountInitialization = _dissolveAmount = _minimumDissolveAmountLimit;
+            }
+            else
+            {
+                // REVERSE: -- DECREASING value
+                
+                // Wrong values (over the MAX)  or (below the MIN)
+                // Correct, set to MAXIMUM:
+                //
+                _dissolveAmountInitialization = _dissolveAmount = _maximumDissolveAmountLimit;
+
+            }//End else of if (_normalDirectionForShaderValueIncrease)
+
+
+        }//End if ( (_smartAutomaticShaderValuesInitialization)...
+        // else
+        // {
+        //     // Everything is CORRECT!
+        // }//End else of if ( (_smartAutomaticShaderValuesInitialization)...
+
+    }// End InitializeVFXsShaderMinMaxAndInitValues
+
+    
+    // During:   LOOP TIME  (Calculations):
     
     /// <summary>
     /// Option 1 or Option 2:  Calculate everything based on TOTAL TIME ( _useTotalDissolveTime ) for the VFX.

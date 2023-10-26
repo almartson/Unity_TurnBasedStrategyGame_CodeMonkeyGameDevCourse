@@ -52,7 +52,7 @@ public class DissolvingControllerTest : BaseDissolvingController
             
             // Start the VFX as a Coroutine
             //
-            StartCoroutine(DoStartVFX( _normalDirectionForShaderValueIncrease ));
+            StartCoroutine(DoStartVFX());
 
         }//End if (Input.GetKeyDown...
         
