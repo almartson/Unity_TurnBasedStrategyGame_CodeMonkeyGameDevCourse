@@ -1,5 +1,190 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5183989984214909653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2905233668529104509}
+  - component: {fileID: 5533471555708003049}
+  - component: {fileID: 6301563512432488317}
+  m_Layer: 0
+  m_Name: TeleportPortalSpawnEffect_VFXGraph
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2905233668529104509
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5183989984214909653}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6538991238205411993}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!2083052967 &5533471555708003049
+VisualEffect:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5183989984214909653}
+  m_Enabled: 1
+  m_Asset: {fileID: 8926484042661614526, guid: b2da1373497852bb2b083827b3d69a18, type: 3}
+  m_InitialEventName: OnPlay
+  m_InitialEventNameOverriden: 0
+  m_StartSeed: 0
+  m_ResetSeedOnPlay: 1
+  m_ResourceVersion: 1
+  m_PropertySheet:
+    m_Float:
+      m_Array:
+      - m_Value: 0
+        m_Name: Delay
+        m_Overridden: 1
+      - m_Value: 7
+        m_Name: Duration
+        m_Overridden: 1
+      - m_Value: 100
+        m_Name: PortalMeshImportSize
+        m_Overridden: 1
+    m_Vector2f:
+      m_Array: []
+    m_Vector3f:
+      m_Array:
+      - m_Value: {x: -90, y: 0, z: 0}
+        m_Name: PortalInitialAngle
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 0, z: 3}
+        m_Name: PortalAngleUpdateOverTime
+        m_Overridden: 1
+      - m_Value: {x: 1, y: 1, z: 1}
+        m_Name: PortalFinalSetScaleTransform
+        m_Overridden: 1
+    m_Vector4f:
+      m_Array: []
+    m_Uint:
+      m_Array: []
+    m_Int:
+      m_Array: []
+    m_Matrix4x4f:
+      m_Array: []
+    m_AnimationCurve:
+      m_Array:
+      - m_Value:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 2
+            outSlope: 2
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        m_Name: MultiplyScale_in_Z_OverLife_AnimationCurve
+        m_Overridden: 1
+    m_Gradient:
+      m_Array:
+      - m_Value:
+          serializedVersion: 2
+          key0: {r: 1, g: 1, b: 1, a: 0}
+          key1: {r: 0.5, g: 0.5, b: 0.5, a: 0.39215687}
+          key2: {r: 0, g: 0, b: 0, a: 1}
+          key3: {r: 0, g: 0, b: 0, a: 0}
+          key4: {r: 0, g: 0, b: 0, a: 0}
+          key5: {r: 0, g: 0, b: 0, a: 0}
+          key6: {r: 0, g: 0, b: 0, a: 0}
+          key7: {r: 0, g: 0, b: 0, a: 0}
+          ctime0: 40632
+          ctime1: 65535
+          ctime2: 0
+          ctime3: 0
+          ctime4: 0
+          ctime5: 0
+          ctime6: 0
+          ctime7: 0
+          atime0: 0
+          atime1: 13079
+          atime2: 40632
+          atime3: 65535
+          atime4: 0
+          atime5: 0
+          atime6: 0
+          atime7: 0
+          m_Mode: 0
+          m_NumColorKeys: 2
+          m_NumAlphaKeys: 4
+        m_Name: ColorAndTransparencyUpdateOverLife
+        m_Overridden: 1
+    m_NamedObject:
+      m_Array: []
+    m_Bool:
+      m_Array: []
+--- !u!73398921 &6301563512432488317
+VFXRenderer:
+  serializedVersion: 1
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5183989984214909653}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &6538991238205902465
 GameObject:
   m_ObjectHideFlags: 0
@@ -1046,9 +1231,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6538991238205411993}
   - component: {fileID: 6538991238198525257}
-  - component: {fileID: 8606918951568989100}
+  - component: {fileID: 1765712372524327110}
   m_Layer: 0
-  m_Name: naruto_sage_MaterializeObjectVFXGraph
+  m_Name: naruto_sage_MaterializeCharacterVFXGraph
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1062,13 +1247,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6538991238205902585}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: 0, z: 6}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6538991238205412009}
   - {fileID: 6538991238205411975}
-  - {fileID: 8606918950804853425}
+  - {fileID: 2905233668529104509}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1092,7 +1277,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8606918951568989100
+--- !u!114 &1765712372524327110
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1101,19 +1286,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 6538991238205902585}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 647b2081958d68bc78707073b0012765, type: 3}
+  m_Script: {fileID: 11500000, guid: 5e9c8e0a7473a814a836f4f576a7545e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isRunningVFXCoroutine: 0
-  _skinnedMeshRenderer: {fileID: 6538991238202721161}
+  _VFXGraph: {fileID: 5533471555708003049}
+  _normalDirectionForShaderValueIncrease: 1
+  _shaderVFXDirectionIncrease: 1
+  _smartAutomaticShaderValuesInitialization: 1
+  _shaderVFXMainValueInitialization: 0
+  _minimumShaderVFXMainValueLimit: 0
+  _maximumShaderVFXMainValueLimit: 1
+  _shaderVFXMainValue: 0
+  _useTotalTime: 1.5
+  _shaderVFXMainValueChangeRate: 0.0111
+  _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame: 0.0123
+  _isRunningShaderEffectFromVFXCoroutine: 0
+  _skinnedMeshRenderer: {fileID: 0}
   _arrayOfCachedSkinnedMeshRendererMaterials: []
   _meshRenderer: {fileID: 0}
   _arrayOfCachedMeshRendererMaterials: []
   _arrayOfCachedMaterials: []
-  _useTotalDissolveTime: 1.111
-  _dissolveChangeRate: 0.0111
-  _refreshRateDeltaTime: 0.0123
-  _VFXGraph: {fileID: 8606918950804853431}
+  _detachGameObjectsFromParentVFXsGameObjectBeforeVFXStarts: 0
+  _arrayOfGameObjectsToDetachFromParentVFXsGameObjectBeforeVFXStarts: []
+  _changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts: 0
+  _enableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts: 0
+  _arrayOfCollidersToDisableBeforeVFXStarts: []
+  _arrayOfRigidbodiesToDisableBeforeVFXStarts: []
+  _detachGameObjectsFromParentVFXsGameObjectAfterVFXEnds: 0
+  _arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds: []
+  _timeDelayToDetachFromParentVFXsGameObjectAfterVFXEnds: 0
+  _changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds: 0
+  _enableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds: 0
+  _arrayOfCollidersToDisableAfterVFXEnds: []
+  _arrayOfRigidbodiesToDisableAfterVFXEnds: []
+  _timeDelayToEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds: 0
+  _largestTimeDelayInSeconds: 0
+  _disableThisScript: 0
+  _disableParentGameObjectAndEveryBehaviourToo: 0
+  _destroyParentGameObjectAndEverything: 0
 --- !u!1 &6538991238205902587
 GameObject:
   m_ObjectHideFlags: 0
@@ -1212,146 +1422,3 @@ Transform:
   m_Father: {fileID: 6538991238205411987}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8606918950804853426
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8606918950804853425}
-  - component: {fileID: 8606918950804853431}
-  - component: {fileID: 8606918950804853424}
-  m_Layer: 0
-  m_Name: DissolveVFXGraph
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8606918950804853425
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8606918950804853426}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6538991238205411993}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!2083052967 &8606918950804853431
-VisualEffect:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8606918950804853426}
-  m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: ebfa1d2b342d54057a17c8986c42ad33, type: 3}
-  m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
-  m_StartSeed: 0
-  m_ResetSeedOnPlay: 1
-  m_ResourceVersion: 1
-  m_PropertySheet:
-    m_Float:
-      m_Array:
-      - m_Value: 3
-        m_Name: Duration
-        m_Overridden: 1
-      - m_Value: 0.2
-        m_Name: Delay
-        m_Overridden: 1
-      - m_Value: 0.05
-        m_Name: MinimumSizeBrightParticles
-        m_Overridden: 1
-      - m_Value: 0.1
-        m_Name: MaximumSizeBrightParticles
-        m_Overridden: 1
-      - m_Value: 0.1
-        m_Name: MinimumSizeDarkParticles
-        m_Overridden: 1
-      - m_Value: 0.4
-        m_Name: MaximumSizeDarkParticles
-        m_Overridden: 1
-    m_Vector2f:
-      m_Array: []
-    m_Vector3f:
-      m_Array:
-      - m_Value: {x: 0.000010245284, y: -0, z: -0}
-        m_Name: Transform_angles
-        m_Overridden: 1
-      - m_Value: {x: 0.28, y: 0.75675046, z: 6.93}
-        m_Name: Transform_position
-        m_Overridden: 1
-      - m_Value: {x: 1, y: 1, z: 1}
-        m_Name: Transform_scale
-        m_Overridden: 1
-    m_Vector4f:
-      m_Array:
-      - m_Value: {x: 3.3634098, y: 0, z: 0, w: 0.7921569}
-        m_Name: Color
-        m_Overridden: 1
-    m_Uint:
-      m_Array: []
-    m_Int:
-      m_Array: []
-    m_Matrix4x4f:
-      m_Array: []
-    m_AnimationCurve:
-      m_Array: []
-    m_Gradient:
-      m_Array: []
-    m_NamedObject:
-      m_Array:
-      - m_Value: {fileID: 6538991238202721161}
-        m_Name: SkinnedMeshRenderer
-        m_Overridden: 1
-    m_Bool:
-      m_Array: []
---- !u!73398921 &8606918950804853424
-VFXRenderer:
-  serializedVersion: 1
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8606918950804853426}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 0
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
