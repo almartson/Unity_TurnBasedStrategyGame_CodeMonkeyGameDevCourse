@@ -1290,7 +1290,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _VFXGraph: {fileID: 5533471555708003049}
-  _normalDirectionForShaderValueIncrease: 1
+  _shaderVFXMainValuePropertyNameInShader: _DissolveAmount
+  _normalDirectionForShaderValueIncrease: 0
   _shaderVFXDirectionIncrease: 1
   _smartAutomaticShaderValuesInitialization: 1
   _shaderVFXMainValueInitialization: 0
@@ -1301,7 +1302,7 @@ MonoBehaviour:
   _shaderVFXMainValueChangeRate: 0.0111
   _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame: 0.0123
   _isRunningShaderEffectFromVFXCoroutine: 0
-  _skinnedMeshRenderer: {fileID: 0}
+  _skinnedMeshRenderer: {fileID: 6538991238202721161}
   _arrayOfCachedSkinnedMeshRendererMaterials: []
   _meshRenderer: {fileID: 0}
   _arrayOfCachedMeshRendererMaterials: []

@@ -27,6 +27,23 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     
     [Space()]
     [Header("VFX Shader Graph")]
+    
+    #region Name of the VFX'x Shader's 'MAIN PROPERTY'
+    
+    [Header("VFX'x Shader's name of 'MAIN PROPERTY' [WARN: SET ON EDITOR TIME only]")]
+    
+    [Tooltip("[READ WARNING IN THE END] \n\n Name of the VFX'x Shader's 'MAIN PROPERTY', which will change/update in the SHADER's Effect in this VFX's Coroutine. \n\n [WARNING: SET ON EDITOR TIME only, because this will be used in a STATIC CONTEXT. There's a fix in code to change the SHADER PROPERTY on runtime, by using 'strings for Shader Property Names', instead of an Optimized 'Shader.PropertyToID(...)', which we are using because its more optimized...]")]
+    [SerializeField]
+    protected string _shaderVFXMainValuePropertyNameInShader = "_DissolveAmount"; // "_DissolveAmount";
+
+    /// <summary>
+    /// Cache of:  Variable that represents the Shader's PARAMETER THAT CHANGES over time (for the VFX on the Shader side to occur...). For Instance: Amount of "Erosion" (i.e.: Dissolution...) on the Material shown.
+    /// </summary>
+    private static int _shaderVFXMainPropertyToPlayWith;    // = Shader.PropertyToID(_shaderVFXMainValuePropertyNameInShader);
+    
+    #endregion Name of the VFX'x Shader's 'MAIN PROPERTY'
+    
+    [Header("Direction of the Shader VFX's value (INCREASE or DECREASE)")]
 
     /// <summary>
     /// Direction of the Shader VFX  (it's Value may INCREASE or DECREASE): <br /><br />
@@ -104,15 +121,6 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     [Tooltip("Time to ('wait'):  'yield return WaitForSeconds(this time var...)' between any changes/updates in the SHADER's Effect in this VFX's Coroutine")]
     [SerializeField]
     protected float _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame = 0.0123f; // 0.025f;
-
-
-    [Tooltip("Time to ('wait'):  'yield return WaitForSeconds(this time var...)' between any changes/updates in the SHADER's Effect in this VFX's Coroutine")]
-    protected const string _SHADER_VFX_MAIN_VALUE_PROPERTY_NAME_IN_SHADER = ""; // "_DissolveAmount";
-
-    /// <summary>
-    /// Cache of:  Variable that represents the Amount of "Erosion" (i.e.: Dissolution...) on the Material shown.
-    /// </summary>
-    private static readonly int _ShaderVFXMainPropertyToPlayWith = Shader.PropertyToID($"{_SHADER_VFX_MAIN_VALUE_PROPERTY_NAME_IN_SHADER}");
     
     #endregion VFX Shader: 'Main Value' (VARIABLE): Value and Time Rates
     
@@ -297,7 +305,8 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
 
     #region Unity Methods
-
+    
+    
     /// <summary>
     /// Awake is called before the Start calls round
     /// </summary>
@@ -345,6 +354,15 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
         #region VFX Shader's: 'Main Value': Amount  and  Time Rates
 
+        #region Name of the VFX'x Shader's 'MAIN PROPERTY'
+    
+        // Initialization of  '_shaderVFXMainPropertyToPlayWith'
+        //
+        _shaderVFXMainPropertyToPlayWith = Shader.PropertyToID(_shaderVFXMainValuePropertyNameInShader);
+    
+        #endregion Name of the VFX'x Shader's 'MAIN PROPERTY'
+    
+        
         // Initialize Boolean Flag for the VFX (Shader Effect's) Coroutine:
         //
         _isRunningShaderEffectFromVFXCoroutine = false;
@@ -424,7 +442,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
             // Initialize the '_shaderVFXMainValue' variable, to change the "Shader's ID_Property" parameter
             //
-            _shaderVFXMainValue = _arrayOfCachedMaterials[0].GetFloat(_ShaderVFXMainPropertyToPlayWith);
+            _shaderVFXMainValue = _arrayOfCachedMaterials[0].GetFloat( _shaderVFXMainPropertyToPlayWith );
 
             while ( CheckShaderValueCondition() )
             {
@@ -441,7 +459,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
                 {
                     // Set the new value of '_shaderVFXMainValue' in the Shader
                     //
-                    _arrayOfCachedMaterials[i].SetFloat(_ShaderVFXMainPropertyToPlayWith, _shaderVFXMainValue);
+                    _arrayOfCachedMaterials[i].SetFloat(_shaderVFXMainPropertyToPlayWith, _shaderVFXMainValue);
 
 
                     // (YIELD / PAUSE for a time)...  Return of this Coroutine
@@ -575,7 +593,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
                 // Set the (cached "Main Variable")  Value in the Shader
                 //
-                _arrayOfCachedMaterials[i].SetFloat(_ShaderVFXMainPropertyToPlayWith, _shaderVFXMainValue);
+                _arrayOfCachedMaterials[i].SetFloat(_shaderVFXMainPropertyToPlayWith, _shaderVFXMainValue);
 
             } //End for
 
