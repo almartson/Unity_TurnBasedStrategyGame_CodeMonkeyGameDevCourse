@@ -16,45 +16,21 @@ MonoBehaviour:
   - title: CYLINDER
     position:
       serializedVersion: 2
-      x: 444
+      x: 417
       y: -296
-      width: 947
+      width: 974
       height: 1792
     contents:
     - model: {fileID: 8926484042661614555}
       id: 0
       isStickyNote: 0
-    - model: {fileID: 8926484042661614607}
-      id: 0
-      isStickyNote: 0
     - model: {fileID: 8926484042661614558}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614580}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614615}
       id: 0
       isStickyNote: 0
     - model: {fileID: 8926484042661614583}
       id: 0
       isStickyNote: 0
-    - model: {fileID: 8926484042661614634}
-      id: 0
-      isStickyNote: 0
     - model: {fileID: 8926484042661614600}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614605}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614639}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614658}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614664}
       id: 0
       isStickyNote: 0
     - model: {fileID: 8926484042661614613}
@@ -81,11 +57,14 @@ MonoBehaviour:
     - model: {fileID: 8926484042661614611}
       id: 0
       isStickyNote: 0
+    - model: {fileID: 8926484042661614826}
+      id: 0
+      isStickyNote: 0
   - title: BOTTOM MESH
     position:
       serializedVersion: 2
       x: 1666
-      y: -284
+      y: -285
       width: 946
       height: 1790
     contents:
@@ -125,11 +104,14 @@ MonoBehaviour:
     - model: {fileID: 8926484042661614728}
       id: 0
       isStickyNote: 0
+    - model: {fileID: 8926484042661614828}
+      id: 0
+      isStickyNote: 0
   - title: TOP MESH
     position:
       serializedVersion: 2
       x: 2686
-      y: -275
+      y: -274
       width: 1110
       height: 2226
     contents:
@@ -169,24 +151,6 @@ MonoBehaviour:
     - model: {fileID: 8926484042661614728}
       id: 1
       isStickyNote: 0
-    - model: {fileID: 8926484042661614772}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614774}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614779}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614783}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614787}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614762}
-      id: 0
-      isStickyNote: 0
     - model: {fileID: 8926484042661614807}
       id: 0
       isStickyNote: 0
@@ -195,6 +159,9 @@ MonoBehaviour:
       isStickyNote: 0
     - model: {fileID: 8926484042661614824}
       id: 0
+      isStickyNote: 0
+    - model: {fileID: 8926484042661614828}
+      id: 1
       isStickyNote: 0
   stickyNoteInfos: []
   categories:
@@ -206,9 +173,9 @@ MonoBehaviour:
     collapsed: 0
   uiBounds:
     serializedVersion: 2
-    x: 444
-    y: -296
-    width: 3353
+    x: 416
+    y: -295
+    width: 3380
     height: 2246
 --- !u!114 &114350483966674976
 MonoBehaviour:
@@ -249,6 +216,8 @@ MonoBehaviour:
   - {fileID: 8926484042661614807}
   - {fileID: 8926484042661614821}
   - {fileID: 8926484042661614824}
+  - {fileID: 8926484042661614826}
+  - {fileID: 8926484042661614828}
   m_UIPosition: {x: 0, y: 0}
   m_UICollapsed: 1
   m_UISuperCollapsed: 0
@@ -351,7 +320,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.AnimationCurve, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"frames":[{"time":0.0,"value":0.0,"inTangent":2.5,"outTangent":2.5,"tangentMode":0,"leftTangentMode":1,"rightTangentMode":1,"broken":false},{"time":1.0,"value":2.5,"inTangent":2.5,"outTangent":2.5,"tangentMode":0,"leftTangentMode":1,"rightTangentMode":1,"broken":false}],"preWrapMode":8,"postWrapMode":8,"version":1}'
+      m_SerializableObject: '{"frames":[{"time":0.0,"value":0.25,"inTangent":2.0,"outTangent":2.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":1.0,"value":2.5,"inTangent":0.0,"outTangent":0.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false}],"preWrapMode":8,"postWrapMode":8,"version":1}'
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -407,7 +376,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"x":1.2999999523162842,"y":1.2999999523162842,"z":0.30000001192092898}'
+      m_SerializableObject: '{"x":1.100000023841858,"y":1.100000023841858,"z":0.30000001192092898}'
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -438,6 +407,34 @@ MonoBehaviour:
         m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       m_SerializableObject: '{"colorKeys":[{"color":{"r":1.0,"g":1.0,"b":1.0,"a":1.0},"time":0.6200045943260193},{"color":{"r":0.5,"g":0.5,"b":0.5,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":0.0,"time":0.0},{"alpha":0.3921568691730499,"time":0.19957274198532105},{"alpha":1.0,"time":0.6200045943260193},{"alpha":0.0,"time":1.0}],"gradientMode":0}'
+    min: -Infinity
+    max: Infinity
+    enumValues: []
+    descendantCount: 0
+  - name: Noise_Cylinder001
+    path: Noise_Cylinder001
+    tooltip: Portal's Cylinder 001 Noise Texture
+    sheetType: m_NamedObject
+    realType: Texture2D
+    defaultValue:
+      m_Type:
+        m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"75af89a0eed580d4ebc9840f0c0ab252","type":3}}'
+    min: -Infinity
+    max: Infinity
+    enumValues: []
+    descendantCount: 0
+  - name: Noise_BottomAndTopMeshesRing002
+    path: Noise_BottomAndTopMeshesRing002
+    tooltip: Portal's Cylinder 001 Noise Texture
+    sheetType: m_NamedObject
+    realType: Texture2D
+    defaultValue:
+      m_Type:
+        m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"b8824f74f4c4db643be70b68ee2f9bfd","type":3}}'
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -1108,7 +1105,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"276d9e395ae18fe40a9b4988549f2349","type":3}}'
+      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"75af89a0eed580d4ebc9840f0c0ab252","type":3}}'
     m_Space: 2147483647
   m_Property:
     name: mainTexture
@@ -1116,7 +1113,8 @@ MonoBehaviour:
       m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   m_Direction: 0
-  m_LinkedSlots: []
+  m_LinkedSlots:
+  - {fileID: 8926484042661614827}
 --- !u!114 &8926484042661614605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1332,7 +1330,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614612}
   m_ExposedName: Duration
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 5
   m_Category: Initialization and Spawn
   m_Min:
     m_Type:
@@ -1693,7 +1691,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614625}
   m_ExposedName: PortalInitialAngle
   m_Exposed: 1
-  m_Order: 5
+  m_Order: 8
   m_Category: Initialization and Spawn
   m_Min:
     m_Type:
@@ -2227,7 +2225,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614645}
   m_ExposedName: PortalRotationSpeed_PortalAngleUpdateOverTime
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 1
   m_Category: Update
   m_Min:
     m_Type:
@@ -2248,7 +2246,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661614645}
       inputSlot: {fileID: 8926484042661614635}
-    position: {x: 559.5, y: 600}
+    position: {x: 441.5, y: 600}
     expandedSlots: []
     expanded: 0
   - m_Id: 1
@@ -2530,7 +2528,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614654}
   m_ExposedName: Cylinder01FinalSetScaleTransform
   m_Exposed: 1
-  m_Order: 2
+  m_Order: 1
   m_Category: Output - Final
   m_Min:
     m_Type:
@@ -2549,7 +2547,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661614654}
       inputSlot: {fileID: 8926484042661614640}
-    position: {x: 559.5, y: 1092}
+    position: {x: 527, y: 1102}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661614654
@@ -2846,7 +2844,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614663}
   m_ExposedName: MultiplyScale_in_Z_OverLife_AnimationCurve
   m_Exposed: 1
-  m_Order: 4
+  m_Order: 3
   m_Category: Output - Final
   m_Min:
     m_Type:
@@ -3007,7 +3005,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614673}
   m_ExposedName: ColorAndTransparencyUpdateOverLife
   m_Exposed: 1
-  m_Order: 5
+  m_Order: 4
   m_Category: Output - Final
   m_Min:
     m_Type:
@@ -4137,7 +4135,8 @@ MonoBehaviour:
       m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   m_Direction: 0
-  m_LinkedSlots: []
+  m_LinkedSlots:
+  - {fileID: 8926484042661614829}
 --- !u!114 &8926484042661614713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4636,7 +4635,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614729}
   m_ExposedName: BottomMeshRing02FinalSetScaleTransform
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 2
   m_Category: Output - Final
   m_Min:
     m_Type:
@@ -4694,7 +4693,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"x":1.2999999523162842,"y":1.2999999523162842,"z":0.30000001192092898}'
+      m_SerializableObject: '{"x":1.100000023841858,"y":1.100000023841858,"z":0.30000001192092898}'
     m_Space: 2147483647
   m_Property:
     name: o
@@ -5865,7 +5864,8 @@ MonoBehaviour:
       m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   m_Direction: 0
-  m_LinkedSlots: []
+  m_LinkedSlots:
+  - {fileID: 8926484042661614829}
 --- !u!114 &8926484042661614772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6585,7 +6585,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 3037, y: 975}
+  m_UIPosition: {x: 3126, y: 1024}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -6688,7 +6688,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614825}
   m_ExposedName: TopMeshPositionUpdateOverLife_AnimationCurve
   m_Exposed: 1
-  m_Order: 1
+  m_Order: 3
   m_Category: Update
   m_Min:
     m_Type:
@@ -6711,7 +6711,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661614789}
     position: {x: 2889.5, y: 786}
     expandedSlots: []
-    expanded: 0
+    expanded: 1
 --- !u!114 &8926484042661614825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6737,7 +6737,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.AnimationCurve, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"frames":[{"time":0.0,"value":0.0,"inTangent":2.5,"outTangent":2.5,"tangentMode":0,"leftTangentMode":1,"rightTangentMode":1,"broken":false},{"time":1.0,"value":2.5,"inTangent":2.5,"outTangent":2.5,"tangentMode":0,"leftTangentMode":1,"rightTangentMode":1,"broken":false}],"preWrapMode":8,"postWrapMode":8,"version":1}'
+      m_SerializableObject: '{"frames":[{"time":0.0,"value":0.25,"inTangent":2.0,"outTangent":2.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":1.0,"value":2.5,"inTangent":0.0,"outTangent":0.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false}],"preWrapMode":8,"postWrapMode":8,"version":1}'
     m_Space: 2147483647
   m_Property:
     name: o
@@ -6747,3 +6747,171 @@ MonoBehaviour:
   m_Direction: 1
   m_LinkedSlots:
   - {fileID: 8926484042661614789}
+--- !u!114 &8926484042661614826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 330e0fca1717dde4aaa144f48232aa64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 114350483966674976}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 0
+  m_UISuperCollapsed: 0
+  m_InputSlots: []
+  m_OutputSlots:
+  - {fileID: 8926484042661614827}
+  m_ExposedName: Noise_Cylinder001
+  m_Exposed: 1
+  m_Order: 5
+  m_Category: Output - Final
+  m_Min:
+    m_Type:
+      m_SerializableType: 
+    m_SerializableObject: 
+  m_Max:
+    m_Type:
+      m_SerializableType: 
+    m_SerializableObject: 
+  m_IsOutput: 0
+  m_EnumValues: []
+  m_ValueFilter: 0
+  m_Tooltip: Portal's Cylinder 001 Noise Texture
+  m_Nodes:
+  - m_Id: 0
+    linkedSlots:
+    - outputSlot: {fileID: 8926484042661614827}
+      inputSlot: {fileID: 8926484042661614603}
+    position: {x: 622.5, y: 906}
+    expandedSlots: []
+    expanded: 0
+--- !u!114 &8926484042661614827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a331b1d86cc8d4aa106ccbe0da5852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 0}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 1
+  m_UISuperCollapsed: 0
+  m_MasterSlot: {fileID: 8926484042661614827}
+  m_MasterData:
+    m_Owner: {fileID: 8926484042661614826}
+    m_Value:
+      m_Type:
+        m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"75af89a0eed580d4ebc9840f0c0ab252","type":3}}'
+    m_Space: 2147483647
+  m_Property:
+    name: o
+    m_serializedType:
+      m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+  m_Direction: 1
+  m_LinkedSlots:
+  - {fileID: 8926484042661614603}
+--- !u!114 &8926484042661614828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 330e0fca1717dde4aaa144f48232aa64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 114350483966674976}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 0
+  m_UISuperCollapsed: 0
+  m_InputSlots: []
+  m_OutputSlots:
+  - {fileID: 8926484042661614829}
+  m_ExposedName: Noise_BottomAndTopMeshesRing002
+  m_Exposed: 1
+  m_Order: 6
+  m_Category: Output - Final
+  m_Min:
+    m_Type:
+      m_SerializableType: 
+    m_SerializableObject: 
+  m_Max:
+    m_Type:
+      m_SerializableType: 
+    m_SerializableObject: 
+  m_IsOutput: 0
+  m_EnumValues: []
+  m_ValueFilter: 0
+  m_Tooltip: Portal's Cylinder 001 Noise Texture
+  m_Nodes:
+  - m_Id: 0
+    linkedSlots:
+    - outputSlot: {fileID: 8926484042661614829}
+      inputSlot: {fileID: 8926484042661614711}
+    position: {x: 1735, y: 906}
+    expandedSlots: []
+    expanded: 0
+  - m_Id: 1
+    linkedSlots:
+    - outputSlot: {fileID: 8926484042661614829}
+      inputSlot: {fileID: 8926484042661614770}
+    position: {x: 2913, y: 1361}
+    expandedSlots: []
+    expanded: 0
+--- !u!114 &8926484042661614829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a331b1d86cc8d4aa106ccbe0da5852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 0}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 1
+  m_UISuperCollapsed: 0
+  m_MasterSlot: {fileID: 8926484042661614829}
+  m_MasterData:
+    m_Owner: {fileID: 8926484042661614828}
+    m_Value:
+      m_Type:
+        m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"b8824f74f4c4db643be70b68ee2f9bfd","type":3}}'
+    m_Space: 2147483647
+  m_Property:
+    name: o
+    m_serializedType:
+      m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+  m_Direction: 1
+  m_LinkedSlots:
+  - {fileID: 8926484042661614711}
+  - {fileID: 8926484042661614770}
