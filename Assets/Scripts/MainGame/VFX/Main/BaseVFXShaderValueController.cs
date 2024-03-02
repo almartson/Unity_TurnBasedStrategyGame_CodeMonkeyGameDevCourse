@@ -1152,6 +1152,11 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     }// End FinalActionsToDisableOrDestroyThisScriptAndPArentGameObject
 
 
+    /// <summary>
+    /// Disables + Destroys:  This Script + GameObject it is attached to. <br /> <br />
+    /// 
+    /// Final Actions after:  VFX ENDS + ALL COROUTINES end + everything ends.
+    /// </summary>
     protected virtual void FinalActionsToDisableOrDestroyThisScriptAndParentGameObject()
     {
         
