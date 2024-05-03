@@ -269,18 +269,24 @@ MonoBehaviour:
       isStickyNote: 0
   stickyNoteInfos: []
   categories:
-  - name: Initialization and Spawn
-    collapsed: 0
-  - name: Update
-    collapsed: 0
-  - name: Output - Final
-    collapsed: 0
+  - name: 1- Cylinders - Initialization and Spawn
+    collapsed: 1
+  - name: 1- Laser Particles - Initialization and Spawn
+    collapsed: 1
+  - name: 2- Cylinders - Update
+    collapsed: 1
+  - name: 2- Laser Particles - Update
+    collapsed: 1
+  - name: 3- Cylinders - Output - Final
+    collapsed: 1
+  - name: 3- Laser Particles - Output - Final
+    collapsed: 1
   uiBounds:
     serializedVersion: 2
-    x: 0
-    y: -237
-    width: 5012
-    height: 3213
+    x: 406
+    y: -296
+    width: 4631
+    height: 3010
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -355,7 +361,7 @@ MonoBehaviour:
   m_UISuperCollapsed: 0
   m_UIInfos: {fileID: 114340500867371532}
   m_ParameterInfo:
-  - name: Initialization and Spawn
+  - name: 1- Cylinders - Initialization and Spawn
     path: 
     tooltip: 
     sheetType: 
@@ -397,6 +403,34 @@ MonoBehaviour:
     max: 180
     enumValues: []
     descendantCount: 0
+  - name: PortalInitialAngle
+    path: PortalInitialAngle
+    tooltip: Orientation [in X, Y and Z] (angle-Transform in degrees) of the Cylinder
+      (Portal).
+    sheetType: m_Vector3f
+    realType: Vector3
+    defaultValue:
+      m_Type:
+        m_SerializableType: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      m_SerializableObject: '{"x":-90.0,"y":0.0,"z":0.0}'
+    min: -Infinity
+    max: Infinity
+    enumValues: []
+    descendantCount: 0
+  - name: 1- Laser Particles - Initialization and Spawn
+    path: 
+    tooltip: 
+    sheetType: 
+    realType: 
+    defaultValue:
+      m_Type:
+        m_SerializableType: 
+      m_SerializableObject: 
+    min: -Infinity
+    max: Infinity
+    enumValues: []
+    descendantCount: 0
   - name: FractionOfTimeMultiplierForSpawningParticles
     path: FractionOfTimeMultiplierForSpawningParticles
     tooltip: '[No Units... It''s a Multiplier: 0..1] Multiply this value by the ''Duration''
@@ -425,21 +459,6 @@ MonoBehaviour:
       m_SerializableObject: 11
     min: 0
     max: 50
-    enumValues: []
-    descendantCount: 0
-  - name: PortalInitialAngle
-    path: PortalInitialAngle
-    tooltip: Orientation [in X, Y and Z] (angle-Transform in degrees) of the Cylinder
-      (Portal).
-    sheetType: m_Vector3f
-    realType: Vector3
-    defaultValue:
-      m_Type:
-        m_SerializableType: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"x":-90.0,"y":0.0,"z":0.0}'
-    min: -Infinity
-    max: Infinity
     enumValues: []
     descendantCount: 0
   - name: BoundsCenter_for_SmallLaserParticles
@@ -643,7 +662,7 @@ MonoBehaviour:
     max: 180
     enumValues: []
     descendantCount: 0
-  - name: Update
+  - name: 2- Cylinders - Update
     path: 
     tooltip: 
     sheetType: 
@@ -684,6 +703,19 @@ MonoBehaviour:
         m_SerializableType: UnityEngine.AnimationCurve, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       m_SerializableObject: '{"frames":[{"time":0.0,"value":0.25,"inTangent":2.0,"outTangent":2.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":1.0,"value":2.5,"inTangent":0.0,"outTangent":0.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false}],"preWrapMode":8,"postWrapMode":8,"version":1}'
+    min: -Infinity
+    max: Infinity
+    enumValues: []
+    descendantCount: 0
+  - name: 2- Laser Particles - Update
+    path: 
+    tooltip: 
+    sheetType: 
+    realType: 
+    defaultValue:
+      m_Type:
+        m_SerializableType: 
+      m_SerializableObject: 
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -741,7 +773,7 @@ MonoBehaviour:
     max: Infinity
     enumValues: []
     descendantCount: 0
-  - name: Output - Final
+  - name: 3- Cylinders - Output - Final
     path: 
     tooltip: 
     sheetType: 
@@ -898,6 +930,19 @@ MonoBehaviour:
         m_SerializableType: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       m_SerializableObject: '{"r":0.5663802623748779,"g":1.3702749013900757,"b":4.658934593200684,"a":1.0}'
+    min: -Infinity
+    max: Infinity
+    enumValues: []
+    descendantCount: 0
+  - name: 3- Laser Particles - Output - Final
+    path: 
+    tooltip: 
+    sheetType: 
+    realType: 
+    defaultValue:
+      m_Type:
+        m_SerializableType: 
+      m_SerializableObject: 
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -1867,7 +1912,7 @@ MonoBehaviour:
   m_ExposedName: Duration
   m_Exposed: 1
   m_Order: 3
-  m_Category: Initialization and Spawn
+  m_Category: 1- Cylinders - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
@@ -1974,7 +2019,7 @@ MonoBehaviour:
   m_ExposedName: Delay
   m_Exposed: 1
   m_Order: 0
-  m_Category: Initialization and Spawn
+  m_Category: 1- Cylinders - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
@@ -2244,7 +2289,7 @@ MonoBehaviour:
   m_ExposedName: PortalInitialAngle
   m_Exposed: 1
   m_Order: 12
-  m_Category: Initialization and Spawn
+  m_Category: 1- Cylinders - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -2778,7 +2823,7 @@ MonoBehaviour:
   m_ExposedName: PortalRotationSpeed_PortalAngleUpdateOverTime
   m_Exposed: 1
   m_Order: 1
-  m_Category: Update
+  m_Category: 2- Cylinders - Update
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -2985,7 +3030,7 @@ MonoBehaviour:
   m_ExposedName: PortalMeshImportSize
   m_Exposed: 1
   m_Order: 2
-  m_Category: Output - Final
+  m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -3081,7 +3126,7 @@ MonoBehaviour:
   m_ExposedName: Cylinder01FinalSetScaleTransform
   m_Exposed: 1
   m_Order: 4
-  m_Category: Output - Final
+  m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -3398,7 +3443,7 @@ MonoBehaviour:
   m_ExposedName: MultiplyScale_in_Z_OverLife_AnimationCurve
   m_Exposed: 1
   m_Order: 9
-  m_Category: Output - Final
+  m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -3559,7 +3604,7 @@ MonoBehaviour:
   m_ExposedName: ColorAndTransparencyUpdateOverLife
   m_Exposed: 1
   m_Order: 15
-  m_Category: Output - Final
+  m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -5198,7 +5243,7 @@ MonoBehaviour:
   m_ExposedName: BottomMeshRing02FinalSetScaleTransform
   m_Exposed: 1
   m_Order: 6
-  m_Category: Output - Final
+  m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -7252,7 +7297,7 @@ MonoBehaviour:
   m_ExposedName: TopMeshPositionUpdateOverLife_AnimationCurve
   m_Exposed: 1
   m_Order: 5
-  m_Category: Update
+  m_Category: 2- Cylinders - Update
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -7334,7 +7379,7 @@ MonoBehaviour:
   m_ExposedName: Noise_Cylinder001
   m_Exposed: 1
   m_Order: 17
-  m_Category: Output - Final
+  m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -7414,7 +7459,7 @@ MonoBehaviour:
   m_ExposedName: Noise_BottomAndTopMeshesRing002
   m_Exposed: 1
   m_Order: 19
-  m_Category: Output - Final
+  m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -7502,7 +7547,7 @@ MonoBehaviour:
   m_ExposedName: CylinderColor
   m_Exposed: 1
   m_Order: 21
-  m_Category: Output - Final
+  m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -7718,7 +7763,7 @@ MonoBehaviour:
   m_ExposedName: RingsColor
   m_Exposed: 1
   m_Order: 23
-  m_Category: Output - Final
+  m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -11985,8 +12030,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615163}
   m_ExposedName: LaserParticlesColor
   m_Exposed: 1
-  m_Order: 33
-  m_Category: Output - Final
+  m_Order: 4
+  m_Category: 3- Laser Particles - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -12202,8 +12247,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615182}
   m_ExposedName: LaserParticlesTexture
   m_Exposed: 1
-  m_Order: 25
-  m_Category: Output - Final
+  m_Order: 0
+  m_Category: 3- Laser Particles - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -12283,7 +12328,7 @@ MonoBehaviour:
   m_ExposedName: MultiplyScaleOrSize_in_Y_OverLife_AnimationCurve
   m_Exposed: 1
   m_Order: 13
-  m_Category: Output - Final
+  m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -12366,8 +12411,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615186}
   m_ExposedName: FractionOfTimeMultiplierForSpawningParticles
   m_Exposed: 1
-  m_Order: 7
-  m_Category: Initialization and Spawn
+  m_Order: 0
+  m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
@@ -12450,8 +12495,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615190}
   m_ExposedName: ConstantSpawnRateForSmallLaserParticles
   m_Exposed: 1
-  m_Order: 10
-  m_Category: Initialization and Spawn
+  m_Order: 1
+  m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
@@ -12532,8 +12577,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615197}
   m_ExposedName: BoundsCenter_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 16
-  m_Category: Initialization and Spawn
+  m_Order: 2
+  m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -12715,8 +12760,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615202}
   m_ExposedName: BoundsSize_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 18
-  m_Category: Initialization and Spawn
+  m_Order: 3
+  m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -12898,8 +12943,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615207}
   m_ExposedName: BoundsPadding_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 20
-  m_Category: Initialization and Spawn
+  m_Order: 4
+  m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -13081,8 +13126,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615226}
   m_ExposedName: Position_Sphere_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 22
-  m_Category: Initialization and Spawn
+  m_Order: 5
+  m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -13637,8 +13682,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615242}
   m_ExposedName: Arc_Sphere_for_PositioningSmallLaserParticles
   m_Exposed: 1
-  m_Order: 24
-  m_Category: Initialization and Spawn
+  m_Order: 6
+  m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
@@ -13719,8 +13764,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615244}
   m_ExposedName: MinRandomVelocity_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 26
-  m_Category: Initialization and Spawn
+  m_Order: 7
+  m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -13902,8 +13947,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615249}
   m_ExposedName: MaxRandomVelocity_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 27
-  m_Category: Initialization and Spawn
+  m_Order: 8
+  m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -14085,8 +14130,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615264}
   m_ExposedName: MinLifetime_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 29
-  m_Category: Initialization and Spawn
+  m_Order: 9
+  m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
@@ -14168,8 +14213,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615266}
   m_ExposedName: MaxDragForTurbulenceNode_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 11
-  m_Category: Update
+  m_Order: 1
+  m_Category: 2- Laser Particles - Update
   m_Min:
     m_Type:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
@@ -14255,8 +14300,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615270}
   m_ExposedName: MaxLifetime_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 31
-  m_Category: Initialization and Spawn
+  m_Order: 10
+  m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
@@ -14338,8 +14383,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615272}
   m_ExposedName: IntensityForTurbulenceNode_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 8
-  m_Category: Update
+  m_Order: 0
+  m_Category: 2- Laser Particles - Update
   m_Min:
     m_Type:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
@@ -14425,8 +14470,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615274}
   m_ExposedName: MultiplyVelocity_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 14
-  m_Category: Update
+  m_Order: 2
+  m_Category: 2- Laser Particles - Update
   m_Min:
     m_Type:
       m_SerializableType: 
@@ -14608,8 +14653,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615279}
   m_ExposedName: MinRandomSize_for_LaserParticles
   m_Exposed: 1
-  m_Order: 28
-  m_Category: Output - Final
+  m_Order: 1
+  m_Category: 3- Laser Particles - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
@@ -14690,8 +14735,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615281}
   m_ExposedName: MaxRandomSize_for_LaserParticles
   m_Exposed: 1
-  m_Order: 30
-  m_Category: Output - Final
+  m_Order: 2
+  m_Category: 3- Laser Particles - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
@@ -14772,8 +14817,8 @@ MonoBehaviour:
   - {fileID: 8926484042661615283}
   m_ExposedName: MultiplySize_all_OverLife_AnimationCurve_for_LaserParticles
   m_Exposed: 1
-  m_Order: 32
-  m_Category: Output - Final
+  m_Order: 3
+  m_Category: 3- Laser Particles - Output - Final
   m_Min:
     m_Type:
       m_SerializableType: 
