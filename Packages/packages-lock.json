@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.dragyngames.dgconsole": {
+      "version": "https://github.com/Dragyn85/DGConsole.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "495f7c6491fc931b6c241b1f0ba5537fad8d7309"
+    },
     "com.handzlikchris.fastscriptreload": {
       "version": "https://github.com/handzlikchris/FastScriptReload.git?path=Assets",
       "depth": 0,

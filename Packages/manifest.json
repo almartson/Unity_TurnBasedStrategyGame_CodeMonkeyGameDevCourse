@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.dragyngames.dgconsole": "https://github.com/Dragyn85/DGConsole.git",
     "com.handzlikchris.fastscriptreload": "https://github.com/handzlikchris/FastScriptReload.git?path=Assets",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.cinemachine": "2.8.9",
