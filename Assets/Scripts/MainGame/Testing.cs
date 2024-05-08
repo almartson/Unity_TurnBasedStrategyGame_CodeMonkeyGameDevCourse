@@ -143,18 +143,7 @@ public class Testing : MonoBehaviour
     #endregion Show the PATHFINDING ALGORITHM
     
     #region Other Test Mehods
-    
-    /// I want to write a swap method to change int a by int b
-    
-    [ConsoleAction(Command = "Swap", Description="commandcsdkfks", ParameterNames = new string[]{"a","b"})]
 
-    public void Swap(int a, int b)
-    {
-        int aux = a;
-        
-        Debug.Log($"Estoy ejecutando Swap()");
-    }//
-    
     #endregion
 
     #endregion My Custom Methods
