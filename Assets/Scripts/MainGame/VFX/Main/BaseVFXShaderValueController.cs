@@ -970,7 +970,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
                 // Revert the VFX Materials in the 3D's (MeshRenderer or SkinnedMeshRenderer...)  Mesh.
                 //
-                RevertMaterialsToDefaultOnes(_skinnedMeshRendererWithVFXMaterials, _meshRendererWithVFXMaterials, _arrayOf_NonVFX_InitialMaterials);
+                RevertMaterialsToDefaultOnes(ref _skinnedMeshRendererWithVFXMaterials, ref _meshRendererWithVFXMaterials, ref _arrayOf_NonVFX_InitialMaterials);
 
             } //End:  0- REVERT Materials to Default    (after VFX Ends)
          
@@ -1063,7 +1063,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     /// <param name="mySkinnedMeshRenderer"></param>
     /// <param name="myMeshRenderer"></param>
     /// <param name="arrayOfDefaultMaterialsToSet"></param>
-    protected virtual void RevertMaterialsToDefaultOnes(SkinnedMeshRenderer mySkinnedMeshRenderer, MeshRenderer myMeshRenderer, Material[] arrayOfDefaultMaterialsToSet)
+    protected virtual void RevertMaterialsToDefaultOnes(ref SkinnedMeshRenderer mySkinnedMeshRenderer, ref MeshRenderer myMeshRenderer, ref Material[] arrayOfDefaultMaterialsToSet)
     {
         // Validation Flags
         //
@@ -1071,11 +1071,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         bool isACaseOfSkinnedMeshRenderer = false;
         bool isACaseOfMeshRenderer = false;
 
-        // Material lists
-        //
-        Material[] arrayOfVFXMaterials = null;
 
-        
         #region 0- Validations
         
         // a) Some validations, setting up the boolean flags:
@@ -1097,10 +1093,6 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
             {
 
                 isACaseOfSkinnedMeshRenderer = true;
-                //
-                // Array of VFX Materials to replace:
-                //
-                arrayOfVFXMaterials = mySkinnedMeshRenderer.materials;
 
             }//End if (mySkinnedMeshRenderer != null)
             
@@ -1110,10 +1102,6 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
             {
 
                 isACaseOfMeshRenderer = true;
-                //
-                // Array of VFX Materials to replace:
-                //
-                arrayOfVFXMaterials = myMeshRenderer.materials;
 
             }//End if (myMeshRenderer != null)
 
@@ -1128,17 +1116,32 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         //
         if (isValidArrayOfDefaultMaterialsToSet && ( isACaseOfSkinnedMeshRenderer || isACaseOfMeshRenderer) )
         {
-
-            // Replace the Materials to Default:
-            //
-            ReplaceMaterials(arrayOfVFXMaterials, arrayOfDefaultMaterialsToSet);
             
+            if (isACaseOfSkinnedMeshRenderer)
+            {
+                // Replace the SkinnedMeshRenderer's  Materials to Default:
+                //
+                mySkinnedMeshRenderer.materials = arrayOfDefaultMaterialsToSet;
+            
+                Debug.LogWarning($"Executing:... Replace (mySkinnedMeshRenderer) Materials for:   isACaseOfSkinnedMeshRenderer");
+
+            }
+            else // isACaseOfMeshRenderer
+            {
+                // Replace the MeshRenderer's  Materials to Default:
+                //
+                myMeshRenderer.materials = arrayOfDefaultMaterialsToSet;
+            
+                Debug.LogWarning($"Executing:... Replace (myMeshRenderer) Materials for:   isACaseOfMeshRenderer");
+                
+            }//End else of  if (isACaseOfSkinnedMeshRenderer)
+
         }
         else
         {
             // Log an Error:
             //
-            Debug.LogError( $"{this.name}: It is impossible to revert the Materials to Default ones because they were not set up correctly, previously | in: this Object:{this.gameObject.name}", this);
+            Debug.LogError( $"{this.name}: It is impossible to revert the Materials to Default ones because they were not set up correctly, previously\n (Default Ones, + [SkinnedMeshRenderer, or MeshRenderer]'s reference this Script) | in: this Object:{this.gameObject.name}", this);
 
         }//End else of if (mySkinnedMeshRenderer != null)
         
@@ -1147,34 +1150,6 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     }// End RevertMaterialsToDefaultOnes
 
 
-    /// <summary>
-    /// This function replace one Material[] array by another.
-    /// </summary>
-    /// <param name="myCurrentMaterials"></param>
-    /// <param name="myNewMaterials"></param>
-    protected virtual void ReplaceMaterials(Material[] myCurrentMaterials, Material[] myNewMaterials)
-    {
-
-        // Validations + execution:
-        //
-        if ( (myCurrentMaterials != null) && (myCurrentMaterials.Length > 0) && (myNewMaterials != null) && (myNewMaterials.Length > 0) )
-        {
-            
-            // Length of the arrays
-            //
-            int arrayLengthMyCurrentMaterials = myCurrentMaterials.Length;
-            int arrayLengthMyNewMaterials = myNewMaterials.Length;
-            
-            
-            // 1- Copy the "new" array into the "old":   and that's it!
-            //
-            myCurrentMaterials = myNewMaterials;
-
-        }//End if ( (myCurrentMaterials != null) &&...
-        
-    }//End ReplaceMaterials()
-
-    
     #endregion 0- REVERTING Materials to Default ones
     
     

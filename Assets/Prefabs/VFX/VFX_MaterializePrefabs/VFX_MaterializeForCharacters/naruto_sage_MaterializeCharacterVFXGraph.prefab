@@ -53,11 +53,41 @@ VisualEffect:
       - m_Value: 0
         m_Name: Delay
         m_Overridden: 1
-      - m_Value: 7
+      - m_Value: 3.33
         m_Name: Duration
         m_Overridden: 1
       - m_Value: 100
         m_Name: PortalMeshImportSize
+        m_Overridden: 1
+      - m_Value: 0.666
+        m_Name: FractionOfTimeMultiplierForSpawningParticles
+        m_Overridden: 1
+      - m_Value: 17
+        m_Name: ConstantSpawnRateForSmallLaserParticles
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: Position_Sphere_for_SmallLaserParticles_radius
+        m_Overridden: 1
+      - m_Value: 6.22
+        m_Name: Arc_Sphere_for_PositioningSmallLaserParticles
+        m_Overridden: 1
+      - m_Value: 0.888
+        m_Name: MinLifetime_for_SmallLaserParticles
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: MaxLifetime_for_SmallLaserParticles
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: IntensityForTurbulenceNode_for_SmallLaserParticles
+        m_Overridden: 1
+      - m_Value: 0.125
+        m_Name: MaxDragForTurbulenceNode_for_SmallLaserParticles
+        m_Overridden: 1
+      - m_Value: 0.01
+        m_Name: MinRandomSize_for_LaserParticles
+        m_Overridden: 1
+      - m_Value: 0.4
+        m_Name: MaxRandomSize_for_LaserParticles
         m_Overridden: 1
     m_Vector2f:
       m_Array: []
@@ -72,8 +102,53 @@ VisualEffect:
       - m_Value: {x: 1, y: 1, z: 1}
         m_Name: PortalFinalSetScaleTransform
         m_Overridden: 1
+      - m_Value: {x: 0, y: 1.5, z: 0}
+        m_Name: BoundsCenter_for_SmallLaserParticles
+        m_Overridden: 1
+      - m_Value: {x: 3, y: 3, z: 3}
+        m_Name: BoundsSize_for_SmallLaserParticles
+        m_Overridden: 1
+      - m_Value: {x: 0.5, y: 0.5, z: 0.5}
+        m_Name: BoundsPadding_for_SmallLaserParticles
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 0, z: 0}
+        m_Name: Position_Sphere_for_SmallLaserParticles_transform_position
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 0, z: 0}
+        m_Name: Position_Sphere_for_SmallLaserParticles_transform_angles
+        m_Overridden: 1
+      - m_Value: {x: 1, y: 1, z: 1}
+        m_Name: Position_Sphere_for_SmallLaserParticles_transform_scale
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 2, z: 0}
+        m_Name: MinRandomVelocity_for_SmallLaserParticles
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 2.22, z: 0}
+        m_Name: MaxRandomVelocity_for_SmallLaserParticles
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 0, z: 4.44}
+        m_Name: PortalRotationSpeed_PortalAngleUpdateOverTime
+        m_Overridden: 1
+      - m_Value: {x: 1, y: 1.007, z: 1}
+        m_Name: MultiplyVelocity_for_SmallLaserParticles
+        m_Overridden: 1
+      - m_Value: {x: 1, y: 1, z: 1}
+        m_Name: Cylinder01FinalSetScaleTransform
+        m_Overridden: 1
+      - m_Value: {x: 1.1, y: 1.1, z: 0.3}
+        m_Name: BottomMeshRing02FinalSetScaleTransform
+        m_Overridden: 1
     m_Vector4f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 0.120000005, y: 0.29600003, z: 1, w: 1}
+        m_Name: CylinderColor
+        m_Overridden: 1
+      - m_Value: {x: 0.56638026, y: 1.3702749, z: 4.6589346, w: 1}
+        m_Name: RingsColor
+        m_Overridden: 1
+      - m_Value: {x: 1.1708318, y: 2.7807255, z: 9.317869, w: 1}
+        m_Name: LaserParticlesColor
+        m_Overridden: 1
     m_Uint:
       m_Array: []
     m_Int:
@@ -107,6 +182,183 @@ VisualEffect:
           m_PostInfinity: 2
           m_RotationOrder: 4
         m_Name: MultiplyScale_in_Z_OverLife_AnimationCurve
+        m_Overridden: 1
+      - m_Value:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.25
+            inSlope: 2
+            outSlope: 2
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 2.5
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        m_Name: TopMeshPositionUpdateOverLife_AnimationCurve
+        m_Overridden: 1
+      - m_Value:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1.0161077
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.123949766
+            value: 0.9776356
+            inSlope: -0.7468994
+            outSlope: -0.7468994
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.17971562
+            value: 0.95729494
+            inSlope: -0.022728667
+            outSlope: -0.022728667
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.2798383
+            value: 0.9963374
+            inSlope: 0.6732682
+            outSlope: 0.6732682
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.36593747
+            value: 1.0136899
+            inSlope: -0.06830105
+            outSlope: -0.06830105
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.44157022
+            value: 0.9848504
+            inSlope: -1.0666769
+            outSlope: -1.0666769
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.51745844
+            value: 0.9568225
+            inSlope: 0.019925717
+            outSlope: 0.019925717
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.64099157
+            value: 0.9958286
+            inSlope: 0.43937796
+            outSlope: 0.43937796
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.71372145
+            value: 1.0163455
+            inSlope: 0.045504007
+            outSlope: 0.045504007
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.7733258
+            value: 1.0004512
+            inSlope: -0.6320998
+            outSlope: -0.6320998
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.84647256
+            value: 0.95853215
+            inSlope: -0.017110892
+            outSlope: -0.017110892
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.95895463
+            value: 0.98371744
+            inSlope: 0.5578364
+            outSlope: 0.5578364
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1.000587
+            value: 1.016
+            inSlope: 0.004365354
+            outSlope: 0.004365354
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        m_Name: MultiplyScaleOrSize_in_Y_OverLife_AnimationCurve
+        m_Overridden: 1
+      - m_Value:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -1.3205215
+            outSlope: -1.3205215
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        m_Name: MultiplySize_all_OverLife_AnimationCurve_for_LaserParticles
         m_Overridden: 1
     m_Gradient:
       m_Array:
@@ -142,7 +394,16 @@ VisualEffect:
         m_Name: ColorAndTransparencyUpdateOverLife
         m_Overridden: 1
     m_NamedObject:
-      m_Array: []
+      m_Array:
+      - m_Value: {fileID: 2800000, guid: 75af89a0eed580d4ebc9840f0c0ab252, type: 3}
+        m_Name: Noise_Cylinder001
+        m_Overridden: 1
+      - m_Value: {fileID: 2800000, guid: b8824f74f4c4db643be70b68ee2f9bfd, type: 3}
+        m_Name: Noise_BottomAndTopMeshesRing002
+        m_Overridden: 1
+      - m_Value: {fileID: 2800000, guid: f1b1f934fff0e6fe8bf426d18492303a, type: 3}
+        m_Name: LaserParticlesTexture
+        m_Overridden: 1
     m_Bool:
       m_Array: []
 --- !u!73398921 &6301563512432488317
@@ -1302,9 +1563,10 @@ MonoBehaviour:
   _shaderVFXMainValueChangeRate: 0.0111
   _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame: 0.0123
   _isRunningShaderEffectFromVFXCoroutine: 0
-  _skinnedMeshRenderer: {fileID: 6538991238202721161}
-  _arrayOfCachedSkinnedMeshRendererMaterials: []
-  _meshRenderer: {fileID: 0}
+  _arrayOf_NonVFX_InitialMaterials: []
+  _skinnedMeshRendererWithVFXMaterials: {fileID: 6538991238202721161}
+  _arrayOfCachedSkinnedMeshRendererVFXMaterials: []
+  _meshRendererWithVFXMaterials: {fileID: 0}
   _arrayOfCachedMeshRendererMaterials: []
   _arrayOfCachedMaterials: []
   _detachGameObjectsFromParentVFXsGameObjectBeforeVFXStarts: 0
@@ -1313,6 +1575,7 @@ MonoBehaviour:
   _enableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts: 0
   _arrayOfCollidersToDisableBeforeVFXStarts: []
   _arrayOfRigidbodiesToDisableBeforeVFXStarts: []
+  _revertMaterialsToDefaultOnesAfterVFXEnds: 0
   _detachGameObjectsFromParentVFXsGameObjectAfterVFXEnds: 0
   _arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds: []
   _timeDelayToDetachFromParentVFXsGameObjectAfterVFXEnds: 0
