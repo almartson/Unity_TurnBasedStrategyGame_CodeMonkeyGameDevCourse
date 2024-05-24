@@ -1,6 +1,8 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
+
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -164,11 +166,15 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
     [Header("1.1-: SkinnedMeshRenderer's Materials")]
     
-    [Tooltip("SkinnedMeshRenderer, To get the 'VFX Materials' from it.")]
+    [Tooltip("VFX's SkinnedMeshRenderer[] array, To get the 'VFX Materials' from it.")]
     [SerializeField]
-    protected SkinnedMeshRenderer _skinnedMeshRendererWithVFXMaterials;
+    protected SkinnedMeshRenderer[] _arrayOfVFXSkinnedMeshRender;
 
-    [Tooltip("[ReadOnly for Debug] Array of 'VFX Materials' that belong to the '3D Character'.")]
+    [Tooltip("NON-VFX's SkinnedMeshRenderer[] array: To set the default (more performant) Materials, AFTER THE VFX ENDS and the Game Continues...")]
+    [SerializeField]
+    protected SkinnedMeshRenderer[] _arrayOfNonVFXSkinnedMeshRender;
+    
+    [Tooltip("[ReadOnly for Debug] Array of 'VFX Materials' that belong to the '3D Character' and its 'Rigged 3D Accessories' (such as: Clothes, Flags, etc).")]
     [SerializeField]
     protected Material[] _arrayOfCachedSkinnedMeshRendererVFXMaterials;
 
@@ -180,21 +186,25 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     [Space(10)]
     [Header("1.2-: Mesh Renderer's Materials")]
     
-    [Tooltip("MeshRenderer, To get the 'VFX Materials' from it.")]
+    [Tooltip("VFX's MeshRenderer[] , To get the 'VFX Materials' from it.")]
     [SerializeField]
-    protected MeshRenderer _meshRendererWithVFXMaterials;
+    protected MeshRenderer[] _arrayOfVFXMeshRender;
 
+    [Tooltip("NON-VFX's MeshRenderer[] array: To set the default (more performant) Materials, AFTER THE VFX ENDS and the Game Continues...")]
+    [SerializeField]
+    protected MeshRenderer[] _arrayOfNonVFXMeshRender;
+    
     [Space(10)]
     [Tooltip("[ReadOnly for Debug] Array of 'VFX Materials' that belong to the '3D Mesh'.")]
     [SerializeField]
-    protected Material[] _arrayOfCachedMeshRendererMaterials;
+    protected Material[] _arrayOfCachedMeshRendererVFXMaterials;
 
     #endregion Materials Case Scenario  2-: Mesh Renderer's Materials
 
 
     [Tooltip("[ReadOnly for Debug] Array of ALL 'VFX Materials' that will be processed by the VFX :) (that belong to the '3D Mesh').")]
     [SerializeField]
-    protected Material[] _arrayOfCachedMaterials;
+    protected Material[] _arrayOfCachedVFXMaterials;
 
     #endregion 1-:VFX Materials
     
@@ -357,7 +367,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         //
         if ( _revertMaterialsToDefaultOnesAfterVFXEnds  && 
              (((_arrayOf_NonVFX_InitialMaterials == null) || (_arrayOf_NonVFX_InitialMaterials.Length == 0) || (_arrayOf_NonVFX_InitialMaterials[0] == null) )
-              || ((_skinnedMeshRendererWithVFXMaterials == null) &&  (_meshRendererWithVFXMaterials == null))) )
+              || ((_arrayOfVFXSkinnedMeshRender == null) &&  (_arrayOfVFXMeshRender == null))) )
         {
 
             Debug.LogError( $"{this.name}: It will be impossible to revert the Materials to Default ones because they are not set up previously | in: this Object:{this.gameObject.name}", this);
@@ -370,41 +380,55 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
         #endregion 0- Default Materials
 
-        // 1- 3D  Characters:
-        // Add the reference to 'SkinnedMeshRenderer' to get the Materials from it.
-        //
-        if (_skinnedMeshRendererWithVFXMaterials != null)
-        {
-            _arrayOfCachedSkinnedMeshRendererVFXMaterials = _skinnedMeshRendererWithVFXMaterials.materials;
-        }
 
-        //
-        // 2- 3D (Static, Not Rigged)  Meshes:
-        // Add the reference to 'MeshRenderer' to get the Materials from it.
-        //
-        if (_meshRendererWithVFXMaterials != null)
-        {
-            _arrayOfCachedMeshRendererMaterials = _meshRendererWithVFXMaterials.materials;
-        }
+        #region 1- Initialize the Material[]s arrays
 
+        // 1- Initialize the VFX Materials[] arrays, to apply the VFX in sync to their Shaders VFX too.
         //
-        // 3- Grab all Materials into one Array []
-        // 3.1 - Length, auxiliary variables
-        //
-        int lengthOfArrayOfCachedSkinnedMeshRendererMaterials = _arrayOfCachedSkinnedMeshRendererVFXMaterials.Length;
-        int lengthOfArrayOfCachedMeshRendererMaterials = _arrayOfCachedMeshRendererMaterials.Length;
-        //
-        // 3.2- Fill in the Array:
-        //   3.2.1 - Create Array:
-        //
-        _arrayOfCachedMaterials = new Material [lengthOfArrayOfCachedSkinnedMeshRendererMaterials +
-                                                lengthOfArrayOfCachedMeshRendererMaterials];
-        //
-        //   3.2.2 - Fill in the Array
-        //
-        _arrayOfCachedSkinnedMeshRendererVFXMaterials.CopyTo(_arrayOfCachedMaterials, 0);
-        _arrayOfCachedMeshRendererMaterials.CopyTo(_arrayOfCachedMaterials, lengthOfArrayOfCachedSkinnedMeshRendererMaterials);
+        GetMaterialsFromRenderers(ref _arrayOfVFXSkinnedMeshRender, ref _arrayOfVFXMeshRender, ref _arrayOfCachedSkinnedMeshRendererVFXMaterials, ref _arrayOfCachedMeshRendererVFXMaterials, ref _arrayOfCachedVFXMaterials);
 
+        #endregion 1- Initialize the Material[]s arrays
+        
+        
+        #region 1- B) Materials initialization: Deprecated Code
+        
+        // // 1- 3D  Characters:
+        // // Add the reference to 'SkinnedMeshRenderer' to get the Materials from it.
+        // //
+        // if (_arrayOfVFXSkinnedMeshRender != null)
+        // {
+        //     _arrayOfCachedSkinnedMeshRendererVFXMaterials = _arrayOfVFXSkinnedMeshRender.sharedMaterials;  // _skinnedMeshRendererWithVFXMaterials.materials;
+        // }
+        //
+        // //
+        // // 2- 3D (Static, Not Rigged)  Meshes:
+        // // Add the reference to 'MeshRenderer' to get the Materials from it.
+        // //
+        // if (_arrayOfVFXMeshRender != null)
+        // {
+        //     _arrayOfCachedMeshRendererVFXMaterials = _arrayOfVFXMeshRender.sharedMaterials; // _meshRendererWithVFXMaterials.materials;
+        // }
+        //
+        // //
+        // // 3- Grab all Materials into one Array []
+        // // 3.1 - Length, auxiliary variables
+        // //
+        // int lengthOfArrayOfCachedSkinnedMeshRendererMaterials = _arrayOfCachedSkinnedMeshRendererVFXMaterials.Length;
+        // int lengthOfArrayOfCachedMeshRendererMaterials = _arrayOfCachedMeshRendererVFXMaterials.Length;
+        // //
+        // // 3.2- Fill in the Array:
+        // //   3.2.1 - Create Array:
+        // //
+        // _arrayOfCachedVFXMaterials = new Material [lengthOfArrayOfCachedSkinnedMeshRendererMaterials +
+        //                                         lengthOfArrayOfCachedMeshRendererMaterials];
+        // //
+        // //   3.2.2 - Fill in the Array
+        // //
+        // _arrayOfCachedSkinnedMeshRendererVFXMaterials.CopyTo(_arrayOfCachedVFXMaterials, 0);
+        // _arrayOfCachedMeshRendererVFXMaterials.CopyTo(_arrayOfCachedVFXMaterials, lengthOfArrayOfCachedSkinnedMeshRendererMaterials);
+
+        #endregion 1- B) Materials initialization: Deprecated Code
+        
         #endregion Materials List
 
 
@@ -493,12 +517,14 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
         // 2- VFX Shader effect:
         //
-        if ((_arrayOfCachedMaterials.Length > 0) && (_arrayOfCachedMaterials[0] != null))
+        int arrayOfCachedMaterialsLength = _arrayOfCachedVFXMaterials.Length;
+        //
+        if ((arrayOfCachedMaterialsLength > 0) && (_arrayOfCachedVFXMaterials[0] != null))
         {
 
             // Initialize the '_shaderVFXMainValue' variable, to change the "Shader's ID_Property" parameter
             //
-            _shaderVFXMainValue = _arrayOfCachedMaterials[0].GetFloat( _shaderVFXMainPropertyToPlayWith );
+            _shaderVFXMainValue = _arrayOfCachedVFXMaterials[0].GetFloat( _shaderVFXMainPropertyToPlayWith );
 
             while ( CheckShaderValueCondition() )
             {
@@ -511,11 +537,11 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
                 // Assign the new '_shaderVFXMainValue' value:
                 //
-                for (int i = 0; i < _arrayOfCachedMaterials.Length; i++)
+                for (int i = 0; i < arrayOfCachedMaterialsLength; i++)
                 {
                     // Set the new value of '_shaderVFXMainValue' in the Shader
                     //
-                    _arrayOfCachedMaterials[i].SetFloat(_shaderVFXMainPropertyToPlayWith, _shaderVFXMainValue);
+                    _arrayOfCachedVFXMaterials[i].SetFloat(_shaderVFXMainPropertyToPlayWith, _shaderVFXMainValue);
 
 
                     // (YIELD / PAUSE for a time)...  Return of this Coroutine
@@ -634,7 +660,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
         // Validate and reassign to zero the Shader's  "Main Variable":
         //
-        if ((_arrayOfCachedMaterials.Length > 0) && (_arrayOfCachedMaterials[0] != null))
+        if ((_arrayOfCachedVFXMaterials.Length > 0) && (_arrayOfCachedVFXMaterials[0] != null))
         {
 
             // Re-Initialize the Shader's  cached "Main Variable":
@@ -644,12 +670,12 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
             // Assign that  cached "Main Variable"  to the Shader Property  (in each Material):
             //
-            for (int i = 0; i < _arrayOfCachedMaterials.Length; i++)
+            for (int i = 0; i < _arrayOfCachedVFXMaterials.Length; i++)
             {
 
                 // Set the (cached "Main Variable")  Value in the Shader
                 //
-                _arrayOfCachedMaterials[i].SetFloat(_shaderVFXMainPropertyToPlayWith, _shaderVFXMainValue);
+                _arrayOfCachedVFXMaterials[i].SetFloat(_shaderVFXMainPropertyToPlayWith, _shaderVFXMainValue);
 
             } //End for
 
@@ -817,10 +843,235 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     #endregion Misc Methods
 
     
+    #region Materials, Default Materials (swap) and VFX Materials
+
+    #region Materials Initialization
+
+    /// <summary>
+    /// Gets a Material[] Array from Renderers.
+    /// </summary>
+    /// <param name="arrayOfSkinnedMeshRender">Materials[] source a)</param>
+    /// <param name="arrayOfMeshRender">Materials[] source b)</param>
+    /// <param name="arrayOfMaterialsFromSkinnedMeshRender">Materials[] extracted from (a)</param>
+    /// <param name="arrayOfMaterialsFromMeshRender">Materials[] extracted from (b)</param>
+    /// <param name="arrayOfAllCachedMaterials">All the Materials extracted in a list (rather an ARRAY[]) for using it in the VFX inside a while-loop and creating the VFX effect over all Materials at the same time,  in sync.</param>
+	protected void GetMaterialsFromRenderers (ref SkinnedMeshRenderer[] arrayOfSkinnedMeshRender, ref MeshRenderer[] arrayOfMeshRender, ref Material[] arrayOfMaterialsFromSkinnedMeshRender, ref Material[] arrayOfMaterialsFromMeshRender, ref Material[] arrayOfAllCachedMaterials)
+	{
+
+        // 1- SkinnedMeshRenderer[]
+		// Get the Materials[] array from it:
+		//
+		if ((arrayOfSkinnedMeshRender != null) && (arrayOfSkinnedMeshRender.Length > 0) && (arrayOfSkinnedMeshRender[0] != null))
+        {
+            // Plan b:  Solution for casting all items (objects) in an array:  https://stackoverflow.com/questions/2068120/c-sharp-cast-entire-array
+            // Plan A:
+            // Casting quickly the SkinnedMeshRenderer[] array to Render[] array:
+            //
+            Renderer[] arrayOfRendererCastedFromSkinnedMeshRendererAuxiliary = arrayOfSkinnedMeshRender as Renderer[];
+            //
+            // Function call:
+            //
+        	GetMaterials( ref arrayOfRendererCastedFromSkinnedMeshRendererAuxiliary, ref arrayOfMaterialsFromSkinnedMeshRender );
+        }
+        //
+		// 2- MeshRenderer[]
+		// Get the Materials[] array from it:
+		//
+		if ((arrayOfMeshRender != null) && (arrayOfMeshRender.Length > 0) && (arrayOfMeshRender[0] != null))
+        {
+            // Plan b:  Solution for casting all items (objects) in an array:  https://stackoverflow.com/questions/2068120/c-sharp-cast-entire-array
+            // Plan A:
+            // Casting quickly the SkinnedMeshRenderer[] array to Render[] array:
+            //
+            Renderer[] arrayOfRendererCastedFromMeshRendererAuxiliary = arrayOfMeshRender as Renderer[];
+            
+			GetMaterials( ref arrayOfRendererCastedFromMeshRendererAuxiliary, ref arrayOfMaterialsFromMeshRender );
+        }
+        //
+		// 3- Grab all Materials into one Array []
+        // 3.1- arrayOfMaterialsFromSkinnedMeshRender
+        //
+        AddMaterialsToArray( arrayOfMaterialsFromSkinnedMeshRender, ref arrayOfAllCachedMaterials );
+        //
+        // 3.2- arrayOfMaterialsFromMeshRender
+        //
+		AddMaterialsToArray( arrayOfMaterialsFromMeshRender, ref arrayOfAllCachedMaterials );
+
+	}//End GetMaterialsFromRenderers()
+
+
+    //Utils:
+    
+    /// <summary>
+    /// Gets a Material[] Array from a Renderer and saves them into:  arrayOfMaterialsFromRender  (Notice: The array is overwritten).
+    /// </summary>
+    /// <param name="arrayOfRenders"></param>
+    /// <param name="arrayOfMaterialsFromRender"></param>
+	protected virtual void GetMaterials (ref Renderer[] arrayOfRenders, ref Material[] arrayOfMaterialsFromRender)
+	{
+
+		// Length of Arrays:
+        //
+        int arrayOfRendersLength = 0;
+        int totalNumberOfMaterials = 0;
+		//
+        if ((arrayOfRenders != null) &&  (arrayOfRenders.Length > 0) && (arrayOfRenders[0] != null))
+        {
+            
+            // 1- Get the correct Lenght of the Array:  Renderer[]
+            //
+            arrayOfRendersLength = arrayOfRenders.Length;
+            
+            // 2- 
+            // Count the Materials in the Renders[] array:
+            //
+            totalNumberOfMaterials = CountTheMaterialsInAllRenderers( ref arrayOfRenders );
+            
+
+            // 3- Initialization of Array:
+            //
+            arrayOfMaterialsFromRender = new Material[ totalNumberOfMaterials ];
+            //
+            for (int i = 0; i < arrayOfRendersLength; i++)
+            {
+
+                // Get the (shared) Materials from the Renderer  +  Copy (them) to the Final Array:
+                //
+                AddMaterialsToArray( arrayOfRenders[ i ].sharedMaterials, ref arrayOfMaterialsFromRender );
+
+            }//End for
+
+        }//End if ((arrayOfRenders != null) ...
+
+    }//End GetMaterials()
+
+
+	protected virtual int CountTheMaterialsInAllRenderers( ref Renderer[] arrayOfRenders )
+	{
+        // Return value:
+		//
+		int totalMaterialsCount = 0;
+
+        if ((arrayOfRenders != null) && (arrayOfRenders.Length > 0) && (arrayOfRenders[0] != null))
+        {
+
+            // Length of Array:
+            //
+            int arrayOfRendersLength = arrayOfRenders.Length;
+            //
+            // Loop through all Renders in the Array (arrayOfRenders), and count the: Materials in each Render...
+            //
+            for (int i = 0; i < arrayOfRendersLength; i++)
+            {
+
+                if (arrayOfRenders[ i ] != null)
+                {
+                    
+                    // 1- Get the (shared) Materials from the Renderer
+                    //
+                    Material[] myMaterialArrayInRender = arrayOfRenders[ i ].sharedMaterials;
+                    
+                    // Validation
+                    //
+                    if ((myMaterialArrayInRender != null) && (myMaterialArrayInRender.Length > 0) && (myMaterialArrayInRender[0] != null))
+                    {
+                        
+                        // 2- Count: the (shared) Materials in it ("totalMaterialsCount").
+                        //
+                        totalMaterialsCount += myMaterialArrayInRender.Length;
+                    }
+                }//End if ((arrayOfRenders[ i ] != null))
+            }//End for
+        }//End if ((arrayOfRenders != null)
+
+        // Return the Number of (shared) Materials:
+		//
+		return totalMaterialsCount;
+
+	}//End CountTheMaterialsInAllRenderers
+    
+    
+    /// <summary>
+    /// Add the Materials to the Array (incrementally, meaning: it adds to the previous elements/items the array already has).
+    /// </summary>
+    /// <param name="arrayOfNewMaterialsToAdd"></param>
+    /// <param name="arrayOfAllCachedMaterials">Array to be Filled up with Items</param>
+	protected virtual void AddMaterialsToArray(Material[] arrayOfNewMaterialsToAdd, ref Material[] arrayOfAllCachedMaterials)
+	{
+		
+		// 1- Grab all Materials into one Array []
+        // 1.1 - Length, auxiliary variables
+        //
+        int lengthOfArrayOfNewMaterialsToAdd = 0;
+        int lengthOfArrayOfAllCachedMaterials = 0;
+        //
+        // Auxiliary (for not losing the previous Items inside: "arrayOfAllCachedMaterials")
+        //
+        Material[] auxiliaryArrayOfAllCachedMaterials = null;
+        //
+        // Validate:  the array to add:
+        //
+        if ((arrayOfNewMaterialsToAdd != null) && (arrayOfNewMaterialsToAdd.Length > 0) && (arrayOfNewMaterialsToAdd[0] != null))
+        {
+            
+            lengthOfArrayOfNewMaterialsToAdd = arrayOfNewMaterialsToAdd.Length;
+            
+            
+            // Validate:  the Array to receive the new Items:
+            //
+            if ((arrayOfAllCachedMaterials != null) && (arrayOfAllCachedMaterials.Length > 0) && (arrayOfAllCachedMaterials[0] != null))
+            {
+            
+                lengthOfArrayOfAllCachedMaterials = arrayOfAllCachedMaterials.Length;
+                
+                
+                // 1.2- Fill in the Array:
+                //   2.2.1 - Create new Array and an auxiliary:
+                //	 Auxiliary (for not losing the previous Items inside: "arrayOfAllCachedMaterials")
+                //
+                auxiliaryArrayOfAllCachedMaterials = new Material [ lengthOfArrayOfAllCachedMaterials ];
+                //
+                Array.Copy(arrayOfAllCachedMaterials, 0, auxiliaryArrayOfAllCachedMaterials , 0, lengthOfArrayOfAllCachedMaterials);
+                
+            }//End if ((arrayOfAllCachedMaterials != null)
+            
+           
+            if (lengthOfArrayOfNewMaterialsToAdd > 0)
+            {
+
+                //   2.2.2 - Creating the (empty) Storage for:   the new Array[]
+                //
+                arrayOfAllCachedMaterials = new Material [lengthOfArrayOfNewMaterialsToAdd +
+                                                          lengthOfArrayOfAllCachedMaterials];
+                //
+                //   1.2.2 - Fill in the Array
+                //	 a) Reestablish the initial Items of the previous Array[] (if they exist):
+                //
+                if ((auxiliaryArrayOfAllCachedMaterials != null) && (auxiliaryArrayOfAllCachedMaterials.Length > 0) && (auxiliaryArrayOfAllCachedMaterials[0] != null))
+                {
+                    
+                    // a) Copy the initial Items of the Array, again:
+                    //
+                    auxiliaryArrayOfAllCachedMaterials.CopyTo(arrayOfAllCachedMaterials, 0);
+                }
+
+                //   b) Copy the new Items into the Array[]
+                //
+                arrayOfNewMaterialsToAdd.CopyTo(arrayOfAllCachedMaterials, lengthOfArrayOfAllCachedMaterials);
+
+            }//End if (lengthOfArrayOfNewMaterialsToAdd > 0)
+
+        }//End if ((arrayOfNewMaterialsToAdd != null) 
+
+	}//End AddMaterialsToArray()
+    
+    #endregion Materials Initialization
+    
+    #endregion Materials, Default Materials (swap) and VFX Materials
+    
       
     #region Shader and VFX: Suplementary Actions
-
-
+    
     #region Before the VFX starts
     
     /// <summary>
@@ -969,8 +1220,9 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
             {
 
                 // Revert the VFX Materials in the 3D's (MeshRenderer or SkinnedMeshRenderer...)  Mesh.
+                // TODO:   Make this work in a serialized way: for loop for each every SkinnedMeshRenderer's Materials[] array...
                 //
-                RevertMaterialsToDefaultOnes(ref _skinnedMeshRendererWithVFXMaterials, ref _meshRendererWithVFXMaterials, ref _arrayOf_NonVFX_InitialMaterials);
+                // ACA_QUEDE    RevertMaterialsToDefaultOnes(ref _arrayOfVFXSkinnedMeshRender, ref _arrayOfVFXMeshRender, ref _arrayOf_NonVFX_InitialMaterials);
 
             } //End:  0- REVERT Materials to Default    (after VFX Ends)
          
@@ -1121,7 +1373,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
             {
                 // Replace the SkinnedMeshRenderer's  Materials to Default:
                 //
-                mySkinnedMeshRenderer.materials = arrayOfDefaultMaterialsToSet;
+                mySkinnedMeshRenderer.sharedMaterials  /*materials*/ = arrayOfDefaultMaterialsToSet;
             
                 Debug.LogWarning($"Executing:... Replace (mySkinnedMeshRenderer) Materials for:   isACaseOfSkinnedMeshRenderer");
 
@@ -1130,7 +1382,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
             {
                 // Replace the MeshRenderer's  Materials to Default:
                 //
-                myMeshRenderer.materials = arrayOfDefaultMaterialsToSet;
+                myMeshRenderer.sharedMaterials /*materials*/ = arrayOfDefaultMaterialsToSet;
             
                 Debug.LogWarning($"Executing:... Replace (myMeshRenderer) Materials for:   isACaseOfMeshRenderer");
                 
