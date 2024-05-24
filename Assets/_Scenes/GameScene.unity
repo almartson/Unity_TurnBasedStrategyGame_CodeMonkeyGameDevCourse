@@ -4497,36 +4497,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8653761082759377305, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8653761082759377305, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.y
-      value: 0.76699746
-      objectReference: {fileID: 0}
-    - target: {fileID: 8653761082759377305, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.z
-      value: 0.0990566
-      objectReference: {fileID: 0}
-    - target: {fileID: 8653761082759377305, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[1].m_Value.x
-      value: 7.4008894
-      objectReference: {fileID: 0}
-    - target: {fileID: 8653761082759377305, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[1].m_Value.y
-      value: 5.8039303
-      objectReference: {fileID: 0}
-    - target: {fileID: 8653761082759377305, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[1].m_Value.z
-      value: 0.80292684
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64f54f1e16b4c9354bda312862ce3b4d, type: 3}
 --- !u!1 &1164791330

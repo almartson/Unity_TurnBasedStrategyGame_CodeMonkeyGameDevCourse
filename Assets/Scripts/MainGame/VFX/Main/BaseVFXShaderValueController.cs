@@ -928,9 +928,9 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
             totalNumberOfMaterials = CountTheMaterialsInAllRenderers( ref arrayOfRenders );
             
 
-            // 3- Initialization of Array:
+            // 3- Initialization of Array:  (not a good approach, as it could  come from the outside already initialized)
             //
-            arrayOfMaterialsFromRender = new Material[ totalNumberOfMaterials ];
+            // Not to use: arrayOfMaterialsFromRender = new Material[ totalNumberOfMaterials ];
             //
             for (int i = 0; i < arrayOfRendersLength; i++)
             {

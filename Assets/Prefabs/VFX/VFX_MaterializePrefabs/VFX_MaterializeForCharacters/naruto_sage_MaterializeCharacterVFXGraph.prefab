@@ -1,5 +1,114 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1397206632525280847
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7123048278243016106}
+  - component: {fileID: 7696170868882917113}
+  m_Layer: 0
+  m_Name: VFXMaterials_MainMesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7123048278243016106
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397206632525280847}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6538991238205411993}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &7696170868882917113
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397206632525280847}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 3
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: f8b9590397960be64acc57a9d9d8314d, type: 2}
+  - {fileID: 2100000, guid: aacb90de8eddbab37a0a53467e477729, type: 2}
+  - {fileID: 2100000, guid: 65347060a11c526d096a93815b8cfdb2, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 4300000, guid: 48088ee6f92dc994699461d5704d507b, type: 3}
+  m_Bones:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 0}
+  m_AABB:
+    m_Center: {x: -0.0017952919, y: 0.06181541, z: -0.06260733}
+    m_Extent: {x: 0.8127592, y: 0.9053898, z: 0.2757315}
+  m_DirtyAABB: 0
 --- !u!1 &4300301557190313757
 GameObject:
   m_ObjectHideFlags: 0
@@ -1625,6 +1734,7 @@ Transform:
   - {fileID: 6538991238205411975}
   - {fileID: 2905233668529104509}
   - {fileID: 545378339324414898}
+  - {fileID: 7123048278243016106}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1673,19 +1783,25 @@ MonoBehaviour:
   _shaderVFXMainValueChangeRate: 0.0111
   _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame: 0.0123
   _isRunningShaderEffectFromVFXCoroutine: 0
-  _arrayOf_NonVFX_InitialMaterials: []
-  _skinnedMeshRendererWithVFXMaterials: {fileID: 6538991238202721161}
+  _arrayOf_NonVFX_InitialMaterials:
+  - {fileID: 2100000, guid: ffd844e7d29b08c739d7611998be6554, type: 2}
+  - {fileID: 2100000, guid: 772a924b468ece620a47fe27b3f5e0a2, type: 2}
+  - {fileID: 2100000, guid: d0aabef15dbeaa23e8bf72742ae5f26b, type: 2}
+  _arrayOfVFXSkinnedMeshRender:
+  - {fileID: 6538991238202721161}
+  _arrayOfNonVFXSkinnedMeshRender: []
   _arrayOfCachedSkinnedMeshRendererVFXMaterials: []
-  _meshRendererWithVFXMaterials: {fileID: 0}
-  _arrayOfCachedMeshRendererMaterials: []
-  _arrayOfCachedMaterials: []
+  _arrayOfVFXMeshRender: []
+  _arrayOfNonVFXMeshRender: []
+  _arrayOfCachedMeshRendererVFXMaterials: []
+  _arrayOfCachedVFXMaterials: []
   _detachGameObjectsFromParentVFXsGameObjectBeforeVFXStarts: 0
   _arrayOfGameObjectsToDetachFromParentVFXsGameObjectBeforeVFXStarts: []
   _changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts: 0
   _enableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts: 0
   _arrayOfCollidersToDisableBeforeVFXStarts: []
   _arrayOfRigidbodiesToDisableBeforeVFXStarts: []
-  _revertMaterialsToDefaultOnesAfterVFXEnds: 0
+  _revertMaterialsToDefaultOnesAfterVFXEnds: 1
   _detachGameObjectsFromParentVFXsGameObjectAfterVFXEnds: 0
   _arrayOfGameObjectsToDetachFromParentVFXsGameObjectAfterVFXEnds: []
   _timeDelayToDetachFromParentVFXsGameObjectAfterVFXEnds: 0
