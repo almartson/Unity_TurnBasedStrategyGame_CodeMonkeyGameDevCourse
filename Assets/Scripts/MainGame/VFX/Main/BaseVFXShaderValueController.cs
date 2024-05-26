@@ -154,10 +154,11 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     protected Material[] _arrayOf_NonVFX_InitialMaterials;
     
     #endregion 0- Default Materials (NON-VFX)
-    
-    
+
+
     #region 1-:VFX Materials
 
+    [Header("__________________________________")]
     [Space(10)]
     [Header("1-:VFX Materials")]
     [Space(10)]
@@ -165,6 +166,14 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     #region Materials Case Scenario  1-: SkinnedMeshRenderer's Materials
 
     [Header("1.1-: SkinnedMeshRenderer's Materials")]
+    
+    // 1- Array of (actual): SkinnedMeshRenderer
+    //
+    [Tooltip("[Important: Fill this up with ALL the 'SkinnedMeshRenderer(s)' that are present in your GameObject and its children in its Hierarchy].\n\n SkinnedMeshRenderer[] arrays... all in one array.\n\n* This is important to: 1- Work on the 'VFX'; and \n2- Get the 'VFX Materials' from it (they must have been already set in 'Editor Mode' by the 3D Artist).")]
+    [SerializeField]
+    protected SkinnedMeshRenderer[] _myArrayOfSkinnedMeshRender;
+
+    [Header("__________________________________")]
     
     [Tooltip("VFX's SkinnedMeshRenderer[] array, To get the 'VFX Materials' from it.")]
     [SerializeField]
@@ -186,6 +195,14 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     [Space(10)]
     [Header("1.2-: Mesh Renderer's Materials")]
     
+    // 2- Array of (actual): MeshRenderer
+    //
+    [Tooltip("[Important: Fill this up with ALL the 'MeshRenderer(s)' that are present in your GameObject and its children in its Hierarchy].\n\n MeshRenderer[] arrays... all in one array.\n\n* This is important to: 1- Work on the 'VFX'; and \n2- Get the 'VFX Materials' from it (they must have been already set in 'Editor Mode' by the 3D Artist).")]
+    [SerializeField]
+    protected MeshRenderer[] _myArrayOfMeshRender;
+
+    [Header("__________________________________")]
+    
     [Tooltip("VFX's MeshRenderer[] , To get the 'VFX Materials' from it.")]
     [SerializeField]
     protected MeshRenderer[] _arrayOfVFXMeshRender;
@@ -201,6 +218,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
     #endregion Materials Case Scenario  2-: Mesh Renderer's Materials
 
+    [Header("__________________________________")]
 
     [Tooltip("[ReadOnly for Debug] Array of ALL 'VFX Materials' that will be processed by the VFX :) (that belong to the '3D Mesh').")]
     [SerializeField]
@@ -367,7 +385,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         //
         if ( _revertMaterialsToDefaultOnesAfterVFXEnds  && 
              (((_arrayOf_NonVFX_InitialMaterials == null) || (_arrayOf_NonVFX_InitialMaterials.Length == 0) || (_arrayOf_NonVFX_InitialMaterials[0] == null) )
-              || ((_arrayOfVFXSkinnedMeshRender == null) &&  (_arrayOfVFXMeshRender == null))) )
+              || ((_myArrayOfSkinnedMeshRender == null) && (_arrayOfVFXSkinnedMeshRender == null) &&  (_arrayOfVFXMeshRender == null))) )
         {
 
             Debug.LogError( $"{this.name}: It will be impossible to revert the Materials to Default ones because they are not set up previously | in: this Object:{this.gameObject.name}", this);
@@ -384,8 +402,18 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         #region 1- Initialize the Material[]s arrays
 
         // 1- Initialize the VFX Materials[] arrays, to apply the VFX in sync to their Shaders VFX too.
+        //    1.1-  Actual:   SkinnedMeshRender  &&  MeshRender
         //
-        GetMaterialsFromRenderers(ref _arrayOfVFXSkinnedMeshRender, ref _arrayOfVFXMeshRender, ref _arrayOfCachedSkinnedMeshRendererVFXMaterials, ref _arrayOfCachedMeshRendererVFXMaterials, ref _arrayOfCachedVFXMaterials);
+        GetMaterialsFromRenderers(ref _myArrayOfSkinnedMeshRender, ref _myArrayOfMeshRender, ref _arrayOfCachedSkinnedMeshRendererVFXMaterials, ref _arrayOfCachedMeshRendererVFXMaterials, ref _arrayOfCachedVFXMaterials);
+
+        
+        //    1.2-  Default - NON-VFX-:   SkinnedMeshRender  &&  MeshRender   OJO ARREGLAR ESTOS...
+        //
+        // GetMaterialsFromRenderers(ref _arrayOfVFXSkinnedMeshRender, ref _arrayOfVFXMeshRender, ref _arrayOfCachedSkinnedMeshRendererVFXMaterials, ref _arrayOfCachedMeshRendererVFXMaterials, ref _arrayOfCachedVFXMaterials);
+        
+        //    1.3-  VFX-Material's:   SkinnedMeshRender  &&  MeshRender   OJO:  ESTOS YA ESTAN BIEN
+        //
+        // GetMaterialsFromRenderers(ref _arrayOfVFXSkinnedMeshRender, ref _arrayOfVFXMeshRender, ref _arrayOfCachedSkinnedMeshRendererVFXMaterials, ref _arrayOfCachedMeshRendererVFXMaterials, ref _arrayOfCachedVFXMaterials);
 
         #endregion 1- Initialize the Material[]s arrays
         
@@ -397,7 +425,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         // //
         // if (_arrayOfVFXSkinnedMeshRender != null)
         // {
-        //     _arrayOfCachedSkinnedMeshRendererVFXMaterials = _arrayOfVFXSkinnedMeshRender.sharedMaterials;  // _skinnedMeshRendererWithVFXMaterials.materials;
+        //     _arrayOfCachedSkinnedMeshRendererVFXMaterials = _arrayOfVFXSkinnedMeshRender.sharedMaterials;
         // }
         //
         // //
@@ -406,7 +434,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         // //
         // if (_arrayOfVFXMeshRender != null)
         // {
-        //     _arrayOfCachedMeshRendererVFXMaterials = _arrayOfVFXMeshRender.sharedMaterials; // _meshRendererWithVFXMaterials.materials;
+        //     _arrayOfCachedMeshRendererVFXMaterials = _arrayOfVFXMeshRender.sharedMaterials;
         // }
         //
         // //
@@ -1341,7 +1369,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
             
             // 1 of 2:  SkinnedMeshRenderer
             //
-            if ((mySkinnedMeshRenderer != null)  && ( (mySkinnedMeshRenderer.materials.Length > 0) && (mySkinnedMeshRenderer.materials[0] != null)) )
+            if ((mySkinnedMeshRenderer != null)  && ( (mySkinnedMeshRenderer.sharedMaterials.Length > 0) && (mySkinnedMeshRenderer.sharedMaterials[0] != null)) )
             {
 
                 isACaseOfSkinnedMeshRenderer = true;
@@ -1350,7 +1378,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
             
             // 2 of 2:  MeshRenderer
             //
-            if ((myMeshRenderer != null)  && ( (myMeshRenderer.materials.Length > 0) && (myMeshRenderer.materials[0] != null)) )
+            if ((myMeshRenderer != null)  && ( (myMeshRenderer.sharedMaterials.Length > 0) && (myMeshRenderer.sharedMaterials[0] != null)) )
             {
 
                 isACaseOfMeshRenderer = true;
