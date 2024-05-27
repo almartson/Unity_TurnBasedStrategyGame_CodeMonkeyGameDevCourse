@@ -1176,8 +1176,6 @@ MonoBehaviour:
   _shaderVFXMainValueChangeRate: 0.0021937017
   _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame: 0.006581105
   _isRunningShaderEffectFromVFXCoroutine: 0
-  _arrayOf_NonVFX_InitialMaterials:
-  - {fileID: 2100000, guid: 41680dad0f0243748b4e228f49a2e3c4, type: 2}
   _myArrayOfSkinnedMeshRender:
   - {fileID: 6236878121081643677}
   _arrayOfVFXSkinnedMeshRender:
@@ -1218,7 +1216,7 @@ MonoBehaviour:
   _arrayOfRigidbodiesToDisableAfterVFXEnds: []
   _timeDelayToEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds: 0
   _largestTimeDelayInSeconds: 0
-  _disableThisScript: 0
+  _disableThisScript: 1
   _disableParentGameObjectAndEveryBehaviourToo: 0
   _destroyParentGameObjectAndEverything: 0
 --- !u!114 &1537459889029726718
