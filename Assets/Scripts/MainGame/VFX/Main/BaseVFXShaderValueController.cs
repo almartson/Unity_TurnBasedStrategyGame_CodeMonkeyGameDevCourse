@@ -164,15 +164,16 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     [Space(10)]
     
     #region 0- Default Materials (NON-VFX)
-    
-    [Header("0- Default Materials (NON-VFX)")]
-
+    //
+    // [Header("0- Default Materials (NON-VFX)")]
+    //
+    // [Header("__________________________________")]
+    //
     #endregion 0- Default Materials (NON-VFX)
 
 
     #region 1-:VFX Materials
-
-    [Header("__________________________________")]
+    
     [Space(10)]
     [Header("1-:VFX Materials")]
     [Space(10)]
@@ -399,8 +400,8 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         //
         if ( _revertMaterialsToDefaultOnesAfterVFXEnds  
             && (((_arrayOfNonVFXSkinnedMeshRender == null) || (_arrayOfNonVFXSkinnedMeshRender.Length == 0) || (_arrayOfNonVFXSkinnedMeshRender[0] == null) ) 
-            || ((_arrayOfNonVFXMeshRender == null) || (_arrayOfNonVFXMeshRender.Length == 0) || (_arrayOfNonVFXMeshRender[0] == null) )
-            || ((_myArrayOfSkinnedMeshRender == null) && (_arrayOfVFXSkinnedMeshRender == null) &&  (_arrayOfVFXMeshRender == null))) )
+            || ((_arrayOfVFXSkinnedMeshRender == null) || (_arrayOfVFXSkinnedMeshRender.Length == 0) || (_arrayOfVFXSkinnedMeshRender[0] == null) )
+            || (_myArrayOfSkinnedMeshRender == null)) )
         {
 
             Debug.LogError( $"{this.name}: It will be impossible to revert the Materials to Default ones because they are not set up previously | in: this Object:{this.gameObject.name}", this);
@@ -1266,16 +1267,39 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         }//End if (_largestTimeDelayInSeconds > 0.0f)
 
         
+        #region FINAL EXECUTIONS:  Execute Other actions when our Shaders Effect (VFX's) Ends:
+        
         // FINAL EXECUTIONS:  Execute Other actions when our Shaders Effect (VFX's) Ends:
         //
         if (!_isRunningShaderEffectFromVFXCoroutine & !_hasFinishedExecutionOfActionsAfterVFXEnds)
         {
+
+            #region a) Non - Coroutines  (based)  Executions:   Normal executions that can be applied as soon as the VFX Ends:
             
             // a) Non - Coroutines  (based)  Executions:   Normal executions that can be applied as soon as the VFX Ends:
 
+            #region 0- REVERT Materials to Default    (after VFX Ends)
+            
+            // 0- REVERT Materials to Default    (after VFX Ends)
+
+            //   0.1 - Validations:  SkinnedMeshRender case:
+            //
+            bool isValidMyArrayOfSkinnedMeshRender = ( (_myArrayOfSkinnedMeshRender != null) && (_myArrayOfSkinnedMeshRender.Length > 0) && (_myArrayOfSkinnedMeshRender[0] != null) );
+            //
+            bool isValidArrayOfNonVFXSkinnedMeshRender = ( (_arrayOfNonVFXSkinnedMeshRender != null) && (_arrayOfNonVFXSkinnedMeshRender.Length > 0) && (_arrayOfNonVFXSkinnedMeshRender[0] != null) );
+
+            //    0.2 - Validations:  MeshRender case:
+            //
+            bool isValidMyArrayOfMeshRender = ( (_myArrayOfMeshRender != null) && (_myArrayOfMeshRender.Length > 0) && (_myArrayOfMeshRender[0] != null) );
+            //
+            bool isValidArrayOfNonVFXMeshRender = ( (_arrayOfNonVFXMeshRender != null) && (_arrayOfNonVFXMeshRender.Length > 0) && (_arrayOfNonVFXMeshRender[0] != null) );
+            
+
             // 0- REVERT Materials to Default    (after VFX Ends)
             //
-            if (_revertMaterialsToDefaultOnesAfterVFXEnds)
+            if (_revertMaterialsToDefaultOnesAfterVFXEnds 
+                && ( (isValidMyArrayOfSkinnedMeshRender && isValidArrayOfNonVFXSkinnedMeshRender) 
+                     || (isValidMyArrayOfMeshRender && isValidArrayOfNonVFXMeshRender)) )
             {
 
                 // Revert the VFX Materials in the 3D's (MeshRenderer or SkinnedMeshRenderer...)  Mesh.
@@ -1285,24 +1309,40 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
                 //
                 // Define auxiliary variables (arrays of Renderer), to handle {SkinnedMeshRender}
                 //
-                Renderer[] myAuxArrayOfSkinnedMeshRender = _myArrayOfSkinnedMeshRender as Renderer[];
-                Renderer[] myAuxArrayOfNonVFXFakeSkinnedMeshRender = _arrayOfNonVFXSkinnedMeshRender as Renderer[];
-                //
-                RevertMaterialsToDefaultOnes(ref myAuxArrayOfSkinnedMeshRender, ref myAuxArrayOfNonVFXFakeSkinnedMeshRender);
+                if (isValidMyArrayOfSkinnedMeshRender && isValidArrayOfNonVFXSkinnedMeshRender)
+                {
+
+                    Renderer[] myAuxArrayOfSkinnedMeshRender = _myArrayOfSkinnedMeshRender as Renderer[];
+                    Renderer[] myAuxArrayOfNonVFXFakeSkinnedMeshRender = _arrayOfNonVFXSkinnedMeshRender as Renderer[];
+                    //
+                    RevertMaterialsToDefaultOnes(ref myAuxArrayOfSkinnedMeshRender, ref myAuxArrayOfNonVFXFakeSkinnedMeshRender);
+
+                }//End if (isValidMyArrayOfSkinnedMeshRender && isValidArrayOfNonVFXSkinnedMeshRender)
+                
                 
                 // 2- Case:  MeshRenderer
                 //
                 // Define auxiliary variables (arrays of Renderer), to handle {MeshRender}
                 //
-                Renderer[] myAuxArrayOfMeshRender = _myArrayOfMeshRender as Renderer[];
-                Renderer[] myAuxArrayOfNonVFXFakeMeshRender = _arrayOfNonVFXMeshRender as Renderer[];
-                //
-                RevertMaterialsToDefaultOnes(ref myAuxArrayOfMeshRender, ref myAuxArrayOfNonVFXFakeMeshRender);
+                if (isValidMyArrayOfMeshRender && isValidArrayOfNonVFXMeshRender)
+                {
 
-
-            } //End:  0- REVERT Materials to Default    (after VFX Ends)
+                    Renderer[] myAuxArrayOfMeshRender = _myArrayOfMeshRender as Renderer[];
+                    Renderer[] myAuxArrayOfNonVFXFakeMeshRender = _arrayOfNonVFXMeshRender as Renderer[];
+                    //
+                    RevertMaterialsToDefaultOnes(ref myAuxArrayOfMeshRender, ref myAuxArrayOfNonVFXFakeMeshRender);
+    
+                }//End if (isValidMyArrayOfMeshRender && isValidArrayOfNonVFXMeshRender)
+                
+            }//End:  0- REVERT Materials to Default    (after VFX Ends)
          
+            #endregion 0- REVERT Materials to Default    (after VFX Ends)
 
+            #endregion a) Non - Coroutines  (based)  Executions:   Normal executions that can be applied as soon as the VFX Ends:
+
+            
+            #region b) Coroutines  (based)  Executions:
+            
             // b) Coroutines  (based)  Executions:
             //
             if (isThisScriptExecutingFinalActionsAsACoroutine)
@@ -1375,8 +1415,12 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
             }//End else of  if (isThisScriptExecutingFinalActionsAsACoroutine)
 
+            #endregion b) Coroutines  (based)  Executions:
+            
         }//End if (!_isRunningShaderEffectFromVFXCoroutine & !_hasFinishedExecutionOfActionsAfterVFXEnds)
 
+        #endregion FINAL EXECUTIONS:  Execute Other actions when our Shaders Effect (VFX's) Ends:
+        
     }// End DoExecuteOtherActionsAfterShadersVFXEnds
     
     #endregion After the VFX ends
