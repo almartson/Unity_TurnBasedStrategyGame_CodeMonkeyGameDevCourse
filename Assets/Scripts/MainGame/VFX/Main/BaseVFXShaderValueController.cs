@@ -1281,60 +1281,74 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
             #region 0- REVERT Materials to Default    (after VFX Ends)
             
             // 0- REVERT Materials to Default    (after VFX Ends)
-
-            //   0.1 - Validations:  SkinnedMeshRender case:
             //
-            bool isValidMyArrayOfSkinnedMeshRender = ( (_myArrayOfSkinnedMeshRender != null) && (_myArrayOfSkinnedMeshRender.Length > 0) && (_myArrayOfSkinnedMeshRender[0] != null) );
-            //
-            bool isValidArrayOfNonVFXSkinnedMeshRender = ( (_arrayOfNonVFXSkinnedMeshRender != null) && (_arrayOfNonVFXSkinnedMeshRender.Length > 0) && (_arrayOfNonVFXSkinnedMeshRender[0] != null) );
-
-            //    0.2 - Validations:  MeshRender case:
-            //
-            bool isValidMyArrayOfMeshRender = ( (_myArrayOfMeshRender != null) && (_myArrayOfMeshRender.Length > 0) && (_myArrayOfMeshRender[0] != null) );
-            //
-            bool isValidArrayOfNonVFXMeshRender = ( (_arrayOfNonVFXMeshRender != null) && (_arrayOfNonVFXMeshRender.Length > 0) && (_arrayOfNonVFXMeshRender[0] != null) );
-            
-
-            // 0- REVERT Materials to Default    (after VFX Ends)
-            //
-            if (_revertMaterialsToDefaultOnesAfterVFXEnds 
-                && ( (isValidMyArrayOfSkinnedMeshRender && isValidArrayOfNonVFXSkinnedMeshRender) 
-                     || (isValidMyArrayOfMeshRender && isValidArrayOfNonVFXMeshRender)) )
+            if (_revertMaterialsToDefaultOnesAfterVFXEnds)
             {
 
-                // Revert the VFX Materials in the 3D's (MeshRenderer or SkinnedMeshRenderer...)  Mesh.
-                // For loop for each every {Skinned}MeshRenderer's Materials[] -> array...
-                //
-                // 1- Case:  SkinnedMeshRenderer
-                //
-                // Define auxiliary variables (arrays of Renderer), to handle {SkinnedMeshRender}
-                //
-                if (isValidMyArrayOfSkinnedMeshRender && isValidArrayOfNonVFXSkinnedMeshRender)
-                {
+                SetMaterials(ref _myArrayOfSkinnedMeshRender, ref _myArrayOfMeshRender, ref _arrayOfNonVFXSkinnedMeshRender,
+                    ref _arrayOfNonVFXMeshRender);
 
-                    Renderer[] myAuxArrayOfSkinnedMeshRender = _myArrayOfSkinnedMeshRender as Renderer[];
-                    Renderer[] myAuxArrayOfNonVFXFakeSkinnedMeshRender = _arrayOfNonVFXSkinnedMeshRender as Renderer[];
-                    //
-                    RevertMaterialsToDefaultOnes(ref myAuxArrayOfSkinnedMeshRender, ref myAuxArrayOfNonVFXFakeSkinnedMeshRender);
 
-                }//End if (isValidMyArrayOfSkinnedMeshRender && isValidArrayOfNonVFXSkinnedMeshRender)
-                
-                
-                // 2- Case:  MeshRenderer
-                //
-                // Define auxiliary variables (arrays of Renderer), to handle {MeshRender}
-                //
-                if (isValidMyArrayOfMeshRender && isValidArrayOfNonVFXMeshRender)
-                {
+                #region Deprecated Code: AlMartson 2024/06- Jun -/05
 
-                    Renderer[] myAuxArrayOfMeshRender = _myArrayOfMeshRender as Renderer[];
-                    Renderer[] myAuxArrayOfNonVFXFakeMeshRender = _arrayOfNonVFXMeshRender as Renderer[];
-                    //
-                    RevertMaterialsToDefaultOnes(ref myAuxArrayOfMeshRender, ref myAuxArrayOfNonVFXFakeMeshRender);
-    
-                }//End if (isValidMyArrayOfMeshRender && isValidArrayOfNonVFXMeshRender)
-                
-            }//End:  0- REVERT Materials to Default    (after VFX Ends)
+                // //   0.1 - Validations:  SkinnedMeshRender case:
+                // //
+                // bool isValidMyArrayOfSkinnedMeshRender = ( (_myArrayOfSkinnedMeshRender != null) && (_myArrayOfSkinnedMeshRender.Length > 0) && (_myArrayOfSkinnedMeshRender[0] != null) );
+                // //
+                // bool isValidArrayOfNonVFXSkinnedMeshRender = ( (_arrayOfNonVFXSkinnedMeshRender != null) && (_arrayOfNonVFXSkinnedMeshRender.Length > 0) && (_arrayOfNonVFXSkinnedMeshRender[0] != null) );
+                //
+                // //    0.2 - Validations:  MeshRender case:
+                // //
+                // bool isValidMyArrayOfMeshRender = ( (_myArrayOfMeshRender != null) && (_myArrayOfMeshRender.Length > 0) && (_myArrayOfMeshRender[0] != null) );
+                // //
+                // bool isValidArrayOfNonVFXMeshRender = ( (_arrayOfNonVFXMeshRender != null) && (_arrayOfNonVFXMeshRender.Length > 0) && (_arrayOfNonVFXMeshRender[0] != null) );
+                //
+                //
+                // // 0- REVERT Materials to Default    (after VFX Ends)
+                // //
+                // if ( (isValidMyArrayOfSkinnedMeshRender && isValidArrayOfNonVFXSkinnedMeshRender) 
+                //          || (isValidMyArrayOfMeshRender && isValidArrayOfNonVFXMeshRender) )
+                // {
+                //
+                //     // Revert the VFX Materials in the 3D's (MeshRenderer or SkinnedMeshRenderer...)  Mesh.
+                //     // For loop for each every {Skinned}MeshRenderer's Materials[] -> array...
+                //     //
+                //     // 1- Case:  SkinnedMeshRenderer
+                //     //
+                //     // Define auxiliary variables (arrays of Renderer), to handle {SkinnedMeshRender}
+                //     //
+                //     if (isValidMyArrayOfSkinnedMeshRender && isValidArrayOfNonVFXSkinnedMeshRender)
+                //     {
+                //
+                //         Renderer[] myAuxArrayOfSkinnedMeshRender = _myArrayOfSkinnedMeshRender as Renderer[];
+                //         Renderer[] myAuxArrayOfNonVFXFakeSkinnedMeshRender = _arrayOfNonVFXSkinnedMeshRender as Renderer[];
+                //         //
+                //         SetMaterialsArrayOnRendersArray(ref myAuxArrayOfSkinnedMeshRender, ref myAuxArrayOfNonVFXFakeSkinnedMeshRender);
+                //
+                //     }//End if (isValidMyArrayOfSkinnedMeshRender && isValidArrayOfNonVFXSkinnedMeshRender)
+                //     
+                //     
+                //     // 2- Case:  MeshRenderer
+                //     //
+                //     // Define auxiliary variables (arrays of Renderer), to handle {MeshRender}
+                //     //
+                //     if (isValidMyArrayOfMeshRender && isValidArrayOfNonVFXMeshRender)
+                //     {
+                //
+                //         Renderer[] myAuxArrayOfMeshRender = _myArrayOfMeshRender as Renderer[];
+                //         Renderer[] myAuxArrayOfNonVFXFakeMeshRender = _arrayOfNonVFXMeshRender as Renderer[];
+                //         //
+                //         SetMaterialsArrayOnRendersArray(ref myAuxArrayOfMeshRender, ref myAuxArrayOfNonVFXFakeMeshRender);
+                //
+                //     }//End if (isValidMyArrayOfMeshRender && isValidArrayOfNonVFXMeshRender)
+                //     
+                // }//End if ( (isValidMyArrayOfSkinnedMeshRender && isValidArrayOfNonVFXSkinnedMeshRender)...   0- REVERT Materials to Default    (after VFX Ends)
+
+                #endregion Deprecated Code: AlMartson 2024/06- Jun -/05
+
+
+            }// End if (_revertMaterialsToDefaultOnesAfterVFXEnds)
+            
          
             #endregion 0- REVERT Materials to Default    (after VFX Ends)
 
@@ -1426,16 +1440,85 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     #endregion After the VFX ends
     
     
-    #region 0- REVERTING Materials to Default ones
+    #region 0- REVERTING Materials to Default ones AND Setting up Materials before the VFX Starts
+
+    /// <summary>
+    /// Main function wrapper, to set Materials[] on SkinnedMeshRenderer[] array and MeshRenderer[]..., using other (possibly "fake") Renders as input.
+    /// </summary>
+    /// <param name="myArrayOfSkinnedMeshRenderer"></param>
+    /// <param name="myArrayOfMeshRenderer"></param>
+    /// <param name="myArrayOfFakeSkinnedMeshRendererWithNewMaterialsToSet"></param>
+    /// <param name="myArrayOfFakeMeshRendererWithNewMaterialsToSet"></param>
+	protected virtual void SetMaterials(ref SkinnedMeshRenderer[] myArrayOfSkinnedMeshRenderer, ref MeshRenderer[] myArrayOfMeshRenderer, ref SkinnedMeshRenderer[] myArrayOfFakeSkinnedMeshRendererWithNewMaterialsToSet, ref MeshRenderer[] myArrayOfFakeMeshRendererWithNewMaterialsToSet)
+	{
+
+     	 //   0.1 - Validations:  SkinnedMeshRender  case:
+        //
+        bool isValidMyArrayOfSkinnedMeshRender = ( (myArrayOfSkinnedMeshRenderer != null) && (myArrayOfSkinnedMeshRenderer.Length > 0) && (myArrayOfSkinnedMeshRenderer[0] != null) );
+        //
+        bool isValidMyArrayOfFakeSkinnedMeshRendererWithNewMaterialsToSet = ( (myArrayOfFakeSkinnedMeshRendererWithNewMaterialsToSet != null) && (myArrayOfFakeSkinnedMeshRendererWithNewMaterialsToSet.Length > 0) && (myArrayOfFakeSkinnedMeshRendererWithNewMaterialsToSet[0] != null) );
+
+        //    0.2 - Validations:  MeshRender  case:
+        //
+        bool isValidMyArrayOfMeshRender = ( (myArrayOfMeshRenderer != null) && (myArrayOfMeshRenderer.Length > 0) && (myArrayOfMeshRenderer[0] != null) );
+        //
+        bool isValidMyArrayOfFakeMeshRendererWithNewMaterialsToSet = ( (myArrayOfFakeMeshRendererWithNewMaterialsToSet != null) && (myArrayOfFakeMeshRendererWithNewMaterialsToSet.Length > 0) && (myArrayOfFakeMeshRendererWithNewMaterialsToSet[0] != null) );
+        
+
+        // 0- Set Materials
+        //
+        if ( (isValidMyArrayOfSkinnedMeshRender && isValidMyArrayOfFakeSkinnedMeshRendererWithNewMaterialsToSet) 
+                 || (isValidMyArrayOfMeshRender && isValidMyArrayOfFakeMeshRendererWithNewMaterialsToSet) )
+        {
+
+            // Set the Materials in the 3D's (MeshRenderer or SkinnedMeshRenderer...)  Mesh.
+            // For loop for each every {Skinned}MeshRenderer's Materials[] -> array...
+            //
+            // 1- Case:  SkinnedMeshRenderer
+            //
+            // Define auxiliary variables (arrays of Renderer), to handle {SkinnedMeshRender}
+            //
+            if (isValidMyArrayOfSkinnedMeshRender && isValidMyArrayOfFakeSkinnedMeshRendererWithNewMaterialsToSet)
+            {
+
+                Renderer[] myAuxArrayOfSkinnedMeshRender = myArrayOfSkinnedMeshRenderer as Renderer[];
+                Renderer[] myAuxArrayOfFakeSkinnedMeshRendererWithNewMaterialsToSet = myArrayOfFakeSkinnedMeshRendererWithNewMaterialsToSet as Renderer[];
+                //
+                SetMaterialsArrayOnRendersArray(ref myAuxArrayOfSkinnedMeshRender, ref myAuxArrayOfFakeSkinnedMeshRendererWithNewMaterialsToSet);
+
+            }//End if (isValidMyArrayOfSkinnedMeshRender && isValidMyArrayOfFakeSkinnedMeshRendererWithNewMaterialsToSet)
+            
+            
+            // 2- Case:  MeshRenderer
+            //
+            // Define auxiliary variables (arrays of Renderer), to handle {MeshRender}
+            //
+            if (isValidMyArrayOfMeshRender && isValidMyArrayOfFakeMeshRendererWithNewMaterialsToSet)
+            {
+
+                Renderer[] myAuxArrayOfMeshRender = myArrayOfMeshRenderer as Renderer[];
+                Renderer[] myAuxArrayOfFakeMeshRendererWithNewMaterialsToSet = myArrayOfFakeMeshRendererWithNewMaterialsToSet as Renderer[];
+                //
+                SetMaterialsArrayOnRendersArray(ref myAuxArrayOfMeshRender, ref myAuxArrayOfFakeMeshRendererWithNewMaterialsToSet);
+
+            }//End if (isValidMyArrayOfMeshRender && isValidMyArrayOfFakeMeshRendererWithNewMaterialsToSet)
+            
+        }//End if ( (isValidMyArrayOfSkinnedMeshRender && isValidMyArrayOfFakeSkinnedMeshRendererWithNewMaterialsToSet)
+
+	}// End SetMaterials()
+
+    
     
     /// <summary>
-    /// Reverts the 'VFX Materials' to Default ones. <br /><br />
+    /// Sets the 'Render's Materials[] array' to the input. <br /><br />
     /// 
-    /// Only Call this function after having validated that, (at least):  the user has set up Materials to Revert to.
+    /// Notes: <br /> <br />
+    /// 1- Only Call this function after having validated that, (at least):  the Unity Designer Team has set up 'Materials' on a Render, to Swap to (in the Inspector GameObject's attributes related to this Script). <br /><br />
+    /// 2- This only works with 'Shared Materials', on the Renders. <br /><br />
     /// </summary>
-    /// <param name="myArrayOfRenderer"></param>
-    /// <param name="myArrayOfFakeRenderWithDefaultMaterialsToSet"></param>
-    protected virtual void RevertMaterialsToDefaultOnes(ref Renderer[] myArrayOfRenderer, ref Renderer[] myArrayOfFakeRenderWithDefaultMaterialsToSet)
+    /// <param name="myArrayOfRenderer">The Render where the new Materials will be set.</param>
+    /// <param name="myArrayOfFakeRenderWithNewMaterialsToSet">Fake Render Component that has the new Materials we want to set. to</param>
+    protected virtual void SetMaterialsArrayOnRendersArray(ref Renderer[] myArrayOfRenderer, ref Renderer[] myArrayOfFakeRenderWithNewMaterialsToSet)
     {
         // Validation Flags
         //
@@ -1443,26 +1526,26 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
         bool isValidMyArrayOfRenderer = myArrayOfRenderer is {Length: > 0} && (myArrayOfRenderer[0] != null);
 
-        bool isValidMyArrayOfFakeRenderWithDefaultMaterialsToSet = myArrayOfFakeRenderWithDefaultMaterialsToSet is {Length: > 0} && (myArrayOfFakeRenderWithDefaultMaterialsToSet[0] != null) && (myArrayOfRenderer.Length <= myArrayOfFakeRenderWithDefaultMaterialsToSet.Length);
+        bool isValidMyArrayOfFakeRenderWithNewMaterialsToSet = myArrayOfFakeRenderWithNewMaterialsToSet is {Length: > 0} && (myArrayOfFakeRenderWithNewMaterialsToSet[0] != null) && (myArrayOfRenderer.Length <= myArrayOfFakeRenderWithNewMaterialsToSet.Length);
 
         #endregion 0- Validations
         
         
-        #region 1- Revert the Materials to Default ones:
+        #region 1- Set the Materials, from the input in this Function:
         
-        // b) Apply Validations + revert the Materials.
+        // b) Apply Validations + Set the Materials.
         //
         int myArrayOfRendererLength = myArrayOfRenderer.Length; 
         //
-        if (isValidMyArrayOfRenderer && isValidMyArrayOfFakeRenderWithDefaultMaterialsToSet)
+        if (isValidMyArrayOfRenderer && isValidMyArrayOfFakeRenderWithNewMaterialsToSet)
         {
             
             for (int i = 0; i < myArrayOfRendererLength; i++)
             {
                 
-                // Replace the {Skinned{Mesh}}Renderer's  Materials to Default:
+                // Replace the {Skinned{Mesh}}Renderer's  Materials:
                 //
-                myArrayOfRenderer[i].sharedMaterials = myArrayOfFakeRenderWithDefaultMaterialsToSet[i].sharedMaterials;
+                myArrayOfRenderer[i].sharedMaterials = myArrayOfFakeRenderWithNewMaterialsToSet[i].sharedMaterials;
 
             }//End For
             
@@ -1474,13 +1557,13 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         {
             // Log an Error:
             //
-            Debug.LogError( $"{this.name}: It is impossible to revert the Materials to Default ones because they were not set up correctly, previously\n (Default Ones, + [SkinnedMeshRenderer, or MeshRenderer]'s reference this Script) | in: this Object:{this.gameObject.name}", this);
+            Debug.LogError( $"{this.name}: It is impossible to 'Set' the Materials because they were not set up in the FAKE Render GameObject correctly, previously\n (See: Materials to set + [SkinnedMeshRenderer, or MeshRenderer]'s reference this Script) | in: this Object:{this.gameObject.name}", this);
 
         }//End else of if (mySkinnedMeshRenderer != null)
         
-        #endregion 1- Revert the Materials to Default ones:
+        #endregion 1- Set the Materials, from the input in this Function:
         
-    }// End RevertMaterialsToDefaultOnes
+    }// End SetMaterialsArrayOnRendersArray
     
 
     #region Deprecated
@@ -1495,8 +1578,8 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     /// <param name="mySkinnedMeshRenderer"></param>
     /// <param name="myMeshRenderer"></param>
     /// <param name="arrayOfDefaultMaterialsToSet"></param>
-    [Obsolete("This method is deprecated. Use: 'RevertMaterialsToDefaultOnes(ref Renderer[] myArrayOfSkinnedMeshRenderer, ref Material[] myArrayOfDefaultMaterialsToSet)' instead", true)]
-    protected virtual void RevertMaterialsToDefaultOnes(ref SkinnedMeshRenderer mySkinnedMeshRenderer, ref MeshRenderer myMeshRenderer, ref Material[] arrayOfDefaultMaterialsToSet)
+    [Obsolete("This method is deprecated. Use: 'SetMaterialsArrayOnRendersArray(ref Renderer[] myArrayOfSkinnedMeshRenderer, ref Material[] myArrayOfDefaultMaterialsToSet)' instead", true)]
+    protected virtual void SetMaterialsArrayOnRendersArray(ref SkinnedMeshRenderer mySkinnedMeshRenderer, ref MeshRenderer myMeshRenderer, ref Material[] arrayOfDefaultMaterialsToSet)
     {
         // Validation Flags
         //
@@ -1580,12 +1663,12 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         
         #endregion 1- Revert the Materials to Default ones:
         
-    }// End RevertMaterialsToDefaultOnes
+    }// End SetMaterialsArrayOnRendersArray
 
     #endregion Deprecated
 
     
-    #endregion 0- REVERTING Materials to Default ones
+    #endregion 0- REVERTING Materials to Default ones AND Setting up Materials before the VFX Starts
     
     
     #region Detachment from the VFX
