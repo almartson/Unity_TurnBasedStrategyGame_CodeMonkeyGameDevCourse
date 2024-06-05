@@ -1260,8 +1260,6 @@ MonoBehaviour:
   _shaderVFXMainValueChangeRate: 0.0021937017
   _yieldDuringThisRefreshRateOrDeltaTimeOfEachFrame: 0.006581105
   _isRunningShaderEffectFromVFXCoroutine: 0
-  _arrayOf_NonVFX_InitialMaterials:
-  - {fileID: 2100000, guid: 7d22fc6b9a431b043a917fb89a80bcfc, type: 2}
   _myArrayOfSkinnedMeshRender:
   - {fileID: 4141281868491581246}
   _arrayOfVFXSkinnedMeshRender:
@@ -1286,6 +1284,8 @@ MonoBehaviour:
   - {fileID: 6048118319150215532}
   _arrayOfCachedMeshRendererVFXMaterials: []
   _arrayOfCachedVFXMaterials: []
+  _setMaterialsBeforeVFXStarts: 1
+  _whenToSetMaterialsBeforeVFXStarts: 2
   _detachGameObjectsFromParentVFXsGameObjectBeforeVFXStarts: 0
   _arrayOfGameObjectsToDetachFromParentVFXsGameObjectBeforeVFXStarts: []
   _changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts: 0
@@ -1302,7 +1302,7 @@ MonoBehaviour:
   _arrayOfRigidbodiesToDisableAfterVFXEnds: []
   _timeDelayToEnableOrDisableCollidersAndRigidbodiesPhysicsAfterVFXEnds: 0
   _largestTimeDelayInSeconds: 0
-  _disableThisScript: 0
+  _disableThisScript: 1
   _disableParentGameObjectAndEveryBehaviourToo: 0
   _destroyParentGameObjectAndEverything: 0
 --- !u!114 &8836970588771288157

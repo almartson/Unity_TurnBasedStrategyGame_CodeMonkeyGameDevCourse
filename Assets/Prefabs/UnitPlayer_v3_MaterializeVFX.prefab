@@ -1200,6 +1200,8 @@ MonoBehaviour:
   - {fileID: 4330815637958292687}
   _arrayOfCachedMeshRendererVFXMaterials: []
   _arrayOfCachedVFXMaterials: []
+  _setMaterialsBeforeVFXStarts: 1
+  _whenToSetMaterialsBeforeVFXStarts: 2
   _detachGameObjectsFromParentVFXsGameObjectBeforeVFXStarts: 0
   _arrayOfGameObjectsToDetachFromParentVFXsGameObjectBeforeVFXStarts: []
   _changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts: 0

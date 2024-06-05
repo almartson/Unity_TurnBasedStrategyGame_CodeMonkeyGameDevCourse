@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18222703, g: 0.22793126, b: 0.3073567, a: 1}
+  m_IndirectSpecularColor: {r: 0.18222703, g: 0.2279312, b: 0.30735645, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3440,10 +3440,60 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 332770721178807127, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688780371541726763, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _disableThisScript
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688780371541726763, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _setMaterialsBeforeVFXStarts
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688780371541726763, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _whenToSetMaterialsBeforeVFXStarts
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6236878121081643677, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 41680dad0f0243748b4e228f49a2e3c4, type: 2}
+    - target: {fileID: 6282985090581158025, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 25af05085d2957e42ac6b80b69ddd26a, type: 2}
+    - target: {fileID: 6284019036152873085, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4d1c11ecf91c18d4e86d3818e8c650cc, type: 2}
+    - target: {fileID: 6284052791704199265, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 25af05085d2957e42ac6b80b69ddd26a, type: 2}
+    - target: {fileID: 6284575945774913913, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 25af05085d2957e42ac6b80b69ddd26a, type: 2}
     - target: {fileID: 6297334026975807288, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
       propertyPath: m_Name
       value: UnitPlayer_v3_MaterializeVFX (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297334026975807288, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6297334026975807289, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
@@ -4506,10 +4556,35 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 332770721178807127, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688780371541726763, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _disableThisScript
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688780371541726763, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _setMaterialsBeforeVFXStarts
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688780371541726763, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _whenToSetMaterialsBeforeVFXStarts
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6297334026975807288, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
       propertyPath: m_Name
       value: UnitPlayer_v3_MaterializeVFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297334026975807288, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6297334026975807289, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
@@ -6904,6 +6979,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 759123543629520629, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: _disableThisScript
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4076181659283702426, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_RootOrder
@@ -6963,6 +7048,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a6a85f651933fd4a950c65cc34ed67e, type: 3}

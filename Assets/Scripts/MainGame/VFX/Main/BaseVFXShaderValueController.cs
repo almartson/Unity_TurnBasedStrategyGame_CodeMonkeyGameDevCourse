@@ -21,12 +21,12 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     {
         None,
         Awake,
-        Start,
+        /*Start,*/
         BeforeTheVFXStarts,
-        Update,
+        /*Update,
         LateUpdate,
         AfterTheVFXEnds,
-        TheLastOfTheLast,
+        TheLastOfTheLast,*/
     }
 
     #endregion Enums
@@ -251,8 +251,21 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     #region Detachment from the VFX
     
     #region Before the VFX starts
-    
+
     [Space()]   [Header("Before the VFX starts")]
+    
+    [Space(10)]
+    [Header("SET VFX Materials (on Renderers)...")]
+
+    [Tooltip("[Before the VFX starts] Do you need to SET (i.e.: INITIALIZE) the 'VFX Materials' (on Renderers) Before the VFX Starts (i.e.: for Optimization purposes)? \n(...so the 3D GameObject may be using whatever Materials during gameplay (before this VFX is triggered).")]
+    [SerializeField]
+    protected bool _setMaterialsBeforeVFXStarts = false;
+    
+    [Tooltip("[Before the VFX starts. IMPORTANT] When do you want to SET (i.e.: INITIALIZE) the 'VFX Materials' (on Renderers) (Before the VFX Starts)??")]
+    [SerializeField]
+    protected UnityEditorFlowState _whenToSetMaterialsBeforeVFXStarts = UnityEditorFlowState.None;
+    
+
     [Space(10)]
     [Header("DETACH GameObjects...")]
     
@@ -393,10 +406,30 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     protected virtual void Awake()
     {
         #region Materials List
-
-        #region 0- Default Materials
         
-        // 0- Default Materials
+        #region 0.1- To Set: VFX Materials
+        
+        // 0.1- VFX Materials
+        //
+        if ( _setMaterialsBeforeVFXStarts  
+             && (((_arrayOfVFXSkinnedMeshRender == null) || (_arrayOfVFXSkinnedMeshRender.Length == 0) || (_arrayOfVFXSkinnedMeshRender[0] == null) )
+                 || (_myArrayOfSkinnedMeshRender == null)) )
+        {
+
+            Debug.LogError( $"{this.name}: It will be impossible to Set / Initialize the VFX Materials; because they are not set up previously | in (the Inspector): this Object:{this.gameObject.name}", this);
+            //
+            // Set the Boolean flag to: false... so we don't try to execute that functionality.
+            //
+            _setMaterialsBeforeVFXStarts = false;
+
+        }// End  0- VFX Materials
+
+        #endregion 0.1- To Set: VFX Materials
+        
+        
+        #region 0.2- To Set: Default Materials
+        
+        // 0.2- Default Materials
         //
         if ( _revertMaterialsToDefaultOnesAfterVFXEnds  
             && (((_arrayOfNonVFXSkinnedMeshRender == null) || (_arrayOfNonVFXSkinnedMeshRender.Length == 0) || (_arrayOfNonVFXSkinnedMeshRender[0] == null) ) 
@@ -412,7 +445,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
 
         }// End  0- Default Materials
 
-        #endregion 0- Default Materials
+        #endregion 0.2- To Set: Default Materials
 
 
         #region 1- Initialize the Material[]s arrays
@@ -478,6 +511,21 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         // _arrayOfCachedMeshRendererVFXMaterials.CopyTo(_arrayOfCachedVFXMaterials, lengthOfArrayOfCachedSkinnedMeshRendererMaterials);
 
         #endregion 1- B) Materials initialization: Deprecated Code
+
+
+        #region 2- Set / Initialize the VFX's Materials (on AWAKE):   BEFORE VFX STARTS
+
+        if (_setMaterialsBeforeVFXStarts &&  (_whenToSetMaterialsBeforeVFXStarts == UnityEditorFlowState.Awake))
+        {
+            
+            // Initialize the VFX's Materials  (BEFORE VFX STARTS)
+            //
+            SetMaterials(ref _myArrayOfSkinnedMeshRender, ref _myArrayOfMeshRender, ref _arrayOfVFXSkinnedMeshRender,
+                ref _arrayOfVFXMeshRender);
+
+        }//End if (_setMaterialsBeforeVFXStarts...
+
+        #endregion 2- Set / Initialize the VFX's Materials (on AWAKE):   BEFORE VFX STARTS
         
         #endregion Materials List
 
@@ -1148,6 +1196,23 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         if (!_hasFinishedExecutionOfActionsBeforeVFXStarts)
         {
  
+            #region Materials - Set / Initialize the VFX's Materials (on AWAKE):   BEFORE VFX STARTS
+
+            // 0- Set / Initialize the 'Materials' for the VFX   (Before VFX Starts)
+            //
+            if (_setMaterialsBeforeVFXStarts &&  (_whenToSetMaterialsBeforeVFXStarts == UnityEditorFlowState.BeforeTheVFXStarts))
+            {
+            
+                // Initialize the VFX's Materials  (BEFORE VFX STARTS)
+                //
+                SetMaterials(ref _myArrayOfSkinnedMeshRender, ref _myArrayOfMeshRender, ref _arrayOfVFXSkinnedMeshRender,
+                    ref _arrayOfVFXMeshRender);
+
+            }//End if (_setMaterialsBeforeVFXStarts...
+
+            #endregion Materials - Set / Initialize the VFX's Materials (on AWAKE):   BEFORE VFX STARTS
+            
+            
             // 1- Disable Colliders and 3D Rigidbodies   (Before VFX Starts)
             //
             if (_changeStateEnableOrDisableCollidersAndRigidbodiesPhysicsJustBeforeVFXStarts)
