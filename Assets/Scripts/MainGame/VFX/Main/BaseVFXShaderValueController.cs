@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
+using Object = UnityEngine.Object;
 
 public abstract class BaseVFXShaderValueController : MonoBehaviour
 {
@@ -372,7 +373,7 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     [Tooltip("[After the VFX ends] Do you want to DISABLE THIS SCRIPT at the end of the VFX (and not Destroy all these GameObjects)?")]
     [SerializeField]
     protected bool _disableThisScript = false;
-    
+
     [Tooltip("[After the VFX ends] Do you want to DISABLE ITS PARENT GAME OBJECT (thus, this will Disable all Components - Colliders, etc - including their Update() Loops)?")]
     [SerializeField]
     protected bool _disableParentGameObjectAndEveryBehaviourToo = false;
@@ -380,7 +381,25 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     [Tooltip("[After the VFX ends] Do you want to DESTROY THE GAMEOBJECT where THIS SCRIPT resides..? at the end of the VFX?")]
     [SerializeField]
     protected bool _destroyParentGameObjectAndEverything = false;
+
     
+    #region Detach List of Components And GameObjects
+    
+    [Tooltip("[After the VFX ends] Do you want to DETACH and DESTROY THIS ARRAY OF COMPONENTs (SCRIPTs) / GameObjects? at the end of the VFX?")]
+    [SerializeField]
+    protected bool _destroyListOfComponentsAndOrGameObjects = false;
+    
+    [Tooltip("[After the VFX ends] Array of COMPONENTs (SCRIPTs) / GameObjects that will be 'Destroyed / Removed' from this Main GameObject: right after the VFX ends.\n\n * Example: Items such as: Guns, Rifles, Magic Wands, Hats,.. Components such as: RigidBodies, Colliders, etc..")]
+    [SerializeField]
+    protected Component[] _arrayOfComponentsAndOrGameObjectToDestroy;
+
+    #endregion Detach List of Components And GameObjects
+    
+    
+    [Tooltip("[After the VFX ends] Do you want to DETACH and DESTROY THIS COMPONENT / SCRIPT? at the end of the VFX?")]
+    [SerializeField]
+    protected bool _destroyThisComponentScript = false;
+
     
     /// <summary>
     /// (For Validations. Initialize as: FALSE) Boolean Flag to mark the fact that this set of actions have been already executed, so they don't get executed more than once by mistake.
@@ -1892,6 +1911,100 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
     }// End DetachAllGameObjectsFromTheirParents
 
     
+    #region Destroy One or More Components And GameObjects
+
+    /// <summary>
+    /// Destroys any type of Component (i.e.: Script) AND EVEN GameObjects.
+    /// </summary>
+    protected void DestroyDetachFromGameObject<T>(T myComponent) where T : Object 
+    {
+
+        // Validate:
+        //
+        if ( myComponent != null ) 
+        {
+
+            // If we have a Component, type == 'Transform': get the GameObject associated  (because Unity does NOT Destroy Transforms): 
+            // TRY TO CAST "T myComponent":  as a Transform  (for Validation):
+            //
+            Transform myAuxTransform = myComponent as Transform;
+            //
+            if ((myAuxTransform != null) &&   (myAuxTransform.GetType() == typeof(Transform)) )
+            {
+                
+                // 1- Get the GameObject that has THAT Transform:
+                //
+                GameObject myAuxGameObject = myAuxTransform.gameObject;
+        
+                // 2- Destroy the 'GameObject' that TRANSFORM belongs to:
+                //
+                Destroy( myAuxGameObject );
+   
+            }//End if (typeof(T) == typeof(Transform))
+            else
+            {
+                // Then T is of type: Other Components, and even GameObjects (or other UnityEngine.OBJECTS).
+                // It is LEGAL to Destroy it:
+                //
+                Destroy(myComponent);
+
+            }//End else of if (typeof(T) == typeof(Transform))
+
+        }//End if ( myComponent != null )
+
+    }//End DestroyDetachFromGameObject()
+    
+    
+    /// <summary>
+    /// Tries to: Destroy an Array of Object[] (Unity's):  Components AND OR GameObjects.
+    /// </summary>
+    /// <param name="myArrayOfComponentsAndOrGameObject">Classic Array of:  GameObjects or Components / Scripts</param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    protected bool TryDestroyDetachFromGameObject<T>(T[] myArrayOfComponentsAndOrGameObject) where T : Object 
+    {
+
+        // 1.1- Validations:
+        //
+        bool isThisFunctionValid = ((myArrayOfComponentsAndOrGameObject != null) && (myArrayOfComponentsAndOrGameObject.Length > 0) && (myArrayOfComponentsAndOrGameObject[0] != null));
+            
+        // 1.2- Main Validation
+        //
+        if ( isThisFunctionValid )
+        {
+            // 0- Length of array
+            //
+            int arrayLength = myArrayOfComponentsAndOrGameObject.Length;
+
+            
+            // 1- Destroy the GameObject
+            //
+            for (int i = 0; i < arrayLength; i++)
+            {
+
+                if (myArrayOfComponentsAndOrGameObject[i] != null)
+                {
+                    DestroyDetachFromGameObject( myArrayOfComponentsAndOrGameObject[i] );
+                }
+                else
+                {
+                    isThisFunctionValid = false;
+                }
+
+            }//End for
+
+        }//End if ((myArrayOfComponentsAndOrGameObject != null)...
+
+        // Return this function's Result: Succeed or Not.
+        //
+        return isThisFunctionValid;
+
+    }//End DestroyDetachFromGameObject()
+
+    
+    #endregion Destroy One or More Components And GameObjects
+    
+
     /// <summary>
     /// Final Actions after:  VFX ENDS + ALL COROUTINES end + everything ends.
     /// </summary>
@@ -1932,9 +2045,37 @@ public abstract class BaseVFXShaderValueController : MonoBehaviour
         {
             // 2.2- Destroy this GameObject  (where this Script is attached to...):
             //
-            Destroy(gameObject);
+            DestroyDetachFromGameObject(gameObject);
         }
-            
+        
+        
+        // 6- Destroy / Remove (Detach from GameObject...) this List of: Scripts or Components:
+        //
+        if (_destroyListOfComponentsAndOrGameObjects)
+        {
+
+            // Destroy a List of: a- Script / Component... and/or b-: GameObjects:
+            //
+            if (! TryDestroyDetachFromGameObject(_arrayOfComponentsAndOrGameObjectToDestroy) )
+            {
+                // Log an Error:
+                //
+                Debug.LogError( $"{this.name}: It is impossible to execute 'TryDestroyDetachFromGameObject(_arrayOfComponentsAndOrGameObjectToDestroy)' completely with success... because some of the GameObjects / Components were not set up correctly (in the Inspector), previously... \n...(some Objects might be NULL in the Array... or the ARRAY is NULL!)\n | in: this Object: {this.gameObject.name}", this);
+
+            }//End if (! DestroyDetachFromGameObject(_arrayOfComponentsAndOrGameObjectToDestroy) )
+
+        }//End if (_destroyListOfComponentsAndOrGameObjects)
+
+
+        // 7- Destroy / Remove (Detach from GameObject...) this Script or Component:
+        //
+        if (_destroyThisComponentScript)
+        {
+            // Destroy this Script / Component:
+            //
+            DestroyDetachFromGameObject(this);
+        }
+        
         // Mark the Boolean Flag as:  "Actions Completed"
         //
         _hasFinishedExecutionOfActionsAfterVFXEnds = true;
