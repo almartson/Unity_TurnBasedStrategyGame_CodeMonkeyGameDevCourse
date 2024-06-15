@@ -283,10 +283,10 @@ MonoBehaviour:
     collapsed: 1
   uiBounds:
     serializedVersion: 2
-    x: 406
-    y: -296
-    width: 4631
-    height: 3010
+    x: 0
+    y: -237
+    width: 5012
+    height: 3213
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1911,7 +1911,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614612}
   m_ExposedName: Duration
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 12
   m_Category: 1- Cylinders - Initialization and Spawn
   m_Min:
     m_Type:
@@ -2288,7 +2288,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614625}
   m_ExposedName: PortalInitialAngle
   m_Exposed: 1
-  m_Order: 12
+  m_Order: 27
   m_Category: 1- Cylinders - Initialization and Spawn
   m_Min:
     m_Type:
@@ -2822,7 +2822,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614645}
   m_ExposedName: PortalRotationSpeed_PortalAngleUpdateOverTime
   m_Exposed: 1
-  m_Order: 1
+  m_Order: 4
   m_Category: 2- Cylinders - Update
   m_Min:
     m_Type:
@@ -3029,7 +3029,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614652}
   m_ExposedName: PortalMeshImportSize
   m_Exposed: 1
-  m_Order: 2
+  m_Order: 8
   m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
@@ -3125,7 +3125,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614654}
   m_ExposedName: Cylinder01FinalSetScaleTransform
   m_Exposed: 1
-  m_Order: 4
+  m_Order: 15
   m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
@@ -3442,7 +3442,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614663}
   m_ExposedName: MultiplyScale_in_Z_OverLife_AnimationCurve
   m_Exposed: 1
-  m_Order: 9
+  m_Order: 24
   m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
@@ -3603,7 +3603,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614673}
   m_ExposedName: ColorAndTransparencyUpdateOverLife
   m_Exposed: 1
-  m_Order: 15
+  m_Order: 29
   m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
@@ -5242,7 +5242,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614729}
   m_ExposedName: BottomMeshRing02FinalSetScaleTransform
   m_Exposed: 1
-  m_Order: 6
+  m_Order: 20
   m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
@@ -7296,7 +7296,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614825}
   m_ExposedName: TopMeshPositionUpdateOverLife_AnimationCurve
   m_Exposed: 1
-  m_Order: 5
+  m_Order: 18
   m_Category: 2- Cylinders - Update
   m_Min:
     m_Type:
@@ -7378,7 +7378,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614827}
   m_ExposedName: Noise_Cylinder001
   m_Exposed: 1
-  m_Order: 17
+  m_Order: 30
   m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
@@ -7458,7 +7458,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614829}
   m_ExposedName: Noise_BottomAndTopMeshesRing002
   m_Exposed: 1
-  m_Order: 19
+  m_Order: 31
   m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
@@ -7546,7 +7546,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614831}
   m_ExposedName: CylinderColor
   m_Exposed: 1
-  m_Order: 21
+  m_Order: 32
   m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
@@ -7762,7 +7762,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614843}
   m_ExposedName: RingsColor
   m_Exposed: 1
-  m_Order: 23
+  m_Order: 33
   m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
@@ -12030,7 +12030,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615163}
   m_ExposedName: LaserParticlesColor
   m_Exposed: 1
-  m_Order: 4
+  m_Order: 16
   m_Category: 3- Laser Particles - Output - Final
   m_Min:
     m_Type:
@@ -12247,7 +12247,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615182}
   m_ExposedName: LaserParticlesTexture
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 1
   m_Category: 3- Laser Particles - Output - Final
   m_Min:
     m_Type:
@@ -12327,7 +12327,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615184}
   m_ExposedName: MultiplyScaleOrSize_in_Y_OverLife_AnimationCurve
   m_Exposed: 1
-  m_Order: 13
+  m_Order: 28
   m_Category: 3- Cylinders - Output - Final
   m_Min:
     m_Type:
@@ -12411,7 +12411,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615186}
   m_ExposedName: FractionOfTimeMultiplierForSpawningParticles
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 2
   m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
@@ -12495,7 +12495,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615190}
   m_ExposedName: ConstantSpawnRateForSmallLaserParticles
   m_Exposed: 1
-  m_Order: 1
+  m_Order: 5
   m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
@@ -12577,7 +12577,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615197}
   m_ExposedName: BoundsCenter_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 2
+  m_Order: 9
   m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
@@ -12760,7 +12760,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615202}
   m_ExposedName: BoundsSize_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 13
   m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
@@ -12943,7 +12943,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615207}
   m_ExposedName: BoundsPadding_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 4
+  m_Order: 17
   m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
@@ -13126,7 +13126,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615226}
   m_ExposedName: Position_Sphere_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 5
+  m_Order: 19
   m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
@@ -13682,7 +13682,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615242}
   m_ExposedName: Arc_Sphere_for_PositioningSmallLaserParticles
   m_Exposed: 1
-  m_Order: 6
+  m_Order: 21
   m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
@@ -13764,7 +13764,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615244}
   m_ExposedName: MinRandomVelocity_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 7
+  m_Order: 22
   m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
@@ -13947,7 +13947,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615249}
   m_ExposedName: MaxRandomVelocity_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 8
+  m_Order: 23
   m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
@@ -14130,7 +14130,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615264}
   m_ExposedName: MinLifetime_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 9
+  m_Order: 25
   m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
@@ -14213,7 +14213,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615266}
   m_ExposedName: MaxDragForTurbulenceNode_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 1
+  m_Order: 6
   m_Category: 2- Laser Particles - Update
   m_Min:
     m_Type:
@@ -14300,7 +14300,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615270}
   m_ExposedName: MaxLifetime_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 10
+  m_Order: 26
   m_Category: 1- Laser Particles - Initialization and Spawn
   m_Min:
     m_Type:
@@ -14383,7 +14383,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615272}
   m_ExposedName: IntensityForTurbulenceNode_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 3
   m_Category: 2- Laser Particles - Update
   m_Min:
     m_Type:
@@ -14470,7 +14470,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615274}
   m_ExposedName: MultiplyVelocity_for_SmallLaserParticles
   m_Exposed: 1
-  m_Order: 2
+  m_Order: 10
   m_Category: 2- Laser Particles - Update
   m_Min:
     m_Type:
@@ -14653,7 +14653,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615279}
   m_ExposedName: MinRandomSize_for_LaserParticles
   m_Exposed: 1
-  m_Order: 1
+  m_Order: 7
   m_Category: 3- Laser Particles - Output - Final
   m_Min:
     m_Type:
@@ -14735,7 +14735,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615281}
   m_ExposedName: MaxRandomSize_for_LaserParticles
   m_Exposed: 1
-  m_Order: 2
+  m_Order: 11
   m_Category: 3- Laser Particles - Output - Final
   m_Min:
     m_Type:
@@ -14817,7 +14817,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615283}
   m_ExposedName: MultiplySize_all_OverLife_AnimationCurve_for_LaserParticles
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 14
   m_Category: 3- Laser Particles - Output - Final
   m_Min:
     m_Type:

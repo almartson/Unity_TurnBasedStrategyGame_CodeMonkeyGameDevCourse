@@ -583,7 +583,7 @@ VisualEffect:
       - m_Value:
           serializedVersion: 2
           key0: {r: 1, g: 1, b: 1, a: 0}
-          key1: {r: 0.5, g: 0.5, b: 0.5, a: 0.39215687}
+          key1: {r: 0, g: 0, b: 0, a: 0.39215687}
           key2: {r: 0, g: 0, b: 0, a: 1}
           key3: {r: 0, g: 0, b: 0, a: 0}
           key4: {r: 0, g: 0, b: 0, a: 0}
@@ -600,7 +600,7 @@ VisualEffect:
           ctime7: 0
           atime0: 0
           atime1: 13079
-          atime2: 40632
+          atime2: 40285
           atime3: 65535
           atime4: 0
           atime5: 0
@@ -1816,6 +1816,9 @@ MonoBehaviour:
   _disableThisScript: 0
   _disableParentGameObjectAndEveryBehaviourToo: 0
   _destroyParentGameObjectAndEverything: 0
+  _destroyListOfComponentsAndOrGameObjects: 0
+  _arrayOfComponentsAndOrGameObjectToDestroy: []
+  _destroyThisComponentScript: 0
 --- !u!1 &6538991238205902587
 GameObject:
   m_ObjectHideFlags: 0

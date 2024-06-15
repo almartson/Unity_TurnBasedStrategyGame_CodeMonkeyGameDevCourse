@@ -31,7 +31,7 @@ public class TeleportPortalSpawnEffectControllerForUnits : BaseVFXShaderValueCon
 
 
     /// <summary>
-    /// Start is called before the first frame update
+    /// Start is called before the first frame update.
     /// </summary>
     protected void Start()
     {

@@ -29,11 +29,21 @@ public class TeleportPortalSpawnEffectControllerTest : BaseVFXShaderValueControl
 
     }// End Awake()
 
-
+    
     /// <summary>
     /// Start is called before the first frame update
     /// </summary>
+    protected void Start()
+    {
+        // Restore the original state of the character
+        //
+        TryUndoVFX();
+            
+        // Start the VFX as a Coroutine
+        //
+        StartCoroutine(DoStartVFX());
 
+    }// End Start()
 
 
     /// <summary>
