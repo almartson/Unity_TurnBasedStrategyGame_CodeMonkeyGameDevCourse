@@ -70,7 +70,7 @@ Material:
     - _Blend: 0
     - _CastShadows: 1
     - _Cull: 2
-    - _DissolveAmount: 0.20467249
+    - _DissolveAmount: -0.0037537995
     - _DissolveScale: 1
     - _DissolveWidth: 0.02
     - _DstBlend: 0
