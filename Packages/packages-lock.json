@@ -1,11 +1,18 @@
 {
   "dependencies": {
+    "com.dragyngames.dgconsole": {
+      "version": "https://github.com/Dragyn85/DGConsole.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "495f7c6491fc931b6c241b1f0ba5537fad8d7309"
+    },
     "com.handzlikchris.fastscriptreload": {
       "version": "https://github.com/handzlikchris/FastScriptReload.git?path=Assets",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "a3df94f9a49cca348e3d003321fc28b3ecf2a87e"
+      "hash": "42a3a100f456dfcfbd7084a2333801b94101731d"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -199,6 +206,15 @@
       "dependencies": {
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
+      }
+    },
+    "com.unity.visualeffectgraph": {
+      "version": "12.1.7",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.shadergraph": "12.1.7",
+        "com.unity.render-pipelines.core": "12.1.7"
       }
     },
     "com.unity.visualscripting": {

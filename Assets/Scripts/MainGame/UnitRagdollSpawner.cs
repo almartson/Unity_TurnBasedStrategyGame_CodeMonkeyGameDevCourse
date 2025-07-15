@@ -64,7 +64,7 @@ public class UnitRagdollSpawner : MonoBehaviour
     private void Awake()
     {
         // Get a ref to the 'Health System' Component
-        // ..(from the GameObject this script in attached to...)
+        // ..(from the GameObject this script is attached to...)
         //
         _healthSystem = GetComponent<HealthSystem>();
         
@@ -109,6 +109,10 @@ public class UnitRagdollSpawner : MonoBehaviour
         // 1.1- Spawn the RAGDOLL there & save its Transform:
         //
         Transform ragdollTransform = Instantiate(_ragdollPrefab, gameObjectTransform.position, gameObjectTransform.rotation);
+        
+        //   1.1.1- Set the sibling index of the instantiated (Ragdoll) GameObject to:  the previous "Unit"'s GameObject:
+        //
+        ragdollTransform.SetSiblingIndex( gameObjectTransform.GetSiblingIndex() + 1 );
         
         //   1.2- Get the UnitRagdoll.cs Class Script from the 'ragdollTransform':
         //

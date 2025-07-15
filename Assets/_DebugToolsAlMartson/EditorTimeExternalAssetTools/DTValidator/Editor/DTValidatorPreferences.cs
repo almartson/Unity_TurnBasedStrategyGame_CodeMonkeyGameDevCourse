@@ -13,7 +13,8 @@ namespace DTValidator {
 			set { EditorPrefs.SetBool("DTValidatorPreferences::ValidateSceneAutomatically", value); }
 		}
 
-		[PreferenceItem("DTValidator")]
+		[SettingsProvider]
+		//[PreferenceItem("DTValidator")]
 		public static void PreferencesGUI() {
 			ValidateSceneAutomatically = EditorGUILayout.Toggle("Validate Scene Automatically", ValidateSceneAutomatically);
 		}

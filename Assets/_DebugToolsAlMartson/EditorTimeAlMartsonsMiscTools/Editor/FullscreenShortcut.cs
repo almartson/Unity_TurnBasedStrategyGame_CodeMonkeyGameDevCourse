@@ -32,7 +32,8 @@ static class FullscreenShortcut
     /// <returns></returns>
     private static bool ShouldToggleMaximize()
     {
-        return Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.Space);
+        return ( (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.Space)) 
+                || (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.Space)) );
     }
 
     

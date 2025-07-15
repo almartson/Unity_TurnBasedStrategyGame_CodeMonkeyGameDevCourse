@@ -34,7 +34,10 @@ namespace DTValidator.Internal {
                 EditorApplication.hierarchyWindowChanged += HierarchyChanged;
             #endif
 
-            SceneView.onSceneGUIDelegate += OnSceneGUI;
+			// Deprecated, changed by AlMartson:  SceneView.onSceneGUIDelegate += OnSceneGUI;
+			// Improved version:
+			SceneView.duringSceneGui += OnSceneGUI;
+            //
 			Undo.postprocessModifications += PostProcessModifications;
 		}
 

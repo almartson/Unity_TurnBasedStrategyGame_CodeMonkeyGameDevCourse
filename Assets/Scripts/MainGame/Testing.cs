@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+//using DragynGames;
+using DragynGames.Commands; // DGConsole
 
 public class Testing : MonoBehaviour
 {
@@ -78,7 +80,8 @@ public class Testing : MonoBehaviour
     /// <summary>
     /// Shows the 'Best Path' from the selected Unit, to the current Mouse Position (a GridPosition on the Map). 
     /// </summary>
-    public void ShowBestPathFromSelectedUnitToMousePosition()
+    [ConsoleAction(Command = "ShowPath", Description="command description")]
+    public int ShowBestPathFromSelectedUnitToMousePosition()
     {
         // Show the PATHFINDING ALGORITHM
         //
@@ -125,11 +128,23 @@ public class Testing : MonoBehaviour
 
             }//End for
             
+            // Return the number of GridPositions that are there in the Path.
+            //
+            return gridPositionListCount;
+            
         }//End if (gridPositionList != null)
+        
+        // Return ZERO as: the number of GridPositions that are there in the Path.
+        //
+        return 0;
 
     }//End ShowPathFromSelectedUnitToMousePosition
                 
     #endregion Show the PATHFINDING ALGORITHM
+    
+    #region Other Test Mehods
+
+    #endregion
 
     #endregion My Custom Methods
     
