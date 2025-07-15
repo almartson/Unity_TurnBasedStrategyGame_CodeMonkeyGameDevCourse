@@ -64,7 +64,7 @@ public class UnitRagdollSpawner : MonoBehaviour
     private void Awake()
     {
         // Get a ref to the 'Health System' Component
-        // ..(from the GameObject this script in attached to...)
+        // ..(from the GameObject this script is attached to...)
         //
         _healthSystem = GetComponent<HealthSystem>();
         
