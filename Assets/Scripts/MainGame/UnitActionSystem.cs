@@ -133,7 +133,26 @@ public class UnitActionSystem : MonoBehaviour
 
     private void Start()
     {
+        // Old code original from Code Monkey:
+        // SetSelectedUnit( _selectedUnit );
+        //
+        // Customized code: 23/07/2025
+        // 1. Check for null... validate that the 'Selected Unit' is NOT null:
+        //
+        if (_selectedUnit == null)
+        {
+            
+            Debug.LogError($"Error: You did not assign a 'Player Unit' ('SELECTED UNIT') in the 'Inspector', Component: UNIT ACTION SYSTEM, Start() Method, line 142.");
+            //
+            throw new NullReferenceException($"Error: You did not assign a 'Player Unit' ('SELECTED UNIT') in the 'Inspector', Component: UNIT ACTION SYSTEM, Start() Method, line 142.");
+            // _selectedUnit = UnitManager.Instance.GetFriendlyUnitList()[0];
+
+        }//End if
+        //
+        // Run the rest of the usual algorithm:
+        //
         SetSelectedUnit( _selectedUnit );
+
         
         #region Listeners and Events - Subscribing
 
