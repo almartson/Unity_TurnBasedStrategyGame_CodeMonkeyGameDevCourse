@@ -121,6 +121,7 @@ public abstract class Unit : MonoBehaviour
     /// MAXIMUM Total amount of Points PER TURN (spendable); to be spent, each time this Character/Unit performs an Action. <br /> <br />
     /// Note: Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. <br />
     /// Default value : 2
+    /// TODO: Pass this CONSTANT that rules ALL PLAYER UNITS:   to a ScriptableObject for CONSTANTS of UNITS.
     /// </summary>
     [Tooltip("MAXIMUM Total amount of Points PER TURN (spendable); to be spent, each time this Character/Unit performs an Action. \n\nNote: Each Action has a value in Points. So this variable is like the CURRENCY or MONEY to spend by taking any Action. \n\nDefault value : 2")]
     [SerializeField]

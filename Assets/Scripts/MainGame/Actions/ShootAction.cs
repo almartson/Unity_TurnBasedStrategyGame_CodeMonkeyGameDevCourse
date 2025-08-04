@@ -547,7 +547,9 @@ public class ShootAction : BaseAction
                 }
                 
 
-                ///////////////// Temporary: Circular shape made with square pixels:
+                /////////// TODO ////////// Temporary: Circular shape made with square pixels:
+                // Todo: Standardize this code, with a proper Architecture (a class + its own function, maybe a Singleton and a Function inside, etc).
+                //
                 int testDistance = (x * x) + (z * z);
 
                 if (testDistance > ((_maxShootDistance * _maxShootDistance) + _maxShootDistance + 0.25f))
