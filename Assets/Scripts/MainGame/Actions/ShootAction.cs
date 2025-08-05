@@ -112,6 +112,12 @@ public class ShootAction : BaseAction
     #region Events - Listeners - CallBack
     
     /// <summary>
+    /// A STATIC, general, CallBack Listener (Delegate Function) for executing when ANY UNIT IN THE GAME Starts a Shooting Animation (i.e.: Shoots...).
+    /// </summary>
+    public static event EventHandler<OnShootAnimationEventArgs> OnAnyShootAnimation;
+
+    
+    /// <summary>
     /// CallBack Listener (Delegate Function) for executing when Starting the Animation (i.e.: Shoot).
     /// </summary>
     public event EventHandler<OnShootAnimationEventArgs> OnShootAnimation;
@@ -369,7 +375,17 @@ public class ShootAction : BaseAction
     /// </summary>
     private void Shoot()
     {
-        // Trigger / START the Animation Event:
+        // Trigger / START the STATIC Animation Event:
+        //
+        OnAnyShootAnimation?.Invoke(this,
+            new OnShootAnimationEventArgs
+            {
+                targetUnit = _targetUnit,
+                shootingUnit = _unit
+            });
+
+        
+        // Trigger / START the (particular, for this GameObject)  Animation Event:
         //
         OnShootAnimation?.Invoke(this,
             new OnShootAnimationEventArgs

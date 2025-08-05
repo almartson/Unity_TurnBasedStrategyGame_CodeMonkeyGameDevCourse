@@ -36,8 +36,6 @@ public class Testing : MonoBehaviour
         //
         if (Input.GetKeyDown(KeyCode.T))
         {
-            
-            
             #region Show the PATHFINDING ALGORITHM
 
             ShowBestPathFromSelectedUnitToMousePosition();
@@ -45,6 +43,21 @@ public class Testing : MonoBehaviour
             #endregion Show the PATHFINDING ALGORITHM
 
         }//End if (Input.GetKeyDown(KeyCode.T))
+        
+
+        // SCREEN SHAKE TEST (CINEMACHINE IMPULSE)
+        // If the user presses "R" then:
+        //
+        // if (Input.GetKeyDown(KeyCode.R))
+        // {
+        //     #region SCREEN SHAKE TEST (CINEMACHINE IMPULSE)
+        //
+        //     ScreenShake.Instance.Shake( 5f );
+        //
+        //     #endregion SCREEN SHAKE TEST (CINEMACHINE IMPULSE)
+        //
+        // }//End if (Input.GetKeyDown(KeyCode.T))
+
         
     }//End Update
 
