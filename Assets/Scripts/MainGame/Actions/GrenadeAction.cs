@@ -87,9 +87,11 @@ public class GrenadeAction : BaseAction
         GenerateInputParameters();
 
         // Instantiate the Projectile:
+        //
         Transform grenadeProjectileTransform = Instantiate(_grenadeProjectilePrefab, _unit.GetWorldPosition(), Quaternion.identity);
         
-        // Get its: "Grenade Projectile" Comoponent.
+        // Get its: "Grenade Projectile" Component.
+        //
         GrenadeProjectile grenadeProjectile = grenadeProjectileTransform.GetComponent<GrenadeProjectile>();
         
         // Initialize the Projectile:
@@ -97,7 +99,9 @@ public class GrenadeAction : BaseAction
         grenadeProjectile.Setup(_grenadeActionBaseParameters.TargetGridPositionOfSelectedAction);
         
         // Callback, delegate broadcast:
+        //
         ActionStart(onActionComplete);
+
     }//End TakeAction
 
     
