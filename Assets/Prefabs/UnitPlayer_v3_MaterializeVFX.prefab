@@ -1318,7 +1318,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6026e16093106a85dba63435d4efc921, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _myDefaultVar: 0
+  _isActive: 0
+  _myActionPointCost: 2
+  _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
+  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
+  _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
+  _enemyAIActionDataList: []
+  _validActionGridPositionList: []
+  _grenadeProjectilePrefab: {fileID: 8218440726769553280, guid: 11308b3400d937f2fa4fb6ea5fac6968,
+    type: 3}
+  _maxThrowDistance: 4
 --- !u!1 &7156872604032505470
 GameObject:
   m_ObjectHideFlags: 0
