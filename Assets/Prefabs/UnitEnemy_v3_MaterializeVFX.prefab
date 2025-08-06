@@ -1117,6 +1117,7 @@ GameObject:
   - component: {fileID: 8836970588771288157}
   - component: {fileID: 7859073401867317116}
   - component: {fileID: 1219087393300680068}
+  - component: {fileID: -9169983678712592549}
   m_Layer: 7
   m_Name: UnitEnemy_v3_MaterializeVFX
   m_TagString: Untagged
@@ -1389,6 +1390,26 @@ MonoBehaviour:
   _maxShootDistance: 7
   _shootPowerDamageInHealthPoints: 20
   _rotateSpeed: 7
+--- !u!114 &-9169983678712592549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4076181659283702427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6026e16093106a85dba63435d4efc921, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isActive: 0
+  _myActionPointCost: 1
+  _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
+  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
+  _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
+  _enemyAIActionDataList: []
+  _validActionGridPositionList: []
+  _myDefaultVar: 0
 --- !u!1 &6076181683492909455
 GameObject:
   m_ObjectHideFlags: 0
