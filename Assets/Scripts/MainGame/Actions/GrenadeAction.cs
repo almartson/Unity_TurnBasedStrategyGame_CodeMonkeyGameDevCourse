@@ -62,7 +62,7 @@ public class GrenadeAction : BaseAction
             return;
         }
 
-        ActionComplete();
+        //ActionComplete();
 
     }//End Update()
 
@@ -76,6 +76,17 @@ public class GrenadeAction : BaseAction
         return "Grenade";
     }
 
+    /// <summary>
+    /// Event / Callback to announce the "END" of the:
+    /// .."Shooting a Grenade" process. 
+    /// </summary>
+    private void OnGrenadeBehaviourComplete()
+    {
+        ActionComplete();
+
+    }//End GrenadeBehaviourComplete
+    
+    
     /// <summary>
     /// Makes the Payers Character (Unit): Shoot to the Target.
     /// </summary>
@@ -96,7 +107,7 @@ public class GrenadeAction : BaseAction
         
         // Initialize the Projectile:
         //
-        grenadeProjectile.Setup(_grenadeActionBaseParameters.TargetGridPositionOfSelectedAction);
+        grenadeProjectile.Setup(_grenadeActionBaseParameters.TargetGridPositionOfSelectedAction, OnGrenadeBehaviourComplete);
         
         // Callback, delegate broadcast:
         //

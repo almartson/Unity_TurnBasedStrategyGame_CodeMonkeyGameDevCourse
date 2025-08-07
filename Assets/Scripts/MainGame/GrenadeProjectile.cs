@@ -18,9 +18,29 @@ public class GrenadeProjectile : MonoBehaviour
     [SerializeField]
     private float _moveSpeed = 15.0f;
 
+    [Tooltip("[_damageRadius] Radius (Area) of Explosion, of the Projectile.")]
+    [SerializeField]
+    private float _damageRadius = 4.0f;
 
+    [Tooltip("[_grenadeActionDamage] Damage dealt by the Explosion, of the Projectile.")]
+    [SerializeField]
+    private int _grenadeActionDamage = 36;
 
+    #region Physics Misc - Hit Colliders, etc
+    
+    [Tooltip("[_maxNumberOfPhysicsColliders] Maximum Number of Physics Colliders used in calculations (for: Damage dealt by the Explosion, of the Projectile; for instance")]
+    [SerializeField]
+    [Range(1, 20)]
+    private int _maxNumberOfPhysicsColliders = 17;
 
+    #endregion Physics Misc - Hit Colliders, etc
+
+    #region Events
+
+    private Action _onGrenadeBehaviourComplete;
+    
+    #endregion Events
+    
     #endregion Attributes
 
 
@@ -54,10 +74,67 @@ public class GrenadeProjectile : MonoBehaviour
 
         if (Vector3.Distance(transform.position, _targetPosition) < reachedTargetDistance)
         {
-            // Remove the Projectile...
-            // ..when it reaches its Target.
+            // (Do a Physics check...) Check to see what Targets it kills / destroys:
+            
+            #region (My Way - Optimized) Using Physics.OverlapSphereNonAlloc()
+
+            Collider[] colliderArray = new Collider[_maxNumberOfPhysicsColliders];
+            int numColliders = Physics.OverlapSphereNonAlloc(_targetPosition, _damageRadius, colliderArray);
+            
+            for (int i = 0; i < numColliders; i++)
+            {
+                
+                // if there's Unit Component: :=> Apply Damage to that "Unit".
+                //
+                if (colliderArray[i].TryGetComponent<Unit>(out Unit targetUnit))
+                {
+                    
+                    // Damage
+                    //
+                    targetUnit.Damage(_grenadeActionDamage);
+                    
+                }//End if (colliderArray[i].TryGetComponent<Unit>
+                
+            }//End for
+
+            #endregion (My Way - Optimized) Using Physics.OverlapSphereNonAlloc()
+
+            
+            #region (Deprecated) CodeMonkey way using Physics.OverlapSphere() generating some Garbage
+            
+            // Collider[] colliderArray = Physics.OverlapSphere(_targetPosition, _damageRadius);
+            //
+            // // Cycle through the colliderArray and apply "Damage()" to every Collider found within range, in there;
+            // //
+            // foreach (Collider collider in colliderArray)
+            // {
+            //     // if there's Unit Component: :=> Apply Damage to that "Unit".
+            //     //
+            //     if (collider.TryGetComponent<Unit>(out Unit targetUnit))
+            //     {
+            //         // Generalize this var as a Field attribute
+            //         //
+            //         int grenadeActionDamage = 36;
+            //         
+            //         // Damage
+            //         //
+            //         targetUnit.Damage(grenadeActionDamage);
+            //         
+            //     }//End if (collider.TryGetComponent<Unit>...
+            // }//End foreach (Collider collider in...
+
+            #endregion (Deprecated) CodeMonkey way using Physics.OverlapSphere() generating some Garbage
+
+            
+            // Remove the Projectile......when it reaches its Target.
+            //
             Destroy(gameObject);
-        }
+            
+            // Call the Callback (event): After destroying the GameObject:
+            //
+            _onGrenadeBehaviourComplete();
+
+        }//End if (Vector3.Distance...
 
     }//End Update
 
@@ -66,8 +143,12 @@ public class GrenadeProjectile : MonoBehaviour
 
     #region My Custom Methods
 
-    public void Setup(GridPosition targetGridPosition)
+    public void Setup(GridPosition targetGridPosition, Action onGrenadeBehaviourComplete)
     {
+        // Save the Event:
+        //
+        this._onGrenadeBehaviourComplete = onGrenadeBehaviourComplete;
+        
         _targetPosition = LevelGrid.Instance.GetWorldPosition(targetGridPosition);
 
     }//End Setup

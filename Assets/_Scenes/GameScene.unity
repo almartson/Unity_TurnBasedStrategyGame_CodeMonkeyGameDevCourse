@@ -186,7 +186,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3902643}
-  m_LocalRotation: {x: 0.3006394, y: -0.000000016410377, z: 0.000000005172915, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: 0.000000016410377, z: -0.000000005172915, w: 0.9537379}
   m_LocalPosition: {x: 0, y: 7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1037,6 +1037,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: _actionPoints
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: _ACTION_POINTS_PER_TURN_MAX
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a6a85f651933fd4a950c65cc34ed67e, type: 3}
@@ -1933,7 +1943,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.3006394, y: -0.000000016410377, z: 0.000000005172915, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: 0.000000016410377, z: -0.000000005172915, w: 0.9537379}
   m_LocalPosition: {x: 0, y: 7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2119,6 +2129,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3147743383319964240, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _actionPoints
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147743383319964240, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _ACTION_POINTS_PER_TURN_MAX
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 6297334026975807288, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
       propertyPath: m_Name
@@ -3274,6 +3294,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: _actionPoints
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: _ACTION_POINTS_PER_TURN_MAX
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a6a85f651933fd4a950c65cc34ed67e, type: 3}
 --- !u!1001 &719346079
@@ -3283,6 +3313,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3147743383319964240, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _actionPoints
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147743383319964240, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _ACTION_POINTS_PER_TURN_MAX
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 6297334026975807288, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
       propertyPath: m_Name
@@ -4173,6 +4213,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3147743383319964240, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _actionPoints
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147743383319964240, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _ACTION_POINTS_PER_TURN_MAX
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 6297334026975807288, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
       propertyPath: m_Name
@@ -5164,6 +5214,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3147743383319964240, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _actionPoints
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147743383319964240, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _ACTION_POINTS_PER_TURN_MAX
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 6297334026975807288, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
       propertyPath: m_Name
@@ -5177,7 +5237,7 @@ PrefabInstance:
     - target: {fileID: 6297334026975807289, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6297334026975807289, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
@@ -5813,6 +5873,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: _actionPoints
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: _ACTION_POINTS_PER_TURN_MAX
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a6a85f651933fd4a950c65cc34ed67e, type: 3}
@@ -6755,6 +6825,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX
       objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: _actionPoints
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: _ACTION_POINTS_PER_TURN_MAX
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a6a85f651933fd4a950c65cc34ed67e, type: 3}
 --- !u!1001 &1987245982
@@ -7286,7 +7366,7 @@ PrefabInstance:
     - target: {fileID: 6538991238205411993, guid: c0be3ff92bbbeeebd8d6a3e3436f3573,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6538991238205411993, guid: c0be3ff92bbbeeebd8d6a3e3436f3573,
         type: 3}
