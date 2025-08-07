@@ -11,9 +11,9 @@ public class ScreenShakeActions : MonoBehaviour
 
     #region Attributes
 
-    [Tooltip("...")]
+    [Tooltip("[_grenadeExplosionCameraImpulse] Value for Cinemachine Camera's (Impulse listener) Shake.")]
     [SerializeField]
-    private int _myDefaultVar;
+    private float _grenadeExplosionCameraImpulse = 5.0f;
 
 
     #endregion Attributes
@@ -33,6 +33,8 @@ public class ScreenShakeActions : MonoBehaviour
     private void Start()
     {
         ShootAction.OnAnyShootAnimation += ShootAction_OnAnyShootAnimation;
+        
+        GrenadeProjectile.OnAnyGrenadeExploded += GrenadeProjectile_OnAnyGrenadeExploded;
         
     }//End Start
 
@@ -54,7 +56,15 @@ public class ScreenShakeActions : MonoBehaviour
         ScreenShake.Instance.Shake();
         
     }//End ShootAction_OnAnyShootAnimation
-
+    
+    
+    private void GrenadeProjectile_OnAnyGrenadeExploded(object sender, EventArgs e)
+    {
+        // Fire the Impulse... so a Cinemachine Listener will hear it, and react with the Screen Shake Movement:
+        //
+        ScreenShake.Instance.Shake(_grenadeExplosionCameraImpulse);
+        
+    }//End GrenadeProjectile_OnAnyGrenadeExploded
 
 
 

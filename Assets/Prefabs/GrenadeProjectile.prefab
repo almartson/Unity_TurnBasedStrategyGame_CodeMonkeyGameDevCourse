@@ -128,4 +128,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb8a7b0568ecf9777b9e4c3675a7aebd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _myDefaultVar: 0
+  _moveSpeed: 15
+  _damageRadius: 4
+  _grenadeActionDamage: 36
+  _maxNumberOfPhysicsColliders: 17
+  _grenadeExplodeVfxPrefab: {fileID: 3783068205161776627, guid: 31a67747bbc78a0bfb1faa959d5a7a86,
+    type: 3}

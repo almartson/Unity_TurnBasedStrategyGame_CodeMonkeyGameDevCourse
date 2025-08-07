@@ -11,6 +11,15 @@ public class GrenadeProjectile : MonoBehaviour
 
     #region Attributes
     
+    #region Events
+
+    public static event EventHandler OnAnyGrenadeExploded;
+    
+    private Action _onGrenadeBehaviourComplete;
+    
+    #endregion Events
+    
+    
     [Tooltip("[_targetPosition] Target-destination of this process.")]
     private Vector3 _targetPosition;
 
@@ -35,11 +44,9 @@ public class GrenadeProjectile : MonoBehaviour
 
     #endregion Physics Misc - Hit Colliders, etc
 
-    #region Events
+    [Tooltip("[_grenadeExplodeVfxPrefab] 'Transform', of the VFX, of the Projectile.")] [SerializeField]
+    private Transform _grenadeExplodeVfxPrefab;
 
-    private Action _onGrenadeBehaviourComplete;
-    
-    #endregion Events
     
     #endregion Attributes
 
@@ -125,6 +132,14 @@ public class GrenadeProjectile : MonoBehaviour
 
             #endregion (Deprecated) CodeMonkey way using Physics.OverlapSphere() generating some Garbage
 
+            // Destroy / Remove the Projectile from the scene:
+            // Send a static event that marks the end of this process:
+            //
+            OnAnyGrenadeExploded?.Invoke(this, EventArgs.Empty);
+            
+            // Spawn the "Explosion VFX": Instantiate its Prefab:
+            //
+            Instantiate(_grenadeExplodeVfxPrefab, _targetPosition + Vector3.up * 1f, Quaternion.identity);
             
             // Remove the Projectile......when it reaches its Target.
             //
