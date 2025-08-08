@@ -18,34 +18,56 @@ public class GrenadeProjectile : MonoBehaviour
     private Action _onGrenadeBehaviourComplete;
     
     #endregion Events
-    
-    
-    [Tooltip("[_targetPosition] Target-destination of this process.")]
-    private Vector3 _targetPosition;
-
-    [Tooltip("[_moveSpeed] Speed of the Projectile.")]
-    [SerializeField]
-    private float _moveSpeed = 15.0f;
-
-    [Tooltip("[_damageRadius] Radius (Area) of Explosion, of the Projectile.")]
-    [SerializeField]
-    private float _damageRadius = 4.0f;
-
-    [Tooltip("[_grenadeActionDamage] Damage dealt by the Explosion, of the Projectile.")]
-    [SerializeField]
-    private int _grenadeActionDamage = 36;
 
     #region Physics Misc - Hit Colliders, etc
     
-    [Tooltip("[_maxNumberOfPhysicsColliders] Maximum Number of Physics Colliders used in calculations (for: Damage dealt by the Explosion, of the Projectile; for instance")]
+    [Tooltip("Target Position \n Target-destination of this process.")]
+    private Vector3 _targetPosition;
+    
+    [Tooltip("Total Distance \n Distance: 'Projectile <--vs.--> Target'.")]
+    private float _totalDistance;
+    
+    [Tooltip("Position XZ \n Position of this Projectile on the plane XZ.")]
+    private Vector3 _positionXZ;
+
+    [Tooltip("Move Speed \n Speed of the Projectile.")]
+    [SerializeField]
+    private float _moveSpeed = 15.0f;
+
+    [Tooltip("Damage Radius \n Radius (Area) of Explosion, of the Projectile.")]
+    [SerializeField]
+    private float _damageRadius = 4.0f;
+
+    [Tooltip("Grenade Action Damage \n Damage dealt by the Explosion, of the Projectile.")]
+    [SerializeField]
+    private int _grenadeActionDamage = 36;
+    
+    [Tooltip("Max Number Of Physics Colliders \n Maximum Number of Physics Colliders used in calculations (for: Damage dealt by the Explosion, of the Projectile; for instance")]
     [SerializeField]
     [Range(1, 20)]
     private int _maxNumberOfPhysicsColliders = 17;
+    
+    
 
     #endregion Physics Misc - Hit Colliders, etc
 
+    
+    #region VFX, Visuals (Shader, Material, etc)
+    
+    [Tooltip("Trail Renderer \n Visual 'Trail' that this Projectile will leave behind when flying throuh the air.")]
+    [SerializeField]
+    private TrailRenderer _trailRenderer;
+
+    [Tooltip("Arc Y Animation Curve \n Animation Curve for the Parabolic Movement (according to physics) of the Projectile.")]
+    [SerializeField]
+    private AnimationCurve _arcYAnimationCurve;
+
+
+    
     [Tooltip("[_grenadeExplodeVfxPrefab] 'Transform', of the VFX, of the Projectile.")] [SerializeField]
     private Transform _grenadeExplodeVfxPrefab;
+
+    #endregion VFX, Visuals (Shader, Material, etc)
 
     
     #endregion Attributes
@@ -72,14 +94,27 @@ public class GrenadeProjectile : MonoBehaviour
     {
         // Projectile Movement - update -
         //
-        Vector3 moveDirection = (_targetPosition - transform.position).normalized;
+        Vector3 moveDirection = (_targetPosition - _positionXZ).normalized;
         
-        transform.position += moveDirection * (_moveSpeed * Time.deltaTime);
+        _positionXZ += moveDirection * (_moveSpeed * Time.deltaTime);
 
+        // Calculate the CURRENT Distance (to the Target):
+        //
+        float distance = Vector3.Distance(_positionXZ, _targetPosition);
+        float distanceNormalized = 1 - distance / _totalDistance;
+        
+        // Apply the ANIMATION CURVE Physics to shape the Curve of the Trail: 
+        //
+        float positionY = _arcYAnimationCurve.Evaluate(distanceNormalized);
+        
+        // Position (please PLACE...) the Projectile: according to the ANIMATION CURVE
+        //
+        transform.position = new Vector3(_positionXZ.x, positionY, _positionXZ.z);
+        
         // Tolerance value for the calculations: Distance Projectile vs. Target (coming to zero) 
         float reachedTargetDistance = 0.2f;
 
-        if (Vector3.Distance(transform.position, _targetPosition) < reachedTargetDistance)
+        if (Vector3.Distance(_positionXZ, _targetPosition) < reachedTargetDistance)
         {
             // (Do a Physics check...) Check to see what Targets it kills / destroys:
             
@@ -137,6 +172,10 @@ public class GrenadeProjectile : MonoBehaviour
             //
             OnAnyGrenadeExploded?.Invoke(this, EventArgs.Empty);
             
+            // "Destroy" the Trail Rendered in the air:
+            //
+            _trailRenderer.transform.parent = null;
+            
             // Spawn the "Explosion VFX": Instantiate its Prefab:
             //
             Instantiate(_grenadeExplodeVfxPrefab, _targetPosition + Vector3.up * 1f, Quaternion.identity);
@@ -165,6 +204,15 @@ public class GrenadeProjectile : MonoBehaviour
         this._onGrenadeBehaviourComplete = onGrenadeBehaviourComplete;
         
         _targetPosition = LevelGrid.Instance.GetWorldPosition(targetGridPosition);
+
+        // Position of this Projectile on the "XZ Plane" (the Ground / Floor):
+        //
+        _positionXZ = transform.position;
+        _positionXZ.y = 0;
+        
+        // Total Distance (to the Target):
+        //
+        _totalDistance = Vector3.Distance(_positionXZ, _targetPosition);
 
     }//End Setup
 
