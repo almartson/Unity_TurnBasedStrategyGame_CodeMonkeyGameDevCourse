@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb8a7b0568ecf9777b9e4c3675a7aebd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _factorToDivideByMaxHeightOfProjectileTrailCurve: 4
   _moveSpeed: 15
   _damageRadius: 4
   _grenadeActionDamage: 36
@@ -278,22 +279,22 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      time: 0.0018920898
+      value: 0.777
+      inSlope: 1.4723673
+      outSlope: 1.4723673
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.20573846
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: -2.6908734
-      outSlope: -2.6908734
+      value: 0.7
+      inSlope: -3.2498946
+      outSlope: -3.2498946
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.09189857
+      inWeight: 0.027622214
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

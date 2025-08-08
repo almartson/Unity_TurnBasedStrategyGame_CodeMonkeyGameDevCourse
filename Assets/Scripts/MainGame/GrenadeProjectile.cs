@@ -30,6 +30,12 @@ public class GrenadeProjectile : MonoBehaviour
     [Tooltip("Position XZ \n Position of this Projectile on the plane XZ.")]
     private Vector3 _positionXZ;
 
+    [Tooltip("[ Use = 4f ] Factor to divide by the Maximum Height Of Projectile Trail Curve \n Used for the 'Trail' of the Projectile.")]
+    [SerializeField]
+    [Range(1.0f, 10.0f)]
+    private float _factorToDivideByMaxHeightOfProjectileTrailCurve = 4.0f;
+
+
     [Tooltip("Move Speed \n Speed of the Projectile.")]
     [SerializeField]
     private float _moveSpeed = 15.0f;
@@ -103,9 +109,11 @@ public class GrenadeProjectile : MonoBehaviour
         float distance = Vector3.Distance(_positionXZ, _targetPosition);
         float distanceNormalized = 1 - distance / _totalDistance;
         
-        // Apply the ANIMATION CURVE Physics to shape the Curve of the Trail: 
+        // Apply the ANIMATION CURVE Physics to shape the Curve of the Trail:
         //
-        float positionY = _arcYAnimationCurve.Evaluate(distanceNormalized);
+        float maxHeightAnimationCurve = distance / _factorToDivideByMaxHeightOfProjectileTrailCurve;
+        //
+        float positionY = _arcYAnimationCurve.Evaluate(distanceNormalized) * maxHeightAnimationCurve;
         
         // Position (please PLACE...) the Projectile: according to the ANIMATION CURVE
         //

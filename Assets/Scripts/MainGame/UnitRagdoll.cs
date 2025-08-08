@@ -4,6 +4,7 @@
 
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// Unit's Ragdoll GameObject Logic. <br />
@@ -157,8 +158,12 @@ public class UnitRagdoll : MonoBehaviour
             // Debug.Log("bulletProjectileDirectionVector3 = " + bulletProjectileDirectionVector3);
             // Debug.Log("pointPositionOfImpactVector3 = " + pointPositionOfImpactVector3);
             // Debug.Log("newPositionOriginForExplosion = " + newPositionOriginForExplosion);
+            
+            // Add a small "randomness" to the explosion, so the Units will different "style" (each one) :) :
             //
-            ApplyExplosionToTargetRagdollOptimized(ragdollPrefabsCharacterBonesAreRagdollized, _explosionForce, newPositionOriginForExplosion, _explosionRange);
+            Vector3 randomnessVector3 = new Vector3(Random.Range(-1f, +1f), 0, Random.Range(-1f, +1f));
+
+            ApplyExplosionToTargetRagdollOptimized(ragdollPrefabsCharacterBonesAreRagdollized, _explosionForce, newPositionOriginForExplosion + randomnessVector3, _explosionRange);
     
         }//End if (bulletProjectileDirectionVector3)
 
@@ -194,8 +199,12 @@ public class UnitRagdoll : MonoBehaviour
             // Debug.Log("transform.position = " + transform.position);
             // Debug.Log("bulletProjectileDirectionVector3 = " + bulletProjectileDirectionVector3);
             // Debug.Log("newPositionOriginForExplosion = " + newPositionOriginForExplosion);
+            
+            // Add a small "randomness" to the explosion:
             //
-            ApplyExplosionToTargetRagdoll(_ragdollRootBone, _explosionForce, newPositionOriginForExplosion, _explosionRange);
+            Vector3 randomnessVector3 = new Vector3(Random.Range(-1f, +1f), 0, Random.Range(-1f, +1f));
+            
+            ApplyExplosionToTargetRagdoll(_ragdollRootBone, _explosionForce, newPositionOriginForExplosion + randomnessVector3, _explosionRange);
     
         }//End if (bulletProjectileDirectionVector3)
         
