@@ -145,6 +145,17 @@ public class GrenadeProjectile : MonoBehaviour
                     
                 }//End if (colliderArray[i].TryGetComponent<Unit>
                 
+                // Destructible props: Crates, etc
+                //
+                if (colliderArray[i].TryGetComponent<DestructibleCrate>(out DestructibleCrate destructibleCrate))
+                {
+                    
+                    // Damage
+                    //
+                    destructibleCrate.Damage();
+                    
+                }//End if (colliderArray[i].TryGetComponent<Unit>
+                
             }//End for
 
             #endregion (My Way - Optimized) Using Physics.OverlapSphereNonAlloc()

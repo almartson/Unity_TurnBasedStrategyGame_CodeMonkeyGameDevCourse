@@ -1252,6 +1252,22 @@ public class Pathfinding : MonoBehaviour
     /// ...or NOT?
     /// </summary>
     /// <param name="gridPosition"></param>
+    /// <param name="isWalkable"></param>
+    /// <returns></returns>
+    public void SetIsWalkableGridPosition(GridPosition gridPosition, bool isWalkable)
+    {
+        // Set the '_isWalkable' Boolean Flag  of the 'PathNode' related to the Input: gridPosition
+        //
+        _gridSystem.GetGridObject(gridPosition).SetIsWalkable(isWalkable);
+
+    }// End SetIsWalkableGridPosition
+    
+    
+    /// <summary>
+    /// Is it suitable for a Mouse Click (on the Player's part...) or for to be used a 'Destination' for the ENEMY A.I.??...
+    /// ...or NOT?
+    /// </summary>
+    /// <param name="gridPosition"></param>
     /// <returns></returns>
     public bool IsWalkableGridPosition(GridPosition gridPosition)
     {
