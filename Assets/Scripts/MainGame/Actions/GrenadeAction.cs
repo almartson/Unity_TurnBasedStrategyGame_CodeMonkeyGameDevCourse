@@ -224,37 +224,37 @@ public class GrenadeAction : BaseAction
                 // Todo: Standardize this code, with a proper Architecture (a class + its own function, maybe a Singleton and a Function inside, etc).
                 //
                 int testDistance = (x * x) + (z * z);
-
+                
                 if (testDistance > ((_maxThrowDistance * _maxThrowDistance) + _maxThrowDistance + 0.25f))
                 {
                     continue;
                 }
                 /////////////////
                 
-                // 2- "GridPosition" MUST be previously occupied  (by the ENEMY of the current's TURN UNIT'S TEAM).
+                // // 2- "GridPosition" MUST be previously occupied  (by the ENEMY of the current's TURN UNIT'S TEAM).
+                // //
+                // if (!LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
+                // {
+                //     // Not Valid:   Grid Position is EMPTY, no Unit.
+                //     // Skip to next iteration:
+                //     //
+                //     continue;
+                // }
                 //
-                if (!LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
-                {
-                    // Not Valid:   Grid Position is EMPTY, no Unit.
-                    // Skip to next iteration:
-                    //
-                    continue;
-                }
-                
-                // 3- Check to see if there is an Unit of MY SAME TEAM, A FRIENDLY Unit in this GRID / CELL:   (so we do NOT Shoot at it)
-                //
-                Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
-                //
-                // Check:  Are you an 'Enemy' like myself?... or:  Are you a 'Player'
-                //..as myself?
-                //
-                if ((targetUnit.IsEnemy() && _unit.IsEnemy()) || ((!targetUnit.IsEnemy()) && (!_unit.IsEnemy())) || (targetUnit == _unit))
-                {
-                    // Not Valid:   Both Units on same 'Team'.
-                    // Skip to next iteration:
-                    //
-                    continue;
-                }
+                // // 3- Check to see if there is an Unit of MY SAME TEAM, A FRIENDLY Unit in this GRID / CELL:   (so we do NOT Shoot at it)
+                // //
+                // Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
+                // //
+                // // Check:  Are you an 'Enemy' like myself?... or:  Are you a 'Player'
+                // //..as myself?
+                // //
+                // if ((targetUnit.IsEnemy() && _unit.IsEnemy()) || ((!targetUnit.IsEnemy()) && (!_unit.IsEnemy())) || (targetUnit == _unit))
+                // {
+                //     // Not Valid:   Both Units on same 'Team'.
+                //     // Skip to next iteration:
+                //     //
+                //     continue;
+                // }
 
                 #region Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
                 
