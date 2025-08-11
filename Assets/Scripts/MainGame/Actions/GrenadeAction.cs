@@ -133,6 +133,16 @@ public class GrenadeAction : BaseAction
         // ////////////////
         // Debug.Log($"(Before using 'targetUnit.GetDamageTakenOfHealthPercent()...' ->  )_myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction = {_myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction.ToString()} ... ... Attacker = {_unit} | Target = {_targetUnit} ");
         // ////////////////
+
+        // NULL Validation:
+        //
+        if (targetUnit == null)
+        {
+            // End the algorithm here
+            //
+            return base.GetEnemyAIActionData(gridPosition, 0);
+            
+        }//End if (targetUnit == null)
         
         
         // Calculate the "Target"'s TOTAL DAMAGE TAKEN so far in the game..., and add it as a VALUE to the "Action WORTH-Value" (for the Enemy A.I. to decide on the Greatest one):
