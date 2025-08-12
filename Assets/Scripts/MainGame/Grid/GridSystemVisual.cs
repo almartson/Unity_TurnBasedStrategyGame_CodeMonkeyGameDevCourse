@@ -561,6 +561,19 @@ public class GridSystemVisual : MonoBehaviour
                 //
                 ShowGridPositionRange(selectedUnit.GetGridPosition(), grenadeAction.GetMaxShootDistance(), GridVisualColorType.RedSoft);
                 break;
+                
+            case SwordAction swordAction:
+
+                // Target Grid Color
+                //
+                gridVisualColorType = GridVisualColorType.Red;
+                //
+                // Area Grid(s) Color
+                //
+                ShowGridPositionRange(selectedUnit.GetGridPosition(), swordAction.GetMaxAttackDistance(), GridVisualColorType.RedSoft);
+                break;
+                
+                
         }//End switch (selectedAction)
         
         // 3- Final- ShowAndSetMaterial only the VALID Cells of the Grid, to 'Take Action' to (...or to move in to),  (based on the Player's SELECTED Unit):

@@ -1036,6 +1036,7 @@ GameObject:
   - component: {fileID: -9015054238785770785}
   - component: {fileID: -63595787454068697}
   - component: {fileID: 7339887073124442092}
+  - component: {fileID: -5272737476906986011}
   m_Layer: 7
   m_Name: UnitPlayer_v3_MaterializeVFX
   m_TagString: Untagged
@@ -1328,6 +1329,19 @@ MonoBehaviour:
   _grenadeProjectilePrefab: {fileID: 8218440726769553280, guid: 11308b3400d937f2fa4fb6ea5fac6968,
     type: 3}
   _maxThrowDistance: 4
+--- !u!114 &-5272737476906986011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6297334026975807288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d185d68e7274c967d8b6a8d16d8abe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _myDefaultVar: 0
 --- !u!1 &7156872604032505470
 GameObject:
   m_ObjectHideFlags: 0
