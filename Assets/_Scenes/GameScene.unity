@@ -11243,6 +11243,12 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: 67ae167a7df071b189e6f54769a6b107, type: 2}
   - gridVisualColorType: 4
     material: {fileID: 2100000, guid: fba13000cfbdd38beb9fc9f0143b3f14, type: 2}
+  - gridVisualColorType: 6
+    material: {fileID: 2100000, guid: 1a14c9c020fc1a533bbda369bc9af053, type: 2}
+  - gridVisualColorType: 7
+    material: {fileID: 2100000, guid: 3cd3d5b60f22476908182ea9b9e73911, type: 2}
+  - gridVisualColorType: 8
+    material: {fileID: 2100000, guid: 1b71c802bf4cc01a0a479fd61cab47c1, type: 2}
 --- !u!43 &1926588700
 Mesh:
   m_ObjectHideFlags: 0

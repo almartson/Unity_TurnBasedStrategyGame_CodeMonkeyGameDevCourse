@@ -65,7 +65,7 @@ public class GridSystemVisual : MonoBehaviour
     /// <summary>
     /// Type of Colors used for the Grid Position Visuals / GUI on the ground, for the squares (i.e.: each Color is meant to represent a Possible ACTION that is currently selected).
     /// </summary>
-    public enum GridVisualColorType { White, Green, Blue, Red, RedSoft, Yellow, }
+    public enum GridVisualColorType { White, Green, Blue, Red, RedSoft, Yellow, Orange, OrangeSoft, WhiteSoft }
     
     /// <summary>
     /// (In bigger Projects we would use: Whether this on ANOTHER FILE.cs... OR we would define a SCRIPTABLE OBJECT to have these data - Colors and Materials, which are CONSTANTS in the Game...) <br /> <br />
@@ -555,22 +555,22 @@ public class GridSystemVisual : MonoBehaviour
 
                 // Target Grid Color
                 //
-                gridVisualColorType = GridVisualColorType.Red;
+                gridVisualColorType = GridVisualColorType.Orange;
                 //
                 // Area Grid(s) Color
                 //
-                ShowGridPositionRange(selectedUnit.GetGridPosition(), grenadeAction.GetMaxShootDistance(), GridVisualColorType.RedSoft);
+                ShowGridPositionRange(selectedUnit.GetGridPosition(), grenadeAction.GetMaxShootDistance(), GridVisualColorType.OrangeSoft);
                 break;
                 
             case SwordAction swordAction:
 
                 // Target Grid Color
                 //
-                gridVisualColorType = GridVisualColorType.Red;
+                gridVisualColorType = GridVisualColorType.White;
                 //
                 // Area Grid(s) Color
                 //
-                ShowGridPositionRange(selectedUnit.GetGridPosition(), swordAction.GetMaxAttackDistance(), GridVisualColorType.RedSoft);
+                ShowGridPositionRange(selectedUnit.GetGridPosition(), swordAction.GetMaxAttackDistance(), GridVisualColorType.WhiteSoft);
                 break;
                 
                 

@@ -12,10 +12,15 @@ public class SwordAction : BaseAction
 
     #region Attributes
 
-    [Tooltip("...")]
-    [SerializeField]
-    private int _myDefaultVar;
+    private enum State 
+    { 
+        SwingingSwordBeforeHit,
+        SwingingSwordAfterHit,
+    }
 
+    private State _state;
+    private float _stateTimer;
+    
     #region Validations: of the Action
     
     /// <summary>
@@ -35,7 +40,10 @@ public class SwordAction : BaseAction
 
     #endregion BaseParameters (INPUT) for calling this action as a GENERIC ACTION, with the function:  TakeAction
 
-    
+    /// <summary>
+    /// Target Unit character.
+    /// </summary>
+    private Unit _targetUnit;
     
     #endregion Attributes
 
@@ -63,8 +71,52 @@ public class SwordAction : BaseAction
         {
             return;
         }
+        
+        
+        // Set the Timer: (To change STATES correctly)
+        // Decrement the Time this STATE has left (until ZERO (0))
+        //
+        _stateTimer -= Time.deltaTime;
+        
+        // Checking the States of the Game's Shooting Action:
+        //
+        switch (_state)
+        {
+            case State.SwingingSwordBeforeHit:
+                
+                // Rotate towards the TARGET, and Aim at it:
+                // .1- Direction Vector3 to shoot (normalized)
+                //
+                Vector3 aimDirection = ( _targetUnit.GetWorldPosition() - _unit.GetWorldPosition() ).normalized;
+                //
+                // .2- Rotate, Animation:
+                //
+                float rotateSpeed = 10.0f;
+                RotateUnitUsingVector3SlerpApproach( aimDirection, rotateSpeed );
 
-        ActionComplete();
+                break;
+            
+            case State.SwingingSwordAfterHit:
+
+                break;
+
+            
+            default:
+                Debug.LogError("Reached an Exceptional 'case' in the Switch - Case... in Class: '" + GetType().Name + "'!.");
+                break;
+        }//End switch (_state)
+        
+        // ENDING of every STATE:
+        // Set the (variables for) Ending of this State:
+        // => BEGINNING of Next state:
+        //
+        if (_stateTimer <= 0f)
+        {
+
+            NextState();
+
+        }//End if (_stateTimer <= 0f)
+
         
     }//End Update
 
@@ -109,7 +161,26 @@ public class SwordAction : BaseAction
     
     public override void TakeAction(Action onActionComplete)
     {
-        Debug.Log($"Got a SwordAction!");
+        // 0- Get the Input Base Parameters (for this function call):
+        //
+        GenerateInputParameters();
+        
+        // Define the target unit
+        //
+        _targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(_swordActionBaseParameters.TargetGridPositionOfSelectedAction);
+        
+        // ENDING of this STATE:
+        // Set the (variables for) Ending of this State:
+        // => BEGINNING of Next state
+        //
+        // 1- Change the STATE variable to -> NEXT State
+        //
+        _state = State.SwingingSwordBeforeHit;
+                
+        // 2- Set THAT (Next..) STATE's Timer
+        //
+        float beforeHitStateTimer = 0.7f;
+        _stateTimer = beforeHitStateTimer;
         
         ActionStart(onActionComplete);
 
@@ -205,15 +276,15 @@ public class SwordAction : BaseAction
 
                 #region Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
                 
-                // Validate: Can NOT shoot behind WALLS or OBSTACLES
-                // TODO: put this Variable in a correct class, following the S.O.L.I.D. Principle:
-                //
-                // float shoulderHeightForLineOfSight = _unit.ShoulderHeightForUnitCharacter;
-                //
-                if (GridSystemVisual.Instance.ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(unitGridPosition, testGridPosition,  _unit.ShoulderHeightForUnitCharacter, GridSystemVisual.Instance.ObstaclesLayerMask))
-                {
-                    continue;
-                }
+                // // Validate: Can NOT shoot behind WALLS or OBSTACLES
+                // // TODO: put this Variable in a correct class, following the S.O.L.I.D. Principle:
+                // //
+                // // float shoulderHeightForLineOfSight = _unit.ShoulderHeightForUnitCharacter;
+                // //
+                // if (GridSystemVisual.Instance.ValidateIsBlockedTheLineOfSightBetweenTwoGridPositions(unitGridPosition, testGridPosition,  _unit.ShoulderHeightForUnitCharacter, GridSystemVisual.Instance.ObstaclesLayerMask))
+                // {
+                //     continue;
+                // }
 
                 #endregion Experimental Validation:  Can not shoot behind WALLS or OBSTACLES
                 
@@ -230,6 +301,85 @@ public class SwordAction : BaseAction
         return validGridPositionList;
 
     }// End GetValidActionGridPositionList
+    
+    
+    #region Finite State Machine Methods
+    
+    /// <summary>
+    /// Handles the Finite State Machine STATES. <br />
+    /// ENDING of any STATE related to the SHOOTING ACTION. <br />
+    /// Changes the variables to the NEXT STATE, whenever the Timer for that specific State reaches to ZERO (0).
+    /// </summary>
+    private void NextState()
+    {
+        // Checking the States of the Game's Shooting Action:
+        //
+        switch (_state)
+        {
+            case State.SwingingSwordBeforeHit:
+                
+                // ENDING of this STATE:
+                // Set the (variables for) Ending of this State:
+                // => BEGINNING of Next state
+                //
+                // 1- Change the STATE variable to -> NEXT State
+                //
+                _state = State.SwingingSwordAfterHit;
+                
+                // 2- Set THAT (Next..) STATE's Timer
+                //
+                float afterTheHitStateTimer = 0.5f;
+                _stateTimer = afterTheHitStateTimer;
+                
+                // Apply actual DAMAGE related to the action + animation:
+                //
+                _targetUnit.Damage(99);
+
+                break;
+            
+            case State.SwingingSwordAfterHit:
+                
+                // ENDING of this STATE:
+                // Set the (variables for) Ending of this State:
+                // => BEGINNING of Next state:  Nothing, ACTION IS COMPLETED!
+                //
+                ActionComplete();
+                
+                break;
+            
+            default:
+                Debug.LogError("Reached an Exceptional 'case' in the Switch - Case... in Class: '" + GetType().Name + "'!.");
+                break;
+        }//End switch (_state)
+        
+        
+        // // Debug, remove soon
+        // //
+        // Debug.Log(_state);
+        
+    }//End NextState(...)
+    
+    
+    #endregion Finite State Machine Methods
+    
+    #region Rotation: LERP vs. SLERP
+
+    ///  <summary>
+    ///  Quaternions + Spherical Interpolation, SLERP, (Quaternions behind the Scenes):
+    /// ...it rotates in a better way (first Rotates, then Walks):
+    ///  </summary>
+    ///  <param name="moveDirection"></param>
+    ///  <param name="rotateSpeed"></param>
+    private void RotateUnitUsingVector3SlerpApproach(Vector3 moveDirection, float rotateSpeed)
+    {
+        // Quaternions + Spherical Interpolation, SLERP, (Quaternions behind the Scenes):
+        //...it rotates in a better way (first Rotates, then Walks):
+        //
+        transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
+    }
+    
+    #endregion Rotation: LERP vs. SLERP 
+
     
     #region Getters, Setters
 
@@ -279,4 +429,4 @@ public class SwordActionBaseParameters : BaseParameters
 
     #endregion Methods
 
-}//End Class GrenadeActionBaseParameters
+}//End Class SwordActionBaseParameters
