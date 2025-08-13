@@ -1,7 +1,6 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
-
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +11,15 @@ public class SwordAction : BaseAction
 
     #region Attributes
 
+    #region Events, Listeners
+
+    public event EventHandler OnSwordActionStarted;
+    
+    public event EventHandler OnSwordActionCompleted;
+    
+    #endregion Events, Listeners
+    
+    
     private enum State 
     { 
         SwingingSwordBeforeHit,
@@ -182,6 +190,11 @@ public class SwordAction : BaseAction
         float beforeHitStateTimer = 0.7f;
         _stateTimer = beforeHitStateTimer;
         
+        // Most important:
+        // 3- Set the Animation TRIGGER (event):
+        //
+        OnSwordActionStarted?.Invoke(this, EventArgs.Empty);
+        
         ActionStart(onActionComplete);
 
     }//End TakeAction
@@ -333,13 +346,17 @@ public class SwordAction : BaseAction
                 
                 // Apply actual DAMAGE related to the action + animation:
                 //
-                _targetUnit.Damage(99);
+                _targetUnit.Damage(100);
 
                 break;
             
             case State.SwingingSwordAfterHit:
                 
                 // ENDING of this STATE:
+                // Set the Animation TRIGGER (event): to END / IT'S COMPLETED:
+                //
+                OnSwordActionCompleted?.Invoke(this, EventArgs.Empty);
+                
                 // Set the (variables for) Ending of this State:
                 // => BEGINNING of Next state:  Nothing, ACTION IS COMPLETED!
                 //

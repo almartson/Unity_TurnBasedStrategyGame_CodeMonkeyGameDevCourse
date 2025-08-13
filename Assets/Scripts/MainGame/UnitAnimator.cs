@@ -72,6 +72,23 @@ public class UnitAnimator : MonoBehaviour
     
     #endregion 2- ShootAction - Animation Parameters
 
+    #region 3- SwordAction - Animation Parameters
+
+    /// <summary>
+    /// Hash ANIMATOR (Parameter) CONSTANTS:   SwordSlash  (Animator State)
+    /// </summary>
+    private static readonly int _SWORD_SLASH_ANIMATOR_PARAMETER = Animator.StringToHash("SwordSlash");
+    
+    [Tooltip("Riffle Transform \n")]
+    [SerializeField]
+    private Transform _riffleTransform;
+
+    [Tooltip("Sword Transform \n")]
+    [SerializeField]
+    private Transform _swordTransform;
+    
+    #endregion 3- SwordAction - Animation Parameters
+    
     #endregion Animation Parameters
     
     #endregion Animator & Animations
@@ -112,13 +129,30 @@ public class UnitAnimator : MonoBehaviour
 
         }//End if (TryGetComponent<ShootAction>...
         
+        // 3- SWORD ACTION
+        //
+        if (TryGetComponent<SwordAction>(out SwordAction swordAction))
+        {
+            // Assign the Delegates-Callbacks-Listeners to their respective Functions,
+            // ..for STARTING & STOPPING the Animations:
+            //
+            swordAction.OnSwordActionStarted += SwordAction_OnSwordActionStarted;
+            swordAction.OnSwordActionCompleted += SwordAction_OnSwordActionCompleted;
+
+        }//End if (TryGetComponent<ShootAction>...
     }//End Awake()
 
 
     /// <summary>
     /// Start is called before the first frame update
     /// </summary>
-
+    private void Start()
+    {
+        // Equip the default Weapon
+        //
+        EquipRiffle();
+        
+    }// End Start()
 
 
     /// <summary>
@@ -214,6 +248,47 @@ public class UnitAnimator : MonoBehaviour
     
     
     #endregion CallBacks - Listeners: Shoot Action
+    
+    
+    #region CallBacks - Listeners: Sword Action
+ 
+    private void SwordAction_OnSwordActionStarted(object sender, EventArgs e)
+    {
+        // "Magically" Equip the Sword:
+        //
+        EquipSword();
+        
+        // Trigger the Animation:
+        //
+        _unitAnimator.SetTrigger(_SWORD_SLASH_ANIMATOR_PARAMETER);
+        
+    }//End SwordAction_OnSwordActionStarted
+    
+    private void SwordAction_OnSwordActionCompleted(object sender, EventArgs e)
+    {
+        // Re-Equip the Default Weapon, again:
+        //
+        EquipRiffle();
+        
+    }//End SwordAction_OnSwordActionCompleted
+
+    #endregion CallBacks - Listeners: Sword Action
+
+    #region Misc Methods: Sword Action
+
+    private void EquipSword()
+    {
+        _swordTransform.gameObject.SetActive(true);
+        _riffleTransform.gameObject.SetActive(false);
+    }
+
+    private void EquipRiffle()
+    {
+        _swordTransform.gameObject.SetActive(false);
+        _riffleTransform.gameObject.SetActive(true);
+    }
+    
+    #endregion Misc Methods: Sword Action
     
     #endregion My Custom Methods
 
