@@ -13,6 +13,8 @@ public class SwordAction : BaseAction
 
     #region Events, Listeners
 
+    public static event EventHandler OnAnySwordHit;
+
     public event EventHandler OnSwordActionStarted;
     
     public event EventHandler OnSwordActionCompleted;
@@ -347,6 +349,10 @@ public class SwordAction : BaseAction
                 // Apply actual DAMAGE related to the action + animation:
                 //
                 _targetUnit.Damage(100);
+                
+                // Register (that a Sword Hit is about to be performed) and invoke the event:
+                //
+                OnAnySwordHit?.Invoke(this, EventArgs.Empty);
 
                 break;
             

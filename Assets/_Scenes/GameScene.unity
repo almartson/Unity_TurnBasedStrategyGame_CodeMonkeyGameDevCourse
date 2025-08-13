@@ -186,7 +186,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3902643}
-  m_LocalRotation: {x: 0.3006394, y: 0.000000016410377, z: -0.000000005172915, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: -0.000000016410377, z: 0.000000005172915, w: 0.9537379}
   m_LocalPosition: {x: 0, y: 7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -558,7 +558,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-25024
+  m_Name: pb_Mesh-4928
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1162,6 +1162,11 @@ PrefabInstance:
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4076181659283702426, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_RootOrder
@@ -1386,7 +1391,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-24656
+  m_Name: pb_Mesh-4900
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2465,7 +2470,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.3006394, y: 0.000000016410377, z: -0.000000005172915, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: -0.000000016410377, z: 0.000000005172915, w: 0.9537379}
   m_LocalPosition: {x: 0, y: 7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2651,6 +2656,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5272737476906986011, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3147743383319964240, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
       propertyPath: _actionPoints
@@ -3368,7 +3378,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-26104
+  m_Name: pb_Mesh-5012
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4023,7 +4033,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-25196
+  m_Name: pb_Mesh-4942
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4764,7 +4774,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-26460
+  m_Name: pb_Mesh-5040
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4954,6 +4964,11 @@ PrefabInstance:
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4076181659283702426, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_RootOrder
@@ -5033,6 +5048,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5272737476906986011, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3147743383319964240, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
       propertyPath: _actionPoints
@@ -6213,7 +6233,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-25932
+  m_Name: pb_Mesh-4998
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6419,6 +6439,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5272737476906986011, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3147743383319964240, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
       propertyPath: _actionPoints
@@ -6512,7 +6537,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-26644
+  m_Name: pb_Mesh-5054
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8255,6 +8280,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5272737476906986011, guid: 64f54f1e16b4c9354bda312862ce3b4d,
+        type: 3}
+      propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 332770721178807127, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
       propertyPath: m_Enabled
@@ -8596,6 +8626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _grenadeExplosionCameraImpulse: 5
+  _swordHitCameraImpulse: 2
 --- !u!4 &1489387293
 Transform:
   m_ObjectHideFlags: 0
@@ -8949,6 +8980,11 @@ PrefabInstance:
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4076181659283702426, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_RootOrder
@@ -9126,7 +9162,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-26288
+  m_Name: pb_Mesh-5026
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10566,7 +10602,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-25748
+  m_Name: pb_Mesh-4984
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11255,7 +11291,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-25564
+  m_Name: pb_Mesh-4970
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11441,6 +11477,11 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -9169983678712592549, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
       value: 1
@@ -11766,7 +11807,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-25392
+  m_Name: pb_Mesh-4956
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -12016,7 +12057,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-24840
+  m_Name: pb_Mesh-4914
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

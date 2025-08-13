@@ -15,6 +15,10 @@ public class ScreenShakeActions : MonoBehaviour
     [SerializeField]
     private float _grenadeExplosionCameraImpulse = 5.0f;
 
+    [Tooltip("[_swordHitCameraImpulse] Value for Cinemachine Camera's (Impulse listener) Shake.")]
+    [SerializeField]
+    private float _swordHitCameraImpulse = 2.0f;
+
 
     #endregion Attributes
 
@@ -32,10 +36,14 @@ public class ScreenShakeActions : MonoBehaviour
     /// </summary>
     private void Start()
     {
+        // As a Listener / Observer: subscribe to the events
+        //
         ShootAction.OnAnyShootAnimation += ShootAction_OnAnyShootAnimation;
         
         GrenadeProjectile.OnAnyGrenadeExploded += GrenadeProjectile_OnAnyGrenadeExploded;
-        
+
+        SwordAction.OnAnySwordHit += SwordAction_OnAnySwordHit;
+
     }//End Start
 
 
@@ -65,7 +73,15 @@ public class ScreenShakeActions : MonoBehaviour
         ScreenShake.Instance.Shake(_grenadeExplosionCameraImpulse);
         
     }//End GrenadeProjectile_OnAnyGrenadeExploded
+    
 
+    private void SwordAction_OnAnySwordHit(object sender, EventArgs e)
+    {
+        // Fire the Impulse... so a Cinemachine Listener will hear it, and react with the Screen Shake Movement:
+        //
+        ScreenShake.Instance.Shake(_swordHitCameraImpulse);
+
+    }//End SwordAction_OnAnySwordHit
 
 
     #endregion My Custom Methods
