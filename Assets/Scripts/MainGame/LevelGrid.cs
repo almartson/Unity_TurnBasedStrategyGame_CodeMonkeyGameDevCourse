@@ -286,7 +286,7 @@ public class LevelGrid : MonoBehaviour
     /// </summary>
     /// <param name="gridPosition">A GridPosition struct, to set an Object Door there.</param>
     /// <returns>True or False</returns>
-    public Door SetDoorAtGridPosition(GridPosition gridPosition, Door door)
+    public void SetDoorAtGridPosition(GridPosition gridPosition, Door door)
     { 
         // Get a GridObject:
         //
