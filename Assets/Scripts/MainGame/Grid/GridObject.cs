@@ -22,6 +22,10 @@ public class GridObject
     [Tooltip("Unit/Game Characters, this Object contains...")]
     private List<Unit> _unitList;
 
+    [Tooltip("Door \n Interactable Door, GameObject reference...")]
+    private Door _door;
+
+
     
     #endregion Attributes
 
@@ -129,5 +133,24 @@ public class GridObject
         }
     }//End GetFirstUnit
 
+    
+    #region Interactable Door
+    
+    /// <summary>
+    /// Gets the Interactable Door.
+    /// </summary>
+    /// <returns></returns>
+    public Door GetDoor()
+    {
+        return _door;
+    }
+
+    public void SetDoor(Door door)
+    {
+        this._door = door;
+    }
+    
+    #endregion Interactable Door
+    
     #endregion Methods
 }

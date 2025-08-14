@@ -1119,6 +1119,7 @@ GameObject:
   - component: {fileID: 1219087393300680068}
   - component: {fileID: -9169983678712592549}
   - component: {fileID: 1481963383934773314}
+  - component: {fileID: 1941862399}
   m_Layer: 7
   m_Name: UnitEnemy_v3_MaterializeVFX
   m_TagString: Untagged
@@ -1161,8 +1162,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isEnemy: 1
   _shoulderHeightForUnitCharacter: 1.7
-  _ACTION_POINTS_PER_TURN_MAX: 2
-  _actionPoints: 2
+  _ACTION_POINTS_PER_TURN_MAX: 9
+  _actionPoints: 9
   _aggroStat: 0.5
   _maximumGridPositionsThisAIisWillingToTakeTowardsAChosenGoal: 25
 --- !u!65 &8475031765929559951
@@ -1406,9 +1407,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isActive: 0
-  _myActionPointCost: 2
+  _myActionPointCost: 3
   _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
-  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
+  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 1
   _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
   _enemyAIActionDataList: []
   _validActionGridPositionList: []
@@ -1430,11 +1431,32 @@ MonoBehaviour:
   _isActive: 0
   _myActionPointCost: 1
   _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
-  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
+  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 1
   _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
   _enemyAIActionDataList: []
   _validActionGridPositionList: []
   _maxSwordDistance: 1
+--- !u!114 &1941862399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4076181659283702427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab31170066a691ab8b9ce8e80dfdeb58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isActive: 0
+  _myActionPointCost: 1
+  _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
+  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
+  _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
+  _enemyAIActionDataList: []
+  _validActionGridPositionList: []
+  _grenadeProjectilePrefab: {fileID: 0}
+  _maxThrowDistance: 4
 --- !u!1 &6076181683492909455
 GameObject:
   m_ObjectHideFlags: 0

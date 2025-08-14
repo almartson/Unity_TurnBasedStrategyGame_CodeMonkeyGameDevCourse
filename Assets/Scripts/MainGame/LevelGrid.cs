@@ -263,6 +263,42 @@ public class LevelGrid : MonoBehaviour
     }
 
     
+    #region Interactable Door
+    
+    /// <summary>
+    /// Gets the Door that occupies a said GridPosition,  that is in the input 'Grid Position'.
+    /// </summary>
+    /// <param name="gridPosition">A GridPosition struct, to check whether there is an GameObject (i.e.: a Door) there, or not... in that mathematical (x, y=0, z) position.</param>
+    /// <returns>True or False</returns>
+    public Door GetDoorAtGridPosition(GridPosition gridPosition)
+    { 
+        // Get a GridObject:
+        //
+        GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+        //
+        // Check whether it is occupied..:
+        //
+        return gridObject.GetDoor();
+    }
+    
+    /// <summary>
+    /// Sets the 'Door' at GridPosition,  that is in the input 'Grid Position'.
+    /// </summary>
+    /// <param name="gridPosition">A GridPosition struct, to set an Object Door there.</param>
+    /// <returns>True or False</returns>
+    public Door SetDoorAtGridPosition(GridPosition gridPosition, Door door)
+    { 
+        // Get a GridObject:
+        //
+        GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+        //
+        // Set the Door at that GridPosition..:
+        //
+        gridObject.SetDoor(door);
+    }
+    
+    #endregion Interactable Door
+    
     #endregion My Custom Methods
 
 }
