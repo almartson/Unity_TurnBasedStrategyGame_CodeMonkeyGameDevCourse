@@ -1065,33 +1065,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a6a85f651933fd4a950c65cc34ed67e, type: 3}
---- !u!1 &132316265 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
-    type: 3}
-  m_PrefabInstance: {fileID: 132316264}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &132316266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 132316265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab31170066a691ab8b9ce8e80dfdeb58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isActive: 0
-  _myActionPointCost: 1
-  _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
-  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
-  _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
-  _enemyAIActionDataList: []
-  _validActionGridPositionList: []
-  _grenadeProjectilePrefab: {fileID: 0}
-  _maxInteractDistance: 1
 --- !u!1 &162596521
 GameObject:
   m_ObjectHideFlags: 0
@@ -2263,12 +2236,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64f54f1e16b4c9354bda312862ce3b4d, type: 3}
---- !u!1 &385322895 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6297334026975807288, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-    type: 3}
-  m_PrefabInstance: {fileID: 385322894}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &403928110
 GameObject:
   m_ObjectHideFlags: 3
@@ -3384,33 +3351,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a6a85f651933fd4a950c65cc34ed67e, type: 3}
---- !u!1 &652989552 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
-    type: 3}
-  m_PrefabInstance: {fileID: 652989551}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &652989553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652989552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab31170066a691ab8b9ce8e80dfdeb58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isActive: 0
-  _myActionPointCost: 1
-  _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
-  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
-  _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
-  _enemyAIActionDataList: []
-  _validActionGridPositionList: []
-  _grenadeProjectilePrefab: {fileID: 0}
-  _maxInteractDistance: 1
 --- !u!1001 &719346079
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3510,33 +3450,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64f54f1e16b4c9354bda312862ce3b4d, type: 3}
---- !u!1 &719346080 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6297334026975807288, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-    type: 3}
-  m_PrefabInstance: {fileID: 719346079}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &719346081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 719346080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab31170066a691ab8b9ce8e80dfdeb58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isActive: 0
-  _myActionPointCost: 1
-  _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
-  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
-  _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
-  _enemyAIActionDataList: []
-  _validActionGridPositionList: []
-  _grenadeProjectilePrefab: {fileID: 0}
-  _maxInteractDistance: 1
 --- !u!1 &726054891
 GameObject:
   m_ObjectHideFlags: 0
@@ -4127,33 +4040,12 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 385322894}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 385322895}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11d8b1e2b18a40d787b081db6ea3ff0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &916284376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 385322895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab31170066a691ab8b9ce8e80dfdeb58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isActive: 0
-  _myActionPointCost: 1
-  _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
-  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
-  _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
-  _enemyAIActionDataList: []
-  _validActionGridPositionList: []
-  _grenadeProjectilePrefab: {fileID: 0}
-  _maxInteractDistance: 1
 --- !u!1001 &943613878
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4611,33 +4503,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64f54f1e16b4c9354bda312862ce3b4d, type: 3}
---- !u!1 &1149438171 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6297334026975807288, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1149438170}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1149438172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1149438171}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab31170066a691ab8b9ce8e80dfdeb58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isActive: 0
-  _myActionPointCost: 1
-  _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
-  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
-  _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
-  _enemyAIActionDataList: []
-  _validActionGridPositionList: []
-  _grenadeProjectilePrefab: {fileID: 0}
-  _maxInteractDistance: 1
 --- !u!1 &1164791330
 GameObject:
   m_ObjectHideFlags: 0
@@ -6294,33 +6159,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a6a85f651933fd4a950c65cc34ed67e, type: 3}
---- !u!1 &1550207589 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
-    type: 3}
-  m_PrefabInstance: {fileID: 1550207588}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1550207590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1550207589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab31170066a691ab8b9ce8e80dfdeb58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isActive: 0
-  _myActionPointCost: 1
-  _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
-  _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
-  _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
-  _enemyAIActionDataList: []
-  _validActionGridPositionList: []
-  _grenadeProjectilePrefab: {fileID: 0}
-  _maxInteractDistance: 1
 --- !u!1 &1557305536
 GameObject:
   m_ObjectHideFlags: 0
