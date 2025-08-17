@@ -280,11 +280,12 @@ public class LevelGrid : MonoBehaviour
         //
         return gridObject.GetDoor();
     }
-    
+
     /// <summary>
     /// Sets the 'Door' at GridPosition,  that is in the input 'Grid Position'.
     /// </summary>
     /// <param name="gridPosition">A GridPosition struct, to set an Object Door there.</param>
+    /// <param name="door">Door to be set.</param>
     /// <returns>True or False</returns>
     public void SetDoorAtGridPosition(GridPosition gridPosition, Door door)
     { 

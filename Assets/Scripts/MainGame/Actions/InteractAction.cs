@@ -62,8 +62,6 @@ public class InteractAction : BaseAction
             return;
         }
 
-        ActionComplete();
-
     }//End Update()
 
     #endregion Unity Methods
@@ -75,16 +73,6 @@ public class InteractAction : BaseAction
     {
         return "Interact";
     }
-
-    /// <summary>
-    /// Event / Callback to announce the "END" of the:
-    /// .."Shooting a Grenade" process. 
-    /// </summary>
-    private void OnGrenadeBehaviourComplete()
-    {
-        ActionComplete();
-
-    }//End GrenadeBehaviourComplete
     
     
     /// <summary>
@@ -92,12 +80,18 @@ public class InteractAction : BaseAction
     /// </summary>
     public override void TakeAction(Action onActionComplete)
     {
-
         // 0- Get the Input Base Parameters (for this function call):
         //
         GenerateInputParameters();
-
-        Debug.Log($"Got an InteractAction!");
+        
+        // 1- Get the DOOR from this GridPosition  (if a Door exists... there)
+        //
+        Door door = LevelGrid.Instance.GetDoorAtGridPosition(_interactActionBaseParameters.TargetGridPositionOfSelectedAction);
+        
+        // 2- If there is a DOOR:  INTERACT with it!
+        // ...We are also calling the CallBack:   OnInteractComplete 
+        //
+        door.Interact( OnInteractComplete );
         
         // Callback, delegate broadcast:
         //
@@ -105,6 +99,15 @@ public class InteractAction : BaseAction
 
     }//End TakeAction
 
+
+    /// <summary>
+    /// Callback to be called during TAKE ACTION.
+    /// </summary>
+    private void OnInteractComplete()
+    {
+        ActionComplete();
+    }
+    
     
     /// <summary>
     /// (Calculates and...):  Gets the "A.I. ACTION" data ("Cost" Value, final, calculated "Points", to see if it's worth it...) that is possible in a given,  "Grid Position". <br /><br />
@@ -187,6 +190,17 @@ public class InteractAction : BaseAction
                     continue;
                 }
 
+                // Validation:
+                // 2- Is there a DOOR?   (to interact with..?)
+                //
+                Door door = LevelGrid.Instance.GetDoorAtGridPosition(testGridPosition);
+
+                if (door == null)
+                {
+                    // No Door on this GridPosition     (Null Door)
+                    continue;
+                }
+                
                 // Finally, Conclusion: Add the Tested & Valid GridPosition to the Local VALID List
                 //
                 validGridPositionList.Add(testGridPosition);
@@ -210,7 +224,7 @@ public class InteractAction : BaseAction
     /// Gets the <code>_maxInteractDistance</code>.
     /// </summary>
     /// <returns>_maxInteractDistance</returns>
-    public int GetMaxShootDistance()
+    public int GetMaxInteractDistance()
     {
         return _maxInteractDistance;
     }

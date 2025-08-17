@@ -354,7 +354,7 @@ public class GridSystemVisual : MonoBehaviour
 
                 #region Calculating the RANGE AREA
 
-                #region Shape of th Area: Case of: Triangular shape
+                #region Shape of the Area: Case of: Triangular shape
 
                 // // Then: Calculating the RANGE AREA:  valid Squared/Cells:
                 // // Shape of th Area: Case of: Circular shape made with square pixels  (using Pythagoras Theorem):
@@ -369,10 +369,10 @@ public class GridSystemVisual : MonoBehaviour
                 //
                 // }//End if (testDistance > ...
 
-                #endregion Shape of th Area: Case of: Triangular shape
+                #endregion Shape of the Area: Case of: Triangular shape
                 
                 
-                #region Shape of th Area: Case of: Circular shape made with square pixels  (using Pythagoras Theorem)
+                #region Shape of the Area: Case of: Circular shape made with square pixels  (using Pythagoras Theorem)
                 
                 // Then: Calculating the RANGE AREA:  valid Squared/Cells:
                 // Shape of th Area: Case of: Circular shape made with square pixels  (using Pythagoras Theorem):
@@ -387,7 +387,7 @@ public class GridSystemVisual : MonoBehaviour
                 
                 }//End if (testDistance > ...
                 
-                #endregion Shape of th Area: Case of: Circular shape made with square pixels  (using Pythagoras Theorem)
+                #endregion Shape of the Area: Case of: Circular shape made with square pixels  (using Pythagoras Theorem)
 
                 #endregion Calculating the RANGE AREA
                 
@@ -572,6 +572,15 @@ public class GridSystemVisual : MonoBehaviour
                 //
                 ShowGridPositionRange(selectedUnit.GetGridPosition(), swordAction.GetMaxAttackDistance(), GridVisualColorType.WhiteSoft);
                 break;
+            
+            case InteractAction interactAction:
+
+                // Target Grid Color
+                //
+                gridVisualColorType = GridVisualColorType.Blue;
+
+                break;
+
                 
                 
         }//End switch (selectedAction)
