@@ -86,12 +86,12 @@ public class InteractAction : BaseAction
         
         // 1- Get the DOOR from this GridPosition  (if a Door exists... there)
         //
-        Door door = LevelGrid.Instance.GetDoorAtGridPosition(_interactActionBaseParameters.TargetGridPositionOfSelectedAction);
+        IInteractable interactable = LevelGrid.Instance.GetInteractableAtGridPosition(_interactActionBaseParameters.TargetGridPositionOfSelectedAction);
         
-        // 2- If there is a DOOR:  INTERACT with it!
+        // 2- If there is an IINTERACTABLE (e.g.: DOOR):  INTERACT with it!
         // ...We are also calling the CallBack:   OnInteractComplete 
         //
-        door.Interact( OnInteractComplete );
+        interactable.Interact( OnInteractComplete );
         
         // Callback, delegate broadcast:
         //
@@ -191,13 +191,13 @@ public class InteractAction : BaseAction
                 }
 
                 // Validation:
-                // 2- Is there a DOOR?   (to interact with..?)
+                // 2- Is there an INTERACTABLE (e.g.: a DOOR?)   (to interact with..?)
                 //
-                Door door = LevelGrid.Instance.GetDoorAtGridPosition(testGridPosition);
+                IInteractable interactable = LevelGrid.Instance.GetInteractableAtGridPosition(testGridPosition);
 
-                if (door == null)
+                if (interactable == null)
                 {
-                    // No Door on this GridPosition     (Null Door)
+                    // No IInteractable on this GridPosition     (Null IInteractable: Doors, Switches, etc)
                     continue;
                 }
                 

@@ -266,11 +266,11 @@ public class LevelGrid : MonoBehaviour
     #region Interactable Door
     
     /// <summary>
-    /// Gets the Door that occupies a said GridPosition,  that is in the input 'Grid Position'.
+    /// Gets the IInteractable (e.g. DOOR) that occupies a said GridPosition,  that is in the input 'Grid Position'.
     /// </summary>
     /// <param name="gridPosition">A GridPosition struct, to check whether there is an GameObject (i.e.: a Door) there, or not... in that mathematical (x, y=0, z) position.</param>
     /// <returns>True or False</returns>
-    public Door GetDoorAtGridPosition(GridPosition gridPosition)
+    public IInteractable GetInteractableAtGridPosition(GridPosition gridPosition)
     { 
         // Get a GridObject:
         //
@@ -278,24 +278,24 @@ public class LevelGrid : MonoBehaviour
         //
         // Check whether it is occupied..:
         //
-        return gridObject.GetDoor();
+        return gridObject.GetInteractable();
     }
 
     /// <summary>
-    /// Sets the 'Door' at GridPosition,  that is in the input 'Grid Position'.
+    /// Sets the Interactable gameobject (e.g.: a 'Door') at GridPosition,  that is in the input 'Grid Position'.
     /// </summary>
     /// <param name="gridPosition">A GridPosition struct, to set an Object Door there.</param>
-    /// <param name="door">Door to be set.</param>
+    /// <param name="interactable">Door to be set.</param>
     /// <returns>True or False</returns>
-    public void SetDoorAtGridPosition(GridPosition gridPosition, Door door)
+    public void SetInteractableAtGridPosition(GridPosition gridPosition, IInteractable interactable)
     { 
-        // Get a GridObject:
+        // Get a GridObject
         //
         GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
         //
-        // Set the Door at that GridPosition..:
+        // Set the Interactable GameObject, at that GridPosition..:
         //
-        gridObject.SetDoor(door);
+        gridObject.SetInteractable(interactable);
     }
     
     #endregion Interactable Door

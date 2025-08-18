@@ -6,14 +6,14 @@ using System;
 using UnityEngine;
 
 
-public class Door : MonoBehaviour
+public class Door : MonoBehaviour, IInteractable
 {
 
     #region Attributes
 
     #region Delegates, Events
 
-    private Action _onInteractComplete;
+    private Action _onInteractionComplete;
 
     #endregion Delegates, Events
 
@@ -61,7 +61,7 @@ public class Door : MonoBehaviour
         //
         // Set DOOR at this position on the board (i.e.: GridPosition & GridObject)
         //
-        LevelGrid.Instance.SetDoorAtGridPosition( _gridPosition, this );
+        LevelGrid.Instance.SetInteractableAtGridPosition( _gridPosition, this );
 
         // 2- Check the DOOR state  (Open | Close)  and set it up accordingly
         //
@@ -94,7 +94,7 @@ public class Door : MonoBehaviour
             // Execute the Callback  (when the timer ends)          //)
             //
             _isActive = false;
-            _onInteractComplete();
+            _onInteractionComplete();
         }
 
     }//End Update
@@ -104,11 +104,11 @@ public class Door : MonoBehaviour
 
     #region My Custom Methods
 
-    public void Interact(Action onInteractComplete)
+    public void Interact(Action onInteractionComplete)
     {
         // Set the Callback
         //
-        this._onInteractComplete = onInteractComplete;
+        this._onInteractionComplete = onInteractionComplete;
         _isActive = true;
         //
         // Set the TRANSITION Time on this Timer:
@@ -126,9 +126,9 @@ public class Door : MonoBehaviour
         {
             OpenDoor();
         }
-        
-        
+ 
     }//End Interact
+    
     
     private void OpenDoor()
     {
@@ -145,6 +145,7 @@ public class Door : MonoBehaviour
         
     }//End OpenDoor
 
+    
     private void CloseDoor()
     {
         _isOpen = false;
@@ -157,8 +158,7 @@ public class Door : MonoBehaviour
         //..the Doorway: IS NOT WALKABLE now.
         //
         Pathfinding.Instance.SetIsWalkableGridPosition(_gridPosition, false);
-
-
+        
     }//End CloseDoor
 
 
