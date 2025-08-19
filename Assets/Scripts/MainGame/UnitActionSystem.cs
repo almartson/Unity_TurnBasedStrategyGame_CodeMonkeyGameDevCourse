@@ -201,7 +201,7 @@ public class UnitActionSystem : MonoBehaviour
         
         // Get the Mouse Pointer Click & (x, y, z) Screen Position.
         //
-        if (Input.GetMouseButtonDown(0))
+        if (InputManager.Instance.IsMouseButtonDown())
         {
             #region Try to SELECT a friendly UNIT: CodeMonkey's Original Implementation
             
@@ -662,7 +662,7 @@ public class UnitActionSystem : MonoBehaviour
         {
             // Check the Mouse-Pointer Coordinates on the Screen: 
             //
-            Ray ray = MouseWorld.MainSceneCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = MouseWorld.MainSceneCamera.ScreenPointToRay(InputManager.Instance.GetMouseScreenPosition());
             //
             // Physics RayCast:
             //
@@ -724,7 +724,7 @@ public class UnitActionSystem : MonoBehaviour
             
             // Check the Mouse-Pointer Coordinates on the Screen: 
             //
-            Ray ray = MouseWorld.MainSceneCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = MouseWorld.MainSceneCamera.ScreenPointToRay(InputManager.Instance.GetMouseScreenPosition());
             //
             // Physics RayCast:
             //

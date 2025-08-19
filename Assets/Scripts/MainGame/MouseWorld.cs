@@ -91,7 +91,7 @@ public class MouseWorld : MonoBehaviour
         {
             // Check the Mouse-Pointer Coordinates on the Screen:
             //
-            Ray ray = _mainSceneCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = _mainSceneCamera.ScreenPointToRay(InputManager.Instance.GetMouseScreenPosition());
             //
             // Physics RayCast:
             //
@@ -129,7 +129,7 @@ public class MouseWorld : MonoBehaviour
         {
             // Check the Mouse-Pointer Coordinates on the Screen:
             //
-            Ray ray = _mainSceneCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = _mainSceneCamera.ScreenPointToRay(InputManager.Instance.GetMouseScreenPosition());
             //
             // Physics RayCast:
             //

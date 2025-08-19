@@ -61,7 +61,7 @@ public class CameraController : MonoBehaviour
     //
     [Tooltip("Current Movement Direction Vector3, gotten from the user's Input")]
     [SerializeField]
-    private Vector3 _inputMoveDirection = new Vector3(0, 0, 0);
+    private Vector2 _inputMoveDirection = new Vector3(0, 0);
     
     // Movement
     
@@ -151,38 +151,17 @@ public class CameraController : MonoBehaviour
 
     private void HandleMovement()
     {
-        // 1- Reset the 'Movement' Input Vector: Set it as stationary every frame
-        //
-        _inputMoveDirection.Set(0, 0, 0);
-        //
+        // 1- Reset the 'Movement' Input Vector: Set it as stationary every fr
         // 2- Get the Player's Input, and Set it in the CameraController.
         //
-        if (Input.GetKey(KeyCode.W))
-        {
-            _inputMoveDirection.z = +1f;
-        }
-
-        if (Input.GetKey(KeyCode.S))
-        {
-            _inputMoveDirection.z = -1f;
-        }
-
-        if (Input.GetKey(KeyCode.Q)) // ORIGINAL: (KeyCode.A))
-        {
-            _inputMoveDirection.x = -1f;
-        }
-
-        if (Input.GetKey(KeyCode.E)) // ORIGINAL: (KeyCode.D))
-        {
-            _inputMoveDirection.x = +1f;
-        }
-
-        //
+        _inputMoveDirection = InputManager.Instance.GetCameraMoveVector();
+        
+        
         // 3- Set the variables with the new movement value(s):
         //
         // .1- We Set the Movement Vector3 from: the user's Input (that's Vector3_1) + Current Position Vector3 (that's another one Vector3_2), we sum (Sum of Vector3's) them all: 
         //
-        _moveVector = _cachedTransform.forward * _inputMoveDirection.z + _cachedTransform.right * _inputMoveDirection.x;
+        _moveVector = _cachedTransform.forward * _inputMoveDirection.y + _cachedTransform.right * _inputMoveDirection.x;
         //
         // .2- Finally: we apply the resulting Vector3 (of Movement) taking into account the Speed * deltaTime:
         //
@@ -201,16 +180,9 @@ public class CameraController : MonoBehaviour
 
         // 1- Get the Rotation (user's)  Input:
         //
-        if (Input.GetKey(KeyCode.A)) // ORIGINAL: (KeyCode.Q))
-        {
-            _rotationVector.y = +1f;
-        }
-
-        if (Input.GetKey(KeyCode.D)) // ORIGINAL: (KeyCode.E))
-        {
-            _rotationVector.y = -1f;
-        }
-
+        _rotationVector.y = InputManager.Instance.GetCameraRotateAmount();
+            
+        
         // 2- Set the new Rotation, by using the eulerAngles:
         //
         _cachedTransform.eulerAngles += _rotationVector * (_rotationSpeed * Time.deltaTime);
@@ -223,18 +195,13 @@ public class CameraController : MonoBehaviour
     private void HandleZoom()
     {
         // We update Cinemachine's "y" value of the Pan of Camera:
-        // It could be a ZOOM-IN or a ZOOM-OUT, dependong on the
+        // It could be a ZOOM-IN or a ZOOM-OUT, depending on the
         //...direction of the movement of the mouse's scrollwheel:
-        if (Input.mouseScrollDelta.y > 0)
-        {
-            _targetFollowOffset.y -= _ZOOM_AMOUNT;
-        }
-
-        if (Input.mouseScrollDelta.y < 0)
-        {
-            _targetFollowOffset.y += _ZOOM_AMOUNT;
-        }
-
+        //
+        float zoomIncreaseAmount = 1f;
+        _targetFollowOffset.y += InputManager.Instance.GetCameraZoomAmount() * zoomIncreaseAmount;
+        
+        
         // We limit the Camera Movement to the Constraints:
         //
         _targetFollowOffset.y = Mathf.Clamp(_targetFollowOffset.y, _MIN_FOLLOW_Y_OFFSET, _MAX_FOLLOW_Y_OFFSET);

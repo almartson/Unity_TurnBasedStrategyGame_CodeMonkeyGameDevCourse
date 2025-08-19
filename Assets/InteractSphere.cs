@@ -83,7 +83,7 @@ public class InteractSphere : MonoBehaviour, IInteractable
 
         if (_timer <= 0f)
         {
-            // Execute the Callback  (when the timer ends)          //)
+            // Execute the Callback  (when the timer ends)
             //
             _isActive = false;
             _onInteractionComplete();
