@@ -18,6 +18,11 @@ public class InputManager : MonoBehaviour
 
     #endregion Singleton Pattern's
 
+    /// <summary>
+    /// Reference / link to auto-generated code (by the NEW INPUT SYSTEM)
+    /// </summary>
+    private PlayerInputActions _playerInputActions;
+    
     
     #region Camera (Cinemachine) Move + Rotation Vector
     
@@ -75,7 +80,11 @@ public class InputManager : MonoBehaviour
         Instance = this;
         
         #endregion Singleton Pattern's
-        
+
+        // Get (refresh) the link / reference:   Auto Generated Code (class)
+        //
+        _playerInputActions = new PlayerInputActions();
+
     }//End Awake
 
 
@@ -98,7 +107,7 @@ public class InputManager : MonoBehaviour
     public Vector2 GetMouseScreenPosition()
     {
 #if USE_NEW_INPUT_SYSTEM
-        return MouseWorld.current.position.ReadValue();
+        return Mouse.current.position.ReadValue();
 #else
         return Input.mousePosition;
 #endif
@@ -111,6 +120,10 @@ public class InputManager : MonoBehaviour
 
     public Vector2 GetCameraMoveVector()
     {
+#if USE_NEW_INPUT_SYSTEM
+        return Vector2.zero;
+#else
+
         // 1- Reset the 'Movement' Input Vector: Set it as stationary every frame
         //
         _inputMoveDirection.Set(0, 0);
@@ -138,7 +151,7 @@ public class InputManager : MonoBehaviour
         }
 
         return _inputMoveDirection;
-
+#endif
     }//End GetCameraMoveVector
 
 
