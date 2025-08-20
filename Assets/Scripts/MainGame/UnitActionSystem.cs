@@ -201,7 +201,7 @@ public class UnitActionSystem : MonoBehaviour
         
         // Get the Mouse Pointer Click & (x, y, z) Screen Position.
         //
-        if (InputManager.Instance.IsMouseButtonDown())
+        if (InputManager.Instance.IsMouseButtonDownThisFrame())
         {
             #region Try to SELECT a friendly UNIT: CodeMonkey's Original Implementation
             

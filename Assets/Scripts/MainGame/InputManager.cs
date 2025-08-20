@@ -81,9 +81,14 @@ public class InputManager : MonoBehaviour
         
         #endregion Singleton Pattern's
 
-        // Get (refresh) the link / reference:   Auto Generated Code (class)
+        // Get (refresh) the link / reference:   Auto Generated Code (NEW INPUT SYSTEM class)
         //
         _playerInputActions = new PlayerInputActions();
+        //
+        // Enable the NEW INPUT SYSTEM "Mapping" asset:
+        //
+        _playerInputActions.Player.Enable();
+
 
     }//End Awake
 
@@ -113,17 +118,21 @@ public class InputManager : MonoBehaviour
 #endif
     }
 
-    public bool IsMouseButtonDown()
+    public bool IsMouseButtonDownThisFrame()
     {
+#if USE_NEW_INPUT_SYSTEM
+        return _playerInputActions.Player.Click.WasPressedThisFrame();
+        return true;
+#else
         return Input.GetMouseButtonDown(0);
+#endif
     }
 
     public Vector2 GetCameraMoveVector()
     {
 #if USE_NEW_INPUT_SYSTEM
-        return Vector2.zero;
+        return _playerInputActions.Player.CameraMovement.ReadValue<Vector2>();
 #else
-
         // 1- Reset the 'Movement' Input Vector: Set it as stationary every frame
         //
         _inputMoveDirection.Set(0, 0);
@@ -157,6 +166,9 @@ public class InputManager : MonoBehaviour
 
     public float GetCameraRotateAmount()
     {
+#if USE_NEW_INPUT_SYSTEM
+        return _playerInputActions.Player.CameraRotate.ReadValue<float>();
+#else
         // 0- Reset the 'Rotation' Input Vector: Set it as stationary every frame
         //
         float rotateAmount = 0f;
@@ -177,12 +189,16 @@ public class InputManager : MonoBehaviour
         }
         
         return rotateAmount;
-        
+#endif
+
     }//End GetCameraRotateAmount
 
 
     public float GetCameraZoomAmount()
     {
+#if USE_NEW_INPUT_SYSTEM
+        return _playerInputActions.Player.CameraZoom.ReadValue<float>();
+#else
         float zoomAmount = 0f;
         
         // We update Cinemachine's "y" value of the Pan of Camera:
@@ -200,7 +216,7 @@ public class InputManager : MonoBehaviour
         }
 
         return zoomAmount;
-        
+#endif
     }//End GetCameraZoomAmount
     
     #endregion My Custom Methods
