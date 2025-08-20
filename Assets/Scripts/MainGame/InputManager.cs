@@ -1,8 +1,10 @@
 /* NOTE: Modified Unity C# Script Template by Alec AlMartson...
 ...on Path:   /PathToUnityHub/Unity/Hub/Editor/UNITY_VERSION_FOR_EXAMPLE__2020.3.36f1/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs
 */
-using UnityEngine;
+#define USE_NEW_INPUT_SYSTEM
 
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
@@ -95,7 +97,11 @@ public class InputManager : MonoBehaviour
 
     public Vector2 GetMouseScreenPosition()
     {
+#if USE_NEW_INPUT_SYSTEM
+        return MouseWorld.current.position.ReadValue();
+#else
         return Input.mousePosition;
+#endif
     }
 
     public bool IsMouseButtonDown()
