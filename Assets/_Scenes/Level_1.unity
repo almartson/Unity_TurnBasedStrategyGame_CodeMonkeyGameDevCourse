@@ -186,7 +186,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3902643}
-  m_LocalRotation: {x: 0.3006394, y: 0.000000016410377, z: -0.000000005172915, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: -0.000000016410377, z: 0.000000005172915, w: 0.9537379}
   m_LocalPosition: {x: 0, y: 7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2041,7 +2041,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.3006394, y: 0.000000016410377, z: -0.000000005172915, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: -0.000000016410377, z: 0.000000005172915, w: 0.9537379}
   m_LocalPosition: {x: 0, y: 7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3091,7 +3091,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cinemachineVirtualCamera: {fileID: 3902644}
   _zoomSpeed: 5
-  _inputMoveDirection: {x: 0, y: 0, z: 0}
+  _inputMoveDirection: {x: 0, y: 0}
   _moveVector: {x: 0, y: 0, z: 0}
   _moveSpeed: 10
   _rotationVector: {x: 0, y: 0, z: 0}
@@ -5049,6 +5049,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   _raycastVerticalOffsetDistance: 0.1
+  _debugWithPathfindingGridDebugObjects: 1
 --- !u!4 &1278207379
 Transform:
   m_ObjectHideFlags: 0
@@ -7461,7 +7462,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127e810a830ca9a96ae6a1177a1a5f1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _myDefaultVar: 0
+  _inputMoveDirection: {x: 0, y: 0}
+  _rotationVector: {x: 0, y: 0, z: 0}
 --- !u!4 &2051569542
 Transform:
   m_ObjectHideFlags: 0

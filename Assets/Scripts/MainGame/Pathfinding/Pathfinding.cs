@@ -130,6 +130,13 @@ public class Pathfinding : MonoBehaviour
 
     #endregion Obstacles for Pathfinding
     
+    #region Debug Options
+    
+    [Tooltip("Debug With Pathfinding Grid Debug Objects \n Enable if you want to create a whole system of Grid Debug Objects to see if every NodePath is Walkable, or not.")]
+    [SerializeField]
+    private bool _debugWithPathfindingGridDebugObjects = false;
+    
+    #endregion Debug Options
     
     #endregion Attributes
 
@@ -218,7 +225,12 @@ public class Pathfinding : MonoBehaviour
 
         // 3- (Debugging Purposes :) Create the GameObject that will hold a Visual Representation of the Grid System: for  'A* Pathfinding'. Calling the Constructor:
         //
-        //_gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+        if (_debugWithPathfindingGridDebugObjects)
+        {
+            // Create a system of 'Pathfinding Grid Debug Objects' over the GridObjects' Board.
+            //
+            _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+        }
 
         
         #region Initialize:  Walkable NodePaths  (and Obstacles)
