@@ -272,7 +272,7 @@ MonoBehaviour:
   _factorToDivideByMaxHeightOfProjectileTrailCurve: 4
   _moveSpeed: 15
   _damageRadius: 4
-  _grenadeActionDamage: 36
+  _grenadeActionDamage: 44
   _maxNumberOfPhysicsColliders: 17
   _trailRenderer: {fileID: 4168208705501534689}
   _arcYAnimationCurve:

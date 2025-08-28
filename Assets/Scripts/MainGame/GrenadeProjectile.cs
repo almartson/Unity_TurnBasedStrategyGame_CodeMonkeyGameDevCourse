@@ -46,7 +46,7 @@ public class GrenadeProjectile : MonoBehaviour
 
     [Tooltip("Grenade Action Damage \n Damage dealt by the Explosion, of the Projectile.")]
     [SerializeField]
-    private int _grenadeActionDamage = 36;
+    private int _grenadeActionDamage = 44;
     
     [Tooltip("Max Number Of Physics Colliders \n Maximum Number of Physics Colliders used in calculations (for: Damage dealt by the Explosion, of the Projectile; for instance")]
     [SerializeField]
@@ -236,6 +236,24 @@ public class GrenadeProjectile : MonoBehaviour
     }//End Setup
 
 
+    #region Getters, Setters
+
+    public int GetGrenadeActionDamage()
+    {
+        return _grenadeActionDamage;
+    }
+    
+    /// <summary>
+    /// Sets the value of the "Grenade Action Damage" property.
+    /// </summary>
+    /// <param name="grenadeActionDamage"></param>
+    public void SetGrenadeActionDamage(int grenadeActionDamage)
+    {
+        this._grenadeActionDamage = grenadeActionDamage;
+    }
+
+
+    #endregion Getters, Setters
 
     #endregion My Custom Methods
 

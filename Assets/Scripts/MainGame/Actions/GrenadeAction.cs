@@ -35,6 +35,10 @@ public class GrenadeAction : BaseAction
 
     #endregion Validations: of the Action
 
+    [Tooltip("Override Grenade Action Damage \n Overrides the Field that can be found in the 'GrenadeProjectile.cs'. \n(Damage dealt by the Explosion, of the Projectile).")]
+    [SerializeField]
+    private int _overrideGrenadeActionDamage = 44;
+    
     #endregion Attributes
 
 
@@ -49,7 +53,13 @@ public class GrenadeAction : BaseAction
     /// <summary>
     /// Start is called before the first frame update
     /// </summary>
+    private void Start()
+    {
+        // Override Damage dealt by the Grenade Projectile: 
+        //
+        _grenadeProjectilePrefab.GetComponent<GrenadeProjectile>().SetGrenadeActionDamage(_overrideGrenadeActionDamage);
 
+    }//End Start()
 
 
     /// <summary>
