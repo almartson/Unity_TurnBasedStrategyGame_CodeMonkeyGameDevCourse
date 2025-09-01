@@ -93,6 +93,28 @@ public class UnitActionSystem : MonoBehaviour
     /// </summary>
     public int UnitLayerMask => _unitLayerMask;
 
+    #region Temporary - Game Over GUI Canvas
+    
+    /// <summary>
+    /// Canvas for the Game Over GUI.
+    /// </summary>
+    [SerializeField]
+    private Canvas _gameOverCanvas;
+
+    /// <summary>
+    /// GameObject for the Game Over GUI.
+    /// </summary>
+    [SerializeField]
+    private GameObject _gameOverUIGameObject;
+    
+    /// <summary>
+    /// GameObject for the Beat Level (a.k.a.: You Win!) GUI.
+    /// </summary>
+    [SerializeField]
+    private GameObject _beatLevelUIGameObject;
+    
+    #endregion Temporary - Game Over GUI Canvas
+    
     #endregion Attributes
     
     
@@ -931,6 +953,11 @@ public class UnitActionSystem : MonoBehaviour
                 //
                 Debug.LogWarning($"++ GAME OVER! ++ \n PLEASE INSERT Game Over CODE around these LINES...");
                 
+                // TODO: Move this logic to a classic GameManager.cs script
+                // Show a GAME OVER GUI
+                //
+                ShowGameOverGUI();
+
             }//End if ( friendlyUnitList.Count > 0 )
             
         }//End if ( _selectedUnit.IsDead() )
@@ -939,8 +966,71 @@ public class UnitActionSystem : MonoBehaviour
         //
         TurnSystem.Instance.UnitThatIsPlayingNow = _selectedUnit;
         
+        
+        // Verify other Use Cases of GAME OVER:
+        // 2.2- ENEMY Unit List all died:  (i.e.: the Human Player WON!)
+        //
+        List<UnitEnemy> enemyUnitList = UnitManager.Instance.GetEnemyUnitList();
+
+        // 3- Find the next available "Unit" / Character.
+        // If none is available, if all are dead, then it’s game over.
+        //
+        if ( enemyUnitList.Count <= 0 )
+        {
+            // GAME OVER
+            // Human Player WON!
+            // Set the next available "Unit" / Character
+                
+            // TODO: PLEASE INSERT "YOU WIN" + Game Over CODE around these LINES...
+            //
+            Debug.LogWarning($"++ YOU WIN! ++ \n PLEASE INSERT 'YOU WIN' + Game Over CODE around these LINES...");
+
+            // TODO: Move this logic to a classic GameManager.cs script
+            // Show a BEAT LEVEL / YOU WIN!  GUI
+            //
+            ShowBeatLevelGUI();
+
+        }//End if
+
     }// End TurnSystem_OnTurnChanged
 
+    
+    #region GAME OVER GUI
+    
+    // TODO: Move this to GameManager.cs
+    public void ShowGameOverGUI()
+    {
+        Debug.Log($"ShowGameOverGUI");
+        
+        this._gameOverCanvas.enabled = true;
+        
+        this._gameOverUIGameObject.SetActive(true);
+        
+        this._beatLevelUIGameObject.SetActive(false);
+    }
+    
+    public void ShowBeatLevelGUI()
+    {
+        Debug.Log($"ShowBeatLevelGUI");
+
+        this._gameOverCanvas.enabled = true;
+        
+        this._gameOverUIGameObject.SetActive(false);
+        
+        this._beatLevelUIGameObject.SetActive(true);
+    }
+
+    public void HideAllRelatedGameOverGUI()
+    {
+        this._gameOverCanvas.enabled = false;
+        
+        this._gameOverUIGameObject.SetActive(false);
+        
+        this._beatLevelUIGameObject.SetActive(false);
+    }
+    
+    #endregion GAME OVER GUI
+    
     #endregion Listeners and Events:  ON TURN CHANGED
     
     #endregion My Custom Methods
