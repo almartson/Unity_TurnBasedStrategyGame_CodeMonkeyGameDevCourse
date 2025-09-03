@@ -1913,6 +1913,11 @@ PrefabInstance:
       propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
@@ -1982,6 +1987,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -3913,7 +3923,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &568566537
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4958,6 +4968,11 @@ PrefabInstance:
       propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
@@ -5027,6 +5042,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -5193,6 +5213,11 @@ PrefabInstance:
       propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
@@ -5262,6 +5287,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -5586,7 +5616,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1020768067
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5819,6 +5849,11 @@ PrefabInstance:
       propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
@@ -5888,6 +5923,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -5959,6 +5999,11 @@ PrefabInstance:
       propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
@@ -6028,6 +6073,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -9960,6 +10010,11 @@ PrefabInstance:
       propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
@@ -10029,6 +10084,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
