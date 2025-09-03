@@ -1,243 +1,613 @@
-﻿using UnityEngine;
-using System.Collections;
-// using UnityEngine.UI; // include UI namespace so can reference UI elements
-using UnityEngine.SceneManagement; // include so we can manipulate SceneManager
+﻿using System;
 using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
+/// <summary>
+/// A simple State Pattern Class, that controls the Main Flow of the Game States.
+/// Winning...
+/// Losing...
+/// All that is controlled here. An Orchestra Director.
+/// </summary>
 public class GameManager : MonoBehaviour
 {
 
-    /// <summary>
-    /// Static reference to game manager so can be called from other scripts directly (not just through gameobject component)
-    /// </summary>
-    public static GameManager myGameManager_GameManager;
+	#region Attributes
 
-    // levels to move to on victory and lose
-    public string levelAfterVictory;
-    public string levelAfterGameOver;
+	/// <summary>
+	/// Make game manager public static, so it can be accessed from other scripts
+	/// </summary>
+	public static GameManager Gm;
 
-    // game performance
-    public int score = 0;
-    public int highscore = 0;
-    public int startLives = 3;
-    public int lives = 3;
+	#region Timer Management
 
-    // UI elements to control. NOTE: Updated to TEXT MESH PRO.
-    public /* Text */ TMP_Text scoreUI_TMP_Text;
-    public /* Text */ TMP_Text highScoreUI_TMP_Text;
-    public /* Text */ TMP_Text levelUI_TMP_Text;
-    public GameObject[] extraLivesUI_ArrayOfGameObject;
-    public GameObject gamePausedUI_GameObject;
+	public float startTime = 5f;
+	
+	/// <summary>
+	/// Current time
+	/// </summary>
+	private float _currentTime;
 
-    // private variables
-    GameObject _player_GameObject;
-    Vector3 _spawnLocation_Vector3;
-    Scene _scene_Scene;
+	/// <summary>
+	/// Show timer on screen
+	/// </summary>
+	public TextMeshProUGUI mainTimerDisplay;
 
-    // set things up here
-    void Awake()
-    {
-        // setup reference to game manager
-        if (myGameManager_GameManager == null)
-            myGameManager_GameManager = this.GetComponent<GameManager>();
+	#endregion Timer Management
+	
+	#region Players
 
-        // setup all the variables, the UI, and provide errors if things not setup properly.
-        SetupDefaults();
-    }
+	[Tooltip("It must be set here,  or the Game would show an Exception.")]
+	[SerializeField]
+	private GameObject _playerToTheLeft;
+	
+	[Tooltip("It must be set here,  or the Game would show an Exception.")]
+	[SerializeField]
+	private GameObject _playerToTheRight;
 
-    // game loop
-    void Update()
-    {
-        // if ESC pressed then pause the game
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (Time.timeScale > 0f)
-            {
-                gamePausedUI_GameObject.SetActive(true); // this brings up the pause UI
-                Time.timeScale = 0f; // this pauses the game action
-            }
-            else
-            {
-                Time.timeScale = 1f; // this unpauses the game action (ie. back to normal)
-                gamePausedUI_GameObject.SetActive(false); // remove the pause UI
-            }
-        }
-    }
+	#endregion Players
 
+	#region Game States (State Pattern)
 
-    /// <summary>
-    /// Setup all the variables, the UI, and provide errors if things not setup properly.
-    /// </summary>
-    void SetupDefaults()
-    {
-        // setup reference to player
-        if (_player_GameObject == null)
-            _player_GameObject = GameObject.FindGameObjectWithTag("Player");
+	public enum GameStates { Playing, Death, GameOver, BeatLevel };
+	
+	[SerializeField]
+	private GameStates _gameState = GameStates.Playing;
 
-        if (_player_GameObject == null)
-            Debug.LogError("Player not found in Game Manager");
+	#endregion Game States (State Pattern)
 
-        // get current scene
-        _scene_Scene = SceneManager.GetActiveScene();
+	
+	#region Exposed "public" fields
 
-        // get initial _spawnLocation based on initial position of player
-        _spawnLocation_Vector3 = _player_GameObject.transform.position;
+	[SerializeField]
+	private int _score=0;
+	[SerializeField]
+	private bool _canBeatLevel = false;
+	[SerializeField]
+	private int _beatLevelScore=0;
 
-        // if levels not specified, default to current level
-        if (levelAfterVictory == "")
-        {
-            Debug.LogWarning("levelAfterVictory not specified, defaulted to current level");
-            levelAfterVictory = _scene_Scene.name;
-        }
+	[SerializeField]
+	private GameObject _mainCanvas;
+	[SerializeField]
+	private TextMeshProUGUI _mainScoreDisplay;
+	[SerializeField]
+	private GameObject _gameOverCanvas;
+	[SerializeField]
+	private TextMeshProUGUI _gameOverScoreDisplay;
 
-        if (levelAfterGameOver == "")
-        {
-            Debug.LogWarning("levelAfterGameOver not specified, defaulted to current level");
-            levelAfterGameOver = _scene_Scene.name;
-        }
+	[Tooltip("Only need to set if canBeatLevel is set to true.")]
+	[SerializeField]
+	private GameObject _beatLevelCanvas;
+	[Tooltip("This is a Score container in case you beat the Level. Only need to set if canBeatLevel is set to true.")]
+	[SerializeField]
+	private TextMeshProUGUI _beatLevelScoreDisplay;
 
-        // friendly error messages
-        if (scoreUI_TMP_Text == null)
-            Debug.LogError("Need to set UIScore on Game Manager.");
+	
+	[SerializeField]
+	private AudioSource _backgroundMusicAudioSource;
+	
+	// [SerializeField]
+	// private AudioSource _backgroundSoundsSFX;
 
-        if (highScoreUI_TMP_Text == null)
-            Debug.LogError("Need to set UIHighScore on Game Manager.");
+	[SerializeField]
+	private AudioClip _gameOverSFX1;
+	[SerializeField]
+	private AudioClip _gameOverSFX2;
 
-        if (levelUI_TMP_Text == null)
-            Debug.LogError("Need to set UILevel on Game Manager.");
+	[Tooltip("Only need to set if canBeatLevel is set to true.")]
+	[SerializeField]
+	private AudioClip _beatLevelSFX;
+	
+	#endregion Exposed "public" fields
 
-        if (gamePausedUI_GameObject == null)
-            Debug.LogError("Need to set UIGamePaused on Game Manager.");
+	
+	#region private fields
 
-        // get stored player prefs
-        RefreshPlayerState();
+	private Health _healthOfPlayerToTheLeft;
+	private Health _healthOfPlayerToTheRight;
+	
+	// private Health _playerHealth;
+	
+	#endregion private fields
 
-        // get the UI ready for the game
-        RefreshGUI();
-    }
+	
+	#region Loading Scenes + using GameObjects to Shoot at, or Touch
 
+	// [SerializeField]
+	// private GameObject _playAgainButtons;
+	// [SerializeField]
+	// private string _playAgainLevelToLoad;
+	//
+	// /// Buttons to restart the game to Level One
+	// [Tooltip("Buttons to restart the game to Level One")]
+	// [SerializeField]
+	// private GameObject _restartGameButtons;
+	//
+	// [SerializeField]
+	// private string _restartGameLevelToLoad;
+	//
+	// [SerializeField]
+	// private GameObject _nextLevelButtons;
+	//
+	// [SerializeField]
+	// private string _nextLevelToLoad;
 
-    /// <summary>
-    /// Get stored Player Prefs if they exist, otherwise go with defaults set on gameObject
-    /// </summary>
-    void RefreshPlayerState()
-    {
-        lives = PlayerPrefManager.GetLives();
-
-        // special case if lives <= 0 then must be testing in editor, so reset the player prefs
-        if (lives <= 0)
-        {
-            PlayerPrefManager.ResetPlayerState(startLives, false);
-            lives = PlayerPrefManager.GetLives();
-        }
-        score = PlayerPrefManager.GetScore();
-        highscore = PlayerPrefManager.GetHighscore();
-
-        // save that this level has been accessed so the MainMenu can enable it
-        PlayerPrefManager.UnlockLevel();
-    }
+	#endregion Loading Scenes + using GameObjects to Shoot at, or Touch
+	
+	#endregion Attributes
 
 
-    /// <summary>
-    /// Refresh all the GUI elements <br />
-    /// It is called: at the beginning (in the Awake function, in "SetupDefaults"), AND each time the Player Dies (in "ResetGame").
-    /// </summary>
-    void RefreshGUI()
-    {
-        // set the text elements of the UI
-        /* ORIGINAL: UIScore.text = "Score: " + score.ToString(); */
-        scoreUI_TMP_Text.text = "Score: <size=83%><color=#FFF000>" + score.ToString() + "</color>";
-        /* ORIGINAL: UIHighScore.text = "Highscore: " + highscore.ToString(); */
-        highScoreUI_TMP_Text.text = "Highscore: <size=83%><color=#FFF000>" + highscore.ToString() + "</color>";
-        /* ORIGINAL: UILevel.text = _scene.name; */
-        levelUI_TMP_Text.text = "<size=83%><color=#FF0000>" + _scene_Scene.name + "</color>";
+	#region Unity Methods
 
-        // turn on the appropriate number of life indicators in the UI based on the number of lives left
-        for (int i = 0; i < extraLivesUI_ArrayOfGameObject.Length; i++)
-        {
-            if (i < (lives - 1))
-            {
-                // show one less than the number of lives since you only typically show lifes after the current life in UI
-                extraLivesUI_ArrayOfGameObject[i].SetActive(true);
-            }
-            else
-            {
-                extraLivesUI_ArrayOfGameObject[i].SetActive(false);
-            }
-        }
-    }
+	/// setup the game
+	void Awake ()
+	{
+		if (Gm == null) 
+			Gm = gameObject.GetComponent<GameManager>();
 
+		// if (_playerToTheLeft == null)
+		// {
+		// 	_playerToTheLeft = GameObject.FindWithTag("Player");
+		// }
 
-    /// <summary>
-    /// Public function to add Points and update the GUI and highscore player Prefs accordingly (each time the Player gets a a Pickup... a COIN or anything that increases his Score).
-    /// </summary>
-    /// <param name="amount"></param>
-    public void AddPoints(int amount)
-    {
-        // increase score
-        score += amount;
+		// Access to:  Health  Components
+		// Left
+		_healthOfPlayerToTheLeft = _playerToTheLeft.GetComponent<Health>();
+		// Right
+		_healthOfPlayerToTheRight = _playerToTheRight.GetComponent<Health>();
 
-        // update UI
-        /* ORIGINAL: UIScore.text = "Score: " + score.ToString(); */
-        scoreUI_TMP_Text.text = "Score: <size=83%><color=#FFF000>" + score.ToString() + "</color>";
+		// setup score display
+		Collect (0);
 
-        // if score>highscore then update the highscore UI too
-        if (score > highscore)
-        {
-            highscore = score;
-            /* ORIGINAL: UIHighScore.text = "Highscore: " + score.ToString(); */
-            highScoreUI_TMP_Text.text = "Highscore: <size=83%><color=#FFF000>" + highscore.ToString() + "</color>";
-        }
-    }
+		// make other UI inactive
+		_gameOverCanvas.SetActive (false);
+		//
+		if (_canBeatLevel)
+		{
+			if ( _beatLevelCanvas != null )
+			{
+				
+				_beatLevelCanvas.SetActive (false);
+			}
+		}
+		
+		// Set the current time to the startTime specified
+		//
+		_currentTime = startTime;
+
+		_backgroundMusicAudioSource.volume = .05f;
+
+	}//End Awake
 
 
-    /// <summary>
-    /// Public function to Remove player life and Reset game accordingly.<br />
-    /// It is called each time the Player Dies.
-    /// </summary>
-    public void ResetGame()
-    {
-        // remove life and update GUI
-        lives--;
-        RefreshGUI();
-
-        if (lives <= 0)
-        { 
-            // no more lives
-            // save the current player prefs before going to GameOver
-            PlayerPrefManager.SavePlayerState(score, highscore, lives);
-
-            // load the gameOver screen
-            SceneManager.LoadScene(levelAfterGameOver);
-        }
-        else
-        {
-            // tell the player to respawn
-            _player_GameObject.GetComponent<CharacterController2D>().Respawn(_spawnLocation_Vector3);
-        }
-    }
+	// private void Start()
+	// {
+	// 	// Initialize Background Sounds SFX AudioSource
+	// 	//
+	// 	_backgroundSoundsSFX.Stop();
+	// 	_backgroundSoundsSFX.loop = false;
+	// 	_backgroundSoundsSFX.playOnAwake = false;
+	// }
 
 
-    /// <summary>
-    /// Public function for level complete
-    /// </summary>
-    public void LevelCompete()
-    {
-        // save the current player prefs before moving to the next level
-        PlayerPrefManager.SavePlayerState(score, highscore, lives);
+	void Update ()
+	{
+		switch (_gameState)
+		{
+			case GameStates.Playing:
+				
+				if (!_healthOfPlayerToTheLeft.isAlive  &&  !_healthOfPlayerToTheRight.isAlive)
+				{
+					// You  LOSE  the Game!
+					//
+					EndGame();
 
-        // use a coroutine to allow the player to get fanfare before moving to next level
-        StartCoroutine(LoadNextLevel());
-    }
+				}
+				else if (_canBeatLevel && _score>=_beatLevelScore)
+				{
+					// You  WIN  the Game!
+					//
+					BeatLevel();
+
+				}
+				else if (_currentTime < 0) 
+				{
+					// check to see if timer has run out
+					//
+					EndGame ();
+				} 
+				else 
+				{
+					// game playing state, so update the timer
+				
+					_currentTime -= Time.deltaTime;
+					mainTimerDisplay.text = _currentTime.ToString ("0");
+					
+				}//End GameStates.Playing
+				
+				break;
+			
+			case GameStates.Death:
+				
+				_backgroundMusicAudioSource.volume -= 0.01f;
+				
+				if (_backgroundMusicAudioSource.volume<=0.0f)
+				{
+					// Original Code: AudioSource.PlayClipAtPoint (_gameOverSFX,gameObject.transform.position);
+					//AudioSource.PlayClipAtPoint (_gameOverSFX,_backgroundMusicAudioSource.transform.position);
+					//
+					//PlayTwoSoundsInAChainForGameOver(_gameOverSFX1, _gameOverSFX2, _backgroundMusicAudioSource.transform.position);
+					//
+					AudioSource.PlayClipAtPoint (_gameOverSFX1, _backgroundMusicAudioSource.transform.position);
+
+					_gameState = GameStates.GameOver;
+					
+				}// GameStates.Death
+				break;
+			
+			case GameStates.BeatLevel:
+				
+				_backgroundMusicAudioSource.volume -= 0.01f;
+				if (_backgroundMusicAudioSource.volume<=0.0f)
+				{
+					AudioSource.PlayClipAtPoint (_beatLevelSFX,_backgroundMusicAudioSource.transform.position, .08f);
+					
+					_gameState = GameStates.GameOver;
+
+				}// GameStates.BeatLevel:
+				break;
+			
+			case GameStates.GameOver:
+
+				// nothing
+				break;
+			
+			default:
+				Debug.LogError($"Error, Exception: Entered a weird STATE in the STATE PATTERN in Class -> {this.name}");
+				break;
+		}//End switch
+
+	}// End Update
+
+	#endregion Unity Methods
 
 
-    /// <summary>
-    /// Load the nextLevel after delay
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator LoadNextLevel()
-    {
-        yield return new WaitForSeconds(3.5f);
-        SceneManager.LoadScene(levelAfterVictory);
-    }
+	#region My Custom Methods
+
+		
+	#region Field's PROPERTIES (Get, Set functions)
+
+	public static GameManager Gm1
+	{
+		get => Gm;
+		set => Gm = value;
+	}
+
+	public GameObject PlayerToTheLeft
+	{
+		get => _playerToTheLeft;
+		set => _playerToTheLeft = value;
+	}
+
+	public GameObject PlayerToTheRight
+	{
+		get => _playerToTheRight;
+		set => _playerToTheRight = value;
+	}
+
+	public GameStates GameState
+	{
+		get => _gameState;
+		set => _gameState = value;
+	}
+
+	public int Score
+	{
+		get => _score;
+		set => _score = value;
+	}
+
+	public bool CanBeatLevel
+	{
+		get => _canBeatLevel;
+		set => _canBeatLevel = value;
+	}
+
+	public int BeatLevelScore
+	{
+		get => _beatLevelScore;
+		set => _beatLevelScore = value;
+	}
+
+	public GameObject MainCanvas
+	{
+		get => _mainCanvas;
+		set => _mainCanvas = value;
+	}
+
+	public TextMeshProUGUI MainScoreDisplay
+	{
+		get => _mainScoreDisplay;
+		set => _mainScoreDisplay = value;
+	}
+
+	public GameObject GameOverCanvas
+	{
+		get => _gameOverCanvas;
+		set => _gameOverCanvas = value;
+	}
+
+	public TextMeshProUGUI GameOverScoreDisplay
+	{
+		get => _gameOverScoreDisplay;
+		set => _gameOverScoreDisplay = value;
+	}
+
+	public GameObject BeatLevelCanvas
+	{
+		get => _beatLevelCanvas;
+		set => _beatLevelCanvas = value;
+	}
+
+	public TextMeshProUGUI BeatLevelScoreDisplay
+	{
+		get => _beatLevelScoreDisplay;
+		set => _beatLevelScoreDisplay = value;
+	}
+
+	public AudioSource BackgroundMusic
+	{
+		get => _backgroundMusicAudioSource;
+		set => _backgroundMusicAudioSource = value;
+	}
+
+	public AudioClip GameOverSfx
+	{
+		get => _gameOverSFX1;
+		set => _gameOverSFX1 = value;
+	}
+
+	public AudioClip BeatLevelSfx
+	{
+		get => _beatLevelSFX;
+		set => _beatLevelSFX = value;
+	}
+
+	public Health PlayerHealth
+	{
+		get => _healthOfPlayerToTheLeft;
+		set => _healthOfPlayerToTheLeft = value;
+	}
+
+	// public GameObject PlayAgainButtons
+	// {
+	// 	get => _playAgainButtons;
+	// 	set => _playAgainButtons = value;
+	// }
+	//
+	// public string PlayAgainLevelToLoad
+	// {
+	// 	get => _playAgainLevelToLoad;
+	// 	set => _playAgainLevelToLoad = value;
+	// }
+	//
+	// public GameObject RestartGameButtons
+	// {
+	// 	get => _restartGameButtons;
+	// 	set => _restartGameButtons = value;
+	// }
+	//
+	// public string RestartGameLevelToLoad
+	// {
+	// 	get => _restartGameLevelToLoad;
+	// 	set => _restartGameLevelToLoad = value;
+	// }
+	//
+	// public GameObject NextLevelButtons
+	// {
+	// 	get => _nextLevelButtons;
+	// 	set => _nextLevelButtons = value;
+	// }
+	//
+	// public string NextLevelToLoad
+	// {
+	// 	get => _nextLevelToLoad;
+	// 	set => _nextLevelToLoad = value;
+	// }
+
+
+	#endregion Field's PROPERTIES (Get, Set functions)
+
+
+	#region WIN vs. LOSE
+	
+	/// <summary>
+	/// When the Player Loses the Game...
+	/// </summary>
+	public void EndGame()
+	{
+		// game is over
+		//_gameIsOver = true;
+
+		// repurpose the timer to display a message to the player
+		//_mainTimerDisplay.text = "GAME OVER";
+
+		// activate the gameOverScoreOutline gameObject, if it is set 
+		// if (_gameOverScoreOutline)
+		// 	_gameOverScoreOutline.SetActive (true);
+	
+		// // activate the playAgainButtons gameObject, if it is set 
+		// if (_playAgainButtons)
+		// 	_playAgainButtons.SetActive (true);
+		//
+		// // activate the restartGameButtons gameObject, if it is set
+		// if (this._restartGameButtons)
+		// 	this._restartGameButtons.SetActive (true);
+
+		// reduce the pitch of the background music, if it is set 
+		// if (_musicAudioSource)
+		// 	_musicAudioSource.pitch = 0.5f; // slow down the music
+
+		
+		// You  LOSE  the Game!
+					
+		// update gameState
+		_gameState = GameStates.Death;
+
+		// set the end game score
+		// Not necessary, the prefab already has a Good Text to show: _gameOverScoreDisplay.text = _mainScoreDisplay.text;
+
+		// switch which GUI is showing		
+		_mainCanvas.SetActive (false);
+		_gameOverCanvas.SetActive (true);
+		
+		// // reduce the pitch of the background music, if it is set 
+		// if (_backgroundMusicAudioSource != null)
+		// 	_backgroundMusicAudioSource.pitch = 0.5f; // slow down the music
+		
+	}// End EndGame
+	
+	
+	/// <summary>
+	/// When the Player Wins the Game...
+	/// </summary>
+	void BeatLevel()
+	{
+		// // game is over
+		// _gameIsOver = true;
+		//
+		// // repurpose the timer to display a message to the player
+		// _mainTimerDisplay.text = "LEVEL COMPLETE";
+		//
+		// // activate the gameOverScoreOutline gameObject, if it is set 
+		// if (_gameOverScoreOutline)
+		// 	_gameOverScoreOutline.SetActive (true);
+
+		// // activate the nextLevelButtons gameObject, if it is set 
+		// if (_nextLevelButtons)
+		// 	_nextLevelButtons.SetActive (true);
+		//
+		// // activate the restartGameButtons gameObject, if it is set
+		// if (this._restartGameButtons)
+		// 	this._restartGameButtons.SetActive (true);
+
+		// // reduce the pitch of the background music, if it is set 
+		// if (_musicAudioSource)
+		// 	_musicAudioSource.pitch = 0.5f; // slow down the music
+		
+		// You  WIN  the Game!
+					
+		// update gameState
+		_gameState = GameStates.BeatLevel;
+
+		// hide the player so game doesn't continue playing
+		_playerToTheLeft.SetActive(false);
+		_playerToTheRight.SetActive(false);
+
+		// set the end game score
+		// Not necessary, the prefab already has a Good Text to show: _beatLevelScoreDisplay.text = _mainScoreDisplay.text;
+
+		// switch which GUI is showing			
+		_mainCanvas.SetActive (false);
+		_beatLevelCanvas.SetActive (true);
+		
+	}// End BeatLevel
+
+	#endregion WIN vs. LOSE
+
+	
+	#region Load Scenes Logic
+
+	/// <summary>
+	/// Public function that can be called to restart the level
+	/// </summary>
+	public void PlayAgainLevel ()
+	{
+		// we are just loading a scene (or reloading this scene)
+		// which is an easy way to restart the level
+		///// Original (2017/10):   Application.LoadLevel (playAgainLevelToLoad);
+		//
+		// SceneManager.LoadScene( this._playAgainLevelToLoad );
+	}
+
+
+	/// <summary>
+	/// public function that can be called to restart the whole game
+	/// </summary>
+	public void RestartWholeGame ()
+	{
+		// we are just loading a scene (or reloading this scene)
+		// which is an easy way to restart the level
+		///// Original (2017/10):   Application.LoadLevel (restartGameLevelToLoad);
+		//
+		// SceneManager.LoadScene( this._restartGameLevelToLoad );
+	}
+
+
+	/// <summary>
+	/// Public function that can be called to go to the next level of the game
+	/// </summary>
+	public void NextLevel ()
+	{
+		// we are just loading the specified next level (scene)
+		///// Original (2017/10):  Application.LoadLevel (nextLevelToLoad);
+		//
+		// SceneManager.LoadScene( _nextLevelToLoad );
+	}
+	
+	#endregion Load Scenes Logic
+	
+	#region Sound Utils
+    
+	private void PlayTwoSoundsInAChainForGameOver()
+	{
+		// Example:
+		// audioSource.PlayOneShot(firstSFX);
+		// Invoke(nameof(PlaySecondSound), firstSFX.length);
+		
+		AudioSource.PlayClipAtPoint (_gameOverSFX1, _backgroundMusicAudioSource.transform.position);
+		//
+		// Second Sound:
+		//
+		Invoke(nameof(PlaySecondGameOverSound), _gameOverSFX1.length);
+	}
+
+	private void PlaySecondGameOverSound()
+	{
+		AudioSource.PlayClipAtPoint(_gameOverSFX2, _backgroundMusicAudioSource.transform.position);
+	}
+
+	#endregion Sound Utils
+
+	#region Collect Point to win the game
+
+	public void Collect(int amount)
+	{
+		_score += amount;
+
+		// Original version
+		// if (_canBeatLevel)
+		// {
+		// 	_mainScoreDisplay.text = _score.ToString () + " of "+_beatLevelScore.ToString ();
+		// }
+		// else
+		// {
+		// 	_mainScoreDisplay.text = _score.ToString ();
+		// }
+
+		// Custom Code Here:
+		//
+		if (_canBeatLevel)
+		{
+			// _mainScoreDisplay.text = _score.ToString () + " of "+_beatLevelScore.ToString ();
+		}
+		else
+		{
+			// _mainScoreDisplay.text = _score.ToString ();
+		}
+	}// End Collect
+
+	#endregion Collect Point to win the game
+	
+	#endregion My Custom Methods
 }
