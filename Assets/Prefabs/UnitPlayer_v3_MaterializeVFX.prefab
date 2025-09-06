@@ -1187,9 +1187,10 @@ GameObject:
   - component: {fileID: 7339887073124442092}
   - component: {fileID: -5272737476906986011}
   - component: {fileID: 1423555963}
+  - component: {fileID: 6624528793767539484}
   m_Layer: 7
   m_Name: UnitPlayer_v3_MaterializeVFX
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1229,8 +1230,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isEnemy: 0
   _shoulderHeightForUnitCharacter: 1.7
-  _ACTION_POINTS_PER_TURN_MAX: 9
-  _actionPoints: 9
+  _ACTION_POINTS_PER_TURN_MAX: 3
+  _actionPoints: 3
 --- !u!65 &1902843464558363180
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1473,7 +1474,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isActive: 0
   _myActionPointCost: 3
-  _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
+  _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 0
   _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 1
   _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
   _enemyAIActionDataList: []
@@ -1481,6 +1482,7 @@ MonoBehaviour:
   _grenadeProjectilePrefab: {fileID: 8218440726769553280, guid: 11308b3400d937f2fa4fb6ea5fac6968,
     type: 3}
   _maxThrowDistance: 4
+  _overrideGrenadeActionDamage: 44
 --- !u!114 &-5272737476906986011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1495,7 +1497,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isActive: 0
   _myActionPointCost: 1
-  _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 100
+  _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION: 77
   _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 1
   _myAIFinalActionPointCostValueForAnyEnemyAIToDecideOnThisAction: 0
   _enemyAIActionDataList: []
@@ -1521,7 +1523,23 @@ MonoBehaviour:
   _enemyAIActionDataList: []
   _validActionGridPositionList: []
   _grenadeProjectilePrefab: {fileID: 0}
-  _maxThrowDistance: 4
+  _maxInteractDistance: 1
+--- !u!54 &6624528793767539484
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6297334026975807288}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7156872604032505470
 GameObject:
   m_ObjectHideFlags: 0

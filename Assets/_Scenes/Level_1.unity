@@ -218,6 +218,68 @@ MonoBehaviour:
     m_FrequencyGain: 5
     m_Duration: 0.5
     m_NoiseOffsets: {x: 0, y: 0, z: 0}
+--- !u!1 &5290290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5290292}
+  - component: {fileID: 5290291}
+  - component: {fileID: 5290293}
+  m_Layer: 0
+  m_Name: FogOfWar_LevelTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &5290291
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5290290}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.1415176, y: 3.2634473, z: 4.506011}
+  m_Center: {x: 0.269248, y: -1.1317229, z: -1.7530055}
+--- !u!4 &5290292
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5290290}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 12.91, y: 2.49, z: 15.21}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 109
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5290293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5290290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db948b04a7e370e786891a995b9af68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fogOfWarGameObjectsList: []
+  _enemiesGameObjectsList:
+  - {fileID: 643030337}
+  - {fileID: 1273481358}
 --- !u!1 &5845309
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,6 +1062,11 @@ PrefabInstance:
       propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
@@ -1069,6 +1136,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -1183,6 +1255,11 @@ PrefabInstance:
       propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
@@ -1252,6 +1329,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -1916,7 +1998,7 @@ PrefabInstance:
     - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -1991,7 +2073,7 @@ PrefabInstance:
     - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -2614,26 +2696,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -5272737476906986011, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -5272737476906986011, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
-      value: 77
-      objectReference: {fileID: 0}
-    - target: {fileID: 3147743383319964240, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: _actionPoints
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3147743383319964240, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: _ACTION_POINTS_PER_TURN_MAX
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6297334026975807288, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
       propertyPath: m_Name
@@ -2692,26 +2754,6 @@ PrefabInstance:
     - target: {fileID: 6297334026975807289, guid: 64f54f1e16b4c9354bda312862ce3b4d,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7339887073124442092, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: _maxThrowDistance
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7339887073124442092, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: _myActionPointCost
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7339887073124442092, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7339887073124442092, guid: 64f54f1e16b4c9354bda312862ce3b4d,
-        type: 3}
-      propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2838,6 +2880,11 @@ PrefabInstance:
       propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
@@ -2907,6 +2954,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -4370,6 +4422,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0dae7c0d8e5141b11949e867259abcd5, type: 3}
+--- !u!1 &643030337 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+    type: 3}
+  m_PrefabInstance: {fileID: 407013854}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &674120425
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4920,7 +4978,7 @@ GameObject:
   m_Component:
   - component: {fileID: 889745127}
   m_Layer: 0
-  m_Name: //[ --- --- --- --- ] (1)
+  m_Name: //[ --- Fog Of War --- ]
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4971,7 +5029,7 @@ PrefabInstance:
     - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -5046,7 +5104,7 @@ PrefabInstance:
     - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -5090,6 +5148,11 @@ PrefabInstance:
     - target: {fileID: -9169983678712592549, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
@@ -5162,6 +5225,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _actionPoints
@@ -5216,7 +5284,7 @@ PrefabInstance:
     - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -5291,7 +5359,7 @@ PrefabInstance:
     - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -5852,7 +5920,7 @@ PrefabInstance:
     - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -5927,7 +5995,7 @@ PrefabInstance:
     - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -6002,7 +6070,7 @@ PrefabInstance:
     - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -6077,7 +6145,7 @@ PrefabInstance:
     - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -6120,7 +6188,38 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 109
+  m_RootOrder: 110
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1150245573
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1150245574}
+  m_Layer: 0
+  m_Name: //[ --- --- --- --- ] (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1150245574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150245573}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 111
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1160618139
 PrefabInstance:
@@ -6405,6 +6504,11 @@ PrefabInstance:
       propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
@@ -6474,6 +6578,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -6932,6 +7041,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8fb47c1a9e0f74f99650b2ee5b0d6c0, type: 3}
+--- !u!1 &1273481358 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1706555082}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1278207377
 GameObject:
   m_ObjectHideFlags: 0
@@ -8903,6 +9018,11 @@ PrefabInstance:
       propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
@@ -8972,6 +9092,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -9225,6 +9350,11 @@ PrefabInstance:
       propertyPath: _AI_DEFAULT_UNITARY_ACTION_POINT_COST_VALUE_FOR_ANY_ENEMY_AI_TO_DECIDE_ON_THIS_ACTION
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: _myAIMultiplierActionPointCostValueForAnyEnemyAIToDecideOnThisAction
@@ -9294,6 +9424,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitEnemy_v3_MaterializeVFX (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -10044,7 +10179,7 @@ PrefabInstance:
     - target: {fileID: 1226198229697934958, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1481963383934773314, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
@@ -10119,7 +10254,7 @@ PrefabInstance:
     - target: {fileID: 4076181659283702427, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5076699012655208884, guid: 9a6a85f651933fd4a950c65cc34ed67e,
         type: 3}
