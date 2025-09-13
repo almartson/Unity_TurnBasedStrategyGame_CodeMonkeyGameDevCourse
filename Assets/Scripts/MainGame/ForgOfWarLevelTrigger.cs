@@ -56,9 +56,8 @@ public class ForgOfWarLevelTrigger : MonoBehaviour
         if (other.gameObject.CompareTag(  _COLLIDER_TAG ) && (! _itWasTriggeredAlready))
         {
             
-            Debug.Log($"Triggered by the Player! with -> {other.gameObject}");
-            
-            
+            // Debug.Log($"Triggered by the Player! with -> {other.gameObject}");
+
             // 0- Mark that this Trigger is been used now:
             //
             _itWasTriggeredAlready = true;
