@@ -942,7 +942,6 @@ public class UnitActionSystem : MonoBehaviour
                 // Set the next available "Unit" / Character
                 //
                 SetSelectedUnit( friendlyUnitList[0] );
-
             }
             else
             {
