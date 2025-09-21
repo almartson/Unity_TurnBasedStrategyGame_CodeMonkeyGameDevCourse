@@ -12,6 +12,11 @@ public class GridSystemHex<TGridObject>
     #region Attributes
 
     /// <summary>
+    /// Constant Offset in the Vertical in a Hexagonal Grid System.
+    /// </summary>
+    private const float _HEX_VERTICAL_OFFSET_MULTIPLIER = 0.75f;
+    
+    /// <summary>
     /// Number of Cells (horizontally), (of the Game Board).
     /// </summary>
     private int _width;
@@ -95,10 +100,14 @@ public class GridSystemHex<TGridObject>
     /// </summary>
     /// <param name="x">Horizontal Coordinate</param>
     /// <param name="z">Vertical/Forward Coordinate</param>
+    /// <param name="gridPosition"></param>
     /// <returns></returns>
     public Vector3 GetWorldPosition(GridPosition gridPosition)
     {
-        return new Vector3(gridPosition.x, 0, gridPosition.z) * _cellSize;
+        return 
+            new Vector3(gridPosition.x, 0, 0) * _cellSize +
+            new Vector3(0, 0, gridPosition.z) * (_cellSize * _HEX_VERTICAL_OFFSET_MULTIPLIER) +
+               (((gridPosition.z % 2) == 1) ? new Vector3(1, 0, 0) * (_cellSize * .5f) : Vector3.zero);
     }
 
 
