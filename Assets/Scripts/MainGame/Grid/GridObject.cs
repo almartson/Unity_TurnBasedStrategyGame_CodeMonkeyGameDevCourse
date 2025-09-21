@@ -14,7 +14,7 @@ public class GridObject
 
     
     [Tooltip("System that created this Object. This System is the Game Board, with its Logic.")]
-    private GridSystem<GridObject> _gridSystem;
+    private GridSystemHex<GridObject> _gridSystemHex;
     
     [Tooltip("Mathematical (x, z) Position this Object belongs to...")]
     private GridPosition _gridPosition;
@@ -35,11 +35,11 @@ public class GridObject
     /// <summary>
     /// Main Constructor
     /// </summary>
-    /// <param name="gridSystem"></param>
+    /// <param name="gridSystemHex"></param>
     /// <param name="gridPosition"></param>
-    public GridObject(GridSystem<GridObject> gridSystem, GridPosition gridPosition)
+    public GridObject(GridSystemHex<GridObject> gridSystemHex, GridPosition gridPosition)
     {
-        _gridSystem = gridSystem;
+        _gridSystemHex = gridSystemHex;
         _gridPosition = gridPosition;
         _unitList = new List<Unit>();
     }

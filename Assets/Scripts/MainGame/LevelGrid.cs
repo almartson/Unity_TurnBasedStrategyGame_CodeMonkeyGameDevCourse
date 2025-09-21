@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ("GridSystem"'s) MANAGER that: <br />
-/// 1- Spawns the "GridSystem" (i.e.: the Game Board). <br />
-/// 2- Modifies the "GridObjects" (i.e.: Cells / Grids in the "Game Board") that are in the "GridSystem" based on "GridPositions". <br />
+/// ("GridSystemHex"'s) MANAGER that: <br />
+/// 1- Spawns the "GridSystemHex" (i.e.: the Game Board). <br />
+/// 2- Modifies the "GridObjects" (i.e.: Cells / Grids in the "Game Board") that are in the "GridSystemHex" based on "GridPositions". <br />
 /// 
 /// Reference: Check this project's UML Class Diagram. <br />
 /// </summary>
@@ -22,7 +22,7 @@ public class LevelGrid : MonoBehaviour
     public static LevelGrid Instance { get; private set; }
     
     
-    #region GridSystem, Game Board
+    #region GridSystemHex, Game Board
     
     [Tooltip("Number of Cells (in X-Coordinates, horizontally), (of the Game Board).")]
     [SerializeField]
@@ -44,14 +44,14 @@ public class LevelGrid : MonoBehaviour
     /// 
     /// Contains: GridObjects (the Logical Squares/Cells) + GridPositions (the Mathematical Positions and Data: (x, y, z))
     /// </summary>
-    private GridSystem<GridObject> _gridSystem;
+    private GridSystemHex<GridObject> _gridSystemHex;
     
     
     [Tooltip("For Debugging:  Visuals of Grid System, for Visual Debugging in the Unity Editor.")]
     [SerializeField]
     private Transform _gridDebugObjectPrefab;
 
-    #endregion GridSystem, Game Board
+    #endregion GridSystemHex, Game Board
 
 
     #region Delegates - CallBacks - Listeners
@@ -96,14 +96,14 @@ public class LevelGrid : MonoBehaviour
         
         // 2- Grid System Initialization
         //
-        _gridSystem = new GridSystem<GridObject>(_width, _height, _cellSize, 
-            (GridSystem<GridObject> g, GridPosition gridPosition ) => new GridObject(g, gridPosition) );
+        _gridSystemHex = new GridSystemHex<GridObject>(_width, _height, _cellSize, 
+            (GridSystemHex<GridObject> g, GridPosition gridPosition ) => new GridObject(g, gridPosition) );
         //
         // Create the GameObject that will hold a Visual Representation of the Grid System. Calling the Constructor:
         //
-        // Original Implementation:  _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+        // Original Implementation:  _gridSystemHex.CreateDebugObjects(_gridDebugObjectPrefab);
         //
-        //_gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+        //_gridSystemHex.CreateDebugObjects(_gridDebugObjectPrefab);
 
     }// End Awake
 
@@ -140,7 +140,7 @@ public class LevelGrid : MonoBehaviour
     /// <param name="unit"></param>
     public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit)
     {
-        GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+        GridObject gridObject = _gridSystemHex.GetGridObject(gridPosition);
         gridObject.AddUnit(unit);
     }
     
@@ -150,7 +150,7 @@ public class LevelGrid : MonoBehaviour
     /// <param name="gridPosition"></param>
     public List<Unit> GetListOfUnitsAtGridPosition(GridPosition gridPosition)
     {
-        GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+        GridObject gridObject = _gridSystemHex.GetGridObject(gridPosition);
         return gridObject.GetUnitList();
     }
 
@@ -160,7 +160,7 @@ public class LevelGrid : MonoBehaviour
     /// <param name="gridPosition"></param>
     public void RemoveUnitAtGridPosition(GridPosition gridPosition, Unit unit)
     {
-        GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+        GridObject gridObject = _gridSystemHex.GetGridObject(gridPosition);
         gridObject.RemoveUnit(unit); 
     }
 
@@ -191,13 +191,13 @@ public class LevelGrid : MonoBehaviour
     /// </summary>
     /// <param name="worldPosition"></param>
     /// <returns></returns>
-    public GridPosition GetGridPosition(Vector3 worldPosition) => _gridSystem.GetGridPosition(worldPosition);
+    public GridPosition GetGridPosition(Vector3 worldPosition) => _gridSystemHex.GetGridPosition(worldPosition);
     //
     // CodeMonkey TIPS:   This is the same as:
     //
     // public GridPosition GetGridPosition(Vector3 worldPosition)
     // {
-    //     return _gridSystem.GetGridPosition(worldPosition);
+    //     return _gridSystemHex.GetGridPosition(worldPosition);
     // }
 
     /// <summary>
@@ -205,19 +205,19 @@ public class LevelGrid : MonoBehaviour
     /// </summary>
     /// <param name="gridPosition"></param>
     /// <returns></returns>
-    public Vector3 GetWorldPosition(GridPosition gridPosition) => _gridSystem.GetWorldPosition(gridPosition);
+    public Vector3 GetWorldPosition(GridPosition gridPosition) => _gridSystemHex.GetWorldPosition(gridPosition);
 
     /// <summary>
-    /// Getter for the GridSystem's exposed Getter for: _width
+    /// Getter for the GridSystemHex's exposed Getter for: _width
     /// </summary>
     /// <returns></returns>
-    public int GetWidth() => _gridSystem.GetWidth();
+    public int GetWidth() => _gridSystemHex.GetWidth();
 
     /// <summary>
-    /// Getter for the GridSystem's exposed Getter for: _height
+    /// Getter for the GridSystemHex's exposed Getter for: _height
     /// </summary>
     /// <returns></returns>
-    public int GetHeight() => _gridSystem.GetHeight();
+    public int GetHeight() => _gridSystemHex.GetHeight();
     
     
     /// <summary>
@@ -225,7 +225,7 @@ public class LevelGrid : MonoBehaviour
     /// </summary>
     /// <param name="gridPosition">A test GridPosition struct, to check the validity of that (x, y=0, z) position.</param>
     /// <returns>True or False</returns>
-    public bool IsValidGridPosition(GridPosition gridPosition) => _gridSystem.IsValidGridPosition(gridPosition);
+    public bool IsValidGridPosition(GridPosition gridPosition) => _gridSystemHex.IsValidGridPosition(gridPosition);
     
     
     /// <summary>
@@ -238,7 +238,7 @@ public class LevelGrid : MonoBehaviour
     { 
         // Get a GridObject:
         //
-        GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+        GridObject gridObject = _gridSystemHex.GetGridObject(gridPosition);
         //
         // Check whether it is occupied..:
         //
@@ -255,7 +255,7 @@ public class LevelGrid : MonoBehaviour
     { 
         // Get a GridObject:
         //
-        GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+        GridObject gridObject = _gridSystemHex.GetGridObject(gridPosition);
         //
         // Check whether it is occupied..:
         //
@@ -274,7 +274,7 @@ public class LevelGrid : MonoBehaviour
     { 
         // Get a GridObject:
         //
-        GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+        GridObject gridObject = _gridSystemHex.GetGridObject(gridPosition);
         //
         // Check whether it is occupied..:
         //
@@ -291,7 +291,7 @@ public class LevelGrid : MonoBehaviour
     { 
         // Get a GridObject
         //
-        GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+        GridObject gridObject = _gridSystemHex.GetGridObject(gridPosition);
         //
         // Set the Interactable GameObject, at that GridPosition..:
         //

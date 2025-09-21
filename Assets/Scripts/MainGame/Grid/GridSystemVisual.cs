@@ -155,7 +155,7 @@ public class GridSystemVisual : MonoBehaviour
         GameObject parentCell = new GameObject("GridCell_VisualOutlineCuesFor_AvailableToMoveIn");
         
         
-        // Cycle through the Rows & Columns of the GridSystem (i.e.: Board)
+        // Cycle through the Rows & Columns of the GridSystemHex (i.e.: Board)
         // Columns... limited by the _height
         //
         for (int x = 0; x < LevelGrid.Instance.GetWidth(); x++)
@@ -202,6 +202,19 @@ public class GridSystemVisual : MonoBehaviour
         // Rendering the available positions, the Game Board, to move in to, in the next Turn. 
         //
         UpdateGridVisual();
+        
+        // Cycle through the whole Grid, and Show every GridPosition:
+        //
+        for (int x = 0; x < LevelGrid.Instance.GetWidth(); x++)
+        {
+            for (int z = 0; z < LevelGrid.Instance.GetHeight(); z++)
+            {
+                // Show (And Set the Material of...) the selected items (i.e.: GridPositions) passed as Input: so they are VISIBLE, (in the Scene :)
+                //
+                _gridSystemVisualSingleArray[x, z].ShowAndSetMaterial(GetGridVisualTypeMaterial(GridVisualColorType.White));
+            }
+            
+        }//End for (int x = 0...
         
     }// End Start
 
@@ -300,7 +313,7 @@ public class GridSystemVisual : MonoBehaviour
     /// </summary>
     public void HideAllGridPositions()
     {
-        // Cycle through the Rows & Columns of the GridSystem (i.e.: Board).
+        // Cycle through the Rows & Columns of the GridSystemHex (i.e.: Board).
         // Columns... limited by the _height
         //
         for (int x = 0; x < LevelGrid.Instance.GetWidth(); x++)
@@ -328,7 +341,7 @@ public class GridSystemVisual : MonoBehaviour
         //
         List<GridPosition> gridPositionList = new List<GridPosition>();
         
-        // Cycle through the Rows & Columns of the GridSystem (i.e.: Board).
+        // Cycle through the Rows & Columns of the GridSystemHex (i.e.: Board).
         // Columns... limited by the 'range' INPUT.
         //
         for (int x = -range; x <= range; x++)

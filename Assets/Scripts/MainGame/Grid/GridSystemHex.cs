@@ -7,7 +7,7 @@ using UnityEngine;
 /// 
 /// Reference: Check this project's UML Class Diagram. <br />
 /// </summary>
-public class GridSystem<TGridObject>
+public class GridSystemHex<TGridObject>
 {
     #region Attributes
 
@@ -48,7 +48,7 @@ public class GridSystem<TGridObject>
     /// <param name="height"></param>
     /// <param name="cellSize"></param>
     /// <param name="createGridObject">Delegate, that works as a Constructor to create the Array of 'GridObject's  (in its GENERIC FORM: "TGridObject"s)</param>
-    public GridSystem(int width, int height, float cellSize, /* We Pass a Delegate Here, to work as a Constructor for the "TGridObject's" Object: */ Func<GridSystem<TGridObject>, GridPosition, /* Return TYPE: */ TGridObject > createGridObject )
+    public GridSystemHex(int width, int height, float cellSize, /* We Pass a Delegate Here, to work as a Constructor for the "TGridObject's" Object: */ Func<GridSystemHex<TGridObject>, GridPosition, /* Return TYPE: */ TGridObject > createGridObject )
     {
         _width = width;
         _height = height;
@@ -73,7 +73,7 @@ public class GridSystem<TGridObject>
                 //
                 GridPosition gridPosition = new GridPosition(x, z);
                 //
-                // Create the TGridObject (which will be in every cell/grid of the GridSystem)
+                // Create the TGridObject (which will be in every cell/grid of the GridSystemHex)
                 //
                 // Old Implementation, without C# Generics, before implementing  "Pathfinding":   _gridObjectArray[x, z] = new TGridObject(this, gridPosition);
                 //
@@ -188,7 +188,7 @@ public class GridSystem<TGridObject>
     }
 
     /// <summary>
-    /// Gets the Board's (i.e.: Grid Objects of the GridSystem): Width.
+    /// Gets the Board's (i.e.: Grid Objects of the GridSystemHex): Width.
     /// </summary>
     /// <returns></returns>
     public int GetWidth()
@@ -197,7 +197,7 @@ public class GridSystem<TGridObject>
     }
     
     /// <summary>
-    /// Gets the Board's (i.e.: Grid Objects of the GridSystem): Height.
+    /// Gets the Board's (i.e.: Grid Objects of the GridSystemHex): Height.
     /// </summary>
     /// <returns></returns>
     public int GetHeight()
@@ -209,7 +209,7 @@ public class GridSystem<TGridObject>
     #region Validation of Movement towards any GridPositions
     
     /// <summary>
-    /// Validates a GridPosition. Criteria: it should not be outside (off-limits) of the GridSystem itself. We do not allow negative numbers for any coordinate, for example:<code>(x, y, z) = (-1, 0, -1)</code>
+    /// Validates a GridPosition. Criteria: it should not be outside (off-limits) of the GridSystemHex itself. We do not allow negative numbers for any coordinate, for example:<code>(x, y, z) = (-1, 0, -1)</code>
     /// </summary>
     /// <returns>TRUE or FALSE, depending on whether the GridPosition is VALID or not (could be off-limits... outside the Grid System).</returns>
     public bool IsValidGridPosition(GridPosition gridPosition)

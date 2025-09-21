@@ -8,8 +8,8 @@ using UnityEngine;
 
 /// <summary>
 /// ("Pathfinding A.I. System") MANAGER that, being similar to "LevelGrid.cs": <br />
-/// 1- Spawns the "Pathfinding GridSystem" (i.e.: the Game Board, for Pathfinding). <br />
-/// 2- Modifies the "PathNodes" (i.e.: very similar to: "GridObjects") (i.e.: Cells / Grids in the "Game Board") that are in the "GridSystem" based on "GridPositions". <br />
+/// 1- Spawns the "Pathfinding GridSystemHex" (i.e.: the Game Board, for Pathfinding). <br />
+/// 2- Modifies the "PathNodes" (i.e.: very similar to: "GridObjects") (i.e.: Cells / Grids in the "Game Board") that are in the "GridSystemHex" based on "GridPositions". <br />
 /// 
 /// Reference: Check this project's UML Class Diagram. <br />
 /// </summary>
@@ -69,7 +69,7 @@ public class Pathfinding : MonoBehaviour
     #endregion COST Constants, for Computing G, H, F
     
 
-    #region GridSystem, Game Board
+    #region GridSystemHex, Game Board
 
     /// <summary>
     /// The System of:  NODES (Pathfinding), the Grid Cells, the 'GAME BOARD' itself. <br /> <br />
@@ -78,7 +78,7 @@ public class Pathfinding : MonoBehaviour
     /// 
     /// Contains: Path Nodes (the Logical Squares/Cells) that contain inside: "GridPositions" (Structs: the Mathematical Positions and Data: (x, y, z)).
     /// </summary>
-    private GridSystem<PathNode> _gridSystem;
+    private GridSystemHex<PathNode> _gridSystemHex;
     
     
     [Tooltip("Visuals of Grid System, for Visual Debugging in the Unity Editor")]
@@ -101,7 +101,7 @@ public class Pathfinding : MonoBehaviour
     /// </summary>
     private float _cellSize;
 
-    #endregion GridSystem, Game Board
+    #endregion GridSystemHex, Game Board
     
     
     #region Obstacles for Pathfinding
@@ -216,11 +216,11 @@ public class Pathfinding : MonoBehaviour
         _cellSize = cellSize;
 
 
-        // 1- Create the "GridSystem",  for (A.I.) A* Pathfinding:
+        // 1- Create the "GridSystemHex",  for (A.I.) A* Pathfinding:
         // ...with  "Path Nodes"
         //
-        _gridSystem = new GridSystem<PathNode>(_width, _height, _cellSize,
-            (GridSystem<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition));
+        _gridSystemHex = new GridSystemHex<PathNode>(_width, _height, _cellSize,
+            (GridSystemHex<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition));
 
 
         // 3- (Debugging Purposes :) Create the GameObject that will hold a Visual Representation of the Grid System: for  'A* Pathfinding'. Calling the Constructor:
@@ -229,7 +229,7 @@ public class Pathfinding : MonoBehaviour
         {
             // Create a system of 'Pathfinding Grid Debug Objects' over the GridObjects' Board.
             //
-            _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+            _gridSystemHex.CreateDebugObjects(_gridDebugObjectPrefab);
         }
 
         
@@ -336,11 +336,11 @@ public class Pathfinding : MonoBehaviour
         // NODES
         // Initial / Start NODE:
         //
-        PathNode startNode = _gridSystem.GetGridObject(startGridPosition);
+        PathNode startNode = _gridSystemHex.GetGridObject(startGridPosition);
         //
         // End NODE:
         //
-        PathNode endNode = _gridSystem.GetGridObject(endGridPosition);
+        PathNode endNode = _gridSystemHex.GetGridObject(endGridPosition);
         //
         // Add the "Start Node" to the List:
         //
@@ -351,8 +351,8 @@ public class Pathfinding : MonoBehaviour
         //..in all the PathNode(s)  (GridPositions)
         // Lists Lenght
         //
-        int gridSystemWidth = _gridSystem.GetWidth();
-        int gridSystemHeight = _gridSystem.GetHeight();
+        int gridSystemWidth = _gridSystemHex.GetWidth();
+        int gridSystemHeight = _gridSystemHex.GetHeight();
         //
         // Cycle - Loop through every 'GridPosition'
         // Horizontal Values
@@ -370,7 +370,7 @@ public class Pathfinding : MonoBehaviour
                 //
                 // CURRENT   PathNode
                 //
-                PathNode pathNode = _gridSystem.GetGridObject(gridPosition);
+                PathNode pathNode = _gridSystemHex.GetGridObject(gridPosition);
 
                 
                 #region Initialize  (G, H, F)  Costs
@@ -611,11 +611,11 @@ public class Pathfinding : MonoBehaviour
         // NODES
         // Initial / Start NODE:
         //
-        PathNode startNode = _gridSystem.GetGridObject(startGridPosition);
+        PathNode startNode = _gridSystemHex.GetGridObject(startGridPosition);
         //
         // End NODE:
         //
-        PathNode endNode = _gridSystem.GetGridObject(endGridPosition);
+        PathNode endNode = _gridSystemHex.GetGridObject(endGridPosition);
         //
         // Add the "Start Node" to the List:
         //
@@ -626,8 +626,8 @@ public class Pathfinding : MonoBehaviour
         //..in all the PathNode(s)  (GridPositions)
         // Lists Lenght
         //
-        int gridSystemWidth = _gridSystem.GetWidth();
-        int gridSystemHeight = _gridSystem.GetHeight();
+        int gridSystemWidth = _gridSystemHex.GetWidth();
+        int gridSystemHeight = _gridSystemHex.GetHeight();
         //
         // Cycle - Loop through every 'GridPosition'
         // Horizontal Values
@@ -645,7 +645,7 @@ public class Pathfinding : MonoBehaviour
                 //
                 // CURRENT   PathNode
                 //
-                PathNode pathNode = _gridSystem.GetGridObject(gridPosition);
+                PathNode pathNode = _gridSystemHex.GetGridObject(gridPosition);
 
                 
                 #region Initialize  (G, H, F)  Costs
@@ -1132,7 +1132,7 @@ public class Pathfinding : MonoBehaviour
             
             // Validate the new  'neighbourPosition'
             //
-            if (_gridSystem.IsValidGridPosition(neighbourPosition))
+            if (_gridSystemHex.IsValidGridPosition(neighbourPosition))
             {
                 neighbourList.Add(GetNode(neighbourPosition));
             }
@@ -1149,27 +1149,27 @@ public class Pathfinding : MonoBehaviour
 
 
     /// <summary>
-    /// Gets a PathNode, <br /> ...given a 'GridPosition' (i.e.: Grid created with: (x, y=0, z) Position) on the Map, - Game Board, GridSystem, LevelGrid - 
+    /// Gets a PathNode, <br /> ...given a 'GridPosition' (i.e.: Grid created with: (x, y=0, z) Position) on the Map, - Game Board, GridSystemHex, LevelGrid - 
     /// </summary>
     /// <returns></returns>
     private PathNode GetNode(GridPosition gridPosition)
     {
         // Get the Node (PathNode from:  gridPosition(x, z) )
         //
-        return _gridSystem.GetGridObject(gridPosition);
+        return _gridSystemHex.GetGridObject(gridPosition);
 
     }// End GetNode
     
     
     /// <summary>
-    /// Gets a PathNode, <br /> ...given a (x, z) (i.e.: (x, y=0, z) Position) on the Map, - Game Board, GridSystem, LevelGrid - 
+    /// Gets a PathNode, <br /> ...given a (x, z) (i.e.: (x, y=0, z) Position) on the Map, - Game Board, GridSystemHex, LevelGrid - 
     /// </summary>
     /// <returns></returns>
     private PathNode GetNode(int x, int z)
     {
         // Get the Node (PathNode from:  (x, z) )
         //
-        return _gridSystem.GetGridObject(new GridPosition(x, z));
+        return _gridSystemHex.GetGridObject(new GridPosition(x, z));
 
     }// End GetNode
     
@@ -1270,7 +1270,7 @@ public class Pathfinding : MonoBehaviour
     {
         // Set the '_isWalkable' Boolean Flag  of the 'PathNode' related to the Input: gridPosition
         //
-        _gridSystem.GetGridObject(gridPosition).SetIsWalkable(isWalkable);
+        _gridSystemHex.GetGridObject(gridPosition).SetIsWalkable(isWalkable);
 
     }// End SetIsWalkableGridPosition
     
@@ -1285,7 +1285,7 @@ public class Pathfinding : MonoBehaviour
     {
         // Get the '_isWalkable' Boolean Flag  of the 'PathNode' related to the Input: gridPosition
         //
-        return _gridSystem.GetGridObject(gridPosition).IsWalkable();
+        return _gridSystemHex.GetGridObject(gridPosition).IsWalkable();
 
     }// End IsWalkableGridPosition
     
