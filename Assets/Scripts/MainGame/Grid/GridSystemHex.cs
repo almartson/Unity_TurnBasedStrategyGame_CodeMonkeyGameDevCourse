@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -119,11 +120,48 @@ public class GridSystemHex<TGridObject>
     /// <returns></returns>
     public GridPosition GetGridPosition(Vector3 worldPosition)
     {
-        return new GridPosition(
+        GridPosition roughXZ = new GridPosition(
             Mathf.RoundToInt(worldPosition.x / _cellSize),
-            Mathf.RoundToInt(worldPosition.z / _cellSize)
+            Mathf.RoundToInt(worldPosition.z / _cellSize / _HEX_VERTICAL_OFFSET_MULTIPLIER)
         );
-    }
+        
+        // Get a List of all neighbours of the 'roughXZ'...
+        //..then measure the Distance to get the smallest..
+        //..(which will be the correct GridPosition under which the Mouse Pointer is)
+        // First let's define ODD ROWS (in the Vertical Axis, Z), which have a different neighbour
+        //
+        bool oddRow = roughXZ.z % 2 == 1;
+        
+        // List
+        //
+        List<GridPosition> neighbourGridPositionList = new List<GridPosition>()
+        {
+            roughXZ + new GridPosition(-1, 0),
+            roughXZ + new GridPosition(+1, 0),
+            
+            roughXZ + new GridPosition(0, +1),
+            roughXZ + new GridPosition(0, -1),
+            
+            roughXZ + new GridPosition(oddRow ? +1 : -1 , +1),
+            roughXZ + new GridPosition(oddRow ? +1 : -1 , -1),
+        };
+
+        GridPosition closestGridPosition = roughXZ;
+
+        foreach (GridPosition neighbourGridPosition in neighbourGridPositionList)
+        {
+            if (Vector3.Distance(worldPosition, GetWorldPosition(neighbourGridPosition)) <
+                Vector3.Distance(worldPosition, GetWorldPosition(closestGridPosition)))
+            {
+                // It's CLOSER than the closets GridPosition:
+                //
+                closestGridPosition = neighbourGridPosition;
+            }
+        }//End foreach
+
+        return closestGridPosition;
+
+    }// End GetGridPosition
     
     
     /// <summary>

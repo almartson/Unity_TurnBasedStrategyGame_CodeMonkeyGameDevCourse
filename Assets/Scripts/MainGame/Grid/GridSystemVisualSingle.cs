@@ -12,6 +12,10 @@ public class GridSystemVisualSingle : MonoBehaviour
     [SerializeField]
     private MeshRenderer _meshRenderer;
 
+    [Tooltip("[Selected GameObject] \n GameObject that's been visually selected on the Hexagonal Grid System.")]
+    [SerializeField]
+    private GameObject _selectedGameObject;
+
 
     #endregion Attributes
 
@@ -70,6 +74,20 @@ public class GridSystemVisualSingle : MonoBehaviour
         }
     }
 
+    #region Temp to Delete - Debug Purposes
+    
+    public void ShowSelected()
+    {
+        _selectedGameObject.SetActive(true);
+    }
+    
+    public void HideSelected()
+    {
+        _selectedGameObject.SetActive(false);
+    }
+
+    #endregion Temp to Delete - Debug Purposes
+    
     #endregion My Custom Methods
 
 }
