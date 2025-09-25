@@ -91,14 +91,6 @@ public class GridSystemVisual : MonoBehaviour
     
     #endregion Colors: Grid Cells
     
-    #region Temp - Debug Purposes only
-    // Temp - Debug Purposes only
-
-    private GridSystemVisualSingle _lastSelectedGridSystemVisualSingle;
-
-    #endregion Temp - Debug Purposes only
-
-    
     #endregion Attributes
 
 
@@ -210,62 +202,8 @@ public class GridSystemVisual : MonoBehaviour
         //
         UpdateGridVisual();
         
-        // Cycle through the whole Grid, and Show every GridPosition:
-        //
-        for (int x = 0; x < LevelGrid.Instance.GetWidth(); x++)
-        {
-            for (int z = 0; z < LevelGrid.Instance.GetHeight(); z++)
-            {
-                // Show (And Set the Material of...) the selected items (i.e.: GridPositions) passed as Input: so they are VISIBLE, (in the Scene :)
-                //
-                _gridSystemVisualSingleArray[x, z].ShowAndSetMaterial(GetGridVisualTypeMaterial(GridVisualColorType.White));
-            }
-            
-        }//End for (int x = 0...
         
     }// End Start
-
-    #region Temp - Debug Purposes
-    
-    /// <summary>
-    /// Update is called once per frame
-    /// </summary>
-    private void Update()
-    {
-        // Hide the last visual cue (Hex Grid Cell)
-        //
-        if (_lastSelectedGridSystemVisualSingle != null)
-        {
-            _lastSelectedGridSystemVisualSingle.HideSelected();
-        }
-        
-        // Get the Mouse World Coordinates on the screen:
-        //
-        Vector3 mouseWorldPosition = MouseWorld.GetPosition();
-        
-        // Convert the Mouse Coordinates to 'Grid Position' coordinates
-        //
-        GridPosition gridPosition = LevelGrid.Instance.GetGridPosition(mouseWorldPosition);
-
-        // Validate every GridPosition, if it is valid:
-        //
-        if (LevelGrid.Instance.IsValidGridPosition(gridPosition))
-        {
-            // Prepare (mathematically) the visual cue of the 'Hex Grid Cell'
-            //
-            _lastSelectedGridSystemVisualSingle = _gridSystemVisualSingleArray[gridPosition.x, gridPosition.z];
-        }
-
-        // Show the visual cue of the 'Hex Grid Cell'
-        //
-        if (_lastSelectedGridSystemVisualSingle != null)
-        {
-            _lastSelectedGridSystemVisualSingle.ShowSelected();
-        }
-
-    }// End Update
-
-    #endregion Temp - Debug Purposes
 
     
     #endregion Unity Methods
