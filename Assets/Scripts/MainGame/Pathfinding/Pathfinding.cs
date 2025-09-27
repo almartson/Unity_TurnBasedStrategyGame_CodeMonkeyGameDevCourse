@@ -60,12 +60,6 @@ public class Pathfinding : MonoBehaviour
     /// </summary>
     private const int _MOVE_STRAIGHT_COST = 10;
 
-    /// <summary>
-    /// (G, H, F) Cost of Walking from a NODE to -> the NEXT in a DIAGONAL Path, in a <br /> <br />
-    /// 'Diagonal' Line  (JUST Diagonals... NOT Horizontals NOR Vertical lines).
-    /// </summary>
-    private const int _MOVE_DIAGONAL_COST = 14;
-    
     #endregion COST Constants, for Computing G, H, F
     
 
@@ -427,7 +421,7 @@ public class Pathfinding : MonoBehaviour
         // * Let's assume it to be: the RAW linear-SHORTEST DISTANCE (in Squares / GridPositions)
         // CURRENT Node -> to -> END Node):    DISTANCE between 2 points
         //
-        startNode.SetHCost(CalculateDistance(startGridPosition, endGridPosition));
+        startNode.SetHCost(CalculateHeuristicDistance(startGridPosition, endGridPosition));
 
         // F Cost   ->   Infinite   (H Distance(ThisNode, EndNode) + 0)
         //
@@ -527,8 +521,7 @@ public class Pathfinding : MonoBehaviour
                 
                 // 4.2- Calculate the G, H, F COSTS of the NEIGHBOUR NODE:
                 //
-                int tentativeGCostOfNeighbour = currentNode.GetGCost() +
-                                                CalculateDistance(currentNode.GetGridPosition(), neighbourNode.GetGridPosition()); 
+                int tentativeGCostOfNeighbour = currentNode.GetGCost() + _MOVE_STRAIGHT_COST;
                 
 
                 // Based on "the smallest"   G COST  as Criteria:
@@ -547,7 +540,7 @@ public class Pathfinding : MonoBehaviour
                     //
                     // Set H Cost
                     //
-                    neighbourNode.SetHCost( CalculateDistance(neighbourNode.GetGridPosition(), endGridPosition) );
+                    neighbourNode.SetHCost( CalculateHeuristicDistance(neighbourNode.GetGridPosition(), endGridPosition) );
                     //
                     // Calculate F Cost
                     //
@@ -702,7 +695,7 @@ public class Pathfinding : MonoBehaviour
         // * Let's assume it to be: the RAW linear-SHORTEST DISTANCE (in Squares / GridPositions)
         // CURRENT Node -> to -> END Node):    DISTANCE between 2 points
         //
-        startNode.SetHCost(CalculateDistance(startGridPosition, endGridPosition));
+        startNode.SetHCost(CalculateHeuristicDistance(startGridPosition, endGridPosition));
 
         // F Cost   ->   Infinite   (H Distance(ThisNode, EndNode) + 0)
         //
@@ -794,13 +787,13 @@ public class Pathfinding : MonoBehaviour
                 // 4.2- Calculate the G, H, F COSTS of the NEIGHBOUR NODE:
                 //
                 int tentativeGCostOfNeighbour = currentNode.GetGCost() +
-                                                CalculateDistance(currentNode.GetGridPosition(), neighbourNode.GetGridPosition()); 
+                                                CalculateHeuristicDistance(currentNode.GetGridPosition(), neighbourNode.GetGridPosition()); 
                 
                 #region Using F Cost as Criterion - Remove
 
                 // H Cost   (Tentative)
                 //
-                int tentativeHCostOfNeighbour = CalculateDistance(neighbourNode.GetGridPosition(), endGridPosition);
+                int tentativeHCostOfNeighbour = CalculateHeuristicDistance(neighbourNode.GetGridPosition(), endGridPosition);
                 //
                 // F Cost   (Tentative)
                 //
@@ -830,7 +823,7 @@ public class Pathfinding : MonoBehaviour
                         //
                         // Set H Cost
                         //
-                        neighbourNode.SetHCost( CalculateDistance(neighbourNode.GetGridPosition(), endGridPosition) );
+                        neighbourNode.SetHCost( CalculateHeuristicDistance(neighbourNode.GetGridPosition(), endGridPosition) );
                         //
                         // Calculate F Cost
                         //
@@ -863,7 +856,7 @@ public class Pathfinding : MonoBehaviour
                         //
                         // Set H Cost
                         //
-                        neighbourNode.SetHCost( CalculateDistance(neighbourNode.GetGridPosition(), endGridPosition) );
+                        neighbourNode.SetHCost( CalculateHeuristicDistance(neighbourNode.GetGridPosition(), endGridPosition) );
                         //
                         // Calculate F Cost
                         //
@@ -1094,50 +1087,71 @@ public class Pathfinding : MonoBehaviour
         #region Check ALL POSSIBLE NEIGHBOURS - Accessable locations of the Game Board
         
         // Todo:  Create Here access to STAIRS - STAIRWAY, to other LEVELS, and some other kind of Access to PORTALS, and ANY WALKABLE location of the Map in the 'Game Board' (i.e.: Level Grid and Grid System).
-        // We Create here all possible Movements, based on the connections / Linkds THIS CURRENT NODE may have to any other part of MAP, such as: Portals, Stairways to other Levels (heights above, below, etc), etc.  (i.e.: Level Grid and Grid System):
+        // We Create here all possible Movements, based on the connections / Links THIS CURRENT NODE may have to any other part of MAP, such as: Portals, Stairways to other Levels (heights above, below, etc), etc.  (i.e.: Level Grid and Grid System):
+        // Straight neighbours (UP, DOWN, RIGHT, LEFT)
         //
-        List<GridPosition> neighbourPositionList = new List<GridPosition>()
+        if (gridPosition.x - 1 >= 0)
         {
-            // gridPosition + new GridPosition( 0,  1), // N
-            // gridPosition + new GridPosition( 1,  1), // NE
-            // gridPosition + new GridPosition( 1,  0), // E
-            // gridPosition + new GridPosition( 1, -1), // SE
-            // gridPosition + new GridPosition( 0, -1), // S
-            // gridPosition + new GridPosition(-1, -1), // SW
-            // gridPosition + new GridPosition(-1,  0), // W
-            // gridPosition + new GridPosition(-1,  1), // NW
-            //
-            gridPosition + _A_FORWARDS_GRID_POSITION, // N
-            gridPosition + _A_FORWARDS_GRID_POSITION + _A_RIGHTWARDS_GRID_POSITION, // NE
-            gridPosition + _A_RIGHTWARDS_GRID_POSITION, // E
-            gridPosition + _A_BACKWARDS_GRID_POSITION + _A_RIGHTWARDS_GRID_POSITION, // SE
-            gridPosition + _A_BACKWARDS_GRID_POSITION, // S
-            gridPosition + _A_BACKWARDS_GRID_POSITION + _A_LEFTWARDS_GRID_POSITION, // SW
-            gridPosition + _A_LEFTWARDS_GRID_POSITION, // W
-            gridPosition + _A_FORWARDS_GRID_POSITION + _A_LEFTWARDS_GRID_POSITION, // NW
-        };
+            // Left
+            neighbourList.Add(GetNode(gridPosition.x - 1,gridPosition.z + 0));
+        }
+        
+        if (gridPosition.x + 1 < _gridSystemHex.GetWidth() )
+        {
+            // Right
+            neighbourList.Add(GetNode(gridPosition.x + 1,gridPosition.z + 0));
+        }
+        
+        if (gridPosition.z - 1 >= 0 )
+        {
+            // Down
+            neighbourList.Add(GetNode(gridPosition.x + 0,gridPosition.z - 1));
+        }
+        
+        if (gridPosition.z + 1 < _gridSystemHex.GetHeight())
+        {
+            // Up
+            neighbourList.Add(GetNode(gridPosition.x + 0,gridPosition.z + 1));
+        }
 
-        // Validate the new GridPosition(s):
+        // DIAGONAL neighbours
         //
-        int neighbourPositionListCount = neighbourPositionList.Count;
-        //
-        // Non-Performant version:   foreach (GridPosition neighbourPosition in neighbourPositionList)
-        // Performant (For) version:
-        //
-        for (int i = 0; i < neighbourPositionListCount; i++ ) 
+        bool oddRow = gridPosition.z % 2 == 1;
+
+        if (oddRow)
         {
-            // Initialize an Item of the List:
+            // Odd Rows, in the vertical
             //
-            GridPosition neighbourPosition = neighbourPositionList[i];
-            
-            // Validate the new  'neighbourPosition'
-            //
-            if (_gridSystemHex.IsValidGridPosition(neighbourPosition))
+            if (gridPosition.x + 1 < _gridSystemHex.GetWidth())
             {
-                neighbourList.Add(GetNode(neighbourPosition));
+                if (gridPosition.z - 1 >= 0)
+                {
+                    neighbourList.Add(GetNode(gridPosition.x + 1, gridPosition.z - 1));
+                }
+
+                if (gridPosition.z + 1 < _gridSystemHex.GetHeight())
+                {
+                    neighbourList.Add(GetNode(gridPosition.x + 1, gridPosition.z + 1));
+                }
             }
-            
-        }//End for (int i = 0;...
+        }
+        else
+        {
+            // Even Rows, in the vertical.
+            //
+            if (gridPosition.x - 1 >= 0)
+            {
+                if (gridPosition.z - 1 >= 0)
+                {
+                    neighbourList.Add(GetNode(gridPosition.x - 1, gridPosition.z - 1));
+                }
+
+                if (gridPosition.z + 1 < _gridSystemHex.GetHeight())
+                {
+                    neighbourList.Add(GetNode(gridPosition.x - 1, gridPosition.z + 1));
+                }
+            }
+        }//End else
         
         #endregion Check ALL POSSIBLE NEIGHBOURS - Accessable locations of the Game Board
         
@@ -1146,6 +1160,80 @@ public class Pathfinding : MonoBehaviour
         return neighbourList;
 
     }// End GetNeighbourList
+
+
+    #region Square Grid System's code 
+        
+    // // This code worked with a Square (cell's) Grid System
+    // private List<PathNode> GetNeighbourList(PathNode currentNode)
+    // {
+    //     
+    //     // Initialize the List to return:
+    //     //
+    //     List<PathNode> neighbourList = new List<PathNode>();
+    //
+    //     // Get GridPosition  associated with that current Node:
+    //     //
+    //     GridPosition gridPosition = currentNode.GetGridPosition();
+    //     
+    //     
+    //     #region Check ALL POSSIBLE NEIGHBOURS - Accessable locations of the Game Board
+    //     
+    //     // Todo:  Create Here access to STAIRS - STAIRWAY, to other LEVELS, and some other kind of Access to PORTALS, and ANY WALKABLE location of the Map in the 'Game Board' (i.e.: Level Grid and Grid System).
+    //     // We Create here all possible Movements, based on the connections / Linkds THIS CURRENT NODE may have to any other part of MAP, such as: Portals, Stairways to other Levels (heights above, below, etc), etc.  (i.e.: Level Grid and Grid System):
+    //     //
+    //     List<GridPosition> neighbourPositionList = new List<GridPosition>()
+    //     {
+    //         // gridPosition + new GridPosition( 0,  1), // N
+    //         // gridPosition + new GridPosition( 1,  1), // NE
+    //         // gridPosition + new GridPosition( 1,  0), // E
+    //         // gridPosition + new GridPosition( 1, -1), // SE
+    //         // gridPosition + new GridPosition( 0, -1), // S
+    //         // gridPosition + new GridPosition(-1, -1), // SW
+    //         // gridPosition + new GridPosition(-1,  0), // W
+    //         // gridPosition + new GridPosition(-1,  1), // NW
+    //         //
+    //         gridPosition + _A_FORWARDS_GRID_POSITION, // N
+    //         gridPosition + _A_FORWARDS_GRID_POSITION + _A_RIGHTWARDS_GRID_POSITION, // NE
+    //         gridPosition + _A_RIGHTWARDS_GRID_POSITION, // E
+    //         gridPosition + _A_BACKWARDS_GRID_POSITION + _A_RIGHTWARDS_GRID_POSITION, // SE
+    //         gridPosition + _A_BACKWARDS_GRID_POSITION, // S
+    //         gridPosition + _A_BACKWARDS_GRID_POSITION + _A_LEFTWARDS_GRID_POSITION, // SW
+    //         gridPosition + _A_LEFTWARDS_GRID_POSITION, // W
+    //         gridPosition + _A_FORWARDS_GRID_POSITION + _A_LEFTWARDS_GRID_POSITION, // NW
+    //     };
+    //
+    //     // Validate the new GridPosition(s):
+    //     //
+    //     int neighbourPositionListCount = neighbourPositionList.Count;
+    //     //
+    //     // Non-Performant version:   foreach (GridPosition neighbourPosition in neighbourPositionList)
+    //     // Performant (For) version:
+    //     //
+    //     for (int i = 0; i < neighbourPositionListCount; i++ ) 
+    //     {
+    //         // Initialize an Item of the List:
+    //         //
+    //         GridPosition neighbourPosition = neighbourPositionList[i];
+    //         
+    //         // Validate the new  'neighbourPosition'
+    //         //
+    //         if (_gridSystemHex.IsValidGridPosition(neighbourPosition))
+    //         {
+    //             neighbourList.Add(GetNode(neighbourPosition));
+    //         }
+    //         
+    //     }//End for (int i = 0;...
+    //     
+    //     #endregion Check ALL POSSIBLE NEIGHBOURS - Accessable locations of the Game Board
+    //     
+    //     // Return Neighbour List
+    //     //
+    //     return neighbourList;
+    //
+    // }// End GetNeighbourList
+
+    #endregion Square Grid System's code 
 
 
     /// <summary>
@@ -1187,33 +1275,14 @@ public class Pathfinding : MonoBehaviour
     /// <param name="gridPositionA"></param>
     /// <param name="gridPositionB"></param>
     /// </summary>
-    public int CalculateDistance(GridPosition gridPositionA, GridPosition gridPositionB)
+    public int CalculateHeuristicDistance(GridPosition gridPositionA, GridPosition gridPositionB)
     {
-        // Calculate the 'Distance Vector2':
-        // gridPositionB -> to -> gridPositionA
+        // Calculate the 'Distance': A to B:
         //
-        GridPosition gridPositionDistance = gridPositionA - gridPositionB;
-        //
-        // Calculate the DISTANCE   (i.e.: the Norm / Module  of the Vector)
-        //
-        // Not necessary:  int totalDistance = Mathf.Abs(gridPositionDistance.x) + Mathf.Abs(gridPositionDistance.z);
-        //
-        // Get each Distance separately:  x  and  z
-        //
-        int xDistance = Mathf.Abs(gridPositionDistance.x);
-        int zDistance = Mathf.Abs(gridPositionDistance.z);
-        //
-        // Get the Difference in Longitude: x vs z
-        //
-        int remainingDistanceXvsZ = Mathf.Abs(xDistance - zDistance);
-        
-        // Return the DISTANCE
-        // (using the Minimum (MIN (xDistance, zDistance) ) number of DIAGONALS... +
-        // ... + Maximum number of STRAIGHT Grid / Cells)
-        //
-        return ( _MOVE_DIAGONAL_COST * Mathf.Min(xDistance, zDistance) ) + ( _MOVE_STRAIGHT_COST * remainingDistanceXvsZ );
+        return Mathf.RoundToInt(_MOVE_STRAIGHT_COST * Vector3.Distance(_gridSystemHex.GetWorldPosition(gridPositionA),
+            _gridSystemHex.GetWorldPosition(gridPositionB)));
 
-    }// End CalculateDistance
+    }// End CalculateHeuristicDistance
 
 
     /// <summary>
