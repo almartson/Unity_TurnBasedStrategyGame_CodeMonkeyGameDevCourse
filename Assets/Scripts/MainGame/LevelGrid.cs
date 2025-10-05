@@ -17,7 +17,12 @@ public class LevelGrid : MonoBehaviour
 
     #region Attributes
 
+    #region  Constants
+
+    public const float FLOOR_HEIGHT = 3f;
     
+    #endregion  Constants
+
     [Tooltip("Singleton Pattern's Main Key: Instance of this very Class")] 
     public static LevelGrid Instance { get; private set; }
     
@@ -108,7 +113,7 @@ public class LevelGrid : MonoBehaviour
         {
             // CREATE
             //
-            GridSystem<GridObject> gridSystem = new GridSystem<GridObject>(_width, _height, _cellSize, 
+            GridSystem<GridObject> gridSystem = new GridSystem<GridObject>(_width, _height, _cellSize, floor, FLOOR_HEIGHT, 
                 (GridSystem<GridObject> g, GridPosition gridPosition ) => new GridObject(g, gridPosition) );
             
             //gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);

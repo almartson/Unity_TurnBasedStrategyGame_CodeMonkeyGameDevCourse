@@ -30,6 +30,13 @@ public class GridSystem<TGridObject>
     private const float _GRID_LINE_VISIBILITY_DURATION_IN_SECONDS = 1000.0f;
     private const float _HEIGHT_GRID_OFFSET = 0.2f;
 
+    /// <summary>
+    /// Floor Number, where each 'Grid System' starts (see:   private TGridObject[,] _gridObjectArray).
+    /// There can be multiple Floors in the Level, and each one will have it's own 'Grid System'.
+    /// </summary>
+    private int _floor;
+    private float _floorHeight;
+    
     // Array that contains all the Cells/Grids (of the System)
     // It is the Game Board:
 
@@ -48,11 +55,15 @@ public class GridSystem<TGridObject>
     /// <param name="height"></param>
     /// <param name="cellSize"></param>
     /// <param name="createGridObject">Delegate, that works as a Constructor to create the Array of 'GridObject's  (in its GENERIC FORM: "TGridObject"s)</param>
-    public GridSystem(int width, int height, float cellSize, /* We Pass a Delegate Here, to work as a Constructor for the "TGridObject's" Object: */ Func<GridSystem<TGridObject>, GridPosition, /* Return TYPE: */ TGridObject > createGridObject )
+    public GridSystem(int width, int height, float cellSize, int floor, float floorHeight, /* We Pass a Delegate Here, to work as a Constructor for the "TGridObject's" Object: */ Func<GridSystem<TGridObject>, GridPosition, /* Return TYPE: */ TGridObject > createGridObject )
     {
         _width = width;
         _height = height;
         _cellSize = cellSize;
+        
+        // Create the 'Floor' that will contain the Grid System:
+        //
+        this._floor = floor;
 
         // Create the Array that will contain the GRID SYSTEM:
         //
@@ -71,7 +82,7 @@ public class GridSystem<TGridObject>
                 //
                 // Create the GridPosition 
                 //
-                GridPosition gridPosition = new GridPosition(x, z);
+                GridPosition gridPosition = new GridPosition(x, z, floor);
                 //
                 // Create the TGridObject (which will be in every cell/grid of the GridSystem)
                 //
@@ -98,7 +109,8 @@ public class GridSystem<TGridObject>
     /// <returns></returns>
     public Vector3 GetWorldPosition(GridPosition gridPosition)
     {
-        return new Vector3(gridPosition.x, 0, gridPosition.z) * _cellSize;
+        return new Vector3(gridPosition.x, 0, gridPosition.z) * _cellSize +
+            new Vector3 (0, gridPosition.floor, 0) * _floorHeight;
     }
 
 
@@ -112,7 +124,8 @@ public class GridSystem<TGridObject>
     {
         return new GridPosition(
             Mathf.RoundToInt(worldPosition.x / _cellSize),
-            Mathf.RoundToInt(worldPosition.z / _cellSize)
+            Mathf.RoundToInt(worldPosition.z / _cellSize),
+            _floor
         );
     }
     
@@ -151,7 +164,7 @@ public class GridSystem<TGridObject>
                 
                 // Create a Mathematical Position (in the Grid System)
                 //
-                GridPosition gridPosition = new GridPosition(x, z);
+                GridPosition gridPosition = new GridPosition(x, z, _floor);
                 
                 // Visual Cue:  Instantiate the Visual Prefab:  the GameObject that has
                 //...(i.e.:...is associated with...) the Transform: 'debugPrefab'
@@ -216,7 +229,8 @@ public class GridSystem<TGridObject>
     {
         return (
             gridPosition.x >= 0 && gridPosition.z >= 0 &&
-            gridPosition.x < _width && gridPosition.z < _height
+            gridPosition.x < _width && gridPosition.z < _height &&
+            gridPosition.floor == _floor
         );
     }
     

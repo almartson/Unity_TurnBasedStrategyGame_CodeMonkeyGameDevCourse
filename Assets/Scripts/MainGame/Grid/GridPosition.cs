@@ -11,16 +11,18 @@ public struct GridPosition : IEquatable<GridPosition>
     
     public int x;
     public int z;
+    public int floor;
 
     #endregion Attributes
 
     
     #region Constructor
 
-    public GridPosition(int x, int z)
+    public GridPosition(int x, int z, int floor)
     {
         this.x = x;
         this.z = z;
+        this.floor = floor;
     }
 
     #endregion Constructor
@@ -49,7 +51,7 @@ public struct GridPosition : IEquatable<GridPosition>
         // return $"(x, y, z) = ( {x}, 0, {z} )";
         // 2.2-
         //
-        return $"( {x}, 0, {z} )";
+        return $"( x: {x}; z: {z}; floor: {floor} )";
     }
 
     #endregion Misc
@@ -85,7 +87,7 @@ public struct GridPosition : IEquatable<GridPosition>
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(x, z);
+        return HashCode.Combine(x, z, floor);
     }
     
     #endregion Equality. Automatically, Generated Metods
@@ -101,7 +103,7 @@ public struct GridPosition : IEquatable<GridPosition>
     /// <returns></returns>
     public static bool operator ==(GridPosition a, GridPosition b)
     {
-        return a.x == b.x && a.z == b.z;
+        return a.x == b.x && a.z == b.z && a.floor == b.floor;
     }
 
     /// <summary>
@@ -128,7 +130,7 @@ public struct GridPosition : IEquatable<GridPosition>
     /// <returns></returns>
     public static GridPosition operator +(GridPosition a, GridPosition b)
     {
-        return new GridPosition(a.x + b.x, a.z + b.z);
+        return new GridPosition(a.x + b.x, a.z + b.z, a.floor + b.floor);
     }
     
     /// <summary>
@@ -139,7 +141,7 @@ public struct GridPosition : IEquatable<GridPosition>
     /// <returns></returns>
     public static GridPosition operator -(GridPosition a, GridPosition b)
     {
-        return new GridPosition(a.x - b.x, a.z - b.z);
+        return new GridPosition(a.x - b.x, a.z - b.z, a.floor - b.floor);
     }
     
     #endregion + and - Operators
