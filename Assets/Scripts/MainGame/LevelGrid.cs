@@ -160,6 +160,22 @@ public class LevelGrid : MonoBehaviour
 
     #region My Custom Methods
 
+    #region Floor + GridSystem Methods
+
+    private GridSystem<GridObject> GetGridSystem(int floor)
+    {
+        return _gridSystemList[floor];
+    }
+
+
+    public int GetFloor(Vector3 worldPosition)
+    {
+        return Mathf.RoundToInt(worldPosition.y / FLOOR_HEIGHT);
+    }
+
+    #endregion Floor + GridSystem Methods
+    
+    
     /// <summary>
     /// Adds a Unit (to <code> List of Unit </code> on GridObject Class) to a GridObject, on a certain Position or Location (GridPosition).
     /// </summary>
@@ -167,7 +183,7 @@ public class LevelGrid : MonoBehaviour
     /// <param name="unit"></param>
     public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit)
     {
-        GridObject gridObject = _gridSystemList.GetGridObject(gridPosition);
+        GridObject gridObject = GetGridSystem(gridPosition.floor).GetGridObject(gridPosition);
         gridObject.AddUnit(unit);
     }
     
@@ -177,7 +193,7 @@ public class LevelGrid : MonoBehaviour
     /// <param name="gridPosition"></param>
     public List<Unit> GetListOfUnitsAtGridPosition(GridPosition gridPosition)
     {
-        GridObject gridObject = _gridSystemList.GetGridObject(gridPosition);
+        GridObject gridObject = GetGridSystem(gridPosition.floor).GetGridObject(gridPosition);
         return gridObject.GetUnitList();
     }
 
@@ -187,7 +203,7 @@ public class LevelGrid : MonoBehaviour
     /// <param name="gridPosition"></param>
     public void RemoveUnitAtGridPosition(GridPosition gridPosition, Unit unit)
     {
-        GridObject gridObject = _gridSystemList.GetGridObject(gridPosition);
+        GridObject gridObject = GetGridSystem(gridPosition.floor).GetGridObject(gridPosition);
         gridObject.RemoveUnit(unit); 
     }
 
@@ -212,13 +228,18 @@ public class LevelGrid : MonoBehaviour
 
     }// End UnitMovedGridPosition
 
-    
+
     /// <summary>
     /// Gets a Grid Position.
     /// </summary>
     /// <param name="worldPosition"></param>
     /// <returns></returns>
-    public GridPosition GetGridPosition(Vector3 worldPosition) => _gridSystemList.GetGridPosition(worldPosition);
+    public GridPosition GetGridPosition(Vector3 worldPosition)
+    {
+        int floor = GetFloor(worldPosition);
+
+        return GetGridSystem(floor).GetGridPosition(worldPosition);
+    }
     //
     // CodeMonkey TIPS:   This is the same as:
     //
@@ -232,19 +253,19 @@ public class LevelGrid : MonoBehaviour
     /// </summary>
     /// <param name="gridPosition"></param>
     /// <returns></returns>
-    public Vector3 GetWorldPosition(GridPosition gridPosition) => _gridSystemList.GetWorldPosition(gridPosition);
+    public Vector3 GetWorldPosition(GridPosition gridPosition) => GetGridSystem(gridPosition.floor).GetWorldPosition(gridPosition);
 
     /// <summary>
     /// Getter for the GridSystem's exposed Getter for: _width
     /// </summary>
     /// <returns></returns>
-    public int GetWidth() => _gridSystemList.GetWidth();
+    public int GetWidth() => GetGridSystem(0).GetWidth();
 
     /// <summary>
     /// Getter for the GridSystem's exposed Getter for: _height
     /// </summary>
     /// <returns></returns>
-    public int GetHeight() => _gridSystemList.GetHeight();
+    public int GetHeight() => GetGridSystem(0).GetHeight();
     
     
     /// <summary>
@@ -252,7 +273,7 @@ public class LevelGrid : MonoBehaviour
     /// </summary>
     /// <param name="gridPosition">A test GridPosition struct, to check the validity of that (x, y=0, z) position.</param>
     /// <returns>True or False</returns>
-    public bool IsValidGridPosition(GridPosition gridPosition) => _gridSystemList.IsValidGridPosition(gridPosition);
+    public bool IsValidGridPosition(GridPosition gridPosition) => GetGridSystem(gridPosition.floor).IsValidGridPosition(gridPosition);
     
     
     /// <summary>
@@ -265,7 +286,7 @@ public class LevelGrid : MonoBehaviour
     { 
         // Get a GridObject:
         //
-        GridObject gridObject = _gridSystemList.GetGridObject(gridPosition);
+        GridObject gridObject = GetGridSystem(gridPosition.floor).GetGridObject(gridPosition);
         //
         // Check whether it is occupied..:
         //
@@ -282,7 +303,7 @@ public class LevelGrid : MonoBehaviour
     { 
         // Get a GridObject:
         //
-        GridObject gridObject = _gridSystemList.GetGridObject(gridPosition);
+        GridObject gridObject = GetGridSystem(gridPosition.floor).GetGridObject(gridPosition);
         //
         // Check whether it is occupied..:
         //
@@ -301,7 +322,7 @@ public class LevelGrid : MonoBehaviour
     { 
         // Get a GridObject:
         //
-        GridObject gridObject = _gridSystemList.GetGridObject(gridPosition);
+        GridObject gridObject = GetGridSystem(gridPosition.floor).GetGridObject(gridPosition);
         //
         // Check whether it is occupied..:
         //
@@ -318,11 +339,22 @@ public class LevelGrid : MonoBehaviour
     { 
         // Get a GridObject
         //
-        GridObject gridObject = _gridSystemList.GetGridObject(gridPosition);
+        GridObject gridObject = GetGridSystem(gridPosition.floor).GetGridObject(gridPosition);
         //
         // Set the Interactable GameObject, at that GridPosition..:
         //
         gridObject.SetInteractable(interactable);
+    }
+    
+    public void ClearInteractableAtGridPosition(GridPosition gridPosition)
+    { 
+        // Get a GridObject
+        //
+        GridObject gridObject = GetGridSystem(gridPosition.floor).GetGridObject(gridPosition);
+        //
+        // Clear the Interactable GameObject, at that GridPosition..:
+        //
+        gridObject.ClearInteractable();
     }
     
     #endregion Interactable Door

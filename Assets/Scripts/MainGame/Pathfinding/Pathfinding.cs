@@ -33,22 +33,22 @@ public class Pathfinding : MonoBehaviour
     /// Math position of a Movement to another 'GridPosition':  Forwards
     /// ...(Cache: for Performance reasons)
     /// </summary>
-    public static readonly GridPosition _A_FORWARDS_GRID_POSITION = new GridPosition(0, 1);
+    public static readonly GridPosition _A_FORWARDS_GRID_POSITION = new GridPosition(0, 1, 0);
     /// <summary>
     /// Math position of a Movement to another 'GridPosition':  Backwards
     /// ...(Cache: for Performance reasons)
     /// </summary>
-    public static readonly GridPosition _A_BACKWARDS_GRID_POSITION = new GridPosition(0, -1);
+    public static readonly GridPosition _A_BACKWARDS_GRID_POSITION = new GridPosition(0, -1, 0);
     /// <summary>
     /// Math position of a Movement to another 'GridPosition':  Rightwards
     /// ...(Cache: for Performance reasons)
     /// </summary>
-    public static readonly GridPosition _A_RIGHTWARDS_GRID_POSITION = new GridPosition(1, 0);
+    public static readonly GridPosition _A_RIGHTWARDS_GRID_POSITION = new GridPosition(1, 0, 0);
     /// <summary>
     /// Math position of a Movement to another 'GridPosition':  Leftwards
     /// ...(Cache: for Performance reasons)
     /// </summary>
-    public static readonly GridPosition _A_LEFTWARDS_GRID_POSITION = new GridPosition(-1, 0);
+    public static readonly GridPosition _A_LEFTWARDS_GRID_POSITION = new GridPosition(-1, 0, 0);
 
     #endregion Constants
 
@@ -219,7 +219,7 @@ public class Pathfinding : MonoBehaviour
         // 1- Create the "GridSystem",  for (A.I.) A* Pathfinding:
         // ...with  "Path Nodes"
         //
-        _gridSystem = new GridSystem<PathNode>(_width, _height, _cellSize,
+        _gridSystem = new GridSystem<PathNode>(_width, _height, _cellSize, 0, LevelGrid.FLOOR_HEIGHT, 
             (GridSystem<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition));
 
 
@@ -254,7 +254,7 @@ public class Pathfinding : MonoBehaviour
         // Auxiliary variables:
         // GridPosition
         //
-        GridPosition gridPosition = new GridPosition(0, 0);
+        GridPosition gridPosition = new GridPosition(0, 0, 0);
         //
         // WorldPosition
         //
@@ -366,7 +366,7 @@ public class Pathfinding : MonoBehaviour
                 // Get a   CURRENT   GridPosition  &   PathNode
                 // CURRENT   GridPosition
                 //
-                GridPosition gridPosition = new GridPosition(x, z);
+                GridPosition gridPosition = new GridPosition(x, z, 0);
                 //
                 // CURRENT   PathNode
                 //
@@ -641,7 +641,7 @@ public class Pathfinding : MonoBehaviour
                 // Get a   CURRENT   GridPosition  &   PathNode
                 // CURRENT   GridPosition
                 //
-                GridPosition gridPosition = new GridPosition(x, z);
+                GridPosition gridPosition = new GridPosition(x, z, 0);
                 //
                 // CURRENT   PathNode
                 //
@@ -1162,14 +1162,14 @@ public class Pathfinding : MonoBehaviour
     
     
     /// <summary>
-    /// Gets a PathNode, <br /> ...given a (x, z) (i.e.: (x, y=0, z) Position) on the Map, - Game Board, GridSystem, LevelGrid - 
+    /// Gets a PathNode, <br /> ...given a (x, z, floor = 0) (i.e.: (x, y=0, z) Position) on the Map, - Game Board, GridSystem, LevelGrid - 
     /// </summary>
     /// <returns></returns>
     private PathNode GetNode(int x, int z)
     {
         // Get the Node (PathNode from:  (x, z) )
         //
-        return _gridSystem.GetGridObject(new GridPosition(x, z));
+        return _gridSystem.GetGridObject(new GridPosition(x, z, 0));
 
     }// End GetNode
     

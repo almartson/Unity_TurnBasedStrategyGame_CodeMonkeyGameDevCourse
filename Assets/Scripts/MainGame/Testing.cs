@@ -116,7 +116,7 @@ public class Testing : MonoBehaviour
         //
         if ( startGridPosition == null )
         {
-            startGridPosition = new GridPosition(0, 0);
+            startGridPosition = new GridPosition(0, 0, 0);
         }//
         //
         // 2- Call the PATHFINDING ALGORITHM

@@ -167,7 +167,7 @@ public class GridSystemVisual : MonoBehaviour
                 
                 // Create new GridPosition:
                 //
-                GridPosition gridPosition = new GridPosition(x, z);
+                GridPosition gridPosition = new GridPosition(x, z, 0);
                 
                 // Instantiate the Visual Prefab, that I created beforehand for this UI Element representation of the Possible available cell to move in to.  
                 //
@@ -340,7 +340,7 @@ public class GridSystemVisual : MonoBehaviour
                 
                 // Create an Item: GridPosition CELL, and fill it in with data for the (COLUMN, ROW)
                 //
-                GridPosition testGridPosition = gridPosition + new GridPosition(x, z);
+                GridPosition testGridPosition = gridPosition + new GridPosition(x, z, 0);
                 
                 // Validation:
                 //

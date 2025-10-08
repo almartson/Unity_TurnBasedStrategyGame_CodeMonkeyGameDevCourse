@@ -154,6 +154,15 @@ public class GridObject
         this._interactable = interactable;
     }
     
+    /// <summary>
+    /// Clears the Interactable gameobject (e.g.: Door).
+    /// </summary>
+    /// <returns></returns>
+    public void ClearInteractable()
+    {
+        this._interactable = null;
+    }
+    
     #endregion Interactable Door
     
     #endregion Methods
