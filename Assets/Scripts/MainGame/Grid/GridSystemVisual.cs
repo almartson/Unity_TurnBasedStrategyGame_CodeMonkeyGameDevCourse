@@ -25,7 +25,7 @@ public class GridSystemVisual : MonoBehaviour
     /// <summary>
     /// (Array / 2x2 Matrix... of GridSystemVisualSingle, a Prefab): Array with ALL the: Visual Representations (the Prefabs...) called by the same names, for generating Visual cues about the Cells/Squares,'Grid System' where the Player can move in to.
     /// </summary>
-    private GridSystemVisualSingle[,] _gridSystemVisualSingleArray;
+    private GridSystemVisualSingle[,,] _gridSystemVisualSingleArray;
 
     
     #region Obstacles for Shooting (Experimental)
@@ -146,7 +146,8 @@ public class GridSystemVisual : MonoBehaviour
         //
         _gridSystemVisualSingleArray = new GridSystemVisualSingle[
             LevelGrid.Instance.GetWidth(),
-            LevelGrid.Instance.GetHeight()
+            LevelGrid.Instance.GetHeight(),
+            LevelGrid.Instance.GetFloorAmount()
         ];
         
         
@@ -164,20 +165,25 @@ public class GridSystemVisual : MonoBehaviour
             //
             for (int z = 0; z < LevelGrid.Instance.GetHeight(); z++)
             {
-                
-                // Create new GridPosition:
+                // Floor Number... limited by the _floorAmount
                 //
-                GridPosition gridPosition = new GridPosition(x, z, 0);
-                
-                // Instantiate the Visual Prefab, that I created beforehand for this UI Element representation of the Possible available cell to move in to.  
-                //
-                Transform gridSystemVisualSingleTransform = Instantiate(_gridSystemVisualSinglePrefab, LevelGrid.Instance.GetWorldPosition(gridPosition), Quaternion.identity, parentCell.transform);
-                
-                // Save the GridSystemVisualSingle  Component of the Prefab in each ITERATION for working with it:
-                //
-                _gridSystemVisualSingleArray[x, z] =
-                    gridSystemVisualSingleTransform.GetComponent<GridSystemVisualSingle>();
-
+                for (int floor = 0; floor < LevelGrid.Instance.GetFloorAmount(); floor++)
+                {
+                    
+                    // Create new GridPosition:
+                    //
+                    GridPosition gridPosition = new GridPosition(x, z, floor);
+                    
+                    // Instantiate the Visual Prefab, that I created beforehand for this UI Element representation of the Possible available cell to move in to.  
+                    //
+                    Transform gridSystemVisualSingleTransform = Instantiate(_gridSystemVisualSinglePrefab, LevelGrid.Instance.GetWorldPosition(gridPosition), Quaternion.identity, parentCell.transform);
+                    
+                    // Save the GridSystemVisualSingle  Component of the Prefab in each ITERATION for working with it:
+                    //
+                    _gridSystemVisualSingleArray[x, z, floor] =
+                        gridSystemVisualSingleTransform.GetComponent<GridSystemVisualSingle>();
+                    
+                }//End for 3
             }//End for 2
         }//End for 1
 
@@ -309,10 +315,16 @@ public class GridSystemVisual : MonoBehaviour
             //
             for (int z = 0; z < LevelGrid.Instance.GetHeight(); z++)
             {
-                // Hide every Instanced Prefab, so it's INVISIBLE, (although it is in the Scene :)
+                // Floor Number... limited by the _floorAmount
                 //
-                _gridSystemVisualSingleArray[x, z].Hide();
-                
+                for (int floor = 0; floor < LevelGrid.Instance.GetFloorAmount(); floor++)
+                {
+                    
+                    // Hide every Instanced Prefab, so it's INVISIBLE, (although it is in the Scene :)
+                    //
+                    _gridSystemVisualSingleArray[x, z, floor].Hide();
+                    
+                }//End for 3
             }//End for 2
         }//End for 1
     }
@@ -337,10 +349,10 @@ public class GridSystemVisual : MonoBehaviour
             //
             for (int z = -range; z <= range; z++)
             {
-                
+
                 // Create an Item: GridPosition CELL, and fill it in with data for the (COLUMN, ROW)
                 //
-                GridPosition testGridPosition = gridPosition + new GridPosition(x, z, 0);
+                GridPosition testGridPosition = gridPosition + new GridPosition(x, z, gridPosition.floor);
                 
                 // Validation:
                 //
@@ -494,7 +506,7 @@ public class GridSystemVisual : MonoBehaviour
 
             // Show (And Set the Material of...) the selected items (i.e.: GridPositions) passed as Input: so they are VISIBLE, (in the Scene :)
             //
-            _gridSystemVisualSingleArray[gridPositionList[i].x, gridPositionList[i].z].ShowAndSetMaterial(GetGridVisualTypeMaterial(gridVisualColorType));
+            _gridSystemVisualSingleArray[gridPositionList[i].x, gridPositionList[i].z, gridPositionList[i].floor].ShowAndSetMaterial(GetGridVisualTypeMaterial(gridVisualColorType));
 
         }//End for 1
     }

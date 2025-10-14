@@ -187,10 +187,6 @@ public class UnitActionSystem : MonoBehaviour
 
     private void Update()
     {
-        // Debug the 2nd Floor System:
-        //
-        Debug.Log(LevelGrid.Instance.GetGridPosition( MouseWorld.GetPosition() ));
-        
         // Managing (allowing only...) just ONE Action at a Time:
         //
         if (_isBusy)

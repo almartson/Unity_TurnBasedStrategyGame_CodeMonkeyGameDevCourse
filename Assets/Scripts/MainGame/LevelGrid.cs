@@ -43,7 +43,7 @@ public class LevelGrid : MonoBehaviour
     
     [Tooltip("[Floor Amount]\n Total number of Floors in the Game Board.")]
     [SerializeField]
-    private float _floorAmount;
+    private int _floorAmount;
 
     
     /// <summary>
@@ -173,6 +173,14 @@ public class LevelGrid : MonoBehaviour
         return Mathf.RoundToInt(worldPosition.y / FLOOR_HEIGHT);
     }
 
+    /// <summary>
+    /// Getter for the GridSystem's: FloorAmount
+    /// </summary>
+    /// <returns></returns>
+    public int GetFloorAmount() => _floorAmount;
+
+
+    
     #endregion Floor + GridSystem Methods
     
     

@@ -217,6 +217,9 @@ public abstract class Unit : MonoBehaviour
         // SOLUTION: The same with 'UnitActionSystem'
         //
         _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        
+        Debug.Log(_gridPosition);
+        
         //
         // Initialization (final position = current position), not very logical (but it doesn't matter...):
         //
