@@ -352,7 +352,7 @@ public class GridSystemVisual : MonoBehaviour
 
                 // Create an Item: GridPosition CELL, and fill it in with data for the (COLUMN, ROW)
                 //
-                GridPosition testGridPosition = gridPosition + new GridPosition(x, z, gridPosition.floor);
+                GridPosition testGridPosition = gridPosition + new GridPosition(x, z, 0);
                 
                 // Validation:
                 //

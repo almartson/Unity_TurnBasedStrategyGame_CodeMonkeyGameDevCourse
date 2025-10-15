@@ -54,7 +54,9 @@ public class GridSystem<TGridObject>
     /// <param name="width"></param>
     /// <param name="height"></param>
     /// <param name="cellSize"></param>
+    /// <param name="floorHeight"></param>
     /// <param name="createGridObject">Delegate, that works as a Constructor to create the Array of 'GridObject's  (in its GENERIC FORM: "TGridObject"s)</param>
+    /// <param name="floor"></param>
     public GridSystem(int width, int height, float cellSize, int floor, float floorHeight, /* We Pass a Delegate Here, to work as a Constructor for the "TGridObject's" Object: */ Func<GridSystem<TGridObject>, GridPosition, /* Return TYPE: */ TGridObject > createGridObject )
     {
         _width = width;
@@ -64,6 +66,8 @@ public class GridSystem<TGridObject>
         // Create the 'Floor' that will contain the Grid System:
         //
         this._floor = floor;
+        
+        this._floorHeight = floorHeight;
 
         // Create the Array that will contain the GRID SYSTEM:
         //
@@ -106,6 +110,7 @@ public class GridSystem<TGridObject>
     /// </summary>
     /// <param name="x">Horizontal Coordinate</param>
     /// <param name="z">Vertical/Forward Coordinate</param>
+    /// <param name="gridPosition"></param>
     /// <returns></returns>
     public Vector3 GetWorldPosition(GridPosition gridPosition)
     {
@@ -141,7 +146,8 @@ public class GridSystem<TGridObject>
     {
         gridPosition.SetXZ(
             Mathf.RoundToInt(worldPosition.x / _cellSize),
-            Mathf.RoundToInt(worldPosition.z / _cellSize)
+            Mathf.RoundToInt(worldPosition.z / _cellSize),
+            _floor
         );
     }
 

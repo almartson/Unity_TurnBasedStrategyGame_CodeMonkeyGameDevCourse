@@ -179,8 +179,6 @@ public class LevelGrid : MonoBehaviour
     /// <returns></returns>
     public int GetFloorAmount() => _floorAmount;
 
-
-    
     #endregion Floor + GridSystem Methods
     
     

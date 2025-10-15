@@ -277,7 +277,7 @@ public class Pathfinding : MonoBehaviour
             {
                 // Set this  GridPosition
                 //
-                gridPosition.SetXZ(x, z);
+                gridPosition.SetXZ(x, z, 0);
 
                 // Set this  worldPositionAtTheFloorLevel, using 'gridPosition'
                 //

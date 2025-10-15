@@ -58,16 +58,18 @@ public struct GridPosition : IEquatable<GridPosition>
 
     
     #region Getters and Setters
-    
+
     /// <summary>
     /// Sets all parameters (x, z): together.
     /// </summary>
     /// <param name="x"></param>
     /// <param name="z"></param>
-    public void SetXZ(int x, int z)
+    /// <param name="floor"></param>
+    public void SetXZ(int x, int z, int floor)
     {
         this.x = x;
         this.z = z;
+        this.floor = floor;
     }
     
     #endregion Getters and Setters
