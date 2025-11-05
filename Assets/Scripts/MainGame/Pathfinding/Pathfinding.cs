@@ -78,7 +78,7 @@ public class Pathfinding : MonoBehaviour
     /// 
     /// Contains: Path Nodes (the Logical Squares/Cells) that contain inside: "GridPositions" (Structs: the Mathematical Positions and Data: (x, y, z)).
     /// </summary>
-    private GridSystem<PathNode> _gridSystem;
+    private List<GridSystem<PathNode>> _gridSystemList;
     
     
     [Tooltip("Visuals of Grid System, for Visual Debugging in the Unity Editor")]
@@ -100,6 +100,11 @@ public class Pathfinding : MonoBehaviour
     /// Size of each Squared Cell (that compounds the Game Board).
     /// </summary>
     private float _cellSize;
+
+    /// <summary>
+    /// Amount of floors, that contain cells (i.e.: the game's board)
+    /// </summary>
+    private int _floorAmount;
 
     #endregion GridSystem, Game Board
     
@@ -207,41 +212,56 @@ public class Pathfinding : MonoBehaviour
     /// <param name="width"></param>
     /// <param name="height"></param>
     /// <param name="cellSize"></param>
-    public void Setup(int width, int height, float cellSize)
+    public void Setup(int width, int height, float cellSize, int floorAmount)
     {
         // 0- Setup the Game Board (Grid) Dimensions:
         //
         _width = width;
         _height = height;
         _cellSize = cellSize;
+        _floorAmount = floorAmount;
 
-
-        // 1- Create the "GridSystem",  for (A.I.) A* Pathfinding:
-        // ...with  "Path Nodes"
+        // 0- Create the list of 'floors' with the 'squared cells':
         //
-        _gridSystem = new GridSystem<PathNode>(_width, _height, _cellSize, 0, LevelGrid.FLOOR_HEIGHT, 
-            (GridSystem<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition));
+        _gridSystemList = new List<GridSystem<PathNode>>();
 
-
-        // 3- (Debugging Purposes :) Create the GameObject that will hold a Visual Representation of the Grid System: for  'A* Pathfinding'. Calling the Constructor:
+        // Cycle through each Floor:
         //
-        if (_debugWithPathfindingGridDebugObjects)
+        for (int floor = 0; floor < _floorAmount; floor++)
         {
-            // Create a system of 'Pathfinding Grid Debug Objects' over the GridObjects' Board.
+            
+            // 1- Create the "GridSystem",  for (A.I.) A* Pathfinding:
+            // ...with  "Path Nodes"
             //
-            _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
-        }
+            GridSystem<PathNode> gridSystem = new GridSystem<PathNode>(_width, _height, _cellSize, 0, LevelGrid.FLOOR_HEIGHT, 
+                (GridSystem<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition));
 
+            // 2- Add gridSystem object to the List:
+            //
+            _gridSystemList.Add(gridSystem);
+            
+            
+            // 3- (Debugging Purposes :) Create the GameObject that will hold a Visual Representation of the Grid System: for  'A* Pathfinding'. Calling the Constructor:
+            //
+            if (_debugWithPathfindingGridDebugObjects)
+            {
+                // Create a system of 'Pathfinding Grid Debug Objects' over the GridObjects' Board.
+                //
+                gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+            }
+
+        }//End for (int floor = 0;
         
         #region Initialize:  Walkable NodePaths  (and Obstacles)
-        
+    
         // 4- Setup:  OBSTACLES  &  NON-WALKABLE NODES
         // .. (for Pathfinding)
         //
         UpdateWalkableAndNonWalkableNodes();
 
         #endregion Initialize:  Walkable NodePaths  (and Obstacles)
-        
+
+
     }// End Setup
     
 
@@ -275,32 +295,37 @@ public class Pathfinding : MonoBehaviour
         {
             for (int z = 0; z < _height; z++)
             {
-                // Set this  GridPosition
-                //
-                gridPosition.SetXZ(x, z, 0);
-
-                // Set this  worldPositionAtTheFloorLevel, using 'gridPosition'
-                //
-                worldPositionAtTheFloorLevel = LevelGrid.Instance.GetWorldPosition(gridPosition);
-
-
-                #region Raycast: Optimized Code - v-2.0
-
-                // Shoot a Raycast from BELOW the Floor-Ground Level (y=-raycastOffsetDistance) on THAT specific 'GridPosition'... UPWARDS (Vector3.up) 1 ONE Meter (mtr) to find the OBSTACLE.
-                // NOT NECESSARY, OPTIONAL:  NOTE:  IMPORTANT:  In the Unity Editor, in the Settings -> Physics TAB ...-> set the Option: 'Queries MAY HIT BACKFACES' = TRUE.
-                //
-                if (Physics.RaycastNonAlloc(worldPositionAtTheFloorLevel + Vector3.down * _raycastVerticalOffsetDistance,
-                        Vector3.up, _raycastHitInfo, raycastTravelUpwardsDistance, _obstaclesLayerMask) > 0)
+                for (int floor = 0; floor < _floorAmount; floor++)
                 {
-
-                    // This 'Grid Position'  is   blocked   by obstacle
+                    // Set this  GridPosition
                     //
-                    GetNode(x, z).SetIsWalkable(false);
+                    gridPosition.SetXZ(x, z, floor);
 
-                } //End if ( Physics.RaycastNonAlloc
+                    // Set this  worldPositionAtTheFloorLevel, using 'gridPosition'
+                    //
+                    worldPositionAtTheFloorLevel = LevelGrid.Instance.GetWorldPosition(gridPosition);
 
-                #endregion Raycast: Optimized Code - v-2.0
 
+                    #region Raycast: Optimized Code - v-2.0
+
+                    // Shoot a Raycast from BELOW the Floor-Ground Level (y=-raycastOffsetDistance) on THAT specific 'GridPosition'... UPWARDS (Vector3.up) 1 ONE Meter (mtr) to find the OBSTACLE.
+                    // NOT NECESSARY, OPTIONAL:  NOTE:  IMPORTANT:  In the Unity Editor, in the Settings -> Physics TAB ...-> set the Option: 'Queries MAY HIT BACKFACES' = TRUE.
+                    //
+                    if (Physics.RaycastNonAlloc(
+                            worldPositionAtTheFloorLevel + Vector3.down * _raycastVerticalOffsetDistance,
+                            Vector3.up, _raycastHitInfo, raycastTravelUpwardsDistance, _obstaclesLayerMask) > 0)
+                    {
+
+                        // This 'Grid Position'  is   blocked   by obstacle
+                        //
+                        GetNode(x, z, floor).SetIsWalkable(false);
+
+                    } //End if ( Physics.RaycastNonAlloc
+
+                    #endregion Raycast: Optimized Code - v-2.0
+                    
+                }//End for (int floor = 0...
+                
             } //End for (int z = 0; z < _height; z++)
 
         } //End for (int x = 0; x < _width; x++)
@@ -336,11 +361,11 @@ public class Pathfinding : MonoBehaviour
         // NODES
         // Initial / Start NODE:
         //
-        PathNode startNode = _gridSystem.GetGridObject(startGridPosition);
+        PathNode startNode = GetGridSystem(startGridPosition.floor).GetGridObject(startGridPosition);
         //
         // End NODE:
         //
-        PathNode endNode = _gridSystem.GetGridObject(endGridPosition);
+        PathNode endNode = GetGridSystem(endGridPosition.floor).GetGridObject(endGridPosition);
         //
         // Add the "Start Node" to the List:
         //
@@ -351,8 +376,8 @@ public class Pathfinding : MonoBehaviour
         //..in all the PathNode(s)  (GridPositions)
         // Lists Lenght
         //
-        int gridSystemWidth = _gridSystem.GetWidth();
-        int gridSystemHeight = _gridSystem.GetHeight();
+        int gridSystemWidth = _width;
+        int gridSystemHeight = _height;
         //
         // Cycle - Loop through every 'GridPosition'
         // Horizontal Values
@@ -363,43 +388,50 @@ public class Pathfinding : MonoBehaviour
             // 
             for (int z = 0; z < gridSystemHeight; z++)
             {
-                // Get a   CURRENT   GridPosition  &   PathNode
-                // CURRENT   GridPosition
+                // Floors:
                 //
-                GridPosition gridPosition = new GridPosition(x, z, 0);
-                //
-                // CURRENT   PathNode
-                //
-                PathNode pathNode = _gridSystem.GetGridObject(gridPosition);
+                for (int floor = 0; floor < _floorAmount; floor++)
+                {
 
+                    // Get a   CURRENT   GridPosition  &   PathNode
+                    // CURRENT   GridPosition
+                    //
+                    GridPosition gridPosition = new GridPosition(x, z, floor);
+                    //
+                    // CURRENT   PathNode
+                    //
+                    PathNode pathNode = GetGridSystem(floor).GetGridObject(gridPosition);
+
+
+                    #region Initialize  (G, H, F)  Costs
+
+                    // Initialize  (G, H, F)  Costs
+                    // G Cost   ->   Infinite
+                    // (Walking Cost from:  START -> to -> CURRENT Node)
+                    //
+                    pathNode.SetGCost(int.MaxValue);
+
+                    // H Cost   ->   Zero
+                    // ('Heuristic' Walking Cost from:  CURRENT Node -> to -> END Node ...
+                    // ..assuming that THERE ARE NO WALLS or obstacles: Simplification / Idealization:
+                    // * Let's assume it to be: the RAW linear-SHORTEST DISTANCE (in Squares / GridPositions)
+                    // CURRENT Node -> to -> END Node):    Initialization = Zero
+                    //
+                    pathNode.SetHCost(0);
+
+                    // F Cost   ->   Infinite   (Infinite + 0)
+                    //
+                    pathNode.CalculateFCost();
+
+                    // Reset / Initialize to NULL:
+                    // The NODE Path   (_cameFromPathNode)
+                    //
+                    pathNode.ResetCameFromPathNode();
+
+                    #endregion Initialize  (G, H, F)  Costs
+
+                }//End for (int floor = 0; floor < _floorAmount; floor++)
                 
-                #region Initialize  (G, H, F)  Costs
-
-                // Initialize  (G, H, F)  Costs
-                // G Cost   ->   Infinite
-                // (Walking Cost from:  START -> to -> CURRENT Node)
-                //
-                pathNode.SetGCost( int.MaxValue );
-
-                // H Cost   ->   Zero
-                // ('Heuristic' Walking Cost from:  CURRENT Node -> to -> END Node ...
-                // ..assuming that THERE ARE NO WALLS or obstacles: Simplification / Idealization:
-                // * Let's assume it to be: the RAW linear-SHORTEST DISTANCE (in Squares / GridPositions)
-                // CURRENT Node -> to -> END Node):    Initialization = Zero
-                //
-                pathNode.SetHCost(0);
-
-                // F Cost   ->   Infinite   (Infinite + 0)
-                //
-                pathNode.CalculateFCost();
-                
-                // Reset / Initialize to NULL:
-                // The NODE Path   (_cameFromPathNode)
-                //
-                pathNode.ResetCameFromPathNode();
-
-                #endregion Initialize  (G, H, F)  Costs
-
             }//End for (int z = 0; x < gridSystemHeight ... 
         }//End for (int x = 0; x < gridSystemWidth ...
         
@@ -1149,14 +1181,25 @@ public class Pathfinding : MonoBehaviour
 
 
     /// <summary>
+    /// Gets the GridSystem for a specified 'Floor' number.
+    /// </summary>
+    /// <param name="floor"></param>
+    /// <returns></returns>
+    private GridSystem<PathNode> GetGridSystem(int floor)
+    {
+        return _gridSystemList[floor];
+    }
+    
+    
+    /// <summary>
     /// Gets a PathNode, <br /> ...given a 'GridPosition' (i.e.: Grid created with: (x, y=0, z) Position) on the Map, - Game Board, GridSystem, LevelGrid - 
     /// </summary>
     /// <returns></returns>
-    private PathNode GetNode(GridPosition gridPosition)
+    private PathNode GetNode(GridPosition gridPosition, int floor)
     {
         // Get the Node (PathNode from:  gridPosition(x, z) )
         //
-        return _gridSystem.GetGridObject(gridPosition);
+        return GetGridSystem(floor).GetGridObject(gridPosition);
 
     }// End GetNode
     
@@ -1165,11 +1208,11 @@ public class Pathfinding : MonoBehaviour
     /// Gets a PathNode, <br /> ...given a (x, z, floor = 0) (i.e.: (x, y=0, z) Position) on the Map, - Game Board, GridSystem, LevelGrid - 
     /// </summary>
     /// <returns></returns>
-    private PathNode GetNode(int x, int z)
+    private PathNode GetNode(int x, int z, int floor)
     {
         // Get the Node (PathNode from:  (x, z) )
         //
-        return _gridSystem.GetGridObject(new GridPosition(x, z, 0));
+        return GetGridSystem(floor).GetGridObject(new GridPosition(x, z, floor));
 
     }// End GetNode
     
