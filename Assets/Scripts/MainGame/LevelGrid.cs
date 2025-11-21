@@ -145,7 +145,7 @@ public class LevelGrid : MonoBehaviour
         //
         // 0- Pathfinding Node System
         //
-        Pathfinding.Instance.Setup(_width, _height, _cellSize);
+        Pathfinding.Instance.Setup(_width, _height, _cellSize, _floorAmount);
 
     }// End Start
 
@@ -272,16 +272,28 @@ public class LevelGrid : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public int GetHeight() => GetGridSystem(0).GetHeight();
-    
-    
+
+
     /// <summary>
     /// Gets a VALID Grid Position. Validity Criteria: it must be inside the Board, only positive numbers for the Coordinates are allowed.
     /// </summary>
     /// <param name="gridPosition">A test GridPosition struct, to check the validity of that (x, y=0, z) position.</param>
     /// <returns>True or False</returns>
-    public bool IsValidGridPosition(GridPosition gridPosition) => GetGridSystem(gridPosition.floor).IsValidGridPosition(gridPosition);
-    
-    
+    public bool IsValidGridPosition(GridPosition gridPosition)
+    {
+        // Test to see if the GridPosition is VALID, in terms of: the FLOOR (does it belong to a correct floor NUMBER?, etc)
+        //
+        if (gridPosition.floor < 0 || gridPosition.floor >= _floorAmount)
+        {
+            return false;
+        }
+        else
+        {
+            return GetGridSystem(gridPosition.floor).IsValidGridPosition(gridPosition);
+        }
+    }// End IsValidGridPosition()
+
+
     /// <summary>
     /// Gets a VALID Grid Position.
     /// Validity Criteria: it must NOT have any Unit or Obstacle... or any Object in it. It must be completely empty to be Valid.

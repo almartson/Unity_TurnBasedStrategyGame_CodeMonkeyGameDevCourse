@@ -484,92 +484,95 @@ public class MoveAction : BaseAction
         {
             for (int z = -_maxMoveDistance; z <= _maxMoveDistance; z++)
             {
-                // Create a GridPosition to Validate it:
-                //
-                GridPosition offsetGridPosition = new GridPosition(x, z, 0);
+                for (int floor = -_maxMoveDistance; floor <= _maxMoveDistance; floor++)
+                {
+                    // Create a GridPosition to Validate it:
+                    //
+                    GridPosition offsetGridPosition = new GridPosition(x, z, floor);
 
-                // All Actions are attached to an Unit, so we can get a reference to an Unit from this class/object and then from Unit to -> its Position / Grid.
-                // Test a given GridPosition, moving it a little bit using the 'offsetGridPosition' (summing it, +), so we can Validate it:
-                //
-                GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
-                
-                // Validation:
-                //
-                // 1- "GridPosition" Must be inside the Grid System, not off-limits:
-                //
-                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
-                {
-                    // Not Valid: continue / SKIP: to the NEXT ITERATION.
-                    continue;
-                }
-                //
-                // 2- "GridPosition" Must be different from the current one.
-                //
-                if (unitGridPosition == testGridPosition)
-                {
-                    // Not Valid: Same Grid Position where the Player / Unit is already at.
-                    // Skip to next iteration:
+                    // All Actions are attached to an Unit, so we can get a reference to an Unit from this class/object and then from Unit to -> its Position / Grid.
+                    // Test a given GridPosition, moving it a little bit using the 'offsetGridPosition' (summing it, +), so we can Validate it:
                     //
-                    continue;
-                }
-                //
-                // 3- "GridPosition" Must NOT be previously occupied.
-                //
-                if (LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
-                {
-                    // Not Valid:
-                    // Grid Position is already occupied with another Unit. Skip to next iteration:
+                    GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
+                    
+                    // Validation:
                     //
-                    continue;
-                }
-                //
-                // 4- "NodePath (Pathfinding equivalent to: -> GridPosition)"  Must be:
-                //   WALKABLE
-                //...setting given by Pathfinding.
-                //...thus we avoid GridPositions occupied by Walls, Columns and other Obstacles:
-                //
-                if (! Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
-                {
-                    // Not Valid:
-                    // "NodePath (Pathfinding equivalent to: -> GridPosition)"  is NOT  WALKABLE. Skip to next iteration:
+                    // 1- "GridPosition" Must be inside the Grid System, not off-limits:
                     //
-                    continue;
-                }
-                //
-                // 5- "NodePath (Pathfinding equivalent to: -> GridPosition)"  Must NOT be:
-                //   null
-                //...setting given by Pathfinding.
-                //...thus we avoid 'impossible to reach' GridPositions  (places in the Map that are surrounded by 4 walls, etc.):
-                // Todo: Optimize this one: because it is executing the WHILE PATHFINDING ALGORITHM each time it reaches this line. It means we are executing the Pathfinding for each "almost valid" GridObject... in a 100x100 grid cell, it could mean (at least 50% of the Game Board): >= 5.000 Times !!!
-                //
-                // Todo: Solution:  Calculate JUST ONCE the Function: Pathfinding.Instance.ValidateFullPath   (it should contain and update the VARIABLES CORRESPONDING TO: .HasPath, .GetPathLength,  )
-                //
-                if (! Pathfinding.Instance.HasPath(unitGridPosition, testGridPosition))
-                {
-                    // Not Valid:
-                    // "NodePath (Pathfinding equivalent to: -> GridPosition)"  Must NOT be:  null.  Skip to next iteration:
+                    if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                    {
+                        // Not Valid: continue / SKIP: to the NEXT ITERATION.
+                        continue;
+                    }
                     //
-                    continue;
-                }
-                //
-                // 6- "Path Length" (Pathfinding PATH TOTAL COST)  Must be under:
-                //   maxMoveDistance * _pathFindingMultiplier
-                //...setting given by Pathfinding.
-                //...thus we avoid GridPositions that are too far away, so making the Movement UNJUST, and nonsensical (like for instance moving through 30 GridPosition(s) in just one Click, one Turn):
-                // Todo: Optimize this one: because it is executing the WHILE PATHFINDING ALGORITHM each time it reaches this line. It means we are executing the Pathfinding for each "almost valid" GridObject... in a 100x100 grid cell, it could mean (at least 50% of the Game Board): >= 5.000 Times !!!  
-                //
-                if (Pathfinding.Instance.GetPathLength(unitGridPosition, testGridPosition) > (_maxMoveDistance * _pathFindingDistanceMultiplier))
-                {
-                    // Not Valid:
-                    // Path length is too long.  Skip to next iteration:
+                    // 2- "GridPosition" Must be different from the current one.
                     //
-                    continue;
-                }
-                
-                // Finally, Conclusion: Add the Tested & Valid GridPosition to the Local VALID List
-                //
-                validGridPositionList.Add(testGridPosition);
+                    if (unitGridPosition == testGridPosition)
+                    {
+                        // Not Valid: Same Grid Position where the Player / Unit is already at.
+                        // Skip to next iteration:
+                        //
+                        continue;
+                    }
+                    //
+                    // 3- "GridPosition" Must NOT be previously occupied.
+                    //
+                    if (LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
+                    {
+                        // Not Valid:
+                        // Grid Position is already occupied with another Unit. Skip to next iteration:
+                        //
+                        continue;
+                    }
+                    //
+                    // 4- "NodePath (Pathfinding equivalent to: -> GridPosition)"  Must be:
+                    //   WALKABLE
+                    //...setting given by Pathfinding.
+                    //...thus we avoid GridPositions occupied by Walls, Columns and other Obstacles:
+                    //
+                    if (! Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
+                    {
+                        // Not Valid:
+                        // "NodePath (Pathfinding equivalent to: -> GridPosition)"  is NOT  WALKABLE. Skip to next iteration:
+                        //
+                        continue;
+                    }
+                    //
+                    // 5- "NodePath (Pathfinding equivalent to: -> GridPosition)"  Must NOT be:
+                    //   null
+                    //...setting given by Pathfinding.
+                    //...thus we avoid 'impossible to reach' GridPositions  (places in the Map that are surrounded by 4 walls, etc.):
+                    // Todo: Optimize this one: because it is executing the WHILE PATHFINDING ALGORITHM each time it reaches this line. It means we are executing the Pathfinding for each "almost valid" GridObject... in a 100x100 grid cell, it could mean (at least 50% of the Game Board): >= 5.000 Times !!!
+                    //
+                    // Todo: Solution:  Calculate JUST ONCE the Function: Pathfinding.Instance.ValidateFullPath   (it should contain and update the VARIABLES CORRESPONDING TO: .HasPath, .GetPathLength,  )
+                    //
+                    if (! Pathfinding.Instance.HasPath(unitGridPosition, testGridPosition))
+                    {
+                        // Not Valid:
+                        // "NodePath (Pathfinding equivalent to: -> GridPosition)"  Must NOT be:  null.  Skip to next iteration:
+                        //
+                        continue;
+                    }
+                    //
+                    // 6- "Path Length" (Pathfinding PATH TOTAL COST)  Must be under:
+                    //   maxMoveDistance * _pathFindingMultiplier
+                    //...setting given by Pathfinding.
+                    //...thus we avoid GridPositions that are too far away, so making the Movement UNJUST, and nonsensical (like for instance moving through 30 GridPosition(s) in just one Click, one Turn):
+                    // Todo: Optimize this one: because it is executing the WHILE PATHFINDING ALGORITHM each time it reaches this line. It means we are executing the Pathfinding for each "almost valid" GridObject... in a 100x100 grid cell, it could mean (at least 50% of the Game Board): >= 5.000 Times !!!  
+                    //
+                    if (Pathfinding.Instance.GetPathLength(unitGridPosition, testGridPosition) > (_maxMoveDistance * _pathFindingDistanceMultiplier))
+                    {
+                        // Not Valid:
+                        // Path length is too long.  Skip to next iteration:
+                        //
+                        continue;
+                    }
+                    
+                    // Finally, Conclusion: Add the Tested & Valid GridPosition to the Local VALID List
+                    //
+                    validGridPositionList.Add(testGridPosition);
 
+                } // End for 3 floor...
             } // End for 2
         }//End for 1
     

@@ -643,11 +643,11 @@ public class Pathfinding : MonoBehaviour
         // NODES
         // Initial / Start NODE:
         //
-        PathNode startNode = _gridSystem.GetGridObject(startGridPosition);
+        PathNode startNode = GetGridSystem(startGridPosition.floor).GetGridObject(startGridPosition);
         //
         // End NODE:
         //
-        PathNode endNode = _gridSystem.GetGridObject(endGridPosition);
+        PathNode endNode = GetGridSystem(endGridPosition.floor).GetGridObject(endGridPosition);
         //
         // Add the "Start Node" to the List:
         //
@@ -658,8 +658,8 @@ public class Pathfinding : MonoBehaviour
         //..in all the PathNode(s)  (GridPositions)
         // Lists Lenght
         //
-        int gridSystemWidth = _gridSystem.GetWidth();
-        int gridSystemHeight = _gridSystem.GetHeight();
+        int gridSystemWidth = _width;
+        int gridSystemHeight = _height;
         //
         // Cycle - Loop through every 'GridPosition'
         // Horizontal Values
@@ -677,7 +677,7 @@ public class Pathfinding : MonoBehaviour
                 //
                 // CURRENT   PathNode
                 //
-                PathNode pathNode = _gridSystem.GetGridObject(gridPosition);
+                PathNode pathNode = GetGridSystem(gridPosition.floor).GetGridObject(gridPosition);
 
                 
                 #region Initialize  (G, H, F)  Costs
@@ -1164,9 +1164,9 @@ public class Pathfinding : MonoBehaviour
             
             // Validate the new  'neighbourPosition'
             //
-            if (_gridSystem.IsValidGridPosition(neighbourPosition))
+            if (GetGridSystem(gridPosition.floor).IsValidGridPosition(neighbourPosition))
             {
-                neighbourList.Add(GetNode(neighbourPosition));
+                neighbourList.Add(GetNode(neighbourPosition, neighbourPosition.floor));
             }
             
         }//End for (int i = 0;...
@@ -1313,7 +1313,7 @@ public class Pathfinding : MonoBehaviour
     {
         // Set the '_isWalkable' Boolean Flag  of the 'PathNode' related to the Input: gridPosition
         //
-        _gridSystem.GetGridObject(gridPosition).SetIsWalkable(isWalkable);
+        GetGridSystem(gridPosition.floor).GetGridObject(gridPosition).SetIsWalkable(isWalkable);
 
     }// End SetIsWalkableGridPosition
     
@@ -1328,7 +1328,7 @@ public class Pathfinding : MonoBehaviour
     {
         // Get the '_isWalkable' Boolean Flag  of the 'PathNode' related to the Input: gridPosition
         //
-        return _gridSystem.GetGridObject(gridPosition).IsWalkable();
+        return GetGridSystem(gridPosition.floor).GetGridObject(gridPosition).IsWalkable();
 
     }// End IsWalkableGridPosition
     
