@@ -120,6 +120,11 @@ public class Pathfinding : MonoBehaviour
     /// </summary>
     public LayerMask ObstaclesLayerMask { get => _obstaclesLayerMask; private set => _obstaclesLayerMask = value; }
 
+    
+    [Tooltip("Label-LayerMask for marking the FLOOR... for Pathfinding")]
+    [SerializeField]
+    private LayerMask _floorLayerMask;
+    
     #region Raycast
     
     /// <summary>
@@ -305,7 +310,32 @@ public class Pathfinding : MonoBehaviour
                     //
                     worldPositionAtTheFloorLevel = LevelGrid.Instance.GetWorldPosition(gridPosition);
 
+             
+                    // Raycast for finding the 'Floor' cells
+                    //
+                    #region Raycast for finding the 'Floor' cells... Raycast: Optimized Code - v-2.0
+                    
+                    // Mark every 'Grid Position'  as  'Un-Walkable'
+                    //
+                    GetNode(x, z, floor).SetIsWalkable(true);
+                    
+                    // Shoot a Raycast from ABOVE the Floor-Ground Level (y=+raycastOffsetDistance) on THAT specific 'GridPosition'... DOWNWARDS (Vector3.down) 1 ONE Meter (mtr) to find the OBSTACLE.
+                    // NOT NECESSARY, OPTIONAL:  NOTE:  IMPORTANT:  In the Unity Editor, in the Settings -> Physics TAB ...-> set the Option: 'Queries MAY HIT BACKFACES' = TRUE.
+                    //
+                    if (Physics.RaycastNonAlloc(
+                            worldPositionAtTheFloorLevel + Vector3.down * _raycastVerticalOffsetDistance,
+                            Vector3.up, _raycastHitInfo, raycastTravelUpwardsDistance, _floorLayerMask) > 0)
+                    {
 
+                        // This 'Grid Position'  is   a part of the floor: and walkable
+                        //
+                        GetNode(x, z, floor).SetIsWalkable(true);
+
+                    } //End if ( Physics.RaycastNonAlloc
+
+                    #endregion Raycast for finding the 'Floor' cells... Raycast: Optimized Code - v-2.0
+                    
+                    
                     #region Raycast: Optimized Code - v-2.0
 
                     // Shoot a Raycast from BELOW the Floor-Ground Level (y=-raycastOffsetDistance) on THAT specific 'GridPosition'... UPWARDS (Vector3.up) 1 ONE Meter (mtr) to find the OBSTACLE.
