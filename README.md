@@ -43,11 +43,10 @@ I created and integrated several custom visual effects into the project:
 ---
 ## Related Links:
 
+- Behance Portfolio:  [Turn Based Strategy Game :: Behance](https://www.behance.net/gallery/251360521/Turn-Based-Strategy-Game?platform=direct)
+
 - Course on GameDev.Tv: [Unity Turn Based Strategy: Code Your Own Strategy Game | GameDev.tv](https://gamedev.tv/courses/unity-turn-based-strategy?srsltid=AfmBOoqa0wi3-Zs_csru8j9knxpewVe12ehrU3TELsvEcgo4utQ5Bb9c)
 
-- Code on GitHub:   [GitHub - almartson/Unity_TurnBasedStrategyGame_CodeMonkeyGameDevCourse · GitHub](https://github.com/almartson/Unity_TurnBasedStrategyGame_CodeMonkeyGameDevCourse)
-
-- Behance Portfolio:
 
 ---
 
