@@ -61,7 +61,7 @@ I created and integrated several custom visual effects into the project:
 
 <div align="center">
 
-[![Take your Skills to the NEXT LEVEL by making a Turn-Based Strategy game! (Unity Complete Course) - YouTube](https://www.youtube.com/QDr_pjzedv0/0.jpg)](https://www.youtube.com/watch?v=QDr_pjzedv0)
+[![Take your Skills to the NEXT LEVEL by making a Turn-Based Strategy game! (Unity Complete Course) - YouTube](https://img.youtube.com/vi/QDr_pjzedv0/0.jpg)](https://www.youtube.com/watch?v=QDr_pjzedv0)
 
 </div>
 
