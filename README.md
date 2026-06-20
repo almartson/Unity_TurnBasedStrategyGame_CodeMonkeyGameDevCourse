@@ -2,6 +2,14 @@
 
 # Turn Based Strategy Game
 
+
+<div align="center">
+
+![Animation Layers](./MediaForTheReadme/Gameplay_1.png)
+
+</div>
+
+
 Technical demo based on the course taught by Code Monkey, titled: _Turn Based Strategy Course_.
 
 The demo and the course were developed concurrently alongside a self-directed learning program, strengthening my intermediate and advanced expertise in Gameplay Development, C# Programming, and Unity3D.
