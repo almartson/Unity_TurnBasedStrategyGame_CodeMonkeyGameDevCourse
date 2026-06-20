@@ -57,7 +57,7 @@ I created and integrated several custom visual effects into the project:
 
 ---
 
-## Video
+## Course video
 
 <div align="center">
 
